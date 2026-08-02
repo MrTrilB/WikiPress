@@ -9,6 +9,7 @@ class ComposerStaticInit04e5e8025d5b0a27ebee1ad104e8d174
     public static $prefixLengthsPsr4 = array (
         'T' =>
         array (
+            'TrilBDev\\WikiPress\\PublicArea\\' => 30,
             'TrilBDev\\WikiPress\\Includes\\' => 28,
             'TrilBDev\\WikiPress\\Assets\\' => 26,
             'TrilBDev\\WikiPress\\Admin\\' => 25,
@@ -21,6 +22,10 @@ class ComposerStaticInit04e5e8025d5b0a27ebee1ad104e8d174
     );
 
     public static $prefixDirsPsr4 = array (
+        'TrilBDev\\WikiPress\\PublicArea\\' =>
+        array (
+            0 => __DIR__ . '/../..' . '/src/Public',
+        ),
         'TrilBDev\\WikiPress\\Includes\\' =>
         array (
             0 => __DIR__ . '/../..' . '/src/includes',
@@ -150,6 +155,7 @@ class ComposerStaticInit04e5e8025d5b0a27ebee1ad104e8d174
         'TrilBDev\\WikiPress\\API\\Validators' => __DIR__ . '/../..' . '/src/API/Validators.php',
         'TrilBDev\\WikiPress\\Admin\\Admin' => __DIR__ . '/../..' . '/src/Admin/Admin.php',
         'TrilBDev\\WikiPress\\Assets\\Assets' => __DIR__ . '/../..' . '/src/Assets/Assets.php',
+        'TrilBDev\\WikiPress\\Includes\\Analytics\\Analytics' => __DIR__ . '/../..' . '/src/includes/Analytics/Analytics.php',
         'TrilBDev\\WikiPress\\Includes\\Core\\Core' => __DIR__ . '/../..' . '/src/includes/Core/Core.php',
         'TrilBDev\\WikiPress\\Includes\\Core\\PostType' => __DIR__ . '/../..' . '/src/includes/Core/PostType.php',
         'TrilBDev\\WikiPress\\Includes\\Core\\Taxonomy' => __DIR__ . '/../..' . '/src/includes/Core/Taxonomy.php',
@@ -165,6 +171,8 @@ class ComposerStaticInit04e5e8025d5b0a27ebee1ad104e8d174
         'TrilBDev\\WikiPress\\Includes\\Pages\\Taxonomies' => __DIR__ . '/../..' . '/src/includes/Pages/Taxonomies.php',
         'TrilBDev\\WikiPress\\Includes\\Settings\\Settings' => __DIR__ . '/../..' . '/src/includes/Settings/Settings.php',
         'TrilBDev\\WikiPress\\Includes\\Settings\\SettingsManager' => __DIR__ . '/../..' . '/src/includes/Settings/SettingsManager.php',
+        'TrilBDev\\WikiPress\\Includes\\Tools\\DataTransfer' => __DIR__ . '/../..' . '/src/includes/Tools/DataTransfer.php',
+        'TrilBDev\\WikiPress\\PublicArea\\Frontend' => __DIR__ . '/../..' . '/src/Public/Frontend.php',
         'TrilBDev\\WikiPress\\WikiPress' => __DIR__ . '/../..' . '/src/WikiPress.php',
     );
 

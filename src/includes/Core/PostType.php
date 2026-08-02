@@ -2,6 +2,8 @@
 
 namespace TrilBDev\WikiPress\Includes\Core;
 
+use TrilBDev\WikiPress\Includes\Settings\Settings;
+
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
@@ -17,6 +19,10 @@ final class PostType {
 
     public static function get_post_type_name(): string {
         return self::PAGE;
+    }
+
+    public static function page_rewrite_slug(): string {
+        return self::setting_slug( 'root_slug', 'wiki' );
     }
 
     private function register_wiki(): void {
@@ -48,10 +54,15 @@ final class PostType {
             'show_ui' => false,
             'show_in_rest' => true,
             'has_archive' => false,
-            'rewrite' => [ 'slug' => 'wiki' ],
+            'rewrite' => [ 'slug' => self::page_rewrite_slug() ],
             'supports' => [ 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'revisions', 'page-attributes' ],
             'capability_type' => [ 'wikipress_page', 'wikipress_pages' ],
             'map_meta_cap' => true,
         ] );
+    }
+
+    private static function setting_slug( string $key, string $fallback ): string {
+        $value = sanitize_title( (string) Settings::get( $key, $fallback ) );
+        return $value !== '' ? $value : $fallback;
     }
 }

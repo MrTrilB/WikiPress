@@ -112,6 +112,7 @@ return array(
     'TrilBDev\\WikiPress\\API\\Validators' => $baseDir . '/src/API/Validators.php',
     'TrilBDev\\WikiPress\\Admin\\Admin' => $baseDir . '/src/Admin/Admin.php',
     'TrilBDev\\WikiPress\\Assets\\Assets' => $baseDir . '/src/Assets/Assets.php',
+    'TrilBDev\\WikiPress\\Includes\\Analytics\\Analytics' => $baseDir . '/src/includes/Analytics/Analytics.php',
     'TrilBDev\\WikiPress\\Includes\\Core\\Core' => $baseDir . '/src/includes/Core/Core.php',
     'TrilBDev\\WikiPress\\Includes\\Core\\PostType' => $baseDir . '/src/includes/Core/PostType.php',
     'TrilBDev\\WikiPress\\Includes\\Core\\Taxonomy' => $baseDir . '/src/includes/Core/Taxonomy.php',
@@ -127,5 +128,7 @@ return array(
     'TrilBDev\\WikiPress\\Includes\\Pages\\Taxonomies' => $baseDir . '/src/includes/Pages/Taxonomies.php',
     'TrilBDev\\WikiPress\\Includes\\Settings\\Settings' => $baseDir . '/src/includes/Settings/Settings.php',
     'TrilBDev\\WikiPress\\Includes\\Settings\\SettingsManager' => $baseDir . '/src/includes/Settings/SettingsManager.php',
+    'TrilBDev\\WikiPress\\Includes\\Tools\\DataTransfer' => $baseDir . '/src/includes/Tools/DataTransfer.php',
+    'TrilBDev\\WikiPress\\PublicArea\\Frontend' => $baseDir . '/src/Public/Frontend.php',
     'TrilBDev\\WikiPress\\WikiPress' => $baseDir . '/src/WikiPress.php',
 );

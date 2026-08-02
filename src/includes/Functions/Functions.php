@@ -23,6 +23,7 @@ class Functions {
         $sanitized['content'] = wp_kses_post( $payload['content'] ?? '' );
         $sanitized['excerpt'] = sanitize_text_field( $payload['excerpt'] ?? '' );
         $sanitized['status'] = in_array( $payload['status'] ?? 'publish', [ 'publish', 'draft', 'private' ], true ) ? $payload['status'] : 'publish';
+        $sanitized['wiki_id'] = absint( $payload['wiki_id'] ?? 0 );
         $sanitized['categories'] = self::normalize_terms( $payload['categories'] ?? [] );
         $sanitized['tags'] = self::normalize_terms( $payload['tags'] ?? [] );
 

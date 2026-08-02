@@ -19,6 +19,8 @@ use TrilBDev\WikiPress\Includes\Includes;
 use TrilBDev\WikiPress\Includes\Core\WP\I18n;
 use TrilBDev\WikiPress\Includes\Core\WP\WPLoader;
 use TrilBDev\WikiPress\API\Routes;
+use TrilBDev\WikiPress\Includes\Analytics\Analytics;
+use TrilBDev\WikiPress\PublicArea\Frontend;
 /**
  * The core plugin class.
  *
@@ -227,12 +229,22 @@ class WikiPress {
 		$includes = Includes::get_instance();
 		$assets = new Assets();
 		$admin = new Admin();
+		$frontend = new Frontend();
 
 		$this->loader->add_action( 'init', $includes, 'init' );
 		$this->loader->add_action( 'admin_menu', $admin, 'register_admin_menu' );
 		$this->loader->add_action( 'admin_init', $admin, 'register_settings' );
+		$this->loader->add_action( 'admin_post_wikipress_create_page', $admin, 'create_page' );
+		$this->loader->add_action( 'admin_post_wikipress_create_wiki', $admin, 'create_wiki' );
+		$this->loader->add_action( 'admin_post_wikipress_delete_post', $admin, 'delete_post' );
+		$this->loader->add_action( 'admin_post_wikipress_create_term', $admin, 'create_term' );
+		$this->loader->add_action( 'admin_post_wikipress_update_post', $admin, 'update_post' );
+		$this->loader->add_action( 'admin_post_wikipress_export', $admin, 'export_data' );
+		$this->loader->add_action( 'admin_post_wikipress_import', $admin, 'import_data' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $assets, 'enqueue_admin' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $assets, 'enqueue_frontend' );
+		$this->loader->add_action( 'wp_head', Analytics::class, 'track_view' );
+		$this->loader->add_filter( 'the_content', $frontend, 'filter_content' );
 		$this->loader->add_action( 'rest_api_init', Routes::class, 'register_routes' );
 	}
 

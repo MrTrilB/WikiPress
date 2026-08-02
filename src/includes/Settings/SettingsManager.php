@@ -96,6 +96,9 @@ final class SettingsManager {
     }
 
     private static function group_for_key( string $key ): string {
+        if ( in_array( $key, [ 'create_wikis', 'write_pages', 'view_analytics', 'manage_plugins' ], true ) ) {
+            return 'access';
+        }
         if ( str_contains( $key, 'layout' ) ) {
             return 'layout';
         }
