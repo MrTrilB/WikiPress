@@ -1,0 +1,12 @@
+{
+  "name": "wikipress",
+  "version": "1.0.0",
+  "description": "Wordpress Wiki Plugin",
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
