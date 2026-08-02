@@ -1,0 +1,20 @@
+// Docs public styles entry
+@use "../../variables" as vars;
+@use "bootstrap/scss/bootstrap" with (
+  $primary: vars.$primary,
+  $input-group-addon-bg: vars.$input-group-addon-bg,
+  $input-group-addon-color: vars.$input-group-addon-color,
+  $input-border-color: vars.$input-border-color,
+  $badge-padding-y: vars.$badge-padding-y,
+  $badge-padding-x: vars.$badge-padding-x,
+  $badge-font-weight: vars.$badge-font-weight,
+  $form-switch-width: vars.$form-switch-width,
+  $form-file-button-color: vars.$form-file-button-color,
+  $form-file-button-bg: vars.$form-file-button-bg,
+  $form-file-button-hover-bg: vars.$form-file-button-hover-bg,
+  $enable-rfs: true,
+  $enable-shadows: true,
+  $enable-gradients: true
+);
+
+// Add any public-facing component styles below

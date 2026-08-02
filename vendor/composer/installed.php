@@ -1,24 +1,15 @@
 <?php return array(
     'root' => array(
-        'name' => '__root__',
-        'pretty_version' => '1.0.0+no-version-set',
-        'version' => '1.0.0.0',
-        'reference' => null,
-        'type' => 'library',
+        'name' => 'trilbdev/wikipress',
+        'pretty_version' => 'dev-main',
+        'version' => 'dev-main',
+        'reference' => '2001b0769017843e6a4ed28be03457bb0dc3e94c',
+        'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
         'dev' => true,
     ),
     'versions' => array(
-        '__root__' => array(
-            'pretty_version' => '1.0.0+no-version-set',
-            'version' => '1.0.0.0',
-            'reference' => null,
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../../',
-            'aliases' => array(),
-            'dev_requirement' => false,
-        ),
         'trilbdev/bootstrapphp' => array(
             'pretty_version' => 'dev-Master',
             'version' => 'dev-Master',
@@ -28,6 +19,15 @@
             'aliases' => array(
                 0 => '1.0.x-dev',
             ),
+            'dev_requirement' => false,
+        ),
+        'trilbdev/wikipress' => array(
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
+            'reference' => '2001b0769017843e6a4ed28be03457bb0dc3e94c',
+            'type' => 'wordpress-plugin',
+            'install_path' => __DIR__ . '/../../',
+            'aliases' => array(),
             'dev_requirement' => false,
         ),
         'twbs/bootstrap' => array(

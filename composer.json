@@ -1,4 +1,29 @@
 {
+    "name": "trilbdev/wikipress",
+    "description": "A WordPress plugin that provides a comprehensive wiki management system, allowing users to create, manage, and display wiki content within their WordPress site.",
+    "type": "wordpress-plugin",
+    "license": "GPL-2.0-or-later",
+    "autoload": {
+        "psr-4": {
+            "TrilBDev\\WikiPress\\Admin\\": "src/Admin/",
+            "TrilBDev\\WikiPress\\API\\": "src/API/",
+            "TrilBDev\\WikiPress\\Assets\\": "src/Assets/",
+            "TrilBDev\\WikiPress\\Includes\\": "src/includes/"
+        },
+        "classmap": [
+            "src/WikiPress.php"
+        ],
+        "exclude-from-classmap": [
+            "src/includes/Plugins/"
+        ]
+    },
+    "authors": [
+        {
+            "name": "Anthony Blüthner",
+            "email": "mrtrilb@trilb.dev",
+            "homepage": "https://trilb.dev"
+        }
+    ],
     "require": {
         "trilbdev/bootstrapphp": "^1.0.x-dev"
     }
