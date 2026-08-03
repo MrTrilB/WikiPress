@@ -13,7 +13,7 @@
  * Plugin Name:       WikiPress
  * Plugin URI:        https://trilb.dev/collection/web-extension/wordpress/wikipress
  * Description:       WikiPress is a WordPress plugin that provides a comprehensive wiki management system, allowing users to create, manage, and display wiki content within their WordPress site.
- * Version:           1.0.0
+ * Version:           0.4.2-Dev
  * Author:            MrTrilB
  * Author URI:        https://trilb.dev
  * License:           GPL-2.0+
@@ -32,7 +32,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'WIKIPRESS_VERSION', '1.0.0' );
+define( 'WIKIPRESS_VERSION', '0.4.2-Dev' );
 define( 'WIKIPRESS_FILE', __FILE__ );
 define( 'WIKIPRESS_DIR', plugin_dir_path( __FILE__ ) );
 define( 'WIKIPRESS_URL', plugin_dir_url( __FILE__ ) );
