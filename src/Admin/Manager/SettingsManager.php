@@ -39,7 +39,7 @@ final class SettingsManager extends PageManager {
             <?php submit_button( __( 'Save Changes', 'wikipress' ), 'primary', 'submit', true, [ 'class' => 'btn btn-primary' ] ); ?></div>
         </form>
         <?php if ( 'tools' === $tab ) : ?>
-            <form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" enctype="multipart/form-data" class="card shadow-sm mt-4">
+            <form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" enctype="multipart/form-data" class="card wikipress-import-form shadow-sm mt-4">
                 <input type="hidden" name="action" value="wikipress_import">
                 <?php wp_nonce_field( 'wikipress_import' ); ?>
                 <div class="card-body"><label class="form-label" for="wikipress-import-file"><?php esc_html_e( 'Import WikiPress JSON', 'wikipress' ); ?></label><input class="form-control mb-3" id="wikipress-import-file" type="file" name="wikipress_import_file" accept="application/json,.json" required><button class="button btn btn-primary" type="submit"><?php esc_html_e( 'Import JSON', 'wikipress' ); ?></button></div>

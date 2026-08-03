@@ -15,10 +15,6 @@ class ComposerStaticInit04e5e8025d5b0a27ebee1ad104e8d174
             'TrilBDev\\WikiPress\\Admin\\' => 25,
             'TrilBDev\\WikiPress\\API\\' => 23,
         ),
-        'B' =>
-        array (
-            'BootstrapPHP\\' => 13,
-        ),
     );
 
     public static $prefixDirsPsr4 = array (
@@ -41,10 +37,6 @@ class ComposerStaticInit04e5e8025d5b0a27ebee1ad104e8d174
         'TrilBDev\\WikiPress\\API\\' =>
         array (
             0 => __DIR__ . '/../..' . '/src/API',
-        ),
-        'BootstrapPHP\\' =>
-        array (
-            0 => __DIR__ . '/..' . '/trilbdev/bootstrapphp/src',
         ),
     );
 

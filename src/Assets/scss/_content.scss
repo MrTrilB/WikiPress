@@ -1,0 +1,22 @@
+.wikipress-admin {
+	.wikipress-inline-form,
+	.wikipress-content-toolbar {
+		padding: 1rem;
+		border: 1px solid var(--bs-border-color);
+		border-radius: var(--bs-border-radius);
+		background: var(--bs-tertiary-bg);
+	}
+
+	.table {
+		margin-bottom: 0;
+
+		thead th {
+			color: var(--bs-secondary-color);
+			font-size: 0.75rem;
+			letter-spacing: 0.04em;
+			text-transform: uppercase;
+		}
+
+		tbody tr { transition: background-color 120ms ease; }
+	}
+}

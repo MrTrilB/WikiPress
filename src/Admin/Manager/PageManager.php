@@ -17,7 +17,7 @@ abstract class PageManager {
 
     protected function card( string $label, $value, string $slug ): void {
         printf(
-            '<div class="col-md-6 col-xl-3 mb-4"><div class="card h-100 shadow-sm"><div class="card-body"><h2 class="h6 text-muted">%s</h2><p class="display-6 mb-0"><a class="text-decoration-none" href="%s">%s</a></p></div></div></div>',
+            '<div class="col-md-6 col-xl-3 mb-4"><div class="card wikipress-dashboard-card h-100 shadow-sm"><div class="card-body"><h2 class="h6 text-muted">%s</h2><p class="display-6 mb-0"><a class="text-decoration-none" href="%s">%s</a></p></div></div></div>',
             esc_html( $label ),
             esc_url( admin_url( 'admin.php?page=' . $slug ) ),
             esc_html( (string) $value )

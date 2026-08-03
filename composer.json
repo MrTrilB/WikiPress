@@ -24,9 +24,5 @@
             "email": "mrtrilb@trilb.dev",
             "homepage": "https://trilb.dev"
         }
-    ],
-    "require": {
-        "trilbdev/bootstrapphp": "^1.0.x-dev",
-        "twbs/bootstrap": "5.3.8"
-    }
+    ]
 }

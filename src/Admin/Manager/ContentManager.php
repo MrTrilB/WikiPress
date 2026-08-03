@@ -36,7 +36,7 @@ final class ContentManager extends PageManager {
         $tags = get_terms( [ 'taxonomy' => Taxonomy::TAG, 'hide_empty' => false ] );
         $this->header( __( 'Add New Wiki Page', 'wikipress' ) );
         ?>
-        <form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="card shadow-sm">
+        <form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="card wikipress-editor-form shadow-sm">
             <input type="hidden" name="action" value="wikipress_create_page">
             <?php wp_nonce_field( 'wikipress_create_page' ); ?>
             <div class="card-body"><table class="form-table table align-middle"><tbody>

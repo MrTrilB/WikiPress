@@ -1,0 +1,19 @@
+.wikipress-admin {
+	.nav-tabs {
+		border-bottom-color: var(--bs-border-color);
+
+		.nav-link {
+			color: var(--bs-secondary-color);
+
+			&.active {
+				color: var(--bs-primary);
+				font-weight: 600;
+			}
+		}
+	}
+
+	.wikipress-settings-form,
+	.wikipress-import-form {
+		max-width: 960px;
+	}
+}
