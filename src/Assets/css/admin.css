@@ -1,3 +1,9 @@
-.wikipress-card { display: inline-block; vertical-align: top; width: 22%; min-width: 180px; margin: 1% 1% 1% 0; padding: 1.25rem; background: #fff; border: 1px solid #dcdcde; box-sizing: border-box; }
-.wikipress-card h2 { margin-top: 0; }
-.wikipress-card p { font-size: 2rem; margin-bottom: 0; }
+.wikipress-admin .card { border-color: #dcdcde; }
+.wikipress-admin .form-table { margin-top: 0; }
+.wikipress-admin .form-table th { width: 240px; }
+.wikipress-admin .form-table td fieldset { margin: 0; }
+.wikipress-admin .form-control,
+.wikipress-admin .form-select { max-width: 100%; }
+.wikipress-admin .submit { margin: 1rem 0 0; padding: 0; }
+.wikipress-admin .tablenav { margin-top: 1rem; }
+.wikipress-admin .tablenav-pages { float: none; }

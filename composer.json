@@ -26,6 +26,7 @@
         }
     ],
     "require": {
-        "trilbdev/bootstrapphp": "^1.0.x-dev"
+        "trilbdev/bootstrapphp": "^1.0.x-dev",
+        "twbs/bootstrap": "5.3.8"
     }
 }

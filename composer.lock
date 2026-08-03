@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "88e958c444dc1ec11e8b5ba632f13be4",
+    "content-hash": "a454603ba6ed69606e5f40d5842160ac",
     "packages": [
         {
             "name": "trilbdev/bootstrapphp",
