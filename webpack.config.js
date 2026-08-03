@@ -53,9 +53,7 @@ module.exports = {
     ],
   },
   optimization: {
-    splitChunks: {
-      chunks: 'all',
-    },
+    splitChunks: false,
   },
   plugins: [
     new MiniCssExtractPlugin({
