@@ -5,15 +5,30 @@ namespace TrilBDev\WikiPress\Admin;
 use TrilBDev\WikiPress\API\API;
 use TrilBDev\WikiPress\Includes\Core\PostType;
 use TrilBDev\WikiPress\Includes\Core\Taxonomy;
-use TrilBDev\WikiPress\Includes\Analytics\Analytics;
 use TrilBDev\WikiPress\Includes\Tools\DataTransfer;
 use TrilBDev\WikiPress\Includes\Settings\Settings;
+use TrilBDev\WikiPress\Admin\Manager\AnalyticsManager;
+use TrilBDev\WikiPress\Admin\Manager\ContentManager;
+use TrilBDev\WikiPress\Admin\Manager\DashboardManager;
+use TrilBDev\WikiPress\Admin\Manager\SettingsManager;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
 final class Admin {
+    private DashboardManager $dashboard_manager;
+    private ContentManager $content_manager;
+    private SettingsManager $settings_manager;
+    private AnalyticsManager $analytics_manager;
+
+    public function __construct() {
+        $this->dashboard_manager = new DashboardManager();
+        $this->content_manager = new ContentManager();
+        $this->settings_manager = new SettingsManager();
+        $this->analytics_manager = new AnalyticsManager();
+    }
+
     public function register_admin_menu(): void {
         add_menu_page( __( 'WikiPress', 'wikipress' ), __( 'WikiPress', 'wikipress' ), 'manage_options', 'wikipress', [ $this, 'render_dashboard' ], 'dashicons-book-alt', 30 );
         add_submenu_page( 'wikipress', __( 'Dashboard', 'wikipress' ), __( 'Dashboard', 'wikipress' ), 'manage_options', 'wikipress', [ $this, 'render_dashboard' ] );
@@ -76,100 +91,26 @@ final class Admin {
     }
 
     public function render_dashboard(): void {
-        $this->header( __( 'Dashboard', 'wikipress' ) );
-        echo '<div class="row g-4">';
-        $this->card( __( 'Wikis', 'wikipress' ), wp_count_posts( 'wikipress_wiki' )->publish ?? 0, 'wikipress-wikis' );
-        $this->card( __( 'Wiki Pages', 'wikipress' ), wp_count_posts( 'wikipress_page' )->publish ?? 0, 'wikipress-pages' );
-        $this->card( __( 'Categories', 'wikipress' ), wp_count_terms( 'wikipress_category' ), 'wikipress-categories' );
-        $this->card( __( 'Tags', 'wikipress' ), wp_count_terms( 'wikipress_tag' ), 'wikipress-tags' );
-        echo '</div>';
-        $this->footer();
+        $this->dashboard_manager->render();
     }
 
     public function render_wikis(): void {
-        $this->header( __( 'All Wikis', 'wikipress' ) );
-        ?>
-        <form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="wikipress-inline-form row g-3 align-items-end mb-4">
-            <input type="hidden" name="action" value="wikipress_create_wiki">
-            <?php wp_nonce_field( 'wikipress_create_wiki' ); ?>
-            <div class="col-md-4"><label class="form-label" for="wikipress-wiki-title"><?php esc_html_e( 'Wiki name', 'wikipress' ); ?></label><input required class="form-control" id="wikipress-wiki-title" name="title" type="text"></div>
-            <div class="col-md-4"><label class="form-label" for="wikipress-wiki-description"><?php esc_html_e( 'Short description', 'wikipress' ); ?></label><input class="form-control" id="wikipress-wiki-description" name="description" type="text"></div>
-            <div class="col-md-2"><label class="form-label" for="wikipress-wiki-status"><?php esc_html_e( 'Status', 'wikipress' ); ?></label><select class="form-select" id="wikipress-wiki-status" name="status"><option value="publish"><?php esc_html_e( 'Published', 'wikipress' ); ?></option><option value="draft"><?php esc_html_e( 'Draft', 'wikipress' ); ?></option></select></div>
-            <div class="col-md-2"><?php submit_button( __( 'Create Wiki', 'wikipress' ), 'primary', 'submit', false, [ 'class' => 'btn btn-primary w-100' ] ); ?></div>
-        </form>
-        <?php
-        $this->render_post_table_body( PostType::WIKI );
-        $this->footer();
+        $this->content_manager->render_wikis();
     }
-    public function render_pages(): void { $this->render_post_table( 'wikipress_page', __( 'All Wiki Pages', 'wikipress' ) ); }
-    public function render_categories(): void { $this->render_term_table( 'wikipress_category', __( 'Categories', 'wikipress' ) ); }
-    public function render_tags(): void { $this->render_term_table( 'wikipress_tag', __( 'Tags', 'wikipress' ) ); }
+    public function render_pages(): void { $this->content_manager->render_pages(); }
+    public function render_categories(): void { $this->content_manager->render_terms( Taxonomy::CATEGORY, __( 'Categories', 'wikipress' ) ); }
+    public function render_tags(): void { $this->content_manager->render_terms( Taxonomy::TAG, __( 'Tags', 'wikipress' ) ); }
 
     public function render_settings(): void {
-        $tab = sanitize_key( $_GET['tab'] ?? 'general' );
-        $groups = Settings::get_all();
-        $values = $groups[ $tab ] ?? [];
-        $tabs = [ 'general' => __( 'General', 'wikipress' ), 'layout' => __( 'Layout', 'wikipress' ), 'access' => __( 'Access Restrictions', 'wikipress' ), 'tools' => __( 'Tools', 'wikipress' ) ];
-        $this->header( __( 'Settings', 'wikipress' ) );
-        ?>
-        <nav class="nav nav-tabs mb-4">
-            <?php foreach ( $tabs as $key => $label ) : ?><a class="nav-link <?php echo $tab === $key ? 'active' : ''; ?>" href="<?php echo esc_url( admin_url( 'admin.php?page=wikipress-settings&tab=' . $key ) ); ?>"><?php echo esc_html( $label ); ?></a><?php endforeach; ?>
-        </nav>
-        <form method="post" action="options.php" class="wikipress-settings-form card shadow-sm">
-            <?php settings_fields( 'wikipress_settings' ); ?>
-            <div class="card-body"><table class="form-table table align-middle"><tbody>
-            <?php if ( 'general' === $tab ) : ?>
-                <?php foreach ( [ 'root_name' => 'WikiPress Root Name', 'root_slug' => 'WikiPress Root Slug', 'category_slug' => 'Custom Category Slug', 'tag_slug' => 'Custom Tags Slug', 'permalink' => 'WikiPress Permalink' ] as $key => $label ) : ?>
-                    <tr><th scope="row"><label for="wikipress-<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $label ); ?></label></th><td><input class="regular-text" id="wikipress-<?php echo esc_attr( $key ); ?>" name="wikipress_general[<?php echo esc_attr( $key ); ?>]" value="<?php echo esc_attr( $values[ $key ] ?? '' ); ?>"></td></tr>
-                <?php endforeach; ?>
-            <?php elseif ( 'layout' === $tab ) : ?>
-                <?php foreach ( [ 'show_search' => 'Show Search', 'show_toc' => 'Show Table of Contents' ] as $key => $label ) : ?><tr><th scope="row"><?php echo esc_html( $label ); ?></th><td><label><input type="checkbox" name="wikipress_layout[<?php echo esc_attr( $key ); ?>]" value="1" <?php checked( ! empty( $values[ $key ] ) ); ?>> <?php echo esc_html( $label ); ?></label></td></tr><?php endforeach; ?>
-            <?php elseif ( 'access' === $tab ) : ?>
-                <?php foreach ( [ 'create_wikis' => 'Who can create wikis?', 'write_pages' => 'Who can write wiki pages?', 'view_analytics' => 'Who can check analytics?', 'manage_plugins' => 'Who can manage plugins?' ] as $key => $label ) : ?><tr><th scope="row"><label for="wikipress-access-<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $label ); ?></label></th><td><select id="wikipress-access-<?php echo esc_attr( $key ); ?>" name="wikipress_access[<?php echo esc_attr( $key ); ?>]"><?php foreach ( [ 'manage_options' => 'Administrators', 'edit_posts' => 'Editors', 'publish_posts' => 'Authors' ] as $capability => $capability_label ) : ?><option value="<?php echo esc_attr( $capability ); ?>" <?php selected( $values[ $key ] ?? 'manage_options', $capability ); ?>><?php echo esc_html( $capability_label ); ?></option><?php endforeach; ?></select></td></tr><?php endforeach; ?>
-            <?php elseif ( 'tools' === $tab ) : ?>
-                <tr><th scope="row"><?php esc_html_e( 'Debug logging', 'wikipress' ); ?></th><td><label><input type="checkbox" name="wikipress_tools[debug_logging]" value="1" <?php checked( ! empty( $values['debug_logging'] ) ); ?>> <?php esc_html_e( 'Enable WikiPress debug logging', 'wikipress' ); ?></label></td></tr>
-                <tr><th scope="row"><?php esc_html_e( 'Import and export', 'wikipress' ); ?></th><td><a class="button" href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=wikipress_export' ), 'wikipress_export' ) ); ?>"><?php esc_html_e( 'Export WikiPress JSON', 'wikipress' ); ?></a><hr><form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" enctype="multipart/form-data"><input type="hidden" name="action" value="wikipress_import"><?php wp_nonce_field( 'wikipress_import' ); ?><input type="file" name="wikipress_import_file" accept="application/json,.json" required><button class="button" type="submit"><?php esc_html_e( 'Import JSON', 'wikipress' ); ?></button></form></td></tr>
-                <tr><th scope="row"><?php esc_html_e( 'Database manager', 'wikipress' ); ?></th><td><?php esc_html_e( 'The settings table is managed automatically during plugin activation.', 'wikipress' ); ?></td></tr>
-            <?php endif; ?>
-            </tbody></table>
-            <?php submit_button( __( 'Save Changes', 'wikipress' ), 'primary', 'submit', true, [ 'class' => 'btn btn-primary' ] ); ?></div>
-        </form>
-        <?php $this->footer();
+        $this->settings_manager->render();
     }
 
     public function render_analytics(): void {
-        $this->header( __( 'Analytics', 'wikipress' ) );
-        $this->card( __( 'Total Wiki Page Views', 'wikipress' ), Analytics::total_views(), 'wikipress-pages' );
-        echo '<h2 class="h4 mt-4">' . esc_html__( 'Most Viewed Wiki Pages', 'wikipress' ) . '</h2><div class="table-responsive"><table class="table table-striped table-hover align-middle"><thead><tr><th>' . esc_html__( 'Page', 'wikipress' ) . '</th><th>' . esc_html__( 'Views', 'wikipress' ) . '</th></tr></thead><tbody>';
-        foreach ( Analytics::top_pages() as $page ) {
-            printf( '<tr><td><a href="%s">%s</a></td><td>%d</td></tr>', esc_url( $page['link'] ), esc_html( $page['title'] ), absint( $page['views'] ) );
-        }
-        echo '</tbody></table></div>';
-        $this->footer();
+        $this->analytics_manager->render();
     }
 
     public function render_add_new(): void {
-        $wikis = get_posts( [ 'post_type' => PostType::WIKI, 'post_status' => [ 'publish', 'draft' ], 'posts_per_page' => 100, 'orderby' => 'title', 'order' => 'ASC' ] );
-        $categories = get_terms( [ 'taxonomy' => Taxonomy::CATEGORY, 'hide_empty' => false ] );
-        $tags = get_terms( [ 'taxonomy' => Taxonomy::TAG, 'hide_empty' => false ] );
-        $selected_categories = wp_get_post_terms( $post_id, Taxonomy::CATEGORY, [ 'fields' => 'ids' ] );
-        $selected_tags = wp_get_post_terms( $post_id, Taxonomy::TAG, [ 'fields' => 'ids' ] );
-        $this->header( __( 'Add New Wiki Page', 'wikipress' ) );
-        ?>
-        <form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="card shadow-sm">
-            <input type="hidden" name="action" value="wikipress_create_page">
-            <?php wp_nonce_field( 'wikipress_create_page' ); ?>
-            <div class="card-body"><table class="form-table table align-middle"><tbody>
-                <tr><th scope="row"><label for="wikipress-page-title"><?php esc_html_e( 'Title', 'wikipress' ); ?></label></th><td><input class="regular-text" required id="wikipress-page-title" name="title" type="text"></td></tr>
-                <tr><th scope="row"><label for="wikipress-page-content"><?php esc_html_e( 'Content', 'wikipress' ); ?></label></th><td><textarea class="large-text" rows="12" id="wikipress-page-content" name="content"></textarea></td></tr>
-                <tr><th scope="row"><label for="wikipress-page-wiki"><?php esc_html_e( 'Wiki', 'wikipress' ); ?></label></th><td><select id="wikipress-page-wiki" name="wiki_id"><option value="0"><?php esc_html_e( 'Unassigned', 'wikipress' ); ?></option><?php foreach ( $wikis as $wiki ) : ?><option value="<?php echo absint( $wiki->ID ); ?>"><?php echo esc_html( get_the_title( $wiki ) ); ?></option><?php endforeach; ?></select></td></tr>
-                <tr><th scope="row"><label for="wikipress-page-status"><?php esc_html_e( 'Status', 'wikipress' ); ?></label></th><td><select id="wikipress-page-status" name="status"><option value="draft"><?php esc_html_e( 'Draft', 'wikipress' ); ?></option><option value="publish"><?php esc_html_e( 'Published', 'wikipress' ); ?></option><option value="private"><?php esc_html_e( 'Private', 'wikipress' ); ?></option></select></td></tr>
-                <tr><th scope="row"><label for="wikipress-page-categories"><?php esc_html_e( 'Categories', 'wikipress' ); ?></label></th><td><select multiple id="wikipress-page-categories" name="categories[]"><?php foreach ( $categories as $term ) : ?><option value="<?php echo absint( $term->term_id ); ?>"><?php echo esc_html( $term->name ); ?></option><?php endforeach; ?></select></td></tr>
-                <tr><th scope="row"><label for="wikipress-page-tags"><?php esc_html_e( 'Tags', 'wikipress' ); ?></label></th><td><select multiple id="wikipress-page-tags" name="tags[]"><?php foreach ( $tags as $term ) : ?><option value="<?php echo absint( $term->term_id ); ?>"><?php echo esc_html( $term->name ); ?></option><?php endforeach; ?></select></td></tr>
-            </tbody></table>
-            <?php submit_button( __( 'Create Wiki Page', 'wikipress' ), 'primary', 'submit', true, [ 'class' => 'btn btn-primary' ] ); ?></div>
-        </form>
-        <?php $this->footer();
+        $this->content_manager->render_add_new();
     }
 
     public function create_page(): void {
@@ -236,29 +177,7 @@ final class Admin {
     }
 
     public function render_edit(): void {
-        $post_id = absint( $_GET['post_id'] ?? 0 );
-        $post = get_post( $post_id );
-        if ( ! $post || ! in_array( $post->post_type, [ PostType::WIKI, PostType::PAGE ], true ) ) {
-            wp_die( esc_html__( 'The requested item was not found.', 'wikipress' ), 404 );
-        }
-        $is_wiki = $post->post_type === PostType::WIKI;
-        $this->header( $is_wiki ? __( 'Edit Wiki', 'wikipress' ) : __( 'Edit Wiki Page', 'wikipress' ) );
-        $wikis = get_posts( [ 'post_type' => PostType::WIKI, 'post_status' => [ 'publish', 'draft' ], 'posts_per_page' => 100, 'orderby' => 'title', 'order' => 'ASC' ] );
-        $categories = get_terms( [ 'taxonomy' => Taxonomy::CATEGORY, 'hide_empty' => false ] );
-        $tags = get_terms( [ 'taxonomy' => Taxonomy::TAG, 'hide_empty' => false ] );
-        ?>
-        <form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="card shadow-sm">
-            <input type="hidden" name="action" value="wikipress_update_post"><input type="hidden" name="post_id" value="<?php echo absint( $post_id ); ?>">
-            <?php wp_nonce_field( 'wikipress_update_' . $post_id ); ?>
-            <div class="card-body"><table class="form-table table align-middle"><tbody>
-                <tr><th scope="row"><label for="wikipress-edit-title"><?php echo esc_html( $is_wiki ? __( 'Name', 'wikipress' ) : __( 'Title', 'wikipress' ) ); ?></label></th><td><input class="regular-text" required id="wikipress-edit-title" name="title" value="<?php echo esc_attr( $post->post_title ); ?>"></td></tr>
-                <tr><th scope="row"><label for="wikipress-edit-content"><?php echo esc_html( $is_wiki ? __( 'Description', 'wikipress' ) : __( 'Content', 'wikipress' ) ); ?></label></th><td><textarea class="large-text" rows="10" id="wikipress-edit-content" name="<?php echo $is_wiki ? 'description' : 'content'; ?>"><?php echo esc_textarea( $post->post_content ); ?></textarea></td></tr>
-                <?php if ( ! $is_wiki ) : ?><tr><th scope="row"><label for="wikipress-edit-excerpt"><?php esc_html_e( 'Excerpt', 'wikipress' ); ?></label></th><td><textarea class="large-text" rows="3" id="wikipress-edit-excerpt" name="excerpt"><?php echo esc_textarea( $post->post_excerpt ); ?></textarea></td></tr><tr><th scope="row"><label for="wikipress-edit-wiki"><?php esc_html_e( 'Wiki', 'wikipress' ); ?></label></th><td><select id="wikipress-edit-wiki" name="wiki_id"><option value="0"><?php esc_html_e( 'Unassigned', 'wikipress' ); ?></option><?php foreach ( $wikis as $wiki ) : ?><option value="<?php echo absint( $wiki->ID ); ?>" <?php selected( get_post_meta( $post_id, '_wikipress_wiki_id', true ), $wiki->ID ); ?>><?php echo esc_html( get_the_title( $wiki ) ); ?></option><?php endforeach; ?></select></td></tr><tr><th scope="row"><label for="wikipress-edit-categories"><?php esc_html_e( 'Categories', 'wikipress' ); ?></label></th><td><select multiple id="wikipress-edit-categories" name="categories[]"><?php foreach ( is_wp_error( $categories ) ? [] : $categories as $term ) : ?><option value="<?php echo absint( $term->term_id ); ?>" <?php selected( in_array( $term->term_id, $selected_categories, true ) ); ?>><?php echo esc_html( $term->name ); ?></option><?php endforeach; ?></select></td></tr><tr><th scope="row"><label for="wikipress-edit-tags"><?php esc_html_e( 'Tags', 'wikipress' ); ?></label></th><td><select multiple id="wikipress-edit-tags" name="tags[]"><?php foreach ( is_wp_error( $tags ) ? [] : $tags as $term ) : ?><option value="<?php echo absint( $term->term_id ); ?>" <?php selected( in_array( $term->term_id, $selected_tags, true ) ); ?>><?php echo esc_html( $term->name ); ?></option><?php endforeach; ?></select></td></tr><?php endif; ?>
-                <tr><th scope="row"><label for="wikipress-edit-status"><?php esc_html_e( 'Status', 'wikipress' ); ?></label></th><td><select id="wikipress-edit-status" name="status"><?php foreach ( [ 'draft' => __( 'Draft', 'wikipress' ), 'publish' => __( 'Published', 'wikipress' ), 'private' => __( 'Private', 'wikipress' ) ] as $status => $label ) : ?><option value="<?php echo esc_attr( $status ); ?>" <?php selected( $post->post_status, $status ); ?>><?php echo esc_html( $label ); ?></option><?php endforeach; ?></select></td></tr>
-            </tbody></table>
-            <?php submit_button( __( 'Save Changes', 'wikipress' ), 'primary', 'submit', true, [ 'class' => 'btn btn-primary' ] ); ?></div>
-        </form>
-        <?php $this->footer();
+        $this->content_manager->render_edit();
     }
 
     public function update_post(): void {
@@ -309,58 +228,6 @@ final class Admin {
         wp_safe_redirect( admin_url( 'admin.php?page=wikipress-settings&tab=tools&imported=1' ) );
         exit;
     }
-
-    private function render_post_table( string $post_type, string $title ): void {
-        $this->header( $title );
-        $this->render_post_table_body( $post_type );
-        $this->footer();
-    }
-
-    private function render_post_table_body( string $post_type ): void {
-        $page = max( 1, absint( $_GET['paged'] ?? 1 ) );
-        $search = sanitize_text_field( wp_unslash( $_GET['s'] ?? '' ) );
-        $query = new \WP_Query( [ 'post_type' => $post_type, 'posts_per_page' => 20, 'paged' => $page, 's' => $search, 'post_status' => 'any' ] );
-        echo '<form method="get" class="row g-2 align-items-end mb-4"><input type="hidden" name="page" value="' . esc_attr( sanitize_key( $_GET['page'] ?? '' ) ) . '"><div class="col-sm-6 col-md-4"><label class="form-label" for="wikipress-search">' . esc_html__( 'Search', 'wikipress' ) . '</label><input class="form-control" id="wikipress-search" name="s" value="' . esc_attr( $search ) . '"></div><div class="col-auto"><button class="btn btn-outline-primary" type="submit">' . esc_html__( 'Search', 'wikipress' ) . '</button></div></form>';
-        echo '<div class="table-responsive"><table class="table table-striped table-hover align-middle"><thead><tr><th>' . esc_html__( 'Name', 'wikipress' ) . '</th><th>' . esc_html__( 'Author', 'wikipress' ) . '</th><th>' . esc_html__( 'Created', 'wikipress' ) . '</th><th>' . esc_html__( 'Actions', 'wikipress' ) . '</th></tr></thead><tbody>';
-        foreach ( $query->posts as $post ) {
-            $delete_url = wp_nonce_url( admin_url( 'admin-post.php?action=wikipress_delete_post&post_id=' . absint( $post->ID ) . '&post_type=' . rawurlencode( $post_type ) ), 'wikipress_delete_' . absint( $post->ID ) );
-            $edit_url = admin_url( 'admin.php?page=wikipress-edit&post_id=' . absint( $post->ID ) );
-            printf( '<tr><td>%s</td><td>%s</td><td>%s</td><td class="text-nowrap"><a class="btn btn-sm btn-outline-primary me-2" href="%s">%s</a><a class="btn btn-sm btn-outline-danger" href="%s">%s</a></td></tr>', esc_html( get_the_title( $post ) ), esc_html( get_the_author_meta( 'display_name', $post->post_author ) ), esc_html( get_the_date( '', $post ) ), esc_url( $edit_url ), esc_html__( 'Edit', 'wikipress' ), esc_url( $delete_url ), esc_html__( 'Delete', 'wikipress' ) );
-        }
-        if ( ! $query->posts ) {
-            echo '<tr><td colspan="4">' . esc_html__( 'No items found.', 'wikipress' ) . '</td></tr>';
-        }
-        echo '</tbody></table></div>';
-        echo '<div class="tablenav bottom"><div class="tablenav-pages">' . wp_kses_post( paginate_links( [ 'base' => add_query_arg( [ 'page' => sanitize_key( $_GET['page'] ?? '' ), 's' => rawurlencode( $search ), 'paged' => '%#%' ], admin_url( 'admin.php' ) ), 'format' => '', 'current' => $page, 'total' => max( 1, (int) $query->max_num_pages ), 'type' => 'plain' ] ) ) . '</div></div>';
-    }
-
-    private function render_term_table( string $taxonomy, string $title ): void {
-        $this->header( $title );
-        ?>
-        <form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="wikipress-inline-form row g-3 align-items-end mb-4">
-            <input type="hidden" name="action" value="wikipress_create_term">
-            <input type="hidden" name="taxonomy" value="<?php echo esc_attr( $taxonomy ); ?>">
-            <?php wp_nonce_field( 'wikipress_create_term' ); ?>
-            <div class="col-md-5"><label class="form-label" for="wikipress-term-name"><?php esc_html_e( 'Name', 'wikipress' ); ?></label><input required class="form-control" id="wikipress-term-name" name="name" type="text"></div>
-            <div class="col-md-5"><label class="form-label" for="wikipress-term-description"><?php esc_html_e( 'Description', 'wikipress' ); ?></label><input class="form-control" id="wikipress-term-description" name="description" type="text"></div>
-            <div class="col-md-2"><?php submit_button( __( 'Create', 'wikipress' ), 'primary', 'submit', false, [ 'class' => 'btn btn-primary w-100' ] ); ?></div>
-        </form>
-        <?php
-        $terms = get_terms( [ 'taxonomy' => $taxonomy, 'hide_empty' => false ] );
-        echo '<div class="table-responsive"><table class="table table-striped table-hover align-middle"><thead><tr><th>' . esc_html__( 'Name', 'wikipress' ) . '</th><th>' . esc_html__( 'Slug', 'wikipress' ) . '</th><th>' . esc_html__( 'Post Count', 'wikipress' ) . '</th></tr></thead><tbody>';
-        foreach ( is_wp_error( $terms ) ? [] : $terms as $term ) {
-            printf( '<tr><td>%s</td><td>%s</td><td>%d</td></tr>', esc_html( $term->name ), esc_html( $term->slug ), absint( $term->count ) );
-        }
-        if ( is_wp_error( $terms ) || ! $terms ) {
-            echo '<tr><td colspan="3">' . esc_html__( 'No terms found.', 'wikipress' ) . '</td></tr>';
-        }
-        echo '</tbody></table></div>';
-        $this->footer();
-    }
-
-    private function header( string $title ): void { echo '<div class="wrap wikipress-admin"><div class="container-fluid px-0 py-3"><h1 class="display-6 mb-4">' . esc_html( $title ) . '</h1>'; }
-    private function footer(): void { echo '</div></div>'; }
-    private function card( string $label, $value, string $slug ): void { printf( '<div class="col-md-6 col-xl-3 mb-4"><div class="card h-100 shadow-sm"><div class="card-body"><h2 class="h6 text-muted">%s</h2><p class="display-6 mb-0"><a class="text-decoration-none" href="%s">%s</a></p></div></div></div>', esc_html( $label ), esc_url( admin_url( 'admin.php?page=' . $slug ) ), esc_html( (string) $value ) ); }
 
     private function capability( string $key, string $fallback ): string {
         $capability = sanitize_key( (string) Settings::get( $key, $fallback ) );
