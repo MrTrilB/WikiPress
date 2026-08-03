@@ -1,8 +1,0 @@
-.github
-Test
-dev-stubs
-Docs
-node_modules
-composer.lock
-package-lock.json
-webpack.config.js
