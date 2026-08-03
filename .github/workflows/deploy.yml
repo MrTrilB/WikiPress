@@ -27,7 +27,7 @@ jobs:
 
       - name: Create New Deploy branch
         shell: bash
-        run: git checkout -b Deploy Master
+        run: git checkout -b Deploy main
 
       - name: Install production dependencies
         shell: bash
@@ -50,7 +50,7 @@ jobs:
         shell: bash
         run: git push origin Deploy
 
-      - name: Checkout Master branch
+      - name: Checkout main branch
         shell: bash
         run: git checkout main
 
