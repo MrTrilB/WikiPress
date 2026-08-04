@@ -62,12 +62,6 @@ final class Admin {
         add_submenu_page( 'wikipress', __( 'Manage Wiki', 'wikipress' ), __( 'Manage Wiki', 'wikipress' ), $this->capability( 'manager_wiki', 'manage_options' ), 'wikipress-manage', [ $this, 'render_wikis' ] );
         add_submenu_page( 'wikipress', __( 'Settings', 'wikipress' ), __( 'Settings', 'wikipress' ), 'manage_options', 'wikipress-settings', [ $this, 'render_settings' ] );
         add_submenu_page( 'wikipress', __( 'Analytics', 'wikipress' ), __( 'Analytics', 'wikipress' ), $this->capability( 'view_analytics', 'manage_options' ), 'wikipress-analytics', [ $this, 'render_analytics' ] );
-        add_submenu_page( null, __( 'All Wikis', 'wikipress' ), __( 'All Wikis', 'wikipress' ), $this->capability( 'manager_wiki', 'manage_options' ), 'wikipress-wikis', [ $this, 'render_wiki_listing' ] );
-        add_submenu_page( null, __( 'All Wiki Pages', 'wikipress' ), __( 'All Wiki Pages', 'wikipress' ), $this->capability( 'manager_wiki', 'manage_options' ), 'wikipress-pages', [ $this, 'render_pages' ] );
-        add_submenu_page( null, __( 'Add New Wiki Page', 'wikipress' ), __( 'Add New Wiki Page', 'wikipress' ), $this->capability( 'manager_wiki', 'manage_options' ), 'wikipress-add-new', [ $this, 'render_add_new' ] );
-        add_submenu_page( null, __( 'Categories', 'wikipress' ), __( 'Categories', 'wikipress' ), $this->capability( 'manager_wiki', 'manage_options' ), 'wikipress-categories', [ $this, 'render_categories' ] );
-        add_submenu_page( null, __( 'Tags', 'wikipress' ), __( 'Tags', 'wikipress' ), $this->capability( 'manager_wiki', 'manage_options' ), 'wikipress-tags', [ $this, 'render_tags' ] );
-        add_submenu_page( null, __( 'Edit WikiPress Content', 'wikipress' ), __( 'Edit WikiPress Content', 'wikipress' ), $this->capability( 'manager_wiki', 'manage_options' ), 'wikipress-edit', [ $this, 'render_edit' ] );
     }
 
     public function register_settings(): void {
