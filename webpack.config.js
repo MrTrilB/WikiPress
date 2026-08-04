@@ -1,26 +1,49 @@
 const path = require('path');
+const fs = require('fs');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-const pageNames = ['dashboard', 'content', 'page', 'settings', 'analytics'];
 const entries = {
   bootstrap: [
     './src/Assets/js/bootstrap.js',
     './src/Assets/scss/bootstrap.scss',
   ],
+  bootstrapsearch: './src/Assets/js/bootstrapsearch.js',
 };
 
-pageNames.forEach((page) => {
-  entries[`admin.${page}`] = [ `./src/Assets/js/admin.${page}.js`, `./src/Assets/scss/_${page}.scss` ];
-});
+const fontAwesomeEntries = {
+  'icon-picker': [
+    './src/includes/Plugins/FontAwesome/Assets/js/icon-picker.js',
+    './src/includes/Plugins/FontAwesome/Assets/scss/icon-picker.scss',
+  ],
+};
 
-module.exports = {
+const elementorEntries = {
+  wiki: [
+    './src/includes/Plugins/Elementor/Assets/js/WikiPress/wiki.js',
+    './src/includes/Plugins/Elementor/Assets/scss/WikiPress/wiki.scss',
+  ],
+};
+
+const gutenburgEntries = {
+  blocks: './src/includes/Plugins/Gutenburg/Assets/js/blocks.js',
+};
+
+const jsDirectory = path.resolve(__dirname, 'src/Assets/js');
+const scssDirectory = path.resolve(__dirname, 'src/Assets/scss');
+fs.readdirSync(jsDirectory)
+  .filter((file) => /^admin\.[^.]+\.js$/.test(file))
+  .forEach((file) => {
+    const page = file.match(/^admin\.([^.]+)\.js$/)[1];
+    const scss = `_${page}.scss`;
+    const entry = [`./src/Assets/js/${file}`];
+    if (fs.existsSync(path.join(scssDirectory, scss))) {
+      entry.push(`./src/Assets/scss/${scss}`);
+    }
+    entries[`admin.${page}`] = entry;
+  });
+
+const shared = {
   mode: process.env.NODE_ENV === 'development' ? 'development' : 'production',
-  entry: entries,
-  output: {
-    path: path.resolve(__dirname, 'src/Assets/dist'),
-    filename: 'js/[name].js',
-    clean: true,
-  },
   devtool: process.env.NODE_ENV === 'development' ? 'source-map' : false,
   module: {
     rules: [
@@ -52,12 +75,56 @@ module.exports = {
       },
     ],
   },
-  optimization: {
-    splitChunks: false,
-  },
-  plugins: [
-    new MiniCssExtractPlugin({
-      filename: 'css/[name].css',
-    }),
-  ],
+  optimization: { splitChunks: false },
 };
+
+module.exports = [
+  {
+    ...shared,
+    entry: entries,
+    output: {
+      path: path.resolve(__dirname, 'src/Assets/dist'),
+      filename: 'js/[name].js',
+      clean: true,
+    },
+    plugins: [
+      new MiniCssExtractPlugin({ filename: 'css/[name].css' }),
+    ],
+  },
+  {
+    ...shared,
+    entry: fontAwesomeEntries,
+    output: {
+      path: path.resolve(__dirname, 'src/includes/Plugins/FontAwesome/Assets/dist'),
+      filename: 'js/[name].js',
+      clean: true,
+    },
+    plugins: [
+      new MiniCssExtractPlugin({ filename: 'css/[name].css' }),
+    ],
+  },
+  {
+    ...shared,
+    entry: elementorEntries,
+    output: {
+      path: path.resolve(__dirname, 'src/includes/Plugins/Elementor/Assets/dist'),
+      filename: 'js/[name].js',
+      clean: true,
+    },
+    plugins: [
+      new MiniCssExtractPlugin({ filename: 'css/[name].css' }),
+    ],
+  },
+  {
+    ...shared,
+    entry: gutenburgEntries,
+    output: {
+      path: path.resolve(__dirname, 'src/includes/Plugins/Gutenburg/Assets/dist'),
+      filename: 'js/[name].js',
+      clean: true,
+    },
+    plugins: [
+      new MiniCssExtractPlugin({ filename: 'css/[name].css' }),
+    ],
+  },
+];

@@ -3,6 +3,7 @@
 namespace TrilBDev\WikiPress\Includes\Pages;
 
 use TrilBDev\WikiPress\Includes\Core\Taxonomy;
+use TrilBDev\WikiPress\Includes\Functions\Helpers\TaxonomyHelper;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -10,11 +11,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 final class Taxonomies {
     public static function get_terms( string $taxonomy, int $limit = 50, string $search = '' ): array {
-        $terms = get_terms( [ 'taxonomy' => sanitize_key( $taxonomy ), 'hide_empty' => false, 'number' => max( 1, $limit ), 'search' => sanitize_text_field( $search ) ] );
-        if ( is_wp_error( $terms ) ) {
-            return [];
-        }
-        return array_map( static fn( $term ) => [ 'id' => $term->term_id, 'name' => $term->name, 'slug' => $term->slug, 'count' => $term->count, 'description' => $term->description ], $terms );
+        $terms = TaxonomyHelper::terms( $taxonomy, 0, max( 1, $limit ), $search );
+
+        return array_map( static fn( $term ) => [
+            'id' => absint( $term->term_id ?? 0 ),
+            'name' => sanitize_text_field( $term->name ?? '' ),
+            'slug' => sanitize_title( $term->slug ?? '' ),
+            'count' => absint( $term->count ?? 0 ),
+            'description' => sanitize_textarea_field( $term->description ?? '' ),
+        ], $terms );
     }
 
     public static function get_categories( int $limit = 50, string $search = '' ): array { return self::get_terms( Taxonomy::CATEGORY, $limit, $search ); }

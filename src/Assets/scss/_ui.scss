@@ -1,0 +1,166 @@
+.wikipress-admin {
+	--wikipress-ink: #152238;
+	--wikipress-navy: #102a43;
+	--wikipress-teal: #0f766e;
+	--wikipress-paper: #f6f8fb;
+	--wikipress-line: #dce4ed;
+	min-height: 100vh;
+	background: var(--wikipress-paper);
+	color: var(--wikipress-ink);
+
+	.wikipress-header {
+		background: var(--wikipress-navy);
+		box-shadow: 0 0.25rem 1rem rgba(16, 42, 67, 0.16);
+		position: relative;
+		z-index: 10;
+
+		.navbar-brand,
+		.navbar .nav-link {
+			color: #fff;
+		}
+
+		.navbar-brand {
+			letter-spacing: 0.01em;
+		}
+
+		.navbar-brand img {
+			background: #fff;
+			border-radius: 0.5rem;
+			object-fit: contain;
+			padding: 0.2rem;
+		}
+
+		.nav-link {
+			border-radius: 999px;
+			font-size: 0.875rem;
+			padding-inline: 0.8rem !important;
+			transition: background-color 140ms ease, color 140ms ease;
+
+			&:hover,
+			&:focus-visible {
+				background: rgba(255, 255, 255, 0.12);
+				color: #fff;
+			}
+		}
+
+		.navbar-toggler {
+			border-color: rgba(255, 255, 255, 0.45);
+		}
+
+		.navbar-toggler-icon {
+			filter: invert(1);
+		}
+	}
+
+	.wikipress-admin-main {
+		min-height: calc(100vh - 10rem);
+	}
+
+	.wikipress-page-heading {
+		border-bottom: 1px solid var(--wikipress-line);
+		padding-bottom: 1rem;
+	}
+
+	.wikipress-sidebar {
+		background: #fff;
+		border: 1px solid var(--wikipress-line);
+		border-radius: 0.75rem;
+		box-shadow: 0 0.5rem 1.5rem rgba(16, 42, 67, 0.06);
+		overflow: hidden;
+		padding: 1rem 0.75rem;
+	}
+
+	.wikipress-sidebar-link,
+	.accordion-button {
+		align-items: center;
+		color: var(--wikipress-ink);
+		display: flex;
+		font-size: 0.875rem;
+		font-weight: 500;
+		gap: 0.65rem;
+		text-decoration: none;
+		width: 100%;
+	}
+
+	.wikipress-sidebar-link {
+		border-radius: 0.5rem;
+		margin-bottom: 0.25rem;
+		padding: 0.7rem 0.75rem;
+		transition: background-color 140ms ease, color 140ms ease, transform 140ms ease;
+
+		&:hover,
+		&:focus-visible,
+		&.active {
+			background: #e5f5f2;
+			color: var(--wikipress-teal);
+		}
+
+		&:hover { transform: translateX(2px); }
+	}
+
+	.wikipress-sidebar-icon {
+		align-items: center;
+		background: #eaf0f6;
+		border-radius: 0.35rem;
+		display: inline-flex;
+		font-size: 1rem;
+		height: 1.65rem;
+		justify-content: center;
+		width: 1.65rem;
+	}
+
+	.accordion {
+		--bs-accordion-border-width: 0;
+		--bs-accordion-btn-focus-box-shadow: none;
+		--bs-accordion-btn-padding-x: 0.75rem;
+		--bs-accordion-btn-padding-y: 0.7rem;
+	}
+
+	.accordion-button {
+		background: transparent;
+		box-shadow: none;
+		color: var(--wikipress-ink);
+	}
+
+	.accordion-button:not(.collapsed) {
+		background: #f0f5f8;
+		box-shadow: none;
+		color: var(--wikipress-navy);
+	}
+
+	.accordion-body { padding-inline: 0.5rem; }
+
+	.accordion-body .nav-link {
+		border-left: 2px solid transparent;
+		color: var(--bs-secondary-color);
+		font-size: 0.8125rem;
+		padding: 0.55rem 0.75rem;
+
+		&:hover,
+		&:focus-visible,
+		&.active {
+			background: #e5f5f2;
+			border-left-color: var(--wikipress-teal);
+			color: var(--wikipress-teal);
+		}
+	}
+
+	.wikipress-footer {
+		background: #fff;
+	}
+
+	.card,
+	.wikipress-inline-form,
+	.wikipress-content-toolbar {
+		border-color: var(--wikipress-line);
+	}
+}
+
+@media (max-width: 991.98px) {
+	.wikipress-admin .wikipress-sidebar { position: static !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.wikipress-admin .wikipress-sidebar-link,
+	.wikipress-admin .nav-link { transition: none; }
+}

@@ -7,10 +7,18 @@ use TrilBDev\WikiPress\Includes\Core\PostType;
 use TrilBDev\WikiPress\Includes\Core\Taxonomy;
 use TrilBDev\WikiPress\Includes\Tools\DataTransfer;
 use TrilBDev\WikiPress\Includes\Settings\Settings;
-use TrilBDev\WikiPress\Admin\Manager\AnalyticsManager;
-use TrilBDev\WikiPress\Admin\Manager\ContentManager;
-use TrilBDev\WikiPress\Admin\Manager\DashboardManager;
-use TrilBDev\WikiPress\Admin\Manager\SettingsManager;
+use TrilBDev\WikiPress\Includes\Plugins\Plugins;
+use TrilBDev\WikiPress\Includes\Plugins\SettingsPageProviderInterface;
+use TrilBDev\WikiPress\Assets\Assets;
+use TrilBDev\WikiPress\Admin\Manager\Analytics\AnalyticsManager;
+use TrilBDev\WikiPress\Admin\Manager\Dashboard\DashboardManager;
+use TrilBDev\WikiPress\Admin\Manager\Settings\SettingsManager;
+use TrilBDev\WikiPress\Admin\Manager\Content\ContentManager;
+use TrilBDev\WikiPress\Admin\Manager\Content\ContentCategories;
+use TrilBDev\WikiPress\Admin\Manager\Content\ContentPages;
+use TrilBDev\WikiPress\Admin\Manager\Content\ContentTags;
+use TrilBDev\WikiPress\Admin\Manager\Content\ContentWikis;
+use TrilBDev\WikiPress\Admin\Manager\Content\ContentForms;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -21,25 +29,45 @@ final class Admin {
     private ContentManager $content_manager;
     private SettingsManager $settings_manager;
     private AnalyticsManager $analytics_manager;
+    private ContentWikis $wikis_page;
+    private ContentPages $pages_page;
+    private ContentCategories $categories_page;
+    private ContentTags $tags_page;
+    private ContentForms $forms_page;
 
-    public function __construct() {
+    public function __construct( Assets $assets ) {
         $this->dashboard_manager = new DashboardManager();
         $this->content_manager = new ContentManager();
         $this->settings_manager = new SettingsManager();
         $this->analytics_manager = new AnalyticsManager();
+        $this->wikis_page = new ContentWikis();
+        $this->pages_page = new ContentPages();
+        $this->categories_page = new ContentCategories();
+        $this->tags_page = new ContentTags();
+        $this->forms_page = new ContentForms();
+        $this->dashboard_manager->register_assets( $assets );
+        $this->content_manager->register_assets( $assets );
+        $this->wikis_page->register_assets( $assets );
+        $this->pages_page->register_assets( $assets );
+        $this->categories_page->register_assets( $assets );
+        $this->tags_page->register_assets( $assets );
+        $this->forms_page->register_assets( $assets );
+        $this->settings_manager->register_assets( $assets );
+        $this->analytics_manager->register_assets( $assets );
     }
 
     public function register_admin_menu(): void {
         add_menu_page( __( 'WikiPress', 'wikipress' ), __( 'WikiPress', 'wikipress' ), 'manage_options', 'wikipress', [ $this, 'render_dashboard' ], 'dashicons-book-alt', 30 );
         add_submenu_page( 'wikipress', __( 'Dashboard', 'wikipress' ), __( 'Dashboard', 'wikipress' ), 'manage_options', 'wikipress', [ $this, 'render_dashboard' ] );
-        add_submenu_page( 'wikipress', __( 'All Wikis', 'wikipress' ), __( 'All Wikis', 'wikipress' ), $this->capability( 'create_wikis', 'manage_options' ), 'wikipress-wikis', [ $this, 'render_wikis' ] );
-        add_submenu_page( 'wikipress', __( 'All Wiki Pages', 'wikipress' ), __( 'All Wiki Pages', 'wikipress' ), $this->capability( 'write_pages', 'edit_posts' ), 'wikipress-pages', [ $this, 'render_pages' ] );
-        add_submenu_page( 'wikipress', __( 'Add New', 'wikipress' ), __( 'Add New', 'wikipress' ), $this->capability( 'write_pages', 'edit_posts' ), 'wikipress-add-new', [ $this, 'render_add_new' ] );
-        add_submenu_page( 'wikipress', __( 'Categories', 'wikipress' ), __( 'Categories', 'wikipress' ), 'manage_categories', 'wikipress-categories', [ $this, 'render_categories' ] );
-        add_submenu_page( 'wikipress', __( 'Tags', 'wikipress' ), __( 'Tags', 'wikipress' ), 'manage_categories', 'wikipress-tags', [ $this, 'render_tags' ] );
+        add_submenu_page( 'wikipress', __( 'Manage Wiki', 'wikipress' ), __( 'Manage Wiki', 'wikipress' ), $this->capability( 'manager_wiki', 'manage_options' ), 'wikipress-manage', [ $this, 'render_wikis' ] );
         add_submenu_page( 'wikipress', __( 'Settings', 'wikipress' ), __( 'Settings', 'wikipress' ), 'manage_options', 'wikipress-settings', [ $this, 'render_settings' ] );
         add_submenu_page( 'wikipress', __( 'Analytics', 'wikipress' ), __( 'Analytics', 'wikipress' ), $this->capability( 'view_analytics', 'manage_options' ), 'wikipress-analytics', [ $this, 'render_analytics' ] );
-        add_submenu_page( null, __( 'Edit WikiPress Item', 'wikipress' ), __( 'Edit WikiPress Item', 'wikipress' ), 'edit_posts', 'wikipress-edit', [ $this, 'render_edit' ] );
+        add_submenu_page( null, __( 'All Wikis', 'wikipress' ), __( 'All Wikis', 'wikipress' ), $this->capability( 'manager_wiki', 'manage_options' ), 'wikipress-wikis', [ $this, 'render_wiki_listing' ] );
+        add_submenu_page( null, __( 'All Wiki Pages', 'wikipress' ), __( 'All Wiki Pages', 'wikipress' ), $this->capability( 'manager_wiki', 'manage_options' ), 'wikipress-pages', [ $this, 'render_pages' ] );
+        add_submenu_page( null, __( 'Add New Wiki Page', 'wikipress' ), __( 'Add New Wiki Page', 'wikipress' ), $this->capability( 'manager_wiki', 'manage_options' ), 'wikipress-add-new', [ $this, 'render_add_new' ] );
+        add_submenu_page( null, __( 'Categories', 'wikipress' ), __( 'Categories', 'wikipress' ), $this->capability( 'manager_wiki', 'manage_options' ), 'wikipress-categories', [ $this, 'render_categories' ] );
+        add_submenu_page( null, __( 'Tags', 'wikipress' ), __( 'Tags', 'wikipress' ), $this->capability( 'manager_wiki', 'manage_options' ), 'wikipress-tags', [ $this, 'render_tags' ] );
+        add_submenu_page( null, __( 'Edit WikiPress Content', 'wikipress' ), __( 'Edit WikiPress Content', 'wikipress' ), $this->capability( 'manager_wiki', 'manage_options' ), 'wikipress-edit', [ $this, 'render_edit' ] );
     }
 
     public function register_settings(): void {
@@ -47,6 +75,14 @@ final class Admin {
         register_setting( 'wikipress_settings', 'wikipress_layout', [ 'sanitize_callback' => [ $this, 'sanitize_layout' ] ] );
         register_setting( 'wikipress_settings', 'wikipress_access', [ 'sanitize_callback' => [ $this, 'sanitize_access' ] ] );
         register_setting( 'wikipress_settings', 'wikipress_tools', [ 'sanitize_callback' => [ $this, 'sanitize_tools' ] ] );
+
+        foreach ( $this->plugin_settings_pages() as $page ) {
+            register_setting(
+                'wikipress_settings',
+                'wikipress_' . $page['slug'],
+                [ 'sanitize_callback' => $page['provider']->sanitize_settings( ... ) ]
+            );
+        }
     }
 
     public function sanitize_general( $input ): array {
@@ -95,11 +131,33 @@ final class Admin {
     }
 
     public function render_wikis(): void {
-        $this->content_manager->render_wikis();
+        $this->content_manager->render();
     }
-    public function render_pages(): void { $this->content_manager->render_pages(); }
-    public function render_categories(): void { $this->content_manager->render_terms( Taxonomy::CATEGORY, __( 'Categories', 'wikipress' ) ); }
-    public function render_tags(): void { $this->content_manager->render_terms( Taxonomy::TAG, __( 'Tags', 'wikipress' ) ); }
+
+    public function render_wiki_listing(): void {
+        $this->wikis_page->render();
+    }
+
+    /**
+     * Render the wiki page listing.
+     *
+     * @return void
+     */
+    public function render_pages(): void { $this->pages_page->render(); }
+
+    /**
+     * Render the category management page.
+     *
+     * @return void
+     */
+    public function render_categories(): void { $this->categories_page->render(); }
+
+    /**
+     * Render the tag management page.
+     *
+     * @return void
+     */
+    public function render_tags(): void { $this->tags_page->render(); }
 
     public function render_settings(): void {
         $this->settings_manager->render();
@@ -110,7 +168,7 @@ final class Admin {
     }
 
     public function render_add_new(): void {
-        $this->content_manager->render_add_new();
+        $this->forms_page->render_add_new();
     }
 
     public function create_page(): void {
@@ -177,7 +235,7 @@ final class Admin {
     }
 
     public function render_edit(): void {
-        $this->content_manager->render_edit();
+        $this->forms_page->render_edit();
     }
 
     public function update_post(): void {
@@ -232,5 +290,28 @@ final class Admin {
     private function capability( string $key, string $fallback ): string {
         $capability = sanitize_key( (string) Settings::get( $key, $fallback ) );
         return in_array( $capability, [ 'manage_options', 'edit_posts', 'publish_posts', 'manage_categories', 'delete_posts' ], true ) ? $capability : $fallback;
+    }
+
+    /**
+     * Collect settings pages from active WikiPress plugins.
+     *
+     * @return array<int, array{provider: SettingsPageProviderInterface, slug: string, label: string, title: string, fields: array}>
+     */
+    private function plugin_settings_pages(): array {
+        $pages = [];
+        foreach ( Plugins::get_instance()->get_registered_plugins() as $plugin ) {
+            if ( ! $plugin instanceof SettingsPageProviderInterface || ! $plugin->is_active() ) {
+                continue;
+            }
+
+            $page = $plugin->get_settings_page();
+            if ( empty( $page['slug'] ) || empty( $page['label'] ) || empty( $page['fields'] ) ) {
+                continue;
+            }
+
+            $page['provider'] = $plugin;
+            $pages[] = $page;
+        }
+        return $pages;
     }
 }

@@ -4,6 +4,9 @@
     "type": "wordpress-plugin",
     "license": "GPL-2.0-or-later",
     "autoload": {
+        "files": [
+            "src/includes/Plugins/PluginsInterface.php"
+        ],
         "psr-4": {
             "TrilBDev\\WikiPress\\Admin\\": "src/Admin/",
             "TrilBDev\\WikiPress\\API\\": "src/API/",
@@ -24,5 +27,8 @@
             "email": "mrtrilb@trilb.dev",
             "homepage": "https://trilb.dev"
         }
-    ]
+    ],
+    "require": {
+        "fortawesome/wordpress-fontawesome": "^5.2"
+    }
 }

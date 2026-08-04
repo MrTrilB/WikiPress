@@ -33,15 +33,42 @@ if ( ! defined( 'WPINC' ) ) {
  * Rename this for your plugin and update it as you release new versions.
  */
 define( 'WIKIPRESS_VERSION', '0.4.2-Dev' );
+define( 'WIKIPRESS_NAME', 'wikipress' );
 define( 'WIKIPRESS_FILE', __FILE__ );
 define( 'WIKIPRESS_DIR', plugin_dir_path( __FILE__ ) );
 define( 'WIKIPRESS_URL', plugin_dir_url( __FILE__ ) );
 define( 'WIKIPRESS_BASENAME', plugin_basename( __FILE__ ) );
+define( 'WIKIPRESS_ROOT', WIKIPRESS_DIR );
+define( 'WIKIPRESS_ROOT_URL', WIKIPRESS_URL );
+define( 'WIKIPRESS_API', WIKIPRESS_DIR . 'src/API' );
+define( 'WIKIPRESS_ASSETS', WIKIPRESS_DIR . 'src/Assets' );
+define( 'WIKIPRESS_ASSETS_URL', WIKIPRESS_URL . 'src/Assets' );
+define( 'WIKIPRESS_ADMIN', WIKIPRESS_DIR . 'src/Admin' );
+define( 'WIKIPRESS_ADMIN_URL', WIKIPRESS_URL . 'src/Admin' );
+define( 'WIKIPRESS_LANGUAGES', WIKIPRESS_DIR . 'src/languages' );
+define( 'WIKIPRESS_INCLUDES', WIKIPRESS_DIR . 'src/includes' );
+define( 'WIKIPRESS_CORE', WIKIPRESS_INCLUDES . '/Core' );
+define( 'WIKIPRESS_ELEMENTOR', WIKIPRESS_INCLUDES . '/Plugins/Elementor' );
+define( 'WIKIPRESS_ELEMENTOR_URL', WIKIPRESS_URL . 'src/includes/Plugins/Elementor' );
+define( 'WIKIPRESS_SETTINGS', WIKIPRESS_INCLUDES . '/Settings' );
+define( 'WIKIPRESS_PLUGINS', WIKIPRESS_INCLUDES . '/Plugins' );
+define( 'WIKIPRESS_PLUGINS_URL', WIKIPRESS_URL . 'src/includes/Plugins' );
 
 $wikipress_autoloader = WIKIPRESS_DIR . 'vendor/autoload.php';
 if ( is_readable( $wikipress_autoloader ) ) {
 	require_once $wikipress_autoloader;
 }
+
+$wikipress_fontawesome = WIKIPRESS_DIR . 'vendor/fortawesome/wordpress-fontawesome/index.php';
+if ( is_readable( $wikipress_fontawesome ) ) {
+	require_once $wikipress_fontawesome;
+}
+
+add_action(
+	'init',
+	[ '\\TrilBDev\\WikiPress\\Includes\\Plugins\\FontAwesome\\API\\FontAwesomeAPI', 'configure' ],
+	-2
+);
 
 /**
  * The code that runs during plugin activation.
@@ -49,6 +76,9 @@ if ( is_readable( $wikipress_autoloader ) ) {
  */
 function activate_wikipress() {
 	\TrilBDev\WikiPress\Includes\Core\WP\Activator::activate();
+	if ( class_exists( '\FortAwesome\FontAwesome_Loader' ) ) {
+		\FortAwesome\FontAwesome_Loader::initialize();
+	}
 }
 
 /**
@@ -79,7 +109,7 @@ require_once WIKIPRESS_DIR . 'src/WikiPress.php';
  */
 function run_wikipress() {
 
-	$plugin = new \TrilBDev\WikiPress\WikiPress( WIKIPRESS_FILE );
+	$plugin = new \TrilBDev\WikiPress\WikiPress( WIKIPRESS_FILE, WIKIPRESS_NAME, WIKIPRESS_VERSION );
 	$plugin->run();
 
 }

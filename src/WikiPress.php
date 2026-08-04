@@ -17,9 +17,10 @@ use TrilBDev\WikiPress\Admin\Admin;
 use TrilBDev\WikiPress\Assets\Assets;
 use TrilBDev\WikiPress\Includes\Includes;
 use TrilBDev\WikiPress\Includes\Core\WP\I18n;
-use TrilBDev\WikiPress\Includes\Core\WP\WPLoader;
+use TrilBDev\WikiPress\Includes\Functions\Helpers\LoaderHelper;
 use TrilBDev\WikiPress\API\Routes;
 use TrilBDev\WikiPress\Includes\Analytics\Analytics;
+use TrilBDev\WikiPress\Includes\Plugins\Plugins;
 use TrilBDev\WikiPress\PublicArea\Frontend;
 /**
  * The core plugin class.
@@ -45,7 +46,60 @@ class WikiPress {
 	 * @access   protected
 	 * @var      Loader    $loader    Maintains and registers all hooks for the plugin.
 	 */
-	protected $loader;
+	protected LoaderHelper $loader;
+
+	/**
+	 * The file path to the main plugin file.
+	 *
+	 * @since    1.0.0
+	 * @access   protected
+	 * @var      string    $plugin_file    The file path to the main plugin file.
+	 */
+	protected string $plugin_file;
+	/**
+	 * The instance of the Includes class that handles the plugin's includes.
+	 *
+	 * @var Includes
+	 * @since 1.0.0
+	 * @access protected
+	 */
+	protected Includes $includes;
+
+	/**
+	 * The instance of the Assets class that handles the plugin's assets.
+	 *
+	 * @var Assets
+	 * @since 1.0.0
+	 * @access protected
+	 */
+	protected Assets $assets;
+
+	/**
+	 * The instance of the Admin class that handles the plugin's admin functionality.
+	 *
+	 * @var Admin
+	 * @since 1.0.0
+	 * @access protected
+	 */
+	protected Admin $admin;
+
+	/**
+	 * The instance of the Frontend class that handles the plugin's frontend functionality.
+	 *
+	 * @var Frontend
+	 * @since 1.0.0
+	 * @access protected
+	 */
+	protected Frontend $frontend;
+
+	/**
+	 * The WikiPress plugin registry and discovery service.
+	 *
+	 * @var Plugins
+	 * @since 1.0.0
+	 * @access protected
+	 */
+	protected Plugins $plugins;
 
 	/**
 	 * The unique identifier of this plugin.
@@ -66,98 +120,6 @@ class WikiPress {
 	protected $version;
 
 	/**
-	 * Constants to be used throughout the plugin.
-	 * 
-	 * @since 1.0.0
-	 */
-	/**
-	 * The root directory of the plugin.
-	 *
-	 * @since 1.0.0
-	 */
-	const WIKIPRESS_ROOT = __DIR__;
-	/**
-	 * The root URL of the plugin.
-	 * 
-	 * @since 1.0.0
-	 */
-	const WIKIPRESS_ROOT_URL = WIKIPRESS_URL;
-	/**
-	 * 
-	 */
-	const WIKIPRESS_API = self::WIKIPRESS_ROOT . '/API';
-	/**
-	 * The Assets directory of the plugin
-	 * 
-	 * @since 1.0.0
-	 */
-    const WIKIPRESS_ASSETS = self::WIKIPRESS_ROOT . '/Assets';
-	/**
-	 * The Assets URL of the plugin.
-	 * 
-	 * @since 1.0.0
-	 */
-	const WIKIPRESS_ASSETS_URL = self::WIKIPRESS_ROOT_URL . 'src/Assets';
-	/**
-	 * The Admin directory of the plugin.
-	 * 
-	 * @since 1.0.0
-	 */
-	const WIKIPRESS_ADMIN = self::WIKIPRESS_ROOT . '/Admin';
-	/**
-	 * 
-	 */
-	const WIKIPRESS_ADMIN_URL = self::WIKIPRESS_ROOT_URL . 'src/Admin';
-	/**
-	 * The Languages directory of the plugin.
-	 * 
-	 * @since 1.0.0
-	 */
-	const WIKIPRESS_LANGUAGES = self::WIKIPRESS_ROOT . '/languages';
-	/**
-	 * The Includes directory of the plugin.
-	 * 
-	 * @since 1.0.0
-	 */
-	const WIKIPRESS_INCLUDES = self::WIKIPRESS_ROOT . '/includes';
-	/**
-	 * The Includes directory of the plugin.
-	 * 
-	 * @since 1.0.0
-	 */
-	const WIKIPRESS_CORE = self::WIKIPRESS_INCLUDES . '/Core';
-	/**
-	 * The Elementor directory of the plugin
-	 * 
-	 * @since 1.0.0
-	 */
-	const WIKIPRESS_ELEMENTOR = self::WIKIPRESS_INCLUDES . '/Elementor';
-	/**
-	 * The Elementor directory url of the plugin
-	 * 
-	 * @since 1.0.0
-	 */
-	const WIKIPRESS_ELEMENTOR_URL = self::WIKIPRESS_ROOT_URL . '/Includes/Elementor';
-	/**
-	 * The Settings directory of the plugin
-	 * 
-	 * @since 1.0.0
-	 */
-	const WIKIPRESS_SETTINGS = self::WIKIPRESS_INCLUDES . '/Settings';
-	/**
-	 * The Plugins directory of the plugin
-	 * 
-	 * @since 1.0.0
-	 */
-	const WIKIPRESS_PLUGINS = self::WIKIPRESS_INCLUDES . '/Plugins';
-	/**
-	 * The Plugins directory url of the plugin
-	 * 
-	 * @since 1.0.0
-	 */
-	const WIKIPRESS_PLUGINS_URL = self::WIKIPRESS_ROOT_URL . '/Includes/Plugins';
-
-	/**
 	 * Define the core functionality of the plugin.
 	 *
 	 * Set the plugin name and the plugin version that can be used throughout the plugin.
@@ -166,13 +128,10 @@ class WikiPress {
 	 *
 	 * @since    1.0.0
 	 */
-	public function __construct( string $plugin_file = WIKIPRESS_FILE ) {
-		if ( defined( 'WIKIPRESS_VERSION' ) ) {
-			$this->version = WIKIPRESS_VERSION;
-		} else {
-			$this->version = '1.0.0';
-		}
-		$this->plugin_name = 'wikipress';
+	public function __construct( string $plugin_file = WIKIPRESS_FILE, string $plugin_name = WIKIPRESS_NAME, string $version = WIKIPRESS_VERSION ) {
+		$this->plugin_file = $plugin_file;
+		$this->plugin_name = sanitize_key( $plugin_name );
+		$this->version = $version;
 
 		$this->load_dependencies();
 		$this->set_locale();
@@ -197,7 +156,7 @@ class WikiPress {
 	 * @access   private
 	 */
 	private function load_dependencies() {
-		$this->loader = new WPLoader();
+		$this->loader = new LoaderHelper();
 
 	}
 
@@ -212,7 +171,7 @@ class WikiPress {
 	 */
 	private function set_locale() {
 
-		$plugin_i18n = new I18n();
+		$plugin_i18n = new I18n( $this->plugin_name, null, $this->plugin_file );
 
 		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
 
@@ -226,25 +185,29 @@ class WikiPress {
 	 * @access   private
 	 */
 	private function define_core_hooks() {
-		$includes = Includes::get_instance();
-		$assets = new Assets();
-		$admin = new Admin();
-		$frontend = new Frontend();
+		$this->includes = Includes::get_instance();
+		$this->assets = new Assets();
+		$this->assets->register();
+		$this->admin = new Admin( $this->assets );
+		$this->frontend = new Frontend();
+		$this->plugins = Plugins::get_instance();
 
-		$this->loader->add_action( 'init', $includes, 'init' );
-		$this->loader->add_action( 'admin_menu', $admin, 'register_admin_menu' );
-		$this->loader->add_action( 'admin_init', $admin, 'register_settings' );
-		$this->loader->add_action( 'admin_post_wikipress_create_page', $admin, 'create_page' );
-		$this->loader->add_action( 'admin_post_wikipress_create_wiki', $admin, 'create_wiki' );
-		$this->loader->add_action( 'admin_post_wikipress_delete_post', $admin, 'delete_post' );
-		$this->loader->add_action( 'admin_post_wikipress_create_term', $admin, 'create_term' );
-		$this->loader->add_action( 'admin_post_wikipress_update_post', $admin, 'update_post' );
-		$this->loader->add_action( 'admin_post_wikipress_export', $admin, 'export_data' );
-		$this->loader->add_action( 'admin_post_wikipress_import', $admin, 'import_data' );
-		$this->loader->add_action( 'admin_enqueue_scripts', $assets, 'enqueue_admin' );
-		$this->loader->add_action( 'wp_enqueue_scripts', $assets, 'enqueue_frontend' );
+		$this->loader->add_action( 'init', $this->includes, 'init' );
+		$this->loader->add_action( 'init', $this->plugins, 'init', 20 );
+		$this->loader->add_action( 'admin_menu', $this->admin, 'register_admin_menu' );
+		$this->loader->add_action( 'admin_init', $this->admin, 'register_settings' );
+		$this->loader->add_action( 'admin_post_wikipress_create_page', $this->admin, 'create_page' );
+		$this->loader->add_action( 'admin_post_wikipress_create_wiki', $this->admin, 'create_wiki' );
+		$this->loader->add_action( 'admin_post_wikipress_delete_post', $this->admin, 'delete_post' );
+		$this->loader->add_action( 'admin_post_wikipress_create_term', $this->admin, 'create_term' );
+		$this->loader->add_action( 'admin_post_wikipress_update_post', $this->admin, 'update_post' );
+		$this->loader->add_action( 'admin_post_wikipress_export', $this->admin, 'export_data' );
+		$this->loader->add_action( 'admin_post_wikipress_import', $this->admin, 'import_data' );
+		$this->loader->add_action( 'admin_enqueue_scripts', $this->assets, 'enqueue_admin' );
+		$this->loader->add_action( 'wp_enqueue_scripts', $this->assets, 'enqueue_frontend' );
 		$this->loader->add_action( 'wp_head', Analytics::class, 'track_view' );
-		$this->loader->add_filter( 'the_content', $frontend, 'filter_content' );
+		$this->loader->add_filter( 'the_content', $this->frontend, 'filter_content' );
+		$this->loader->add_filter( 'body_class', $this->frontend, 'body_classes' );
 		$this->loader->add_action( 'rest_api_init', Routes::class, 'register_routes' );
 	}
 
@@ -266,6 +229,36 @@ class WikiPress {
 	 */
 	public function get_plugin_name() {
 		return $this->plugin_name;
+	}
+
+	public function get_plugin_file(): string {
+		return $this->plugin_file;
+	}
+
+	public function get_includes(): Includes {
+		return $this->includes;
+	}
+
+	public function get_assets(): Assets {
+		return $this->assets;
+	}
+
+	public function get_admin(): Admin {
+		return $this->admin;
+	}
+
+	public function get_frontend(): Frontend {
+		return $this->frontend;
+	}
+
+	public function get_plugins(): Plugins {
+		return $this->plugins;
+	}
+
+	public function register_extension( callable $extension ): self {
+		$this->includes->register_extension( $extension );
+
+		return $this;
 	}
 
 	/**

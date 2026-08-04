@@ -7,14 +7,17 @@
  * @since 1.0.0
  */
 
-namespace TrilBDev\WikiPress\Includes\Wiki\Plugins\Demo;
+namespace TrilBDev\WikiPress\Includes\Plugins\Demo;
 
-use TrilBDev\WikiPress\Includes\Wiki\Plugins\PluginInterface;
-use TrilBDev\WikiPress\Includes\Wiki\Plugins\Demo\Assets\Assets;
-use TrilBDev\WikiPress\Includes\Wiki\Plugins\Demo\Includes\Includes;
-use TrilBDev\WikiPress\Includes\Plugins\PluginInterface as BasePluginInterface;
+use TrilBDev\WikiPress\Includes\Plugins\AssetsProviderInterface;
+use TrilBDev\WikiPress\Includes\Plugins\I18nProviderInterface;
+use TrilBDev\WikiPress\Includes\Plugins\PluginInterface;
+use TrilBDev\WikiPress\Includes\Plugins\SettingsProviderInterface;
+use TrilBDev\WikiPress\Includes\Plugins\Demo\Assets\Assets;
+use TrilBDev\WikiPress\Includes\Plugins\Demo\Includes\Includes;
+use TrilBDev\WikiPress\Includes\Plugins\Demo\Includes\I18n;
 
-class Demo implements BasePluginInterface {
+class Demo implements PluginInterface, SettingsProviderInterface, AssetsProviderInterface, I18nProviderInterface {
     public function get_slug(): string {
         return 'wiki-demo-plugin';
     }
@@ -23,17 +26,47 @@ class Demo implements BasePluginInterface {
         return 'Wiki Demo Plugin';
     }
 
+    public function get_version(): string {
+        return '1.0.0';
+    }
+
+    public function get_author(): string {
+        return 'MrTrilB';
+    }
+
+    public function get_author_uri(): string {
+        return 'https://trilb.dev';
+    }
+
+    public function get_description(): string {
+        return 'A demonstration WikiPress extension plugin.';
+    }
+
+    public function get_uri(): string {
+        return 'https://trilb.dev/collection/web-extension/wordpress/wikipress';
+    }
+
+    public function get_license(): string {
+        return 'GPL-2.0-or-later';
+    }
+
     public function is_active(): bool {
         return true;
     }
 
     public function init(): void {
-        if ( class_exists( Assets::class ) ) {
-            new Assets();
-        }
+        Includes::get_instance()->init();
+    }
 
-        if ( class_exists( Includes::class ) ) {
-            Includes::get_instance()->init();
-        }
+    public function register_settings(): void {
+        Includes::get_instance()->settings()->register();
+    }
+
+    public function register_assets(): void {
+        ( new Assets() )->register();
+    }
+
+    public function load_textdomain(): void {
+        I18n::load_textdomain();
     }
 }

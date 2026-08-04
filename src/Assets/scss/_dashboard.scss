@@ -1,13 +1,62 @@
 .wikipress-admin {
-	.wikipress-dashboard-card {
-		border: 0;
-		border-top: 4px solid var(--bs-primary);
-		transition: transform 160ms ease, box-shadow 160ms ease;
+	.wikipress-summary-card,
+	.wikipress-resource-card {
+		background: #fff;
+		border: 1px solid var(--wikipress-line);
+		border-radius: 0.75rem;
+		box-shadow: 0 0.5rem 1.5rem rgba(16, 42, 67, 0.06);
+		color: var(--wikipress-ink);
+		display: flex;
+		text-decoration: none;
+		transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
 
-		&:hover {
+		&:hover,
+		&:focus-visible {
+			border-color: var(--wikipress-teal);
 			transform: translateY(-2px);
 			box-shadow: var(--bs-box-shadow) !important;
 		}
+	}
+
+	.wikipress-summary-card {
+		align-items: center;
+		gap: 0.75rem;
+		padding: 1.25rem;
+
+		strong { line-height: 1; margin-left: auto; }
+	}
+
+	.wikipress-summary-icon {
+		align-items: center;
+		background: #e5f5f2;
+		border-radius: 0.5rem;
+		color: var(--wikipress-teal);
+		display: inline-flex;
+		font-size: 1.25rem;
+		height: 2.5rem;
+		justify-content: center;
+		width: 2.5rem;
+	}
+
+	.wikipress-welcome-card {
+		background: linear-gradient(125deg, #e5f5f2 0%, #fff 72%);
+		border-left: 4px solid var(--wikipress-teal) !important;
+	}
+
+	.wikipress-recent-card .list-group-item-action {
+		transition: background-color 140ms ease, padding-left 140ms ease;
+
+		&:hover,
+		&:focus-visible { background: #f0f8f7; padding-left: 1.6rem !important; }
+	}
+
+	.wikipress-resource-card {
+		align-items: flex-start;
+		flex-direction: column;
+		gap: 0.55rem;
+		padding: 1.25rem;
+
+		.dashicons { color: var(--wikipress-teal); font-size: 1.35rem; height: 1.35rem; width: 1.35rem; }
 	}
 
 	.wikipress-count-ready {
@@ -18,4 +67,10 @@
 @keyframes wikipress-count-ready {
 	from { opacity: 0; transform: translateY(4px); }
 	to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.wikipress-admin .wikipress-summary-card,
+	.wikipress-admin .wikipress-resource-card,
+	.wikipress-admin .wikipress-recent-card .list-group-item-action { transition: none; }
 }

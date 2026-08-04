@@ -19,4 +19,36 @@
 
 		tbody tr { transition: background-color 120ms ease; }
 	}
+
+	.wikipress-wiki-card {
+		.card-header {
+			background: #fff;
+			border-bottom-color: var(--wikipress-line);
+			color: var(--wikipress-navy);
+		}
+
+		.card-footer {
+			background: #fff;
+			border-top-color: var(--wikipress-line);
+		}
+	}
+
+	.wikipress-wiki-image {
+		height: 9rem;
+		max-width: 100%;
+		object-fit: cover;
+		width: 100%;
+	}
+
+	.wikipress-wiki-image-placeholder {
+		background: #e5f5f2;
+		color: var(--wikipress-teal);
+		font-size: 2.25rem;
+	}
+
+	.wikipress-author-image {
+		height: 2rem;
+		object-fit: cover;
+		width: 2rem;
+	}
 }

@@ -1,121 +1,86 @@
 <?php
 
-namespace MrTrilB\TrilBDevPlugin\Includes\FontAwesome;
-use MrTrilB\TrilBDevPlugin\Includes\Functions\utilities;
-use Throwable;
+namespace TrilBDev\WikiPress\Includes\Plugins\FontAwesome;
 
-// Import FontAwesome functions
-use function FortAwesome\fa;
-use FortAwesome\FontAwesome as FAFontAwesome;
+use TrilBDev\WikiPress\Includes\Plugins\AssetsProviderInterface;
+use TrilBDev\WikiPress\Includes\Plugins\I18nProviderInterface;
+use TrilBDev\WikiPress\Includes\Plugins\PluginInterface;
+use TrilBDev\WikiPress\Includes\Plugins\SettingsProviderInterface;
+use TrilBDev\WikiPress\Includes\Plugins\FontAwesome\Assets\Assets;
+use TrilBDev\WikiPress\Includes\Plugins\FontAwesome\Includes\IconPicker;
+use TrilBDev\WikiPress\Includes\Plugins\FontAwesome\Includes\I18n;
+use TrilBDev\WikiPress\Includes\Plugins\FontAwesome\Includes\Includes;
 
-/**
- * FontAwesome integration class for TrilB.Dev plugin.
- *
- * Handles FontAwesome WordPress plugin integration and configuration.
- */
-class FontAwesome {
+final class FontAwesome implements PluginInterface, SettingsProviderInterface, AssetsProviderInterface, I18nProviderInterface {
+    private static ?self $instance = null;
+    private ?IconPicker $icon_picker = null;
 
-    /**
-     * FontAwesome instance
-     *
-     * @var FontAwesome
-     */
-    private static $instance;
-
-    /**
-     * IconPicker instance
-     *
-     * @var IconPicker
-     */
-    private $icon_picker;
-
-    /**
-     * Get singleton instance.
-     *
-     * @return FontAwesome
-     */
-    public static function get_instance() {
-        if ( null === self::$instance ) {
-            self::$instance = new self();
-        }
-        return self::$instance;
+    public static function get_instance(): self {
+        return self::$instance ??= new self();
     }
 
-    /**
-     * Constructor.
-     */
-    private function __construct() {
-        $this->init();
+    private function __construct() {}
+
+    public function init(): void {
+        if ( $this->is_available() ) {
+            $this->icon_picker = IconPicker::get_instance();
+        }
+        Includes::get_instance()->init();
     }
 
-    /**
-     * Initialize FontAwesome integration.
-     */
-    private function init() {
-        // Check if the official FontAwesome plugin is available
-        if (!$this->is_fontawesome_available()) {
-            utilities::write_log('TrilB.Dev: FontAwesome plugin not available');
-            return;
-        }
-
-        // Initialize IconPicker
-        $this->initialize_icon_picker();
-
-        utilities::write_log( 'TrilB.Dev: FontAwesome integration initialized' );
+    public function get_slug(): string {
+        return 'wikipress-fontawesome';
     }
 
-    /**
-     * Initialize IconPicker functionality.
-     */
-    private function initialize_icon_picker() {
-        if ( class_exists( '\MrTrilB\TrilBDevPlugin\Includes\FontAwesome\IconPicker' ) ) {
-            $this->icon_picker = \MrTrilB\TrilBDevPlugin\Includes\FontAwesome\IconPicker::get_instance();
-            utilities::write_log( 'TrilB.Dev: IconPicker initialized' );
-        } else {
-            utilities::write_log( 'TrilB.Dev: IconPicker class not found' );
-        }
+    public function get_name(): string {
+        return 'WikiPress Font Awesome';
     }
 
-    /**
-     * Check if FontAwesome is available and initialized.
-     *
-     * @return bool
-     */
-    public function is_fontawesome_available() {
-        // Check if the fa function exists (primary check)
-        if (!function_exists('fa')) {
-            // Try FontAwesome::instance() directly
-            if (!class_exists('FortAwesome\\FontAwesome')) {
-                return false;
-            }
-            
-            try {
-                $fa = FAFontAwesome::instance();
-                $fa->version(); // Test if it's working
-                return true;
-            } catch (Throwable $e) {
-                utilities::write_log('TrilB.Dev FontAwesome direct class check error: ' . $e->getMessage());
-                return false;
-            }
-        }
-
-        try {
-            // Try to get the FontAwesome instance
-            $fa = fa();
-            $fa->version(); // Test if it's working
-            return true;
-        } catch (Throwable $e) {
-            utilities::write_log('TrilB.Dev FontAwesome check error: ' . $e->getMessage());
-            return false;
-        }
+    public function get_version(): string {
+        return WIKIPRESS_VERSION;
     }
 
-    /**
-     * Get the IconPicker instance.
-     *
-     * @return IconPicker|null
-     */
-    public function get_icon_picker() {
+    public function get_author(): string {
+        return 'MrTrilB';
+    }
+
+    public function get_author_uri(): string {
+        return 'https://trilb.dev';
+    }
+
+    public function get_description(): string {
+        return 'Provides Font Awesome loading, icon picking, and styling APIs for WikiPress.';
+    }
+
+    public function get_uri(): string {
+        return 'https://trilb.dev/collection/web-extension/wordpress/wikipress';
+    }
+
+    public function get_license(): string {
+        return 'GPL-2.0-or-later';
+    }
+
+    public function is_active(): bool {
+        return true;
+    }
+
+    public function register_settings(): void {
+        Includes::get_instance()->settings()->register();
+    }
+
+    public function register_assets(): void {
+        ( new Assets() )->register();
+    }
+
+    public function load_textdomain(): void {
+        I18n::load_textdomain();
+    }
+
+    public function is_available(): bool {
+        return function_exists( 'FortAwesome\\fa' ) && class_exists( '\\FortAwesome\\FontAwesome' );
+    }
+
+    public function get_icon_picker(): ?IconPicker {
         return $this->icon_picker;
     }
 }

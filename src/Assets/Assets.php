@@ -1,39 +1,141 @@
 <?php
-
+/**
+ * TrilB.Dev Plugin - WikiPress Assets
+ *
+ * @package TrilBDev
+ * @subpackage Assets
+ * @since 1.0.0
+ */
 namespace TrilBDev\WikiPress\Assets;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
-
+/**
+ * Class Assets
+ *
+ * Manages the registration and enqueueing of assets for the WikiPress plugin.
+ */
 final class Assets {
+    /**
+     * Array to hold registered assets for different pages.
+     *
+     * @var array
+     */
+    private array $pages = [];
+    /**
+     * Registers the default assets for the plugin.
+     *
+     * @return void
+     */
+    public function register(): void {
+        add_filter( 'wikipress_base_assets', [ $this, 'default_assets' ], 10, 2 );
+    }
+    /**
+     * Registers assets for a specific page.
+     *
+     * @param string $page The page identifier.
+     * @param array  $assets The assets to register for the page.
+     * @return void
+     */
+    public function register_page( string $page, array $assets ): void {
+        $this->pages[ sanitize_key( $page ) ] = $assets;
+    }
+    /**
+     * Returns the default assets for the plugin.
+     *
+     * @param array  $assets The current assets.
+     * @param string $context The context (e.g., 'frontend', 'admin').
+     * @return array The default assets.
+     */
+    public function default_assets( array $assets, string $context ): array {
+        $defaults = [
+            'styles'  => [
+                [ 'handle' => 'wikipress-bootstrap', 'src' => WIKIPRESS_URL . 'src/Assets/dist/css/bootstrap.css', 'version' => '5.3.8' ],
+            ],
+            'scripts' => [
+                [
+                    'handle' => 'wikipress-bootstrap',
+                    'src' => WIKIPRESS_URL . 'src/Assets/dist/js/bootstrap.js',
+                    'version' => '5.3.8',
+                    'in_footer' => true
+                ],
+                [
+                    'handle' => 'wikipress-bootstrapsearch',
+                    'src' => WIKIPRESS_URL . 'src/Assets/dist/js/bootstrapsearch.js',
+                    'version' => '1.0.0',
+                    'deps' => [ 'wikipress-bootstrap' ],
+                    'in_footer' => true
+                ],
+            ],
+        ];
+        return [ 'base' => $defaults ] + $defaults;
+    }
+
+    /**
+     * Enqueues the frontend assets for the plugin.
+     *
+     * @return void
+     */
     public function enqueue_frontend(): void {
         if ( ! is_singular( 'wikipress_page' ) ) {
             return;
         }
 
-        wp_enqueue_style( 'wikipress-public', WIKIPRESS_URL . 'src/Assets/css/public.css', [], WIKIPRESS_VERSION );
-        wp_enqueue_script( 'wikipress-public', WIKIPRESS_URL . 'src/Assets/js/public.js', [], WIKIPRESS_VERSION, true );
+        $assets = apply_filters( 'wikipress_base_assets', [], 'frontend' );
+        $this->enqueue_registered( 'frontend', [
+            'styles'  => array_merge( $assets['base']['styles'] ?? [], [ [ 'handle' => 'wikipress-public', 'src' => WIKIPRESS_URL . 'src/Assets/css/public.css' ] ] ),
+            'scripts' => array_merge( $assets['base']['scripts'] ?? [], [ [ 'handle' => 'wikipress-public', 'src' => WIKIPRESS_URL . 'src/Assets/js/public.js', 'in_footer' => true ] ] ),
+        ] );
     }
-
+    /**
+     * Enqueues the admin assets for the plugin.
+     *
+     * @param string $hook_suffix The current admin page hook suffix.
+     * @return void
+     */
     public function enqueue_admin( string $hook_suffix ): void {
         if ( false === strpos( $hook_suffix, 'wikipress' ) ) {
             return;
         }
 
         $page = sanitize_key( $_GET['page'] ?? 'wikipress' );
-        $bundle = match ( $page ) {
-            'wikipress-wikis', 'wikipress-pages', 'wikipress-categories', 'wikipress-tags' => 'content',
-            'wikipress-add-new', 'wikipress-edit' => 'page',
-            'wikipress-settings' => 'settings',
-            'wikipress-analytics' => 'analytics',
-            default => 'dashboard',
-        };
-
-        wp_enqueue_style( 'wikipress-admin', WIKIPRESS_URL . 'src/Assets/css/admin.css', [], WIKIPRESS_VERSION );
-        wp_enqueue_style( 'wikipress-bootstrap', WIKIPRESS_URL . 'src/Assets/dist/css/bootstrap.css', [], '5.3.8' );
-        wp_enqueue_style( 'wikipress-admin-' . $bundle, WIKIPRESS_URL . 'src/Assets/dist/css/admin.' . $bundle . '.css', [], WIKIPRESS_VERSION );
-        wp_enqueue_script( 'wikipress-bootstrap', WIKIPRESS_URL . 'src/Assets/dist/js/bootstrap.js', [], '5.3.8', true );
-        wp_enqueue_script( 'wikipress-admin-' . $bundle, WIKIPRESS_URL . 'src/Assets/dist/js/admin.' . $bundle . '.js', [ 'wikipress-bootstrap' ], WIKIPRESS_VERSION, true );
+        $registered = $this->pages[ $page ] ?? [];
+        $base = apply_filters( 'wikipress_base_assets', [], 'admin' );
+        $this->enqueue_registered( 'admin', [
+            'styles'  => array_merge( $base['styles'] ?? [], $registered['styles'] ?? [] ),
+            'scripts' => array_merge( $base['scripts'] ?? [], $registered['scripts'] ?? [] ),
+        ] );
+    }
+    /**
+     * Enqueues the registered assets for a given context.
+     *
+     * @param string $context The context (e.g., 'frontend', 'admin').
+     * @param array  $assets The assets to enqueue.
+     * @return void
+     */
+    private function enqueue_registered( string $context, array $assets ): void {
+        $assets = apply_filters( 'wikipress_' . $context . '_assets', $assets, $context );
+        $this->enqueue_bundle( $assets );
+    }
+    /**
+     * Enqueues a bundle of assets (styles and scripts).
+     *
+     * @param array $assets The assets to enqueue.
+     * @return void
+     */
+    private function enqueue_bundle( array $assets ): void {
+        if ( isset( $assets['styles'] ) && is_string( $assets['styles'] ) ) {
+            $assets['styles'] = [ [ 'handle' => 'wikipress-admin-' . $assets['styles'], 'src' => WIKIPRESS_URL . 'src/Assets/dist/css/admin.' . $assets['styles'] . '.css' ] ];
+        }
+        if ( isset( $assets['scripts'] ) && is_string( $assets['scripts'] ) ) {
+            $assets['scripts'] = [ [ 'handle' => 'wikipress-admin-' . $assets['scripts'], 'src' => WIKIPRESS_URL . 'src/Assets/dist/js/admin.' . $assets['scripts'] . '.js', 'deps' => [ 'wikipress-bootstrap' ] ] ];
+        }
+        foreach ( $assets['styles'] ?? [] as $style ) {
+            wp_enqueue_style( $style['handle'], $style['src'], $style['deps'] ?? [], $style['version'] ?? WIKIPRESS_VERSION, $style['media'] ?? 'all' );
+        }
+        foreach ( $assets['scripts'] ?? [] as $script ) {
+            wp_enqueue_script( $script['handle'], $script['src'], $script['deps'] ?? [], $script['version'] ?? WIKIPRESS_VERSION, $script['in_footer'] ?? true );
+        }
     }
 }

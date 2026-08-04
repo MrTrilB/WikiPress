@@ -1,0 +1,1 @@
+(e=>{"use strict";e(document).on("click",".trilbdev-wiki-searchmodal .open-search",r=>{e(r.currentTarget).closest(".trilbdev-wiki-searchmodal").find(".overlay").show()}),e(document).on("click",".trilbdev-wiki-searchmodal .close",r=>{e(r.currentTarget).closest(".overlay").hide()})})(jQuery);

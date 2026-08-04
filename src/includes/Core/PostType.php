@@ -11,10 +11,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 final class PostType {
     public const WIKI = 'wikipress_wiki';
     public const PAGE = 'wikipress_page';
+    public const WIKI_CAPABILITY = 'wikipress_wiki';
+    public const WIKI_CAPABILITY_PLURAL = 'wikipress_wikis';
+    public const PAGE_CAPABILITY = 'wikipress_page';
+    public const PAGE_CAPABILITY_PLURAL = 'wikipress_pages';
 
     public function register(): void {
-        $this->register_wiki();
-        $this->register_page();
+        register_post_type( self::WIKI, self::wiki_args() );
+        register_post_type( self::PAGE, self::page_args() );
     }
 
     public static function get_post_type_name(): string {
@@ -25,8 +29,13 @@ final class PostType {
         return self::setting_slug( 'root_slug', 'wiki' );
     }
 
-    private function register_wiki(): void {
-        register_post_type( self::WIKI, [
+    /**
+     * Build the Wiki container post type definition.
+     *
+     * @return array<string, mixed> Registration arguments.
+     */
+    public static function wiki_args(): array {
+        return apply_filters( 'wikipress_wiki_post_type_args', [
             'labels' => [
                 'name' => __( 'Wikis', 'wikipress' ),
                 'singular_name' => __( 'Wiki', 'wikipress' ),
@@ -37,13 +46,18 @@ final class PostType {
             'show_ui' => false,
             'show_in_rest' => true,
             'supports' => [ 'title', 'editor', 'author', 'thumbnail', 'revisions' ],
-            'capability_type' => [ 'wikipress_wiki', 'wikipress_wikis' ],
+            'capability_type' => [ self::WIKI_CAPABILITY, self::WIKI_CAPABILITY_PLURAL ],
             'map_meta_cap' => true,
-        ] );
+        ], self::WIKI );
     }
 
-    private function register_page(): void {
-        register_post_type( self::PAGE, [
+    /**
+     * Build the public Wiki page post type definition.
+     *
+     * @return array<string, mixed> Registration arguments.
+     */
+    public static function page_args(): array {
+        return apply_filters( 'wikipress_page_post_type_args', [
             'labels' => [
                 'name' => __( 'Wiki Pages', 'wikipress' ),
                 'singular_name' => __( 'Wiki Page', 'wikipress' ),
@@ -56,9 +70,13 @@ final class PostType {
             'has_archive' => false,
             'rewrite' => [ 'slug' => self::page_rewrite_slug() ],
             'supports' => [ 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'revisions', 'page-attributes' ],
-            'capability_type' => [ 'wikipress_page', 'wikipress_pages' ],
+            'capability_type' => [ self::PAGE_CAPABILITY, self::PAGE_CAPABILITY_PLURAL ],
             'map_meta_cap' => true,
-        ] );
+        ], self::PAGE );
+    }
+
+    public static function get_post_type_names(): array {
+        return [ self::WIKI, self::PAGE ];
     }
 
     private static function setting_slug( string $key, string $fallback ): string {

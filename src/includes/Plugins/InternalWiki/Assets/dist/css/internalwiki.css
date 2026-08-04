@@ -1,0 +1,5 @@
+.wikipress-internal-wiki-fields [data-internal-wiki-options],
+.wikipress-internal-wiki-fields [data-internal-wiki-roles],
+.wikipress-internal-wiki-fields [data-internal-wiki-permissions] {
+    transition: opacity 0.15s ease;
+}

@@ -1,20 +1,31 @@
 <?php
+/**
+ * FontAwesome Icon Picker Class
+ *
+ * Provides functionality for browsing and selecting FontAwesome icons
+ *
+ * @package WikiPress
+ * @subpackage Includes\FontAwesome
+ * @since 1.0.0
+ */
 
-namespace MrTrilB\TrilBDevPlugin\Includes\FontAwesome;
-use MrTrilB\TrilBDevPlugin\Includes\Functions\utilities;
+namespace TrilBDev\WikiPress\Includes\Plugins\FontAwesome\Includes;
+
+use Exception;
+use Throwable;
+use TrilBDev\WikiPress\Includes\Functions\Helpers\AjaxHelper;
+use TrilBDev\WikiPress\Includes\Functions\Helpers\LoggerHelper;
+use TrilBDev\WikiPress\Includes\Functions\Helpers\LoaderHelper;
+use TrilBDev\WikiPress\Includes\Functions\Helpers\RequestHelper;
 
 // Import FontAwesome functions
 use function FortAwesome\fa;
 use FortAwesome\FontAwesome as FAFontAwesome;
 
 /**
- * FontAwesome Icon Picker Class
+ * Class IconPicker
  *
- * Provides functionality for browsing and selecting FontAwesome icons
- *
- * @package TrilBDev
- * @subpackage Includes\FontAwesome
- * @since 1.0.0
+ * Handles the FontAwesome icon picker functionality.
  */
 class IconPicker {
 
@@ -24,6 +35,7 @@ class IconPicker {
      * @var IconPicker
      */
     private static $instance = null;
+    private LoaderHelper $loader;
 
     /**
      * Check if FontAwesome is available and properly initialized.
@@ -35,17 +47,14 @@ class IconPicker {
         if (!function_exists('fa')) {
             // Try FontAwesome::instance() directly
             if (!class_exists('FortAwesome\\FontAwesome')) {
-                utilities::write_log('TrilB.Dev IconPicker: FontAwesome classes not available');
                 return false;
             }
             
             try {
                 $fa = FAFontAwesome::instance();
                 $fa->version(); // Test if it's working
-                utilities::write_log('TrilB.Dev IconPicker: FontAwesome API is available via direct class access');
                 return true;
             } catch (Throwable $e) {
-                utilities::write_log('TrilB.Dev IconPicker: FontAwesome direct class access failed: ' . $e->getMessage());
                 return false;
             }
         }
@@ -53,17 +62,14 @@ class IconPicker {
         try {
             $fa = fa();
             if (!$fa) {
-                utilities::write_log('TrilB.Dev IconPicker: fa() returned null');
                 return false;
             }
 
             // Try a simple method call to test if it's working
             $fa->version();
-            utilities::write_log('TrilB.Dev IconPicker: FontAwesome API is available and working');
             return true;
 
         } catch (Throwable $e) {
-            utilities::write_log('TrilB.Dev IconPicker: FontAwesome availability check failed: ' . $e->getMessage());
             return false;
         }
     }
@@ -91,6 +97,7 @@ class IconPicker {
      * Constructor.
      */
     private function __construct() {
+        $this->loader = new LoaderHelper();
         $this->init();
     }
 
@@ -100,111 +107,49 @@ class IconPicker {
     private function init() {
         // Only initialize WordPress hooks if WordPress functions are available
         if ( function_exists( 'add_action' ) ) {
-            // Register AJAX endpoints
-            add_action( 'wp_ajax_trilbdev_fontawesome_search_icons', array( $this, 'ajax_search_icons' ) );
-            add_action( 'wp_ajax_trilbdev_fontawesome_get_icon_data', array( $this, 'ajax_get_icon_data' ) );
-
-            // Enqueue scripts and styles
-            add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
-
-            utilities::write_log( 'TrilB.Dev: FontAwesome IconPicker initialized' );
+            $this->loader->register_component( $this, [
+                [ 'type' => 'action', 'hook' => 'wp_ajax_wikipress_fontawesome_search_icons', 'callback' => 'ajax_search_icons' ],
+                [ 'type' => 'action', 'hook' => 'wp_ajax_wikipress_fontawesome_get_icon_data', 'callback' => 'ajax_get_icon_data' ],
+            ] )->run();
         }
-    }
-
-    /**
-     * Enqueue scripts and styles for the icon picker.
-     */
-    public function enqueue_scripts() {
-        // Only enqueue on admin pages that might use the icon picker
-        if ( ! $this->should_enqueue_scripts() ) {
-            return;
-        }
-
-        wp_enqueue_script(
-            'trilbdev-fontawesome-icon-picker',
-            TRILBDEV_INCLUDES_URL . 'FontAwesome/assets/js/icon-picker.js',
-            array( 'jquery' ),
-            TRILBDEV_VERSION,
-            true
-        );
-
-        wp_enqueue_style(
-            'trilbdev-fontawesome-icon-picker',
-            TRILBDEV_INCLUDES_URL . 'FontAwesome/assets/css/icon-picker.css',
-            array(),
-            TRILBDEV_VERSION
-        );
-
-        // Localize script with AJAX data
-        wp_localize_script( 'trilbdev-fontawesome-icon-picker', 'trilbdev_fa_picker', array(
-            'ajax_url' => admin_url( 'admin-ajax.php' ),
-            'nonce' => wp_create_nonce( 'trilbdev_fontawesome_picker' ),
-            'strings' => array(
-                'search_placeholder' => __( 'Search icons...', 'trilbdev' ),
-                'no_icons_found' => __( 'No icons found', 'trilbdev' ),
-                'loading' => __( 'Loading...', 'trilbdev' ),
-                'select_icon' => __( 'Select Icon', 'trilbdev' ),
-                'close' => __( 'Close', 'trilbdev' ),
-            ),
-        ) );
-    }
-
-    /**
-     * Check if scripts should be enqueued on current page.
-     *
-     * @return bool
-     */
-    private function should_enqueue_scripts() {
-        $screen = get_current_screen();
-        if ( ! $screen ) {
-            return false;
-        }
-
-        // Enqueue on TrilB.Dev admin pages, mod-manager pages, and post edit screens
-        return strpos( $screen->id, 'trilbdev' ) !== false ||
-               strpos( $screen->id, 'mod-manager' ) !== false ||
-               strpos( $screen->id, 'toplevel_page_mod-manager' ) !== false ||
-               in_array( $screen->id, array( 'post', 'page', 'custom_css', 'customize' ) );
     }
 
     /**
      * AJAX handler for searching icons.
      */
     public function ajax_search_icons() {
-        // Verify nonce
-        if ( ! wp_verify_nonce( $_POST['nonce'] ?? '', 'trilbdev_fontawesome_picker' ) ) {
-            wp_die( 'Security check failed' );
+        if ( ! AjaxHelper::has_valid_nonce( 'wikipress_fontawesome_picker' ) ) {
+            AjaxHelper::unauthorized( 'Security check failed.' );
         }
 
-        $search = sanitize_text_field( $_POST['search'] ?? '' );
-        $pack = sanitize_text_field( $_POST['pack'] ?? 'classic' );
-        $style = sanitize_text_field( $_POST['style'] ?? 'solid' );
-        $page = intval( $_POST['page'] ?? 1 );
-        $per_page = intval( $_POST['per_page'] ?? 50 );
+        $search = RequestHelper::text( $_POST, 'search' );
+        $pack = RequestHelper::text( $_POST, 'pack', 'classic' );
+        $style = RequestHelper::text( $_POST, 'style', 'solid' );
+        $page = RequestHelper::integer( $_POST, 'page', 1 );
+        $per_page = RequestHelper::integer( $_POST, 'per_page', 50 );
 
         $icons = $this->search_icons( $search, $pack, $style, $page, $per_page );
 
-        wp_send_json_success( $icons );
+        AjaxHelper::success( $icons );
     }
 
     /**
      * AJAX handler for getting icon data.
      */
     public function ajax_get_icon_data() {
-        // Verify nonce
-        if ( ! wp_verify_nonce( $_POST['nonce'] ?? '', 'trilbdev_fontawesome_picker' ) ) {
-            wp_die( 'Security check failed' );
+        if ( ! AjaxHelper::has_valid_nonce( 'wikipress_fontawesome_picker' ) ) {
+            AjaxHelper::unauthorized( 'Security check failed.' );
         }
 
-        $icon_name = sanitize_text_field( $_POST['icon_name'] ?? '' );
-        $style = sanitize_text_field( $_POST['style'] ?? 'fas' );
+        $icon_name = RequestHelper::text( $_POST, 'icon_name' );
+        $style = RequestHelper::text( $_POST, 'style', 'fas' );
 
         $icon_data = $this->get_icon_data( $icon_name, $style );
 
         if ( $icon_data ) {
-            wp_send_json_success( $icon_data );
+            AjaxHelper::success( $icon_data );
         } else {
-            wp_send_json_error( 'Icon not found' );
+            AjaxHelper::error( 'Icon not found' );
         }
     }
 
@@ -269,7 +214,7 @@ class IconPicker {
             );
 
         } catch ( Exception $e ) {
-            utilities::write_log( 'TrilB.Dev IconPicker: Error searching icons: ' . $e->getMessage() );
+            LoggerHelper::write_log( 'WikiPress FontAwesome IconPicker: Error searching icons: ' . $e->getMessage() );
             // Fallback to static icons on error
             $fallback_icons = $this->get_fallback_icons( $pack, $style, $search );
             $total = count( $fallback_icons );
@@ -337,7 +282,7 @@ class IconPicker {
             );
 
         } catch ( Exception $e ) {
-            utilities::write_log( 'TrilB.Dev IconPicker: Error getting icon data: ' . $e->getMessage() );
+            LoggerHelper::write_log( 'WikiPress FontAwesome IconPicker: Error getting icon data: ' . $e->getMessage() );
             return null;
         }
     }
@@ -422,7 +367,6 @@ class IconPicker {
         }
 
         if ( ! $this->is_fontawesome_available() ) {
-            utilities::write_log( 'TrilB.Dev IconPicker: FontAwesome plugin not available' );
             return array();
         }
 
@@ -436,7 +380,7 @@ class IconPicker {
             return $icons;
 
         } catch ( Exception $e ) {
-            utilities::write_log( 'TrilB.Dev IconPicker: Error getting icons from API: ' . $e->getMessage() );
+            LoggerHelper::write_log( 'WikiPress FontAwesome IconPicker: Error getting icons from API: ' . $e->getMessage() );
             return array();
         }
     }
@@ -450,7 +394,6 @@ class IconPicker {
      */
     private function query_fontawesome_api( $pack, $style ) {
         if ( ! $this->is_fontawesome_available() ) {
-            utilities::write_log( 'TrilB.Dev IconPicker: FontAwesome not available in query_fontawesome_api' );
             return array();
         }
 
@@ -473,24 +416,27 @@ class IconPicker {
                 }
             }';
 
-            utilities::write_log( 'TrilB.Dev IconPicker: Executing GraphQL query for pack=' . $pack . ', style=' . $style );
+            LoggerHelper::write_log( 'WikiPress FontAwesome IconPicker: Executing GraphQL query for pack=' . $pack . ', style=' . $style );
 
             // Execute the query using FontAwesome plugin's API
             $response_json = $fa->query( $query );
             $response = json_decode( $response_json, true );
 
             if ( json_last_error() !== JSON_ERROR_NONE ) {
-                utilities::write_log( 'TrilB.Dev IconPicker: JSON decode error: ' . json_last_error_msg() );
+                LoggerHelper::write_log( 'WikiPress FontAwesome IconPicker: JSON decode error: ' . json_last_error_msg() );
                 return array();
             }
 
             if ( ! isset( $response['data']['release']['icons'] ) ) {
-                utilities::write_log( 'TrilB.Dev IconPicker: Invalid API response structure. Response: ' . print_r( $response, true ) );
+                LoggerHelper::write_log( [
+                    'message' => 'WikiPress FontAwesome IconPicker: Invalid API response structure.',
+                    'response' => $response,
+                ] );
                 return array();
             }
 
             $all_icons = $response['data']['release']['icons'];
-            utilities::write_log( 'TrilB.Dev IconPicker: Retrieved ' . count( $all_icons ) . ' total icons from API' );
+            LoggerHelper::write_log( 'WikiPress FontAwesome IconPicker: Retrieved ' . count( $all_icons ) . ' total icons from API' );
 
             $icons = array();
             foreach ( $all_icons as $icon_data ) {
@@ -509,12 +455,12 @@ class IconPicker {
                 );
             }
 
-            utilities::write_log( 'TrilB.Dev IconPicker: Filtered to ' . count( $icons ) . ' icons for pack=' . $pack . ', style=' . $style );
+            LoggerHelper::write_log( 'WikiPress FontAwesome IconPicker: Filtered to ' . count( $icons ) . ' icons for pack=' . $pack . ', style=' . $style );
             return $icons;
 
         } catch ( Exception $e ) {
-            utilities::write_log( 'TrilB.Dev IconPicker: Error querying FontAwesome API: ' . $e->getMessage() );
-            utilities::write_log( 'TrilB.Dev IconPicker: Exception trace: ' . $e->getTraceAsString() );
+            LoggerHelper::write_log( 'WikiPress FontAwesome IconPicker: Error querying FontAwesome API: ' . $e->getMessage() );
+            LoggerHelper::write_log( 'WikiPress FontAwesome IconPicker: Exception trace: ' . $e->getTraceAsString() );
             return array();
         }
     }
@@ -576,8 +522,8 @@ class IconPicker {
         $args = wp_parse_args( $args, array(
             'id' => uniqid( 'fa-picker-' ),
             'input_id' => '',
-            'class' => 'trilbdev-fa-picker',
-            'button_text' => __( 'Choose Icon', 'trilbdev' ),
+            'class' => 'wikipress-fa-picker',
+            'button_text' => __( 'Choose Icon', 'wikipress' ),
             'preview_size' => '24px',
         ) );
 
@@ -589,66 +535,66 @@ class IconPicker {
 
         ob_start();
         ?>
-        <div class="trilbdev-fa-picker-container" id="<?php echo esc_attr( $args['id'] ); ?>">
+        <div class="wikipress-fa-picker-container" id="<?php echo esc_attr( $args['id'] ); ?>">
             <input type="hidden"
                    id="<?php echo esc_attr( $args['input_id'] ); ?>"
                    name="<?php echo esc_attr( $input_name ); ?>"
                    value="<?php echo esc_attr( $selected_icon ); ?>"
-                   class="trilbdev-fa-picker-input" />
+                   class="wikipress-fa-picker-input" />
 
                 <button type="button"
-                    class="btn btn-secondary trilbdev-fa-picker-button"
+                    class="btn btn-secondary wikipress-fa-picker-button"
                     data-picker-id="<?php echo esc_attr( $args['id'] ); ?>">
-                <span class="trilbdev-fa-picker-preview">
+                <span class="wikipress-fa-picker-preview">
                     <?php if ( $selected_data ) : ?>
                         <i class="<?php echo esc_attr( $selected_data['class'] ); ?>"
                            style="font-size: <?php echo esc_attr( $args['preview_size'] ); ?>"></i>
                     <?php endif; ?>
                 </span>
-                <span class="trilbdev-fa-picker-text">
+                <span class="wikipress-fa-picker-text">
                     <?php echo esc_html( $args['button_text'] ); ?>
                 </span>
             </button>
 
-            <div class="trilbdev-fa-picker-modal" style="display: none;">
-                <div class="trilbdev-fa-picker-overlay"></div>
-                <div class="trilbdev-fa-picker-dialog">
-                    <div class="trilbdev-fa-picker-header">
-                        <h3><?php _e( 'Choose an Icon', 'trilbdev' ); ?></h3>
-                        <button type="button" class="trilbdev-fa-picker-close">&times;</button>
+            <div class="wikipress-fa-picker-modal" style="display: none;">
+                <div class="wikipress-fa-picker-overlay"></div>
+                <div class="wikipress-fa-picker-dialog">
+                    <div class="wikipress-fa-picker-header">
+                        <h3><?php _e( 'Choose an Icon', 'wikipress' ); ?></h3>
+                        <button type="button" class="wikipress-fa-picker-close">&times;</button>
                     </div>
 
-                    <div class="trilbdev-fa-picker-search">
+                    <div class="wikipress-fa-picker-search">
                         <input type="text"
-                               class="trilbdev-fa-picker-search-input"
-                               placeholder="<?php _e( 'Search icons...', 'trilbdev' ); ?>" />
-                        <select class="trilbdev-fa-picker-pack-filter">
-                            <option value="classic"><?php _e( 'Classic', 'trilbdev' ); ?></option>
-                            <option value="duotone"><?php _e( 'Duotone', 'trilbdev' ); ?></option>
-                            <option value="sharp"><?php _e( 'Sharp', 'trilbdev' ); ?></option>
-                            <option value="sharp-duotone"><?php _e( 'Sharp Duotone', 'trilbdev' ); ?></option>
-                            <option value="brands"><?php _e( 'Brands', 'trilbdev' ); ?></option>
+                               class="wikipress-fa-picker-search-input"
+                               placeholder="<?php _e( 'Search icons...', 'wikipress' ); ?>" />
+                        <select class="wikipress-fa-picker-pack-filter">
+                            <option value="classic"><?php _e( 'Classic', 'wikipress' ); ?></option>
+                            <option value="duotone"><?php _e( 'Duotone', 'wikipress' ); ?></option>
+                            <option value="sharp"><?php _e( 'Sharp', 'wikipress' ); ?></option>
+                            <option value="sharp-duotone"><?php _e( 'Sharp Duotone', 'wikipress' ); ?></option>
+                            <option value="brands"><?php _e( 'Brands', 'wikipress' ); ?></option>
                         </select>
-                        <select class="trilbdev-fa-picker-style-filter">
-                            <option value="solid"><?php _e( 'Solid', 'trilbdev' ); ?></option>
-                            <option value="regular"><?php _e( 'Regular', 'trilbdev' ); ?></option>
-                            <option value="light"><?php _e( 'Light', 'trilbdev' ); ?></option>
-                            <option value="thin"><?php _e( 'Thin', 'trilbdev' ); ?></option>
+                        <select class="wikipress-fa-picker-style-filter">
+                            <option value="solid"><?php _e( 'Solid', 'wikipress' ); ?></option>
+                            <option value="regular"><?php _e( 'Regular', 'wikipress' ); ?></option>
+                            <option value="light"><?php _e( 'Light', 'wikipress' ); ?></option>
+                            <option value="thin"><?php _e( 'Thin', 'wikipress' ); ?></option>
                         </select>
                     </div>
 
-                    <div class="trilbdev-fa-picker-results">
-                        <div class="trilbdev-fa-picker-loading">
-                            <?php _e( 'Loading icons...', 'trilbdev' ); ?>
+                    <div class="wikipress-fa-picker-results">
+                        <div class="wikipress-fa-picker-loading">
+                            <?php _e( 'Loading icons...', 'wikipress' ); ?>
                         </div>
                     </div>
 
-                    <div class="trilbdev-fa-picker-footer">
-                        <button type="button" class="btn btn-secondary trilbdev-fa-picker-cancel">
-                            <?php _e( 'Cancel', 'trilbdev' ); ?>
+                    <div class="wikipress-fa-picker-footer">
+                        <button type="button" class="btn btn-secondary wikipress-fa-picker-cancel">
+                            <?php _e( 'Cancel', 'wikipress' ); ?>
                         </button>
-                        <button type="button" class="btn btn-primary trilbdev-fa-picker-select" disabled>
-                            <?php _e( 'Select Icon', 'trilbdev' ); ?>
+                        <button type="button" class="btn btn-primary wikipress-fa-picker-select" disabled>
+                            <?php _e( 'Select Icon', 'wikipress' ); ?>
                         </button>
                     </div>
                 </div>

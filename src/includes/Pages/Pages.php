@@ -3,6 +3,7 @@
 namespace TrilBDev\WikiPress\Includes\Pages;
 
 use TrilBDev\WikiPress\API\API;
+use TrilBDev\WikiPress\Includes\Functions\Functions;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -15,11 +16,33 @@ final class Pages {
 
     public static function get_by_id( int $page_id ): array {
         $page = API::get_page( $page_id );
-        return $page ? [ 'success' => true, 'data' => $page ] : [ 'success' => false, 'message' => __( 'Wiki page not found.', 'wikipress' ), 'data' => [] ];
+        return $page
+            ? Functions::rest_response( true, '', $page )
+            : Functions::rest_response( false, __( 'Wiki page not found.', 'wikipress' ) );
     }
 
     public static function create_from_payload( array $payload ): array {
         $page = API::create_page( $payload );
-        return is_wp_error( $page ) ? [ 'success' => false, 'message' => $page->get_error_message(), 'data' => [] ] : [ 'success' => true, 'data' => $page ];
+        return self::mutation_response( $page );
+    }
+
+    public static function update_from_payload( int $page_id, array $payload ): array {
+        return self::mutation_response( API::update_page( $page_id, $payload ) );
+    }
+
+    public static function delete_by_id( int $page_id, bool $force = false ): array {
+        return self::mutation_response( API::delete_page( $page_id, $force ) );
+    }
+
+    private static function mutation_response( $result ): array {
+        if ( is_wp_error( $result ) ) {
+            return Functions::rest_response( false, $result->get_error_message() );
+        }
+
+        if ( false === $result ) {
+            return Functions::rest_response( false, __( 'Wiki page mutation failed.', 'wikipress' ) );
+        }
+
+        return Functions::rest_response( true, '', is_array( $result ) ? $result : [ 'deleted' => (bool) $result ] );
     }
 }
