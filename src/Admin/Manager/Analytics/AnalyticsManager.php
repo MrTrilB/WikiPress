@@ -44,7 +44,7 @@ final class AnalyticsManager extends Manager {
     public function render(): void {
         $this->header( __( 'Analytics', 'wikipress' ) );
         echo '<div class="wikipress-analytics-summary">';
-        $this->card( __( 'Total Wiki Page Views', 'wikipress' ), Analytics::total_views(), 'wikipress-pages' );
+        $this->card( __( 'Total Wiki Page Views', 'wikipress' ), Analytics::total_views(), 'wikipress-manage' );
         echo '</div><h2 class="h4 mt-4">' . esc_html__( 'Most Viewed Wiki Pages', 'wikipress' ) . '</h2><div class="table-responsive"><table class="table wikipress-analytics-table table-striped table-hover align-middle"><thead><tr><th>' . esc_html__( 'Page', 'wikipress' ) . '</th><th>' . esc_html__( 'Views', 'wikipress' ) . '</th></tr></thead><tbody>';
         foreach ( Analytics::top_pages() as $page ) {
             printf( '<tr><td><a href="%s">%s</a></td><td>%d</td></tr>', esc_url( $page['link'] ), esc_html( $page['title'] ), absint( $page['views'] ) );

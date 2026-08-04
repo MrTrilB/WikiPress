@@ -196,11 +196,6 @@ class WikiPress {
 		$this->loader->add_action( 'init', $this->plugins, 'init', 20 );
 		$this->loader->add_action( 'admin_menu', $this->admin, 'register_admin_menu' );
 		$this->loader->add_action( 'admin_init', $this->admin, 'register_settings' );
-		$this->loader->add_action( 'admin_post_wikipress_create_page', $this->admin, 'create_page' );
-		$this->loader->add_action( 'admin_post_wikipress_create_wiki', $this->admin, 'create_wiki' );
-		$this->loader->add_action( 'admin_post_wikipress_delete_post', $this->admin, 'delete_post' );
-		$this->loader->add_action( 'admin_post_wikipress_create_term', $this->admin, 'create_term' );
-		$this->loader->add_action( 'admin_post_wikipress_update_post', $this->admin, 'update_post' );
 		$this->loader->add_action( 'admin_post_wikipress_export', $this->admin, 'export_data' );
 		$this->loader->add_action( 'admin_post_wikipress_import', $this->admin, 'import_data' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $this->assets, 'enqueue_admin' );

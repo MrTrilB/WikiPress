@@ -36,7 +36,7 @@ final class ContentManager extends Manager {
 						<div class="card-body p-4">
 							<h2 class="h5"><?php esc_html_e( 'No Wikis created yet', 'wikipress' ); ?></h2>
 							<p class="text-secondary mb-3"><?php esc_html_e( 'Create your first Wiki to start organising your knowledge.', 'wikipress' ); ?></p>
-							<a class="btn btn-primary" href="<?php echo esc_url( admin_url( 'admin.php?page=wikipress-wikis' ) ); ?>"><?php esc_html_e( 'Create a Wiki', 'wikipress' ); ?></a>
+							<a class="btn btn-primary" href="<?php echo esc_url( admin_url( 'admin.php?page=wikipress-manage' ) ); ?>"><?php esc_html_e( 'Manage Wikis', 'wikipress' ); ?></a>
 						</div>
 					</div>
 				</div>
@@ -59,7 +59,7 @@ final class ContentManager extends Manager {
 		$image_url = get_the_post_thumbnail_url( $wiki, 'medium' );
 		$author_url = get_avatar_url( $wiki->post_author, [ 'size' => 64 ] );
 		$description = wp_trim_words( wp_strip_all_tags( $wiki->post_content ), 24 );
-		$manage_url = admin_url( 'admin.php?page=wikipress-edit&post_id=' . absint( $wiki->ID ) );
+		$manage_url = admin_url( 'admin.php?page=wikipress-manage' );
 		?>
 		<div class="col-12 col-md-6 col-xl-4 d-flex">
 			<article class="card wikipress-wiki-card text-start shadow-sm h-100 w-100">

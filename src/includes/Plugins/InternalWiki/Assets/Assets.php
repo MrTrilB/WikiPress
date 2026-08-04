@@ -40,7 +40,7 @@ final class Assets {
     }
 
     public function register_admin_assets( array $assets, string $context = '' ): array {
-        if ( ! in_array( RequestHelper::get_key( 'page' ), [ 'wikipress-wikis', 'wikipress-edit' ], true ) ) {
+        if ( 'wikipress-manage' !== RequestHelper::get_key( 'page' ) ) {
             return $assets;
         }
 

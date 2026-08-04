@@ -2,9 +2,6 @@
 
 namespace TrilBDev\WikiPress\Admin;
 
-use TrilBDev\WikiPress\API\API;
-use TrilBDev\WikiPress\Includes\Core\PostType;
-use TrilBDev\WikiPress\Includes\Core\Taxonomy;
 use TrilBDev\WikiPress\Includes\Tools\DataTransfer;
 use TrilBDev\WikiPress\Includes\Settings\Settings;
 use TrilBDev\WikiPress\Includes\Plugins\Plugins;
@@ -14,11 +11,6 @@ use TrilBDev\WikiPress\Admin\Manager\Analytics\AnalyticsManager;
 use TrilBDev\WikiPress\Admin\Manager\Dashboard\DashboardManager;
 use TrilBDev\WikiPress\Admin\Manager\Settings\SettingsManager;
 use TrilBDev\WikiPress\Admin\Manager\Content\ContentManager;
-use TrilBDev\WikiPress\Admin\Manager\Content\ContentCategories;
-use TrilBDev\WikiPress\Admin\Manager\Content\ContentPages;
-use TrilBDev\WikiPress\Admin\Manager\Content\ContentTags;
-use TrilBDev\WikiPress\Admin\Manager\Content\ContentWikis;
-use TrilBDev\WikiPress\Admin\Manager\Content\ContentForms;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -29,29 +21,14 @@ final class Admin {
     private ContentManager $content_manager;
     private SettingsManager $settings_manager;
     private AnalyticsManager $analytics_manager;
-    private ContentWikis $wikis_page;
-    private ContentPages $pages_page;
-    private ContentCategories $categories_page;
-    private ContentTags $tags_page;
-    private ContentForms $forms_page;
 
     public function __construct( Assets $assets ) {
         $this->dashboard_manager = new DashboardManager();
         $this->content_manager = new ContentManager();
         $this->settings_manager = new SettingsManager();
         $this->analytics_manager = new AnalyticsManager();
-        $this->wikis_page = new ContentWikis();
-        $this->pages_page = new ContentPages();
-        $this->categories_page = new ContentCategories();
-        $this->tags_page = new ContentTags();
-        $this->forms_page = new ContentForms();
         $this->dashboard_manager->register_assets( $assets );
         $this->content_manager->register_assets( $assets );
-        $this->wikis_page->register_assets( $assets );
-        $this->pages_page->register_assets( $assets );
-        $this->categories_page->register_assets( $assets );
-        $this->tags_page->register_assets( $assets );
-        $this->forms_page->register_assets( $assets );
         $this->settings_manager->register_assets( $assets );
         $this->analytics_manager->register_assets( $assets );
     }
@@ -128,124 +105,12 @@ final class Admin {
         $this->content_manager->render();
     }
 
-    public function render_wiki_listing(): void {
-        $this->wikis_page->render();
-    }
-
-    /**
-     * Render the wiki page listing.
-     *
-     * @return void
-     */
-    public function render_pages(): void { $this->pages_page->render(); }
-
-    /**
-     * Render the category management page.
-     *
-     * @return void
-     */
-    public function render_categories(): void { $this->categories_page->render(); }
-
-    /**
-     * Render the tag management page.
-     *
-     * @return void
-     */
-    public function render_tags(): void { $this->tags_page->render(); }
-
     public function render_settings(): void {
         $this->settings_manager->render();
     }
 
     public function render_analytics(): void {
         $this->analytics_manager->render();
-    }
-
-    public function render_add_new(): void {
-        $this->forms_page->render_add_new();
-    }
-
-    public function create_page(): void {
-        if ( ! current_user_can( $this->capability( 'write_pages', 'edit_posts' ) ) ) {
-            wp_die( esc_html__( 'You are not allowed to create Wiki Pages.', 'wikipress' ), 403 );
-        }
-        check_admin_referer( 'wikipress_create_page' );
-        $result = API::create_page( wp_unslash( $_POST ) );
-        if ( is_wp_error( $result ) ) {
-            wp_die( esc_html( $result->get_error_message() ), 400 );
-        }
-        wp_safe_redirect( admin_url( 'admin.php?page=wikipress-pages&created=1' ) );
-        exit;
-    }
-
-    public function create_wiki(): void {
-        if ( ! current_user_can( $this->capability( 'create_wikis', 'manage_options' ) ) ) {
-            wp_die( esc_html__( 'You are not allowed to create Wikis.', 'wikipress' ), 403 );
-        }
-        check_admin_referer( 'wikipress_create_wiki' );
-        $result = API::create_wiki( wp_unslash( $_POST ) );
-        if ( is_wp_error( $result ) ) {
-            wp_die( esc_html( $result->get_error_message() ), 400 );
-        }
-        wp_safe_redirect( admin_url( 'admin.php?page=wikipress-wikis&created=1' ) );
-        exit;
-    }
-
-    public function delete_post(): void {
-        $post_id = absint( $_GET['post_id'] ?? 0 );
-        $post_type = sanitize_key( $_GET['post_type'] ?? '' );
-        if ( ! current_user_can( 'delete_posts' ) || ! in_array( $post_type, [ PostType::WIKI, PostType::PAGE ], true ) ) {
-            wp_die( esc_html__( 'You are not allowed to delete this item.', 'wikipress' ), 403 );
-        }
-        check_admin_referer( 'wikipress_delete_' . $post_id );
-        $post = get_post( $post_id );
-        if ( ! $post || $post->post_type !== $post_type ) {
-            wp_die( esc_html__( 'The requested item was not found.', 'wikipress' ), 404 );
-        }
-        $deleted = $post_type === PostType::WIKI ? API::delete_wiki( $post_id ) : API::delete_page( $post_id );
-        if ( is_wp_error( $deleted ) ) {
-            wp_die( esc_html( $deleted->get_error_message() ), 400 );
-        }
-        $target = $post_type === PostType::WIKI ? 'wikipress-wikis' : 'wikipress-pages';
-        wp_safe_redirect( admin_url( 'admin.php?page=' . $target . '&deleted=1' ) );
-        exit;
-    }
-
-    public function create_term(): void {
-        if ( ! current_user_can( 'manage_categories' ) ) {
-            wp_die( esc_html__( 'You are not allowed to manage Wiki taxonomies.', 'wikipress' ), 403 );
-        }
-        check_admin_referer( 'wikipress_create_term' );
-        $taxonomy = sanitize_key( $_POST['taxonomy'] ?? '' );
-        if ( ! in_array( $taxonomy, [ Taxonomy::CATEGORY, Taxonomy::TAG ], true ) ) {
-            wp_die( esc_html__( 'Invalid Wiki taxonomy.', 'wikipress' ), 400 );
-        }
-        $result = wp_insert_term( sanitize_text_field( wp_unslash( $_POST['name'] ?? '' ) ), $taxonomy, [ 'description' => sanitize_textarea_field( wp_unslash( $_POST['description'] ?? '' ) ) ] );
-        if ( is_wp_error( $result ) ) {
-            wp_die( esc_html( $result->get_error_message() ), 400 );
-        }
-        wp_safe_redirect( admin_url( 'admin.php?page=' . ( $taxonomy === Taxonomy::CATEGORY ? 'wikipress-categories' : 'wikipress-tags' ) . '&created=1' ) );
-        exit;
-    }
-
-    public function render_edit(): void {
-        $this->forms_page->render_edit();
-    }
-
-    public function update_post(): void {
-        $post_id = absint( $_POST['post_id'] ?? 0 );
-        $post = get_post( $post_id );
-        if ( ! $post || ! in_array( $post->post_type, [ PostType::WIKI, PostType::PAGE ], true ) || ! current_user_can( 'edit_posts' ) ) {
-            wp_die( esc_html__( 'You are not allowed to edit this item.', 'wikipress' ), 403 );
-        }
-        check_admin_referer( 'wikipress_update_' . $post_id );
-        $payload = wp_unslash( $_POST );
-        $result = $post->post_type === PostType::WIKI ? API::update_wiki( $post_id, $payload ) : API::update_page( $post_id, $payload );
-        if ( is_wp_error( $result ) ) {
-            wp_die( esc_html( $result->get_error_message() ), 400 );
-        }
-        wp_safe_redirect( admin_url( 'admin.php?page=' . ( $post->post_type === PostType::WIKI ? 'wikipress-wikis' : 'wikipress-pages' ) . '&updated=1' ) );
-        exit;
     }
 
     public function export_data(): void {

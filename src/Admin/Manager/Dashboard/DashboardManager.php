@@ -60,9 +60,9 @@ final class DashboardManager extends Manager {
         $page_publish = absint( $page_counts->publish ?? 0 );
         ?>
         <div class="row g-3 mb-4">
-            <?php $this->summary_card( __( 'Wikis', 'wikipress' ), $wiki_total, 'wikipress-wikis', 'dashicons-book-alt' ); ?>
-            <?php $this->summary_card( __( 'Created', 'wikipress' ), $page_total, 'wikipress-pages', 'dashicons-edit-page' ); ?>
-            <?php $this->summary_card( __( 'Published', 'wikipress' ), $page_publish, 'wikipress-pages', 'dashicons-yes-alt' ); ?>
+            <?php $this->summary_card( __( 'Wikis', 'wikipress' ), $wiki_total, 'wikipress-manage', 'dashicons-book-alt' ); ?>
+            <?php $this->summary_card( __( 'Created', 'wikipress' ), $page_total, 'wikipress-manage', 'dashicons-edit-page' ); ?>
+            <?php $this->summary_card( __( 'Published', 'wikipress' ), $page_publish, 'wikipress-manage', 'dashicons-yes-alt' ); ?>
         </div>
         <?php
     }
@@ -95,12 +95,12 @@ final class DashboardManager extends Manager {
                     <p class="text-uppercase small fw-semibold text-primary mb-1"><?php esc_html_e( 'Keep things moving', 'wikipress' ); ?></p>
                     <h2 class="h5 mb-0"><?php esc_html_e( 'Recently published or updated', 'wikipress' ); ?></h2>
                 </div>
-                <a class="btn btn-sm btn-outline-primary" href="<?php echo esc_url( admin_url( 'admin.php?page=wikipress-pages' ) ); ?>"><?php esc_html_e( 'View all pages', 'wikipress' ); ?></a>
+                <a class="btn btn-sm btn-outline-primary" href="<?php echo esc_url( admin_url( 'admin.php?page=wikipress-manage' ) ); ?>"><?php esc_html_e( 'Manage content', 'wikipress' ); ?></a>
             </div>
             <div class="list-group list-group-flush">
                 <?php if ( $query->have_posts() ) : ?>
                     <?php foreach ( $query->posts as $post ) : ?>
-                        <a class="list-group-item list-group-item-action px-4 py-3" href="<?php echo esc_url( admin_url( 'admin.php?page=wikipress-edit&post_id=' . absint( $post->ID ) ) ); ?>">
+                        <a class="list-group-item list-group-item-action px-4 py-3" href="<?php echo esc_url( admin_url( 'admin.php?page=wikipress-manage' ) ); ?>">
                             <span class="d-flex flex-column flex-md-row justify-content-between gap-1">
                                 <span class="fw-semibold text-body"><?php echo esc_html( get_the_title( $post ) ); ?></span>
                                 <span class="small text-secondary"><?php echo esc_html( sprintf( __( 'Updated %s', 'wikipress' ), get_the_modified_date( '', $post ) ) ); ?></span>

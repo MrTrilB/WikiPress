@@ -13,11 +13,7 @@ final class Sidebar {
 			'content' => [
 				'label' => __( 'Content', 'wikipress' ),
 				'items' => [
-					'wikipress-wikis' => __( 'All Wikis', 'wikipress' ),
-					'wikipress-pages' => __( 'All Wiki Pages', 'wikipress' ),
-					'wikipress-add-new' => __( 'Add New', 'wikipress' ),
-					'wikipress-categories' => __( 'Categories', 'wikipress' ),
-					'wikipress-tags' => __( 'Tags', 'wikipress' ),
+					'wikipress-manage' => __( 'Manage Wiki', 'wikipress' ),
 				],
 			],
 			'manage' => [
