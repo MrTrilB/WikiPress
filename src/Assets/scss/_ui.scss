@@ -12,7 +12,7 @@
 	.wikipress-header {
 		background: var(--wikipress-header);
 		box-shadow: 0 0.25rem 1rem rgba(16, 42, 67, 0.16);
-		min-height: 7rem;
+		min-height: 150px;
 		overflow: visible;
 		position: relative;
 		z-index: 10;
@@ -23,24 +23,21 @@
 		}
 
 		.navbar-brand {
-			height: 150px;
+			height: auto;
 			left: 1rem;
 			position: absolute;
 			top: 0;
-			width: 250px;
+			width: 150px;
 			z-index: 2;
 			letter-spacing: 0.01em;
 		}
 
 		.navbar-brand img {
-			background: #fff;
-			border-radius: 0.5rem;
-			height: 150px;
-			max-width: none;
+			max-width: 150px;
+			max-height: auto;
 			position: absolute;
 			top: 0;
 			left: 0;
-			width: auto;
 			z-index: 2;
 			object-fit: contain;
 			padding: 0.2rem;
