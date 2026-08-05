@@ -8,6 +8,8 @@ use TrilBDev\WikiPress\Includes\Settings\Settings;
 use TrilBDev\WikiPress\Includes\Plugins\Plugins;
 use TrilBDev\WikiPress\Includes\Plugins\SettingsPageProviderInterface;
 use TrilBDev\WikiPress\Includes\Functions\Helpers\FormFieldHelper;
+use TrilBDev\WikiPress\Includes\Functions\Helpers\SanitizationHelper;
+use TrilBDev\WikiPress\Includes\Functions\Helpers\UrlHelper;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -53,7 +55,7 @@ final class SettingsManager extends Manager {
      * @return void
      */
     public function render(): void {
-        $tab = sanitize_key( $_GET['tab'] ?? 'general' );
+        $tab = SanitizationHelper::key( $_GET['tab'] ?? 'general', 'general' );
         $groups = Settings::get_all();
         $values = $groups[ $tab ] ?? [];
         $this->header( __( 'Settings', 'wikipress' ) );
@@ -101,14 +103,14 @@ final class SettingsManager extends Manager {
     private function render_plugin_page( array $page, array $values ): void {
         echo '<tr><th scope="row">' . esc_html( $page['title'] ?? $page['label'] ) . '</th><td>';
         foreach ( $page['fields'] as $field ) {
-            $key = sanitize_key( $field['key'] ?? '' );
+            $key = SanitizationHelper::key( $field['key'] ?? '' );
             if ( '' === $key ) {
                 continue;
             }
             $default = array_key_exists( 'default', $field ) ? $field['default'] : false;
-            $name = 'wikipress_' . sanitize_key( $page['slug'] ) . '[' . $key . ']';
+            $name = 'wikipress_' . SanitizationHelper::key( $page['slug'] ) . '[' . $key . ']';
             $value = $values[ $key ] ?? $default;
-            $type = sanitize_key( (string) ( $field['type'] ?? 'checkbox' ) );
+            $type = SanitizationHelper::key( $field['type'] ?? 'checkbox', 'checkbox' );
             echo '<div class="mb-3">' . FormFieldHelper::label( 'wikipress-' . $key, (string) ( $field['label'] ?? $key ) );
             if ( 'select' === $type ) {
                 echo FormFieldHelper::select( $name, (array) ( $field['options'] ?? [] ), $value, [ 'id' => 'wikipress-' . $key ] );
@@ -148,12 +150,12 @@ final class SettingsManager extends Manager {
 
     private function render_wikipress_plugin_card( $plugin ): void {
         $settings_page = $plugin instanceof SettingsPageProviderInterface ? $plugin->get_settings_page() : [];
-        $settings_url = ! empty( $settings_page['slug'] ) ? admin_url( 'admin.php?page=wikipress-settings&tab=' . sanitize_key( $settings_page['slug'] ) ) : admin_url( 'admin.php?page=wikipress-settings&tab=plugins' );
+        $settings_url = ! empty( $settings_page['slug'] ) ? UrlHelper::admin_page( 'wikipress-settings', [ 'tab' => SanitizationHelper::key( $settings_page['slug'] ) ] ) : UrlHelper::admin_page( 'wikipress-settings', [ 'tab' => 'plugins' ] );
         ?>
         <div class="col-12 col-md-6 col-xl-4 d-flex">
             <article class="card wikipress-plugin-card shadow-sm h-100 w-100">
                 <div class="card-header d-flex align-items-center gap-2">
-                    <div class="form-check form-switch mb-0"><input class="form-check-input" type="checkbox" role="switch" <?php checked( $plugin->is_active() ); ?> disabled aria-label="<?php echo esc_attr( sprintf( __( 'Enable %s', 'wikipress' ), $plugin->get_name() ) ); ?>"></div>
+                    <?php echo FormFieldHelper::switch( 'wikipress-plugin-status', '1', '', [ 'id' => 'wikipress-plugin-status-' . SanitizationHelper::key( $plugin->get_slug() ), 'checked' => $plugin->is_active(), 'disabled' => true, 'aria-label' => sprintf( __( 'Enable %s', 'wikipress' ), $plugin->get_name() ) ] ); ?>
                     <span class="fw-semibold"><?php echo esc_html( $plugin->get_name() ); ?></span>
                 </div>
                 <div class="card-body d-flex flex-column">
@@ -175,7 +177,7 @@ final class SettingsManager extends Manager {
         <div class="col-12 col-md-6 col-xl-4 d-flex">
             <article class="card wikipress-plugin-card shadow-sm h-100 w-100">
                 <div class="card-header d-flex align-items-center gap-2">
-                    <div class="form-check form-switch mb-0"><input class="form-check-input" type="checkbox" role="switch" <?php checked( $active ); ?> disabled aria-label="<?php echo esc_attr( sprintf( __( 'Enable %s', 'wikipress' ), $plugin['Name'] ?? $file ) ); ?>"></div>
+                    <?php echo FormFieldHelper::switch( 'wikipress-third-party-status', '1', '', [ 'id' => 'wikipress-third-party-status-' . SanitizationHelper::key( $file ), 'checked' => $active, 'disabled' => true, 'aria-label' => sprintf( __( 'Enable %s', 'wikipress' ), $plugin['Name'] ?? $file ) ] ); ?>
                     <span class="fw-semibold"><?php echo esc_html( $plugin['Name'] ?? $file ); ?></span>
                 </div>
                 <div class="card-body d-flex flex-column">

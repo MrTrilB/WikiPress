@@ -50,7 +50,7 @@ abstract class Manager {
         Header::render();
         ?>
         <main class="wikipress-admin-main">
-            <div class="container-fluid px-3 px-lg-4 py-4">
+            <div class="container-fluid wikipress-shell px-3 px-lg-4 py-4">
                 <div class="row g-4">
                     <?php Sidebar::render(); ?>
                     <section class="col-12 col-lg-9 col-xl-10" aria-labelledby="wikipress-page-title">

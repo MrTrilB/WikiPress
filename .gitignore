@@ -75,4 +75,5 @@ local-config.php
 src/Assets/Images/Logo/*.ai
 src/Assets/Images/Logo/*@2x.png
 src/Assets/Images/Logo/*@3x.png
+src/Assets/Images/Logo/copilot*
 #src/Includes/Elementor/Assets/images/widgets/post-list/

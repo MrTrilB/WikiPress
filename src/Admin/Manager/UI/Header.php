@@ -19,10 +19,9 @@ final class Header {
 		?>
 		<header class="wikipress-header border-bottom">
 			<nav class="navbar navbar-expand-lg" aria-label="<?php esc_attr_e( 'WikiPress header navigation', 'wikipress' ); ?>">
-				<div class="container-fluid px-3 px-lg-4">
+				<div class="container-fluid wikipress-shell px-3 px-lg-4">
 					<a class="navbar-brand d-flex align-items-center gap-2" href="<?php echo esc_url( admin_url( 'admin.php?page=wikipress' ) ); ?>">
-						<img src="<?php echo esc_url( WIKIPRESS_ASSETS_URL . '/Images/Logo/WikiPressLogo.svg' ); ?>" width="90" alt="">
-						<span class="fw-semibold">WikiPress</span>
+						<img src="<?php echo esc_url( WIKIPRESS_ASSETS_URL . '/Images/Logo/WikiPressLogo.svg' ); ?>" height="300" alt="">
 					</a>
 					<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#wikipress-header-menu" aria-controls="wikipress-header-menu" aria-expanded="false" aria-label="<?php esc_attr_e( 'Toggle header navigation', 'wikipress' ); ?>">
 						<span class="navbar-toggler-icon"></span>

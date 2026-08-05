@@ -4,28 +4,44 @@
 	--wikipress-teal: #0f766e;
 	--wikipress-paper: #f6f8fb;
 	--wikipress-line: #dce4ed;
+	--wikipress-header: #eaf3f7;
 	min-height: 100vh;
 	background: var(--wikipress-paper);
 	color: var(--wikipress-ink);
 
 	.wikipress-header {
-		background: var(--wikipress-navy);
+		background: var(--wikipress-header);
 		box-shadow: 0 0.25rem 1rem rgba(16, 42, 67, 0.16);
+		min-height: 7rem;
+		overflow: visible;
 		position: relative;
 		z-index: 10;
 
 		.navbar-brand,
 		.navbar .nav-link {
-			color: #fff;
+			color: var(--wikipress-ink);
 		}
 
 		.navbar-brand {
+			height: 300px;
+			left: 1rem;
+			position: absolute;
+			top: 0;
+			width: 400px;
+			z-index: 2;
 			letter-spacing: 0.01em;
 		}
 
 		.navbar-brand img {
 			background: #fff;
 			border-radius: 0.5rem;
+			height: 300px;
+			max-width: none;
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: auto;
+			z-index: 2;
 			object-fit: contain;
 			padding: 0.2rem;
 		}
@@ -38,18 +54,27 @@
 
 			&:hover,
 			&:focus-visible {
-				background: rgba(255, 255, 255, 0.12);
-				color: #fff;
+				background: rgba(255, 255, 255, 0.72);
+				color: var(--wikipress-teal);
 			}
 		}
 
 		.navbar-toggler {
-			border-color: rgba(255, 255, 255, 0.45);
+			border-color: rgba(21, 34, 56, 0.3);
 		}
 
 		.navbar-toggler-icon {
-			filter: invert(1);
+			filter: none;
 		}
+	}
+
+	.wikipress-shell {
+		max-width: 1500px;
+		position: relative;
+	}
+
+	.wikipress-admin-main .wikipress-shell {
+		padding-top: 5rem !important;
 	}
 
 	.wikipress-admin-main {
@@ -68,6 +93,12 @@
 		box-shadow: 0 0.5rem 1.5rem rgba(16, 42, 67, 0.06);
 		overflow: hidden;
 		padding: 1rem 0.75rem;
+		position: relative;
+		z-index: 1;
+	}
+
+	.wikipress-sidebar-group-link {
+		font-family: inherit;
 	}
 
 	.wikipress-sidebar-link,
@@ -75,7 +106,7 @@
 		align-items: center;
 		color: var(--wikipress-ink);
 		display: flex;
-		font-size: 0.875rem;
+		font-size: 1rem;
 		font-weight: 500;
 		gap: 0.65rem;
 		text-decoration: none;

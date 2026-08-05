@@ -2,6 +2,9 @@
 
 namespace TrilBDev\WikiPress\Admin\Manager\Settings;
 
+use TrilBDev\WikiPress\Includes\Functions\Helpers\FormFieldHelper;
+use TrilBDev\WikiPress\Includes\Functions\Helpers\SanitizationHelper;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -15,7 +18,10 @@ final class SettingsLayout {
 	 */
 	public function render( array $values ): void {
 		foreach ( [ 'show_search' => 'Show Search', 'show_toc' => 'Show Table of Contents' ] as $key => $label ) {
-			echo '<tr><th scope="row">' . esc_html( $label ) . '</th><td><label class="form-check"><input class="form-check-input" type="checkbox" name="wikipress_layout[' . esc_attr( $key ) . ']" value="1" ' . checked( ! empty( $values[ $key ] ), true, false ) . '> ' . esc_html( $label ) . '</label></td></tr>';
+			$key = SanitizationHelper::key( $key );
+			$id = 'wikipress-' . $key;
+			$name = 'wikipress_layout[' . $key . ']';
+			echo '<tr><th scope="row">' . FormFieldHelper::label( $id, $label ) . '</th><td>' . FormFieldHelper::checkbox( $name, '1', $label, [ 'id' => $id, 'checked' => ! empty( $values[ $key ] ) ] ) . '</td></tr>';
 		}
 	}
 }
