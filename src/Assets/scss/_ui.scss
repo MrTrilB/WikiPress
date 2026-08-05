@@ -17,6 +17,20 @@
 		position: relative;
 		z-index: 10;
 
+		.navbar {
+			align-items: flex-start;
+			padding-top: 0;
+		}
+
+		.navbar-collapse {
+			align-self: flex-start;
+			align-items: flex-start;
+		}
+
+		.navbar-nav {
+			align-items: flex-start !important;
+		}
+
 		.navbar-brand,
 		.navbar .nav-link {
 			color: var(--wikipress-ink);
@@ -33,14 +47,9 @@
 		}
 
 		.navbar-brand img {
-			max-width: 150px;
-			max-height: auto;
-			position: absolute;
-			top: 0;
-			left: 0;
-			z-index: 2;
+			max-width: 250px;
 			object-fit: contain;
-			padding: 0.2rem;
+			padding-left: 15px;
 		}
 
 		.nav-link {

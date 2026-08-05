@@ -27,7 +27,7 @@ final class Header {
 						<span class="navbar-toggler-icon"></span>
 					</button>
 					<div class="collapse navbar-collapse" id="wikipress-header-menu">
-						<ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
+						<ul class="navbar-nav ms-auto align-items-lg-start gap-lg-1">
 							<?php foreach ( $links as $link ) : ?>
 								<li class="nav-item"><a class="nav-link" href="#"><?php echo esc_html( $link ); ?></a></li>
 							<?php endforeach; ?>
