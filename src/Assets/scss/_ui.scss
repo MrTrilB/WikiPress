@@ -37,19 +37,9 @@
 		}
 
 		.navbar-brand {
-			height: auto;
-			left: 1rem;
-			position: absolute;
-			top: 0;
-			width: 150px;
-			z-index: 2;
-			letter-spacing: 0.01em;
-		}
-
-		.navbar-brand img {
 			max-width: 250px;
 			object-fit: contain;
-			padding-left: 15px;
+			padding-left: 10px;
 		}
 
 		.nav-link {
