@@ -23,11 +23,11 @@
 		}
 
 		.navbar-brand {
-			height: 300px;
+			height: 150px;
 			left: 1rem;
 			position: absolute;
 			top: 0;
-			width: 400px;
+			width: 250px;
 			z-index: 2;
 			letter-spacing: 0.01em;
 		}
@@ -35,7 +35,7 @@
 		.navbar-brand img {
 			background: #fff;
 			border-radius: 0.5rem;
-			height: 300px;
+			height: 150px;
 			max-width: none;
 			position: absolute;
 			top: 0;
@@ -74,7 +74,7 @@
 	}
 
 	.wikipress-admin-main .wikipress-shell {
-		padding-top: 5rem !important;
+		padding-top: 0 !important;
 	}
 
 	.wikipress-admin-main {
@@ -87,14 +87,20 @@
 	}
 
 	.wikipress-sidebar {
-		background: #fff;
-		border: 1px solid var(--wikipress-line);
-		border-radius: 0.75rem;
-		box-shadow: 0 0.5rem 1.5rem rgba(16, 42, 67, 0.06);
+		background: var(--wikipress-header);
+		border: 0;
+		border-radius: 0;
+		box-shadow: none;
 		overflow: hidden;
-		padding: 1rem 0.75rem;
+		min-height: 100%;
+		padding: 1.5rem 0.75rem 1rem;
 		position: relative;
 		z-index: 1;
+	}
+
+	.wikipress-sidebar-column {
+		flex: 0 0 350px;
+		max-width: 350px;
 	}
 
 	.wikipress-sidebar-group-link {
@@ -189,6 +195,10 @@
 
 @media (max-width: 991.98px) {
 	.wikipress-admin .wikipress-sidebar { position: static !important; }
+	.wikipress-admin .wikipress-sidebar-column {
+		flex-basis: 100%;
+		max-width: 100%;
+	}
 }
 
 @media (prefers-reduced-motion: reduce) {

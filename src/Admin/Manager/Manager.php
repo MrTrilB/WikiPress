@@ -53,7 +53,7 @@ abstract class Manager {
             <div class="container-fluid wikipress-shell px-3 px-lg-4 py-4">
                 <div class="row g-4">
                     <?php Sidebar::render(); ?>
-                    <section class="col-12 col-lg-9 col-xl-10" aria-labelledby="wikipress-page-title">
+                    <section class="col-12 col-lg flex-grow-1" aria-labelledby="wikipress-page-title">
                         <div class="wikipress-page-heading d-flex flex-wrap align-items-end justify-content-between gap-3 mb-4">
                             <div>
                                 <p class="text-uppercase small fw-semibold text-primary mb-2"><?php esc_html_e( 'WikiPress workspace', 'wikipress' ); ?></p>

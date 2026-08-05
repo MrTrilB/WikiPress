@@ -38,7 +38,7 @@ final class Sidebar {
 			],
 		];
 		?>
-		<aside class="col-12 col-lg-3 col-xl-2">
+		<aside class="col-12 col-lg-auto wikipress-sidebar-column">
 			<div class="wikipress-sidebar position-sticky" style="top: 32px;">
 				<div class="d-flex align-items-center justify-content-between mb-3 px-2">
 					<span class="small text-uppercase fw-semibold text-secondary"><?php esc_html_e( 'Navigate', 'wikipress' ); ?></span>
