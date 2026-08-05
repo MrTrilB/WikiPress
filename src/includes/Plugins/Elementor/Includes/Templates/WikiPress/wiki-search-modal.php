@@ -10,6 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 use Elementor\Widget_Base;
+use TrilBDev\WikiPress\Includes\Functions\Helpers\FormFieldHelper;
 
 if ( ! isset( $widget ) || ! $widget instanceof Widget_Base ) {
     return;
@@ -35,8 +36,8 @@ $wrapper_class_attr = esc_attr( implode( ' ', array_filter( array_map( 'sanitize
         <div class="inner">
             <button type="button" class="close" aria-label="<?php echo esc_attr( $close_aria_label ); ?>"><?php echo esc_html( $close_label ); ?></button>
             <form role="search" method="get" action="<?php echo esc_url( $action_url ); ?>">
-                <input type="hidden" name="post_type" value="docs" />
-                <input type="search" name="s" placeholder="<?php echo esc_attr( $search_placeholder ); ?>" />
+                <?php echo FormFieldHelper::input( 'post_type', 'docs', [ 'type' => 'hidden' ] ); ?>
+                <?php echo FormFieldHelper::input( 's', '', [ 'type' => 'search', 'placeholder' => $search_placeholder ] ); ?>
                 <button type="submit"><?php echo esc_html( $submit_label ); ?></button>
             </form>
         </div>

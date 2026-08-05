@@ -6,12 +6,14 @@ use TrilBDev\WikiPress\Includes\Plugins\AssetsProviderInterface;
 use TrilBDev\WikiPress\Includes\Plugins\I18nProviderInterface;
 use TrilBDev\WikiPress\Includes\Plugins\PluginInterface;
 use TrilBDev\WikiPress\Includes\Plugins\SettingsProviderInterface;
+use TrilBDev\WikiPress\Includes\Plugins\SettingsPageProviderInterface;
 use TrilBDev\WikiPress\Includes\Plugins\FontAwesome\Assets\Assets;
 use TrilBDev\WikiPress\Includes\Plugins\FontAwesome\Includes\IconPicker;
+use TrilBDev\WikiPress\Includes\Plugins\FontAwesome\API\FontAwesomeAPI;
 use TrilBDev\WikiPress\Includes\Plugins\FontAwesome\Includes\I18n;
 use TrilBDev\WikiPress\Includes\Plugins\FontAwesome\Includes\Includes;
 
-final class FontAwesome implements PluginInterface, SettingsProviderInterface, AssetsProviderInterface, I18nProviderInterface {
+final class FontAwesome implements PluginInterface, SettingsProviderInterface, SettingsPageProviderInterface, AssetsProviderInterface, I18nProviderInterface {
     private static ?self $instance = null;
     private ?IconPicker $icon_picker = null;
 
@@ -22,6 +24,7 @@ final class FontAwesome implements PluginInterface, SettingsProviderInterface, A
     private function __construct() {}
 
     public function init(): void {
+        FontAwesomeAPI::configure();
         if ( $this->is_available() ) {
             $this->icon_picker = IconPicker::get_instance();
         }
@@ -66,6 +69,14 @@ final class FontAwesome implements PluginInterface, SettingsProviderInterface, A
 
     public function register_settings(): void {
         Includes::get_instance()->settings()->register();
+    }
+
+    public function get_settings_page(): array {
+        return Includes::get_instance()->settings()->get_settings_page();
+    }
+
+    public function sanitize_settings( $input ): array {
+        return Includes::get_instance()->settings()->sanitize( $input );
     }
 
     public function register_assets(): void {

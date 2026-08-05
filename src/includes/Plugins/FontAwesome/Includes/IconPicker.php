@@ -17,6 +17,7 @@ use TrilBDev\WikiPress\Includes\Functions\Helpers\AjaxHelper;
 use TrilBDev\WikiPress\Includes\Functions\Helpers\LoggerHelper;
 use TrilBDev\WikiPress\Includes\Functions\Helpers\LoaderHelper;
 use TrilBDev\WikiPress\Includes\Functions\Helpers\RequestHelper;
+use TrilBDev\WikiPress\Includes\Functions\Helpers\FormFieldHelper;
 
 // Import FontAwesome functions
 use function FortAwesome\fa;
@@ -536,11 +537,7 @@ class IconPicker {
         ob_start();
         ?>
         <div class="wikipress-fa-picker-container" id="<?php echo esc_attr( $args['id'] ); ?>">
-            <input type="hidden"
-                   id="<?php echo esc_attr( $args['input_id'] ); ?>"
-                   name="<?php echo esc_attr( $input_name ); ?>"
-                   value="<?php echo esc_attr( $selected_icon ); ?>"
-                   class="wikipress-fa-picker-input" />
+                 <?php echo FormFieldHelper::input( $input_name, $selected_icon, [ 'type' => 'hidden', 'id' => $args['input_id'], 'class' => 'wikipress-fa-picker-input' ] ); ?>
 
                 <button type="button"
                     class="btn btn-secondary wikipress-fa-picker-button"
@@ -565,22 +562,9 @@ class IconPicker {
                     </div>
 
                     <div class="wikipress-fa-picker-search">
-                        <input type="text"
-                               class="wikipress-fa-picker-search-input"
-                               placeholder="<?php _e( 'Search icons...', 'wikipress' ); ?>" />
-                        <select class="wikipress-fa-picker-pack-filter">
-                            <option value="classic"><?php _e( 'Classic', 'wikipress' ); ?></option>
-                            <option value="duotone"><?php _e( 'Duotone', 'wikipress' ); ?></option>
-                            <option value="sharp"><?php _e( 'Sharp', 'wikipress' ); ?></option>
-                            <option value="sharp-duotone"><?php _e( 'Sharp Duotone', 'wikipress' ); ?></option>
-                            <option value="brands"><?php _e( 'Brands', 'wikipress' ); ?></option>
-                        </select>
-                        <select class="wikipress-fa-picker-style-filter">
-                            <option value="solid"><?php _e( 'Solid', 'wikipress' ); ?></option>
-                            <option value="regular"><?php _e( 'Regular', 'wikipress' ); ?></option>
-                            <option value="light"><?php _e( 'Light', 'wikipress' ); ?></option>
-                            <option value="thin"><?php _e( 'Thin', 'wikipress' ); ?></option>
-                        </select>
+                        <?php echo FormFieldHelper::input( 'wikipress_fa_search', '', [ 'type' => 'search', 'class' => 'wikipress-fa-picker-search-input', 'placeholder' => __( 'Search icons...', 'wikipress' ) ] ); ?>
+                        <?php echo FormFieldHelper::select( 'wikipress_fa_pack', [ 'classic' => __( 'Classic', 'wikipress' ), 'duotone' => __( 'Duotone', 'wikipress' ), 'sharp' => __( 'Sharp', 'wikipress' ), 'sharp-duotone' => __( 'Sharp Duotone', 'wikipress' ), 'brands' => __( 'Brands', 'wikipress' ) ], 'classic', [ 'class' => 'wikipress-fa-picker-pack-filter' ] ); ?>
+                        <?php echo FormFieldHelper::select( 'wikipress_fa_style', [ 'solid' => __( 'Solid', 'wikipress' ), 'regular' => __( 'Regular', 'wikipress' ), 'light' => __( 'Light', 'wikipress' ), 'thin' => __( 'Thin', 'wikipress' ) ], 'solid', [ 'class' => 'wikipress-fa-picker-style-filter' ] ); ?>
                     </div>
 
                     <div class="wikipress-fa-picker-results">

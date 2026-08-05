@@ -7,6 +7,7 @@
 namespace TrilBDev\WikiPress\Includes\Plugins\Gutenburg\Includes\Settings;
 
 use TrilBDev\WikiPress\Includes\Settings\Settings as BaseSettings;
+use TrilBDev\WikiPress\Includes\Functions\Helpers\SanitizationHelper;
 
 final class Settings {
     public const GROUP = 'gutenburg';
@@ -28,7 +29,7 @@ final class Settings {
     }
 
     public static function block_enabled( string $slug ): bool {
-        return self::enabled() && BaseSettings::get_bool( 'gutenburg_block_' . sanitize_key( $slug ), true );
+        return self::enabled() && BaseSettings::get_bool( 'gutenburg_block_' . SanitizationHelper::key( $slug ), true );
     }
 
     public function get_settings_page(): array {

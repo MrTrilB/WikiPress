@@ -4,6 +4,7 @@ namespace TrilBDev\WikiPress\Includes\Plugins\Elementor\Includes\Widgets\WikiPre
 
 use Elementor\Controls_Manager;
 use TrilBDev\WikiPress\Includes\Functions\Helpers\PostHelper;
+use TrilBDev\WikiPress\Includes\Functions\Helpers\ContentHelper;
 use TrilBDev\WikiPress\Includes\Plugins\Elementor\Includes\Templates\Templates;
 use TrilBDev\WikiPress\Includes\Plugins\Elementor\Includes\Widgets\Widgets;
 
@@ -240,9 +241,9 @@ class WikiTOC extends Widgets {
      */
     private function extract_heading_id( string $attributes, string $title ): string {
         if ( preg_match( '/id="([^"]+)"/i', $attributes, $matches ) ) {
-            return sanitize_title( $matches[1] );
+            return ContentHelper::heading_id( $matches[1] );
         }
 
-        return sanitize_title( $title );
+        return ContentHelper::heading_id( $title );
     }
 }

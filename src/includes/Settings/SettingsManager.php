@@ -120,6 +120,12 @@ final class SettingsManager {
         }
 
         self::$registered_groups[ $group ] = array_merge( self::$registered_groups[ $group ] ?? [], $defaults );
+        foreach ( $defaults as $key => $default ) {
+            $key = sanitize_key( (string) $key );
+            if ( '' !== $key ) {
+                self::$registered_keys[ $key ] = $group;
+            }
+        }
         return true;
     }
 

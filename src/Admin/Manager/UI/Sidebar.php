@@ -45,21 +45,17 @@ final class Sidebar {
 					<a class="wikipress-sidebar-link <?php echo 'wikipress' === $current ? 'active' : ''; ?>" href="<?php echo esc_url( admin_url( 'admin.php?page=wikipress' ) ); ?>">
 						<span class="wikipress-sidebar-icon" aria-hidden="true">⌂</span><?php esc_html_e( 'Dashboard', 'wikipress' ); ?>
 					</a>
-					<div class="accordion accordion-flush" id="wikipress-sidebar-groups">
+					<div id="wikipress-sidebar-groups">
 						<?php foreach ( $groups as $key => $group ) : $expanded = 'settings' === $key ? 'wikipress-settings' === $current : in_array( $current, array_keys( $group['items'] ), true ); ?>
-							<div class="accordion-item">
-								<h2 class="accordion-header" id="wikipress-group-<?php echo esc_attr( $key ); ?>-heading">
-									<button class="accordion-button <?php echo $expanded ? '' : 'collapsed'; ?>" type="button" data-bs-toggle="collapse" data-bs-target="#wikipress-group-<?php echo esc_attr( $key ); ?>" aria-expanded="<?php echo $expanded ? 'true' : 'false'; ?>" aria-controls="wikipress-group-<?php echo esc_attr( $key ); ?>">
-										<?php echo esc_html( $group['label'] ); ?><span class="ms-auto small text-secondary"><?php echo count( $group['items'] ); ?></span>
-									</button>
-								</h2>
-								<div id="wikipress-group-<?php echo esc_attr( $key ); ?>" class="accordion-collapse collapse <?php echo $expanded ? 'show' : ''; ?>" aria-labelledby="wikipress-group-<?php echo esc_attr( $key ); ?>-heading" data-bs-parent="#wikipress-sidebar-groups">
-									<div class="accordion-body pt-0">
-										<div class="nav flex-column">
-													<?php foreach ( $group['items'] as $slug => $label ) : $active_tab = sanitize_key( $_GET['tab'] ?? 'general' ); $is_active = str_starts_with( $slug, 'wikipress-settings&tab=' ) ? ( 'wikipress-settings' === $current && str_ends_with( $slug, $active_tab ) ) : $current === $slug; ?>
-														<a class="nav-link <?php echo $is_active ? 'active' : ''; ?>" <?php echo $is_active ? 'aria-current="page"' : ''; ?> href="<?php echo esc_url( admin_url( 'admin.php?page=' . $slug ) ); ?>"><?php echo esc_html( $label ); ?></a>
-											<?php endforeach; ?>
-										</div>
+							<div class="wikipress-sidebar-group">
+								<button class="wikipress-sidebar-link wikipress-sidebar-group-link border-0 bg-transparent w-100 text-start <?php echo $expanded ? '' : 'collapsed'; ?>" type="button" data-bs-toggle="collapse" data-bs-target="#wikipress-group-<?php echo esc_attr( $key ); ?>" aria-expanded="<?php echo $expanded ? 'true' : 'false'; ?>" aria-controls="wikipress-group-<?php echo esc_attr( $key ); ?>">
+									<?php echo esc_html( $group['label'] ); ?><span class="ms-auto small text-secondary"><?php echo count( $group['items'] ); ?></span>
+								</button>
+								<div id="wikipress-group-<?php echo esc_attr( $key ); ?>" class="collapse <?php echo $expanded ? 'show' : ''; ?>">
+									<div class="nav flex-column">
+										<?php foreach ( $group['items'] as $slug => $label ) : $active_tab = sanitize_key( $_GET['tab'] ?? 'general' ); $is_active = str_starts_with( $slug, 'wikipress-settings&tab=' ) ? ( 'wikipress-settings' === $current && str_ends_with( $slug, $active_tab ) ) : $current === $slug; ?>
+											<a class="nav-link <?php echo $is_active ? 'active' : ''; ?>" <?php echo $is_active ? 'aria-current="page"' : ''; ?> href="<?php echo esc_url( admin_url( 'admin.php?page=' . $slug ) ); ?>"><?php echo esc_html( $label ); ?></a>
+										<?php endforeach; ?>
 									</div>
 								</div>
 							</div>

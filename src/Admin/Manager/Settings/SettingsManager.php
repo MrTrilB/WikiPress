@@ -7,6 +7,7 @@ use TrilBDev\WikiPress\Assets\Assets;
 use TrilBDev\WikiPress\Includes\Settings\Settings;
 use TrilBDev\WikiPress\Includes\Plugins\Plugins;
 use TrilBDev\WikiPress\Includes\Plugins\SettingsPageProviderInterface;
+use TrilBDev\WikiPress\Includes\Functions\Helpers\FormFieldHelper;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -105,7 +106,18 @@ final class SettingsManager extends Manager {
                 continue;
             }
             $default = array_key_exists( 'default', $field ) ? $field['default'] : false;
-            echo '<label class="form-check mb-2"><input class="form-check-input" type="checkbox" name="wikipress_' . esc_attr( $page['slug'] ) . '[' . esc_attr( $key ) . ']" value="1" ' . checked( $values[ $key ] ?? $default, true, false ) . '> ' . esc_html( $field['label'] ?? $key ) . '</label>';
+            $name = 'wikipress_' . sanitize_key( $page['slug'] ) . '[' . $key . ']';
+            $value = $values[ $key ] ?? $default;
+            $type = sanitize_key( (string) ( $field['type'] ?? 'checkbox' ) );
+            echo '<div class="mb-3">' . FormFieldHelper::label( 'wikipress-' . $key, (string) ( $field['label'] ?? $key ) );
+            if ( 'select' === $type ) {
+                echo FormFieldHelper::select( $name, (array) ( $field['options'] ?? [] ), $value, [ 'id' => 'wikipress-' . $key ] );
+            } elseif ( 'text' === $type ) {
+                echo FormFieldHelper::input( $name, is_scalar( $value ) ? (string) $value : '', [ 'id' => 'wikipress-' . $key, 'type' => 'text' ] );
+            } else {
+                echo FormFieldHelper::checkbox( $name, '1', '', [ 'id' => 'wikipress-' . $key, 'checked' => ! empty( $value ) ] );
+            }
+            echo '</div>';
         }
         echo '</td></tr>';
     }

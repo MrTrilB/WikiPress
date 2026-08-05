@@ -9,6 +9,7 @@
 namespace TrilBDev\WikiPress\Includes\Plugins\Elementor\Includes\Settings;
 
 use TrilBDev\WikiPress\Includes\Settings\Settings as BaseSettings;
+use TrilBDev\WikiPress\Includes\Functions\Helpers\SanitizationHelper;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -34,7 +35,7 @@ final class Settings {
 	}
 
 	public static function widget_enabled( string $slug ): bool {
-		return self::enabled() && BaseSettings::get_bool( 'elementor_widget_' . sanitize_key( $slug ), true );
+		return self::enabled() && BaseSettings::get_bool( 'elementor_widget_' . SanitizationHelper::key( $slug ), true );
 	}
 
 	public function get_settings_page(): array {

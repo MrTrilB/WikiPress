@@ -7,6 +7,7 @@
  */
 namespace TrilBDev\WikiPress\Includes\Plugins\Demo\Includes\Settings;
 use TrilBDev\WikiPress\Includes\Settings\Settings as BaseSettings;
+use TrilBDev\WikiPress\Includes\Functions\Helpers\SanitizationHelper;
 
 final class Settings {
     /**
@@ -19,5 +20,25 @@ final class Settings {
             'demo_setting_1' => '',
             'demo_setting_2' => false,
         ] );
+    }
+
+    public function get_settings_page(): array {
+        return [
+            'slug' => 'demo',
+            'label' => __( 'Demo', 'wikipress' ),
+            'title' => __( 'Demo plugin settings', 'wikipress' ),
+            'fields' => [
+                [ 'key' => 'demo_setting_1', 'label' => __( 'Demo text setting', 'wikipress' ), 'type' => 'text', 'default' => '' ],
+                [ 'key' => 'demo_setting_2', 'label' => __( 'Enable demo setting', 'wikipress' ), 'default' => false ],
+            ],
+        ];
+    }
+
+    public function sanitize( $input ): array {
+        $input = is_array( $input ) ? $input : [];
+        $input['demo_setting_1'] = SanitizationHelper::text( $input['demo_setting_1'] ?? '' );
+        $input['demo_setting_2'] = ! empty( $input['demo_setting_2'] );
+        BaseSettings::set_group( 'demo', $input );
+        return $input;
     }
 }

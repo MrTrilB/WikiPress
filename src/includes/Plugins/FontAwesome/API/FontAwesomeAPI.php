@@ -21,7 +21,7 @@ final class FontAwesomeAPI {
         } else {
             $options['kitToken'] = null;
             $options['apiToken'] = false;
-            $options['version'] = $options['version'] ?? '6.0.0';
+            $options['version'] = Settings::version();
         }
 
         $options['usePro'] = false;

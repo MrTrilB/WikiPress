@@ -13,11 +13,12 @@ use TrilBDev\WikiPress\Includes\Plugins\AssetsProviderInterface;
 use TrilBDev\WikiPress\Includes\Plugins\I18nProviderInterface;
 use TrilBDev\WikiPress\Includes\Plugins\PluginInterface;
 use TrilBDev\WikiPress\Includes\Plugins\SettingsProviderInterface;
+use TrilBDev\WikiPress\Includes\Plugins\SettingsPageProviderInterface;
 use TrilBDev\WikiPress\Includes\Plugins\Demo\Assets\Assets;
 use TrilBDev\WikiPress\Includes\Plugins\Demo\Includes\Includes;
 use TrilBDev\WikiPress\Includes\Plugins\Demo\Includes\I18n;
 
-class Demo implements PluginInterface, SettingsProviderInterface, AssetsProviderInterface, I18nProviderInterface {
+class Demo implements PluginInterface, SettingsProviderInterface, SettingsPageProviderInterface, AssetsProviderInterface, I18nProviderInterface {
     public function get_slug(): string {
         return 'wiki-demo-plugin';
     }
@@ -60,6 +61,14 @@ class Demo implements PluginInterface, SettingsProviderInterface, AssetsProvider
 
     public function register_settings(): void {
         Includes::get_instance()->settings()->register();
+    }
+
+    public function get_settings_page(): array {
+        return Includes::get_instance()->settings()->get_settings_page();
+    }
+
+    public function sanitize_settings( $input ): array {
+        return Includes::get_instance()->settings()->sanitize( $input );
     }
 
     public function register_assets(): void {

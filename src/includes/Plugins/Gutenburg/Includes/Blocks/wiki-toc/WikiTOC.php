@@ -7,6 +7,7 @@
 namespace TrilBDev\WikiPress\Includes\Plugins\Gutenburg\Includes\Blocks;
 
 use TrilBDev\WikiPress\Includes\Functions\Helpers\PostHelper;
+use TrilBDev\WikiPress\Includes\Functions\Helpers\ContentHelper;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -26,8 +27,8 @@ final class WikiTOC {
 
         $items = [];
         foreach ( $matches as $match ) {
-            $label = wp_strip_all_tags( $match[2] );
-            $id = sanitize_title( $label );
+            $label = ContentHelper::plain_text( $match[2] );
+            $id = ContentHelper::heading_id( $label );
             $items[] = '<li class="level-' . absint( $match[1] ) . '"><a href="#' . esc_attr( $id ) . '">' . esc_html( $label ) . '</a></li>';
         }
         return '<nav class="wikipress-toc" aria-label="' . esc_attr__( 'Table of contents', 'wikipress' ) . '"><ul>' . implode( '', $items ) . '</ul></nav>';

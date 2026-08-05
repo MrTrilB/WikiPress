@@ -8,16 +8,42 @@
 namespace TrilBDev\WikiPress\Includes\Plugins\InternalWiki\Includes\Settings;
 use TrilBDev\WikiPress\Includes\Settings\Settings as BaseSettings;
 use TrilBDev\WikiPress\Includes\Functions\Helpers\LoaderHelper;
+use TrilBDev\WikiPress\Includes\Functions\Helpers\SanitizationHelper;
+use TrilBDev\WikiPress\Includes\Functions\Helpers\PermissionHelper;
+use TrilBDev\WikiPress\Includes\Plugins\InternalWiki\Includes\Templates\InternalWikiFields;
 
 final class Settings {
+    /**
+     * Loader helper instance.
+     *
+     * @var LoaderHelper
+     */
     private LoaderHelper $loader;
+    /**
+     * Meta keys for storing internal wiki settings.
+     */
     private const META_ENABLED = '_wikipress_internal_enabled';
+    /**
+     * Meta keys for storing internal wiki settings.
+     */
     private const META_ACCESS_TYPE = '_wikipress_internal_access_type';
+    /**
+     * Meta keys for storing internal wiki settings.
+     */
     private const META_ROLES = '_wikipress_internal_roles';
+    /**
+     * Meta keys for storing internal wiki settings.
+     */
     private const META_PERMISSIONS = '_wikipress_internal_permissions';
-
+    /**
+     * Constructor for the Settings class.
+     *
+     * @param LoaderHelper|null $loader Optional LoaderHelper instance. If not provided, a new instance will be created.
+     */
     public function __construct( ?LoaderHelper $loader = null ) {
+
         $this->loader = $loader ?? new LoaderHelper();
+
     }
 
     /**
@@ -42,53 +68,36 @@ final class Settings {
 
     public function render_fields( string $fields, ?\WP_Post $post = null ): string {
         $enabled = $post ? (bool) get_post_meta( $post->ID, self::META_ENABLED, true ) : false;
-        $access_type = $post ? (string) get_post_meta( $post->ID, self::META_ACCESS_TYPE, true ) : 'logged_in_user';
-        $roles = $post ? (array) get_post_meta( $post->ID, self::META_ROLES, true ) : [];
-        $permissions = $post ? (array) get_post_meta( $post->ID, self::META_PERMISSIONS, true ) : [];
+        $access_type = $post ? (string) get_post_meta( $post->ID, self::META_ACCESS_TYPE, true ) : BaseSettings::get_key( 'default_access_type', 'logged_in_user' );
+        $roles = $post ? (array) get_post_meta( $post->ID, self::META_ROLES, true ) : (array) BaseSettings::get( 'default_roles', [] );
+        $permissions = $post ? (array) get_post_meta( $post->ID, self::META_PERMISSIONS, true ) : (array) BaseSettings::get( 'default_permissions', [] );
         $access_types = [
             'logged_in_user' => __( 'Logged in user', 'internal-wiki-plugin' ),
             'roles' => __( 'Roles', 'internal-wiki-plugin' ),
             'permissions' => __( 'Permissions', 'internal-wiki-plugin' ),
         ];
+        $role_options = [];
+        foreach ( wp_roles()->roles as $role_key => $role ) {
+            $role_options[ $role_key ] = translate_user_role( $role['name'] );
+        }
+        $permission_items = array_map( static fn( string $permission ): array => [ 'value' => $permission, 'label' => $permission ], $this->permissions() );
+        $selected_permission_items = array_map( static fn( string $permission ): array => [ 'value' => $permission, 'label' => $permission ], $permissions );
 
-        ob_start();
-        ?>
-        <div class="wikipress-internal-wiki-fields row g-3" data-internal-wiki-fields>
-            <div class="col-12">
-                <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch" id="wikipress-internal-enabled" name="internal_wiki_enabled" value="1" <?php checked( $enabled ); ?> data-internal-wiki-toggle>
-                    <label class="form-check-label" for="wikipress-internal-enabled"><?php esc_html_e( 'Make this Wiki Internal', 'internal-wiki-plugin' ); ?></label>
-                </div>
-            </div>
-            <div class="col-md-4" data-internal-wiki-options>
-                <label class="form-label" for="wikipress-internal-access-type"><?php esc_html_e( 'Limit access by', 'internal-wiki-plugin' ); ?></label>
-                <select class="form-select" id="wikipress-internal-access-type" name="internal_wiki_access_type" data-internal-wiki-access-type>
-                    <?php foreach ( $access_types as $value => $label ) : ?>
-                        <option value="<?php echo esc_attr( $value ); ?>" <?php selected( $access_type, $value ); ?>><?php echo esc_html( $label ); ?></option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
-            <div class="col-md-4" data-internal-wiki-roles>
-                <label class="form-label" for="wikipress-internal-roles"><?php esc_html_e( 'Roles', 'internal-wiki-plugin' ); ?></label>
-                <select class="form-select" id="wikipress-internal-roles" name="internal_wiki_role">
-                    <?php foreach ( wp_roles()->roles as $role_key => $role ) : ?>
-                        <option value="<?php echo esc_attr( $role_key ); ?>" <?php selected( in_array( $role_key, $roles, true ) ); ?>><?php echo esc_html( translate_user_role( $role['name'] ) ); ?></option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
-            <div class="col-md-4" data-internal-wiki-permissions>
-                <label class="form-label" for="wikipress-internal-permissions"><?php esc_html_e( 'Permissions', 'internal-wiki-plugin' ); ?></label>
-                <input class="form-control" id="wikipress-internal-permissions" type="text" autocomplete="off" data-bootstrap-search="permissions" data-items="<?php echo esc_attr( wp_json_encode( array_map( static fn( string $permission ): array => [ 'value' => $permission, 'label' => $permission ], $this->permissions() ) ) ); ?>" data-selected-items="<?php echo esc_attr( wp_json_encode( array_map( static fn( string $permission ): array => [ 'value' => $permission, 'label' => $permission ], $permissions ) ) ); ?>">
-                <div data-bootstrap-search-values></div>
-            </div>
-        </div>
-        <?php
-        return (string) ob_get_clean();
+        return InternalWikiFields::render( [
+            'enabled' => $enabled,
+            'access_type' => $access_type,
+            'access_types' => $access_types,
+            'role_options' => $role_options,
+            'roles' => $roles,
+            'permission_items' => $permission_items,
+            'selected_permission_items' => $selected_permission_items,
+        ] );
     }
 
     public function sanitize_payload( array $payload, ?\WP_Post $post = null ): array {
         $payload['internal_wiki_enabled'] = ! empty( $payload['internal_wiki_enabled'] );
-        $payload['internal_wiki_access_type'] = in_array( $payload['internal_wiki_access_type'] ?? '', [ 'logged_in_user', 'roles', 'permissions' ], true ) ? sanitize_key( $payload['internal_wiki_access_type'] ) : 'logged_in_user';
+        $access_type = SanitizationHelper::key( $payload['internal_wiki_access_type'] ?? '' );
+        $payload['internal_wiki_access_type'] = in_array( $access_type, [ 'logged_in_user', 'roles', 'permissions' ], true ) ? $access_type : 'logged_in_user';
         $payload['internal_wiki_roles'] = $this->valid_roles( $payload['internal_wiki_role'] ?? $payload['internal_wiki_roles'] ?? [] );
         $payload['internal_wiki_permissions'] = $this->valid_permissions( $payload['internal_wiki_permissions'] ?? [] );
         if ( ! $payload['internal_wiki_enabled'] ) {
@@ -101,7 +110,7 @@ final class Settings {
 
     public function save_access( int $post_id, array $payload ): void {
         update_post_meta( $post_id, self::META_ENABLED, ! empty( $payload['internal_wiki_enabled'] ) );
-        update_post_meta( $post_id, self::META_ACCESS_TYPE, sanitize_key( $payload['internal_wiki_access_type'] ?? 'logged_in_user' ) );
+        update_post_meta( $post_id, self::META_ACCESS_TYPE, SanitizationHelper::key( $payload['internal_wiki_access_type'] ?? 'logged_in_user', 'logged_in_user' ) );
         update_post_meta( $post_id, self::META_ROLES, $this->valid_roles( $payload['internal_wiki_roles'] ?? [] ) );
         update_post_meta( $post_id, self::META_PERMISSIONS, $this->valid_permissions( $payload['internal_wiki_permissions'] ?? [] ) );
     }
@@ -138,7 +147,7 @@ final class Settings {
 
         if ( 'permissions' === $access_type ) {
             foreach ( (array) get_post_meta( $wiki_id, self::META_PERMISSIONS, true ) as $permission ) {
-                if ( current_user_can( $permission ) ) {
+                if ( PermissionHelper::can( $permission ) ) {
                     return true;
                 }
             }
@@ -164,12 +173,12 @@ final class Settings {
     }
 
     private function valid_roles( $roles ): array {
-        $roles = is_array( $roles ) ? array_map( 'sanitize_key', $roles ) : [];
+        $roles = is_array( $roles ) ? array_map( [ SanitizationHelper::class, 'key' ], $roles ) : [];
         return array_values( array_intersect( array_unique( $roles ), array_keys( wp_roles()->roles ) ) );
     }
 
     private function valid_permissions( $permissions ): array {
-        $permissions = is_array( $permissions ) ? array_map( 'sanitize_key', $permissions ) : [];
+        $permissions = is_array( $permissions ) ? array_map( [ SanitizationHelper::class, 'key' ], $permissions ) : [];
         return array_values( array_intersect( array_unique( $permissions ), $this->permissions() ) );
     }
 }

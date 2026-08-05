@@ -7,6 +7,7 @@
  */
 namespace TrilBDev\WikiPress\Includes\Plugins\FontAwesome\Includes\Settings;
 use TrilBDev\WikiPress\Includes\Settings\Settings as BaseSettings;
+use TrilBDev\WikiPress\Includes\Functions\Helpers\SanitizationHelper;
 
 final class Settings {
     public function register(): void {
@@ -18,10 +19,38 @@ final class Settings {
     }
 
     public static function source(): string {
-        return BaseSettings::get_key( 'fontawesome_source', 'base' );
+        $source = BaseSettings::get_key( 'fontawesome_source', 'base' );
+        return in_array( $source, [ 'base', 'kit' ], true ) ? $source : 'base';
     }
 
     public static function kit_id(): string {
         return BaseSettings::get_string( 'fontawesome_kit_id' );
+    }
+
+    public static function version(): string {
+        return BaseSettings::get_string( 'fontawesome_version', '7.0.0' );
+    }
+
+    public function get_settings_page(): array {
+        return [
+            'slug' => 'fontawesome',
+            'label' => __( 'Font Awesome', 'wikipress' ),
+            'title' => __( 'Font Awesome integration', 'wikipress' ),
+            'fields' => [
+                [ 'key' => 'fontawesome_source', 'label' => __( 'Icon source', 'wikipress' ), 'type' => 'select', 'options' => [ 'base' => __( 'Base package', 'wikipress' ), 'kit' => __( 'Font Awesome Kit', 'wikipress' ) ], 'default' => 'base' ],
+                [ 'key' => 'fontawesome_kit_id', 'label' => __( 'Kit ID', 'wikipress' ), 'type' => 'text', 'default' => '' ],
+                [ 'key' => 'fontawesome_version', 'label' => __( 'Base package version', 'wikipress' ), 'type' => 'text', 'default' => '7.0.0' ],
+            ],
+        ];
+    }
+
+    public function sanitize( $input ): array {
+        $input = is_array( $input ) ? $input : [];
+        $source = SanitizationHelper::key( $input['fontawesome_source'] ?? 'base', 'base' );
+        $input['fontawesome_source'] = in_array( $source, [ 'base', 'kit' ], true ) ? $source : 'base';
+        $input['fontawesome_kit_id'] = SanitizationHelper::text( $input['fontawesome_kit_id'] ?? '' );
+        $input['fontawesome_version'] = SanitizationHelper::text( $input['fontawesome_version'] ?? '7.0.0', '7.0.0' );
+        BaseSettings::set_group( 'fontawesome', $input );
+        return $input;
     }
 }

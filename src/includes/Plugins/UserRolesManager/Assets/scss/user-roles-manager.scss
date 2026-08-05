@@ -1,0 +1,17 @@
+.wikipress-role-card {
+  border-color: #dcdcde;
+}
+
+.wikipress-capability-card {
+  border-color: #dcdcde;
+  cursor: pointer;
+}
+
+.wikipress-capability-card:hover,
+.wikipress-capability-card:has(input:focus-visible) {
+  border-color: #2271b1;
+}
+
+.wikipress-role-step[data-role-step="capabilities"] {
+  min-height: 20rem;
+}

@@ -7,7 +7,10 @@ const entries = {
     './src/Assets/js/bootstrap.js',
     './src/Assets/scss/bootstrap.scss',
   ],
-  bootstrapsearch: './src/Assets/js/bootstrapsearch.js',
+  bootstrapsearch: [
+    './src/Assets/js/bootstrapsearch.js',
+    './src/Assets/js/bootstrapsearch-init.js',
+  ],
 };
 
 const fontAwesomeEntries = {
@@ -26,6 +29,13 @@ const elementorEntries = {
 
 const gutenburgEntries = {
   blocks: './src/includes/Plugins/Gutenburg/Assets/js/blocks.js',
+};
+
+const userRolesManagerEntries = {
+  'user-roles-manager': [
+    './src/includes/Plugins/UserRolesManager/Assets/js/user-roles-manager.js',
+    './src/includes/Plugins/UserRolesManager/Assets/scss/user-roles-manager.scss',
+  ],
 };
 
 const jsDirectory = path.resolve(__dirname, 'src/Assets/js');
@@ -120,6 +130,18 @@ module.exports = [
     entry: gutenburgEntries,
     output: {
       path: path.resolve(__dirname, 'src/includes/Plugins/Gutenburg/Assets/dist'),
+      filename: 'js/[name].js',
+      clean: true,
+    },
+    plugins: [
+      new MiniCssExtractPlugin({ filename: 'css/[name].css' }),
+    ],
+  },
+  {
+    ...shared,
+    entry: userRolesManagerEntries,
+    output: {
+      path: path.resolve(__dirname, 'src/includes/Plugins/UserRolesManager/Assets/dist'),
       filename: 'js/[name].js',
       clean: true,
     },
