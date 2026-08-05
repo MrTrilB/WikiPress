@@ -12,7 +12,7 @@
 
 		&:hover,
 		&:focus-visible {
-			border-color: var(--wikipress-teal);
+			border-color: var(--wikipress-blue);
 			transform: translateY(-2px);
 			box-shadow: var(--bs-box-shadow) !important;
 		}
@@ -28,9 +28,9 @@
 
 	.wikipress-summary-icon {
 		align-items: center;
-		background: #e5f5f2;
+		background: #e8f0ff;
 		border-radius: 0.5rem;
-		color: var(--wikipress-teal);
+		color: var(--wikipress-blue);
 		display: inline-flex;
 		font-size: 1.25rem;
 		height: 2.5rem;
@@ -39,15 +39,15 @@
 	}
 
 	.wikipress-welcome-card {
-		background: linear-gradient(125deg, #e5f5f2 0%, #fff 72%);
-		border-left: 4px solid var(--wikipress-teal) !important;
+		background: linear-gradient(125deg, #e8f0ff 0%, #fff 72%);
+		border-left: 4px solid var(--wikipress-blue) !important;
 	}
 
 	.wikipress-recent-card .list-group-item-action {
 		transition: background-color 140ms ease, padding-left 140ms ease;
 
 		&:hover,
-		&:focus-visible { background: #f0f8f7; padding-left: 1.6rem !important; }
+		&:focus-visible { background: #f2f6ff; padding-left: 1.6rem !important; }
 	}
 
 	.wikipress-resource-card {
@@ -56,7 +56,7 @@
 		gap: 0.55rem;
 		padding: 1.25rem;
 
-		.dashicons { color: var(--wikipress-teal); font-size: 1.35rem; height: 1.35rem; width: 1.35rem; }
+		.dashicons { color: var(--wikipress-blue); font-size: 1.35rem; height: 1.35rem; width: 1.35rem; }
 	}
 
 	.wikipress-count-ready {

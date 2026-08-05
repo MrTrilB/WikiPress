@@ -1,7 +1,7 @@
 .wikipress-admin {
 	--wikipress-ink: #152238;
 	--wikipress-navy: #102a43;
-	--wikipress-teal: #0f766e;
+	--wikipress-blue: #2563eb;
 	--wikipress-paper: #f6f8fb;
 	--wikipress-line: #dce4ed;
 	--wikipress-header: #eaf3f7;
@@ -39,7 +39,7 @@
 		.navbar-brand {
 			width: 250px;
 			object-fit: contain;
-			margin-left: 25px;
+			margin-left: 35px;
 		}
 
 		.nav-link {
@@ -51,7 +51,7 @@
 			&:hover,
 			&:focus-visible {
 				background: rgba(255, 255, 255, 0.72);
-				color: var(--wikipress-teal);
+				color: var(--wikipress-blue);
 			}
 		}
 
@@ -124,8 +124,8 @@
 		&:hover,
 		&:focus-visible,
 		&.active {
-			background: #e5f5f2;
-			color: var(--wikipress-teal);
+			background: #e8f0ff;
+			color: var(--wikipress-blue);
 		}
 
 		&:hover { transform: translateX(2px); }
@@ -172,9 +172,9 @@
 		&:hover,
 		&:focus-visible,
 		&.active {
-			background: #e5f5f2;
-			border-left-color: var(--wikipress-teal);
-			color: var(--wikipress-teal);
+			background: #e8f0ff;
+			border-left-color: var(--wikipress-blue);
+			color: var(--wikipress-blue);
 		}
 	}
 
