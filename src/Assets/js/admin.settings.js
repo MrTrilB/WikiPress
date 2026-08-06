@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('[data-wikipress-settings-tab]').forEach((link) => {
       const active = link.dataset.wikipressSettingsTab === tab && (!link.dataset.wikipressSettingsSection || link.dataset.wikipressSettingsSection === section);
       link.classList.toggle('active', active);
+      link.setAttribute('aria-selected', active ? 'true' : 'false');
       if (active) link.setAttribute('aria-current', 'page');
       else link.removeAttribute('aria-current');
     });

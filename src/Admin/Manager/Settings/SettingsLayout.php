@@ -4,7 +4,6 @@ namespace TrilBDev\WikiPress\Admin\Manager\Settings;
 
 use TrilBDev\WikiPress\Includes\Functions\Helpers\FormFieldHelper;
 use TrilBDev\WikiPress\Includes\Functions\Helpers\SanitizationHelper;
-use TrilBDev\WikiPress\Includes\Functions\Helpers\UrlHelper;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -28,8 +27,8 @@ final class SettingsLayout {
 		echo FormFieldHelper::input( 'wikipress_layout[layout_section]', $section, [ 'type' => 'hidden' ] );
 		echo '<ul class="nav nav-tabs wikipress-layout-tabs mb-4" role="tablist">';
 		foreach ( $sections as $slug => $label ) {
-			$url = UrlHelper::admin_page( 'wikipress-settings', [ 'tab' => 'layout' ] ) . '#layout-' . $slug;
-			echo '<li class="nav-item" role="presentation"><a class="nav-link ' . ( $section === $slug ? 'active' : '' ) . '" data-wikipress-settings-tab="layout" data-wikipress-settings-section="' . esc_attr( $slug ) . '" href="' . esc_url( $url ) . '">' . esc_html( $label ) . '</a></li>';
+			$target = 'layout-' . $slug;
+			echo '<li class="nav-item" role="presentation"><a id="wikipress-tab-' . esc_attr( $target ) . '" class="nav-link ' . ( $section === $slug ? 'active' : '' ) . '" data-bs-toggle="tab" role="tab" aria-controls="' . esc_attr( $target ) . '" aria-selected="' . ( $section === $slug ? 'true' : 'false' ) . '" data-wikipress-settings-tab="layout" data-wikipress-settings-section="' . esc_attr( $slug ) . '" href="#' . esc_attr( $target ) . '">' . esc_html( $label ) . '</a></li>';
 		}
 		echo '</ul>';
 
