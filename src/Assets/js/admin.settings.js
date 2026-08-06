@@ -27,6 +27,8 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   const loadTab = (tab, section, updateHash = true) => {
+    const currentContent = panel.querySelector('.wikipress-settings-tab-content');
+    if (currentContent) currentContent.classList.remove('show');
     panel.setAttribute('aria-busy', 'true');
     const body = new URLSearchParams({ action: 'wikipress_load_settings_tab', nonce: config.nonce, tab, layout_section: section });
     fetch(config.ajaxUrl, { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }, body })
@@ -39,6 +41,8 @@ document.addEventListener('DOMContentLoaded', () => {
         setActive(response.data.tab, response.data.layout_section);
         if (updateHash) window.history.pushState({}, '', `${window.location.pathname}${window.location.search}#${response.data.tab === 'layout' ? `layout-${response.data.layout_section}` : response.data.tab}`);
         bindForms();
+        const nextContent = panel.querySelector('.wikipress-settings-tab-content');
+        if (nextContent) requestAnimationFrame(() => nextContent.classList.add('show'));
       })
       .catch(() => { window.location.reload(); })
       .finally(() => panel.removeAttribute('aria-busy'));

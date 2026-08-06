@@ -79,6 +79,7 @@ final class SettingsManager extends Manager {
         $tab = $this->normalize_tab( $tab );
         $groups = Settings::get_all();
         $values = $groups[ $tab ] ?? [];
+        echo '<div class="wikipress-settings-tab-content fade show" role="tabpanel">';
         $tab_context = [
             'general' => [ 'description' => __( 'Configure WikiPress names, URL slugs, and permalink settings.', 'wikipress' ), 'tooltip' => __( 'These settings affect how WikiPress content is identified and linked throughout the site.', 'wikipress' ) ],
             'layout' => [ 'description' => __( 'Choose which navigation and page layout features WikiPress displays.', 'wikipress' ), 'tooltip' => __( 'Layout settings control the visitor-facing WikiPress interface.', 'wikipress' ) ],
@@ -92,6 +93,7 @@ final class SettingsManager extends Manager {
         }
         if ( in_array( $tab, [ 'plugins', 'third-party' ], true ) ) {
             $this->plugins_page->render( $tab );
+            echo '</div>';
             return;
         }
         echo '<form method="post" action="options.php" class="wikipress-settings-form card shadow-sm">';
@@ -114,6 +116,7 @@ final class SettingsManager extends Manager {
         if ( 'tools' === $tab ) {
             $this->tools_page->render_import_form();
         }
+        echo '</div>';
     }
 
     private function normalize_tab( string $tab ): string {
