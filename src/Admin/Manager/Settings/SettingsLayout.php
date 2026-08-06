@@ -24,13 +24,13 @@ final class SettingsLayout {
 			'page' => __( 'Wiki Page', 'wikipress' ),
 		];
 		$section = isset( $sections[ $section ] ) ? $section : 'general';
-		echo FormFieldHelper::input( 'wikipress_layout[layout_section]', $section, [ 'type' => 'hidden' ] );
-		echo '<ul class="nav nav-tabs wikipress-layout-tabs mb-4" role="tablist">';
+		echo '<tr class="wikipress-layout-state"><td colspan="2">' . FormFieldHelper::input( 'wikipress_layout[layout_section]', $section, [ 'type' => 'hidden' ] ) . '</td></tr>';
+		echo '<tr class="wikipress-layout-navigation"><td colspan="2"><ul class="nav nav-tabs wikipress-layout-tabs mb-0" role="tablist">';
 		foreach ( $sections as $slug => $label ) {
 			$target = 'layout-' . $slug;
 			echo '<li class="nav-item" role="presentation"><a id="wikipress-tab-' . esc_attr( $target ) . '" class="nav-link ' . ( $section === $slug ? 'active' : '' ) . '" role="tab" aria-controls="' . esc_attr( $target ) . '" aria-selected="' . ( $section === $slug ? 'true' : 'false' ) . '" data-wikipress-settings-tab="layout" data-wikipress-settings-section="' . esc_attr( $slug ) . '" href="#' . esc_attr( $target ) . '">' . esc_html( $label ) . '</a></li>';
 		}
-		echo '</ul>';
+		echo '</ul></td></tr>';
 
 		$fields = $this->fields( $section );
 		foreach ( $fields as $key => $field ) {
