@@ -28,8 +28,23 @@ final class Settings {
             'label' => __( 'Demo', 'wikipress' ),
             'title' => __( 'Demo plugin settings', 'wikipress' ),
             'fields' => [
-                [ 'key' => 'demo_setting_1', 'label' => __( 'Demo text setting', 'wikipress' ), 'type' => 'text', 'default' => '' ],
-                [ 'key' => 'demo_setting_2', 'label' => __( 'Enable demo setting', 'wikipress' ), 'default' => false ],
+                [
+                    'key' => 'demo_setting_1',
+                    'label' => __( 'Demo text setting', 'wikipress' ),
+                    'description' => __( 'A short value used to demonstrate plugin setting metadata.', 'wikipress' ),
+                    'tooltip' => __( 'This tooltip uses the default question icon.', 'wikipress' ),
+                    'type' => 'text',
+                    'default' => '',
+                ],
+                [
+                    'key' => 'demo_setting_2',
+                    'label' => __( 'Enable demo setting', 'wikipress' ),
+                    'description' => __( 'Toggle the second Demo setting on or off.', 'wikipress' ),
+                    'tooltip' => __( 'This tooltip uses the info icon and demonstrates a custom icon override.', 'wikipress' ),
+                    'tooltip_type' => 'info',
+                    'tooltip_icon' => 'fa-circle-exclamation',
+                    'default' => false,
+                ],
             ],
         ];
     }

@@ -38,13 +38,13 @@ final class Settings {
             'label' => __( 'Gutenberg', 'wikipress' ),
             'title' => __( 'Gutenberg integration', 'wikipress' ),
             'fields' => [
-                [ 'key' => 'gutenburg_enabled', 'label' => __( 'Enable WikiPress Gutenberg blocks', 'wikipress' ), 'default' => true ],
-                [ 'key' => 'gutenburg_block_wiki_breadcrumbs', 'label' => __( 'Wiki Breadcrumbs', 'wikipress' ), 'default' => true ],
-                [ 'key' => 'gutenburg_block_wiki_list', 'label' => __( 'Wiki List', 'wikipress' ), 'default' => true ],
-                [ 'key' => 'gutenburg_block_wiki_reading_time', 'label' => __( 'Wiki Reading Time', 'wikipress' ), 'default' => true ],
-                [ 'key' => 'gutenburg_block_wiki_related', 'label' => __( 'Wiki Related', 'wikipress' ), 'default' => true ],
-                [ 'key' => 'gutenburg_block_wiki_toc', 'label' => __( 'Wiki Table of Contents', 'wikipress' ), 'default' => true ],
-                [ 'key' => 'gutenburg_block_wiki_search_modal', 'label' => __( 'Wiki Search Modal', 'wikipress' ), 'default' => true ],
+                [ 'key' => 'gutenburg_enabled', 'label' => __( 'Enable WikiPress Gutenberg blocks', 'wikipress' ), 'description' => __( 'Enable the WikiPress blocks available in the block editor.', 'wikipress' ), 'tooltip' => __( 'Disable this to remove WikiPress blocks from the Gutenberg editor.', 'wikipress' ), 'default' => true ],
+                [ 'key' => 'gutenburg_block_wiki_breadcrumbs', 'label' => __( 'Wiki Breadcrumbs', 'wikipress' ), 'description' => __( 'Show the current wiki location and hierarchy.', 'wikipress' ), 'tooltip' => __( 'Adds breadcrumb navigation to block-based layouts.', 'wikipress' ), 'default' => true ],
+                [ 'key' => 'gutenburg_block_wiki_list', 'label' => __( 'Wiki List', 'wikipress' ), 'description' => __( 'Show a list of WikiPress content.', 'wikipress' ), 'tooltip' => __( 'Use this block to display wiki entries in a page or post.', 'wikipress' ), 'default' => true ],
+                [ 'key' => 'gutenburg_block_wiki_reading_time', 'label' => __( 'Wiki Reading Time', 'wikipress' ), 'description' => __( 'Show the estimated reading time for a wiki page.', 'wikipress' ), 'tooltip' => __( 'The estimate is based on the page content.', 'wikipress' ), 'default' => true ],
+                [ 'key' => 'gutenburg_block_wiki_related', 'label' => __( 'Wiki Related', 'wikipress' ), 'description' => __( 'Show related wiki content.', 'wikipress' ), 'tooltip' => __( 'Related content helps visitors continue exploring the wiki.', 'wikipress' ), 'default' => true ],
+                [ 'key' => 'gutenburg_block_wiki_toc', 'label' => __( 'Wiki Table of Contents', 'wikipress' ), 'description' => __( 'Show a table of contents for wiki page headings.', 'wikipress' ), 'tooltip' => __( 'The table of contents is generated from headings in the page.', 'wikipress' ), 'tooltip_type' => 'info', 'default' => true ],
+                [ 'key' => 'gutenburg_block_wiki_search_modal', 'label' => __( 'Wiki Search Modal', 'wikipress' ), 'description' => __( 'Add a modal search interface for wiki content.', 'wikipress' ), 'tooltip' => __( 'Visitors can open the modal and search without leaving the page.', 'wikipress' ), 'default' => true ],
             ],
         ];
     }

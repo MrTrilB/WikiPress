@@ -365,12 +365,41 @@ final class FormFieldHelper {
     public static function label( string $for, string $text, array $options = [] ): string {
 
         $attributes = array_merge( $options['attributes'] ?? [], $options );
-        unset( $attributes['attributes'], $attributes['class'] );
+        unset( $attributes['attributes'], $attributes['class'], $attributes['key'], $attributes['label'], $attributes['type'], $attributes['default'], $attributes['options'], $attributes['description'], $attributes['tooltip'], $attributes['tooltip_icon'], $attributes['tooltip_type'] );
         $attributes['class'] = self::classes( [ 'form-label', $options['class'] ?? '' ] );
         $attributes['for'] = $for;
 
-        return '<label ' . self::attributes_to_string( $attributes ) . '>' . esc_html( $text ) . '</label>';
+        $html = '<label ' . self::attributes_to_string( $attributes ) . '>' . esc_html( $text ) . '</label>';
 
+        if ( ! empty( $options['tooltip'] ) ) {
+            $tooltip_type = in_array( $options['tooltip_type'] ?? 'question', [ 'question', 'info' ], true ) ? $options['tooltip_type'] : 'question';
+            $default_icon = 'info' === $tooltip_type ? 'fa-circle-info' : 'fa-circle-question';
+            $icon = self::icon_class( $options['tooltip_icon'] ?? $default_icon, $default_icon );
+            $html .= ' <button type="button" class="btn btn-link p-0 align-baseline wikipress-field-tooltip" data-bs-toggle="tooltip" data-bs-placement="top" title="' . esc_attr( (string) $options['tooltip'] ) . '" aria-label="' . esc_attr( (string) $options['tooltip'] ) . '"><i class="' . esc_attr( $icon ) . '" aria-hidden="true"></i></button>';
+        }
+
+        if ( ! empty( $options['description'] ) ) {
+            $html .= '<div class="form-text">' . esc_html( (string) $options['description'] ) . '</div>';
+        }
+
+        return $html;
+
+    }
+
+    /**
+     * Normalize a Font Awesome icon class while providing a fallback icon.
+     *
+     * @param string $icon     Icon class or icon name.
+     * @param string $fallback Fallback icon name.
+     * @return string Complete Font Awesome icon class list.
+     */
+    private static function icon_class( string $icon, string $fallback ): string {
+        $icon = trim( $icon );
+        if ( '' === $icon ) {
+            $icon = $fallback;
+        }
+
+        return str_contains( $icon, 'fa-' ) ? ( str_contains( $icon, 'fa-solid' ) || str_contains( $icon, 'fa-regular' ) || str_contains( $icon, 'fa-brands' ) ? $icon : 'fa-solid ' . $icon ) : 'fa-solid fa-' . sanitize_html_class( $icon );
     }
     /**
      * Render a select option.

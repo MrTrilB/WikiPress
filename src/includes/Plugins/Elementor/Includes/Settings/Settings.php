@@ -44,13 +44,13 @@ final class Settings {
 			'label' => __( 'Elementor', 'wikipress' ),
 			'title' => __( 'Elementor integration', 'wikipress' ),
 			'fields' => [
-				[ 'key' => 'elementor_enabled', 'label' => __( 'Enable WikiPress Elementor widgets', 'wikipress' ), 'default' => true ],
-				[ 'key' => 'elementor_widget_wiki_breadcrumbs', 'label' => __( 'Wiki Breadcrumbs', 'wikipress' ), 'default' => true ],
-				[ 'key' => 'elementor_widget_wiki_list', 'label' => __( 'Wiki List', 'wikipress' ), 'default' => true ],
-				[ 'key' => 'elementor_widget_wiki_reading_time', 'label' => __( 'Wiki Reading Time', 'wikipress' ), 'default' => true ],
-				[ 'key' => 'elementor_widget_wiki_related', 'label' => __( 'Wiki Related', 'wikipress' ), 'default' => true ],
-				[ 'key' => 'elementor_widget_wiki_toc', 'label' => __( 'Wiki Table of Contents', 'wikipress' ), 'default' => true ],
-				[ 'key' => 'elementor_widget_wiki_search_modal', 'label' => __( 'Wiki Search Modal', 'wikipress' ), 'default' => true ],
+				[ 'key' => 'elementor_enabled', 'label' => __( 'Enable WikiPress Elementor widgets', 'wikipress' ), 'description' => __( 'Enable the WikiPress widgets available in Elementor.', 'wikipress' ), 'tooltip' => __( 'Disable this to remove WikiPress widgets from the Elementor editor.', 'wikipress' ), 'default' => true ],
+				[ 'key' => 'elementor_widget_wiki_breadcrumbs', 'label' => __( 'Wiki Breadcrumbs', 'wikipress' ), 'description' => __( 'Show the current wiki location and hierarchy.', 'wikipress' ), 'tooltip' => __( 'Adds breadcrumb navigation to Elementor layouts.', 'wikipress' ), 'default' => true ],
+				[ 'key' => 'elementor_widget_wiki_list', 'label' => __( 'Wiki List', 'wikipress' ), 'description' => __( 'Show a list of WikiPress content.', 'wikipress' ), 'tooltip' => __( 'Use this widget to display wiki entries in an Elementor layout.', 'wikipress' ), 'default' => true ],
+				[ 'key' => 'elementor_widget_wiki_reading_time', 'label' => __( 'Wiki Reading Time', 'wikipress' ), 'description' => __( 'Show the estimated reading time for a wiki page.', 'wikipress' ), 'tooltip' => __( 'The estimate is based on the page content.', 'wikipress' ), 'default' => true ],
+				[ 'key' => 'elementor_widget_wiki_related', 'label' => __( 'Wiki Related', 'wikipress' ), 'description' => __( 'Show related wiki content.', 'wikipress' ), 'tooltip' => __( 'Related content helps visitors continue exploring the wiki.', 'wikipress' ), 'default' => true ],
+				[ 'key' => 'elementor_widget_wiki_toc', 'label' => __( 'Wiki Table of Contents', 'wikipress' ), 'description' => __( 'Show a table of contents for wiki page headings.', 'wikipress' ), 'tooltip' => __( 'The table of contents is generated from headings in the page.', 'wikipress' ), 'tooltip_type' => 'info', 'default' => true ],
+				[ 'key' => 'elementor_widget_wiki_search_modal', 'label' => __( 'Wiki Search Modal', 'wikipress' ), 'description' => __( 'Add a modal search interface for wiki content.', 'wikipress' ), 'tooltip' => __( 'Visitors can open the modal from the widget and search without leaving the page.', 'wikipress' ), 'default' => true ],
 			],
 		];
 	}

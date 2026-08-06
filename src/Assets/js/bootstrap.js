@@ -4,3 +4,9 @@ import * as bootstrap from 'bootstrap';
 if (typeof window !== 'undefined') {
   window.bootstrap = bootstrap;
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach((element) => {
+    bootstrap.Tooltip.getOrCreateInstance(element);
+  });
+});

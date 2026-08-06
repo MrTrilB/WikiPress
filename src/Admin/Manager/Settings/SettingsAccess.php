@@ -17,12 +17,18 @@ final class SettingsAccess {
 	 * @return void
 	 */
 	public function render( array $values ): void {
-		foreach ( [ 'create_wikis' => 'Who can create wikis?', 'write_pages' => 'Who can write wiki pages?', 'view_analytics' => 'Who can check analytics?', 'manage_plugins' => 'Who can manage plugins?' ] as $key => $label ) {
+		$fields = [
+			'create_wikis' => [ 'label' => __( 'Who can create wikis?', 'wikipress' ), 'description' => __( 'Choose the minimum capability required to create WikiPress wikis.', 'wikipress' ), 'tooltip' => __( 'Users without this capability cannot create new wikis.', 'wikipress' ) ],
+			'write_pages' => [ 'label' => __( 'Who can write wiki pages?', 'wikipress' ), 'description' => __( 'Choose the minimum capability required to create or edit wiki pages.', 'wikipress' ), 'tooltip' => __( 'This controls editing access to wiki page content.', 'wikipress' ) ],
+			'view_analytics' => [ 'label' => __( 'Who can check analytics?', 'wikipress' ), 'description' => __( 'Choose the minimum capability required to view WikiPress analytics.', 'wikipress' ), 'tooltip' => __( 'Analytics data is shown only to users who meet this capability.', 'wikipress' ), 'tooltip_type' => 'info' ],
+			'manage_plugins' => [ 'label' => __( 'Who can manage plugins?', 'wikipress' ), 'description' => __( 'Choose the minimum capability required to manage WikiPress plugins.', 'wikipress' ), 'tooltip' => __( 'Use a trusted administrator-level capability for plugin management.', 'wikipress' ), 'tooltip_icon' => 'fa-shield-halved' ],
+		];
+		foreach ( $fields as $key => $field ) {
 			$key = SanitizationHelper::key( $key );
 			$id = 'wikipress-access-' . $key;
 			$name = 'wikipress_access[' . $key . ']';
 			$options = [ 'manage_options' => 'Administrators', 'edit_posts' => 'Editors', 'publish_posts' => 'Authors' ];
-			echo '<tr><th scope="row">' . FormFieldHelper::label( $id, $label ) . '</th><td>' . FormFieldHelper::select( $name, $options, SanitizationHelper::key( $values[ $key ] ?? 'manage_options', 'manage_options' ), [ 'id' => $id ] ) . '</td></tr>';
+			echo '<tr><th scope="row">' . FormFieldHelper::label( $id, $field['label'], $field ) . '</th><td>' . FormFieldHelper::select( $name, $options, SanitizationHelper::key( $values[ $key ] ?? 'manage_options', 'manage_options' ), [ 'id' => $id ] ) . '</td></tr>';
 		}
 	}
 }

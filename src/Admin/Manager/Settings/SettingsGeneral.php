@@ -17,11 +17,18 @@ final class SettingsGeneral {
 	 * @return void
 	 */
 	public function render( array $values ): void {
-		foreach ( [ 'root_name' => 'WikiPress Root Name', 'root_slug' => 'WikiPress Root Slug', 'category_slug' => 'Custom Category Slug', 'tag_slug' => 'Custom Tags Slug', 'permalink' => 'WikiPress Permalink' ] as $key => $label ) {
+		$fields = [
+			'root_name' => [ 'label' => __( 'WikiPress Root Name', 'wikipress' ), 'description' => __( 'The name used for the main WikiPress area.', 'wikipress' ), 'tooltip' => __( 'This name appears in the admin interface and generated titles.', 'wikipress' ) ],
+			'root_slug' => [ 'label' => __( 'WikiPress Root Slug', 'wikipress' ), 'description' => __( 'The URL slug for the WikiPress root.', 'wikipress' ), 'tooltip' => __( 'Use lowercase letters, numbers, and hyphens for the most reliable URLs.', 'wikipress' ) ],
+			'category_slug' => [ 'label' => __( 'Custom Category Slug', 'wikipress' ), 'description' => __( 'The URL slug used for WikiPress categories.', 'wikipress' ), 'tooltip' => __( 'Changing this value flushes the WordPress rewrite rules.', 'wikipress' ), 'tooltip_type' => 'info' ],
+			'tag_slug' => [ 'label' => __( 'Custom Tags Slug', 'wikipress' ), 'description' => __( 'The URL slug used for WikiPress tags.', 'wikipress' ), 'tooltip' => __( 'Changing this value flushes the WordPress rewrite rules.', 'wikipress' ), 'tooltip_type' => 'info' ],
+			'permalink' => [ 'label' => __( 'WikiPress Permalink', 'wikipress' ), 'description' => __( 'The permalink structure used by WikiPress content.', 'wikipress' ), 'tooltip' => __( 'Choose a structure that remains readable and stable after publication.', 'wikipress' ) ],
+		];
+		foreach ( $fields as $key => $field ) {
 			$key = SanitizationHelper::key( $key );
 			$id = 'wikipress-' . $key;
 			$name = 'wikipress_general[' . $key . ']';
-			echo '<tr><th scope="row">' . FormFieldHelper::label( $id, $label ) . '</th><td>' . FormFieldHelper::text_input( $name, SanitizationHelper::text( $values[ $key ] ?? '' ), [ 'id' => $id ] ) . '</td></tr>';
+			echo '<tr><th scope="row">' . FormFieldHelper::label( $id, $field['label'], $field ) . '</th><td>' . FormFieldHelper::text_input( $name, SanitizationHelper::text( $values[ $key ] ?? '' ), [ 'id' => $id ] ) . '</td></tr>';
 		}
 	}
 }
