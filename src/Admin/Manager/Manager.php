@@ -56,8 +56,7 @@ abstract class Manager {
                     <section class="col-12 col-lg flex-grow-1" aria-labelledby="wikipress-page-title">
                         <div class="wikipress-page-heading d-flex flex-wrap align-items-end justify-content-between gap-3 mb-4">
                             <div>
-                                <p class="text-uppercase small fw-semibold text-primary mb-2"><?php esc_html_e( 'WikiPress workspace', 'wikipress' ); ?></p>
-                                <h1 class="h2 mb-0" id="wikipress-page-title"><?php echo esc_html( $title ); ?></h1>
+                                <h1 class="h1 mb-0" id="wikipress-page-title"><?php echo esc_html( $title ); ?></h1>
                             </div>
                         </div>
         <?php

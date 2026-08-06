@@ -51,11 +51,13 @@ final class Sidebar {
 					<div id="wikipress-sidebar-groups">
 						<?php foreach ( $groups as $key => $group ) : $expanded = 'settings' === $key ? 'wikipress-settings' === $current : in_array( $current, array_keys( $group['items'] ), true ); ?>
 							<div class="wikipress-sidebar-group">
-								<button class="wikipress-sidebar-link wikipress-sidebar-group-link border-0 bg-transparent w-100 text-start <?php echo $expanded ? '' : 'collapsed'; ?>" type="button" data-bs-toggle="collapse" data-bs-target="#wikipress-group-<?php echo esc_attr( $key ); ?>" aria-expanded="<?php echo $expanded ? 'true' : 'false'; ?>" aria-controls="wikipress-group-<?php echo esc_attr( $key ); ?>">
-									<span class="wikipress-sidebar-icon" aria-hidden="true"><i class="<?php echo esc_attr( $group['icon'] ); ?>"></i></span><?php echo esc_html( $group['label'] ); ?><span class="ms-auto text-secondary"><?php echo count( $group['items'] ); ?></span>
-								</button>
+								<h3 class="wikipress-sidebar-group-heading">
+									<button class="wikipress-sidebar-link wikipress-sidebar-group-link border-0 bg-transparent w-100 text-start <?php echo $expanded ? '' : 'collapsed'; ?>" type="button" data-bs-toggle="collapse" data-bs-target="#wikipress-group-<?php echo esc_attr( $key ); ?>" aria-expanded="<?php echo $expanded ? 'true' : 'false'; ?>" aria-controls="wikipress-group-<?php echo esc_attr( $key ); ?>">
+										<span class="wikipress-sidebar-icon" aria-hidden="true"><i class="<?php echo esc_attr( $group['icon'] ); ?>"></i></span><?php echo esc_html( $group['label'] ); ?><span class="ms-auto text-secondary"><?php echo count( $group['items'] ); ?></span>
+									</button>
+								</h3>
 								<div id="wikipress-group-<?php echo esc_attr( $key ); ?>" class="collapse <?php echo $expanded ? 'show' : ''; ?>">
-									<div class="nav flex-column">
+									<div class="nav flex-column wikipress-sidebar-group-items">
 										<?php foreach ( $group['items'] as $slug => $item ) : $active_tab = sanitize_key( $_GET['tab'] ?? 'general' ); $is_active = str_starts_with( $slug, 'wikipress-settings&tab=' ) ? ( 'wikipress-settings' === $current && str_ends_with( $slug, $active_tab ) ) : $current === $slug; ?>
 											<a class="nav-link <?php echo $is_active ? 'active' : ''; ?>" <?php echo $is_active ? 'aria-current="page"' : ''; ?> href="<?php echo esc_url( admin_url( 'admin.php?page=' . $slug ) ); ?>"><i class="<?php echo esc_attr( $item['icon'] ); ?> me-2" aria-hidden="true"></i><?php echo esc_html( $item['label'] ); ?></a>
 										<?php endforeach; ?>
