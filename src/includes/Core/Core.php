@@ -3,6 +3,7 @@
 namespace TrilBDev\WikiPress\Includes\Core;
 
 use TrilBDev\WikiPress\Includes\Core\WP\WPLoader;
+use TrilBDev\WikiPress\Includes\Pages\Shortcodes as PageShortcodes;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -17,6 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 final class Core {
     private PostType $post_types;
     private Taxonomy $taxonomies;
+    private Shortcodes $shortcodes;
     private bool $registered = false;
 
     /**
@@ -25,9 +27,10 @@ final class Core {
      * @param PostType|null $post_types Post type registrar.
      * @param Taxonomy|null $taxonomies Taxonomy registrar.
      */
-    public function __construct( ?PostType $post_types = null, ?Taxonomy $taxonomies = null ) {
+    public function __construct( ?PostType $post_types = null, ?Taxonomy $taxonomies = null, ?Shortcodes $shortcodes = null ) {
         $this->post_types = $post_types ?? new PostType();
         $this->taxonomies = $taxonomies ?? new Taxonomy();
+        $this->shortcodes = $shortcodes ?? new Shortcodes();
     }
 
     /**
@@ -42,6 +45,7 @@ final class Core {
 
         $this->post_types->register();
         $this->taxonomies->register();
+        PageShortcodes::register( $this->shortcodes );
         $this->registered = true;
     }
 
@@ -74,6 +78,10 @@ final class Core {
      */
     public function taxonomies(): Taxonomy {
         return $this->taxonomies;
+    }
+
+    public function shortcodes(): Shortcodes {
+        return $this->shortcodes;
     }
 
     /**

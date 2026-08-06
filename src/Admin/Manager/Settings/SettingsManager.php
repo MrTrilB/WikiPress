@@ -55,6 +55,7 @@ final class SettingsManager extends Manager {
      */
     public function render(): void {
         $tab = SanitizationHelper::key( $_GET['tab'] ?? 'general', 'general' );
+        $layout_section = SanitizationHelper::key( $_GET['layout_section'] ?? 'general', 'general' );
         $groups = Settings::get_all();
         $values = $groups[ $tab ] ?? [];
         $tab_context = [
@@ -77,7 +78,7 @@ final class SettingsManager extends Manager {
             <?php settings_fields( 'wikipress_settings' ); ?>
             <div class="card-body"><table class="form-table table align-middle"><tbody>
             <?php if ( 'general' === $tab ) : $this->general_page->render( $values ); ?>
-            <?php elseif ( 'layout' === $tab ) : $this->layout_page->render( $values ); ?>
+            <?php elseif ( 'layout' === $tab ) : $this->layout_page->render( $values, $layout_section ); ?>
             <?php elseif ( 'access' === $tab ) : $this->access_page->render( $values ); ?>
             <?php elseif ( $this->plugins_page->has_settings_page( $tab ) ) : $this->plugins_page->render_settings_page( $tab, $values ); ?>
             <?php elseif ( 'tools' === $tab ) : $this->tools_page->render( $values ); ?>

@@ -14,7 +14,7 @@ class WikiSearchModal extends Widgets {
     public const SLUG = 'trilbdev_wiki_search_modal';
 
     protected function get_default_title(): string {
-        return __( 'Wiki Search Modal', 'trilbdev' );
+        return __( 'Wiki Search Modal', 'wikipress' );
     }
 
     protected function get_default_icon(): string {
@@ -70,9 +70,9 @@ class WikiSearchModal extends Widgets {
         return [
             'wrapper_classes'     => [ 'trilbdev-wiki-searchmodal' ],
             'action_url'          => $action_url,
-            'open_button_label'   => __( 'Search Wiki', 'trilbdev' ),
-            'search_placeholder'  => __( 'Search wiki...', 'trilbdev' ),
-            'submit_label'        => __( 'Search', 'trilbdev' ),
+            'open_button_label'   => __( 'Search Wiki', 'wikipress' ),
+            'search_placeholder'  => __( 'Search wiki...', 'wikipress' ),
+            'submit_label'        => __( 'Search', 'wikipress' ),
             'close_label'         => '×',
         ];
     }

@@ -35,6 +35,8 @@ Database‑backed settings grouped by feature
 
 Shared sanitization, request, permission, query, content, URL, and form helpers
 
+Reusable shortcode definitions and registration for WikiPress extensions
+
 Bootstrap‑based admin UI compiled with Webpack and Sass
 
 Font Awesome integration
@@ -60,6 +62,29 @@ Yes. WikiPress is theme‑agnostic and works with any properly coded WordPress t
 
 Can I extend WikiPress with my own plugin?
 Absolutely. WikiPress automatically detects compatible extension plugins and provides helper libraries and APIs to make development easy.
+
+How do I add a shortcode to a WikiPress extension?
+Implement ShortcodeProviderInterface and return a list created with ShortcodeHelper::define() from get_shortcodes(). The callback receives attributes, enclosed content, and the shortcode tag, and must return its output.
+
+Example:
+
+	use TrilBDev\\WikiPress\\Includes\\Functions\\Helpers\\ShortcodeHelper;
+	use TrilBDev\\WikiPress\\Includes\\Plugins\\ShortcodeProviderInterface;
+
+	public function get_shortcodes(): array {
+		return [
+			ShortcodeHelper::define(
+				'my_wikipress_box',
+				[ $this, 'render_box' ],
+				[ 'title' => 'WikiPress' ],
+				[ 'description' => 'Render a WikiPress content box.', 'enclosing' => true ]
+			),
+		];
+	}
+
+	public function render_box( array $atts, ?string $content, string $tag ): string {
+		return '<div class="my-wikipress-box"><strong>' . esc_html( $atts['title'] ) . '</strong>' . do_shortcode( (string) $content ) . '</div>';
+	}
 
 Is there a REST API?
 Yes. All core wiki functionality is exposed under /wp-json/wikipress/v1.

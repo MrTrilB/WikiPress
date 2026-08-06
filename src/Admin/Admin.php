@@ -61,8 +61,8 @@ final class Admin {
     public function sanitize_general( $input ): array {
         $input = is_array( $input ) ? $input : [];
         $rewrite_changed = false;
-        foreach ( [ 'root_name', 'root_slug', 'category_slug', 'tag_slug', 'permalink' ] as $key ) {
-			$value = in_array( $key, [ 'root_slug', 'category_slug', 'tag_slug' ], true ) ? sanitize_title( $input[ $key ] ?? '' ) : ( 'permalink' === $key ? PermalinkHelper::sanitize_pattern( $input[ $key ] ?? '' ) : sanitize_text_field( $input[ $key ] ?? '' ) );
+        foreach ( [ 'root_name', 'root_description', 'archive_title', 'archive_description', 'root_slug', 'category_slug', 'tag_slug', 'permalink', 'enable_schema' ] as $key ) {
+            $value = in_array( $key, [ 'root_slug', 'category_slug', 'tag_slug' ], true ) ? sanitize_title( $input[ $key ] ?? '' ) : ( 'permalink' === $key ? PermalinkHelper::sanitize_pattern( $input[ $key ] ?? '' ) : ( 'enable_schema' === $key ? ! empty( $input[ $key ] ) : sanitize_textarea_field( $input[ $key ] ?? '' ) ) );
             $rewrite_changed = $rewrite_changed || $value !== (string) Settings::get( $key, '' );
             $input[ $key ] = $value;
             Settings::set( $key, $input[ $key ] );
@@ -75,10 +75,53 @@ final class Admin {
 
     public function sanitize_layout( $input ): array {
         $input = is_array( $input ) ? $input : [];
-        foreach ( [ 'show_search', 'show_toc' ] as $key ) {
+        $section = sanitize_key( $input['layout_section'] ?? 'general' );
+        unset( $input['layout_section'] );
+        $section_keys = [
+            'general' => [ 'show_search', 'show_breadcrumbs', 'show_sidebar' ],
+            'search' => [ 'show_search', 'search_placeholder', 'search_button_text', 'search_scope', 'search_no_results_message', 'search_results_count', 'search_min_chars', 'search_live_results' ],
+            'sidebar' => [ 'show_sidebar', 'sidebar_position', 'sidebar_width', 'sidebar_sticky', 'sidebar_show_categories', 'sidebar_show_category_count', 'sidebar_expand_categories', 'sidebar_show_page_count' ],
+            'page' => [ 'page_show_title', 'show_breadcrumbs', 'page_show_toc', 'page_toc_position', 'toc_min_level', 'toc_max_level', 'show_last_updated', 'show_author', 'show_reading_time', 'reading_time_wpm', 'show_feedback', 'page_show_navigation', 'show_related_pages', 'related_pages_count' ],
+        ];
+        $active_keys = $section_keys[ $section ] ?? array_merge( ...array_values( $section_keys ) );
+        foreach ( [
+            'show_search', 'show_toc', 'show_breadcrumbs', 'show_last_updated', 'show_author', 'show_reading_time',
+            'show_feedback', 'show_related_pages', 'search_live_results', 'show_sidebar', 'sidebar_sticky',
+            'sidebar_show_categories', 'sidebar_show_category_count', 'sidebar_expand_categories', 'sidebar_show_page_count',
+            'page_show_title', 'page_show_toc', 'page_show_navigation',
+        ] as $key ) {
+            if ( ! in_array( $key, $active_keys, true ) ) {
+                continue;
+            }
             $value = ! empty( $input[ $key ] );
             $input[ $key ] = $value;
             Settings::set( $key, $value );
+        }
+        foreach ( [ 'search_placeholder', 'search_button_text', 'search_no_results_message' ] as $key ) {
+            if ( ! in_array( $key, $active_keys, true ) ) {
+                continue;
+            }
+            $input[ $key ] = sanitize_text_field( $input[ $key ] ?? '' );
+            Settings::set( $key, $input[ $key ] );
+        }
+        if ( in_array( 'search_scope', $active_keys, true ) ) {
+            $input['search_scope'] = in_array( $input['search_scope'] ?? '', [ 'all', 'title', 'content' ], true ) ? $input['search_scope'] : 'all';
+            Settings::set( 'search_scope', $input['search_scope'] );
+        }
+        if ( in_array( 'sidebar_position', $active_keys, true ) ) {
+            $input['sidebar_position'] = in_array( $input['sidebar_position'] ?? '', [ 'left', 'right' ], true ) ? $input['sidebar_position'] : 'left';
+            Settings::set( 'sidebar_position', $input['sidebar_position'] );
+        }
+        if ( in_array( 'page_toc_position', $active_keys, true ) ) {
+            $input['page_toc_position'] = in_array( $input['page_toc_position'] ?? '', [ 'sidebar', 'content' ], true ) ? $input['page_toc_position'] : 'sidebar';
+            Settings::set( 'page_toc_position', $input['page_toc_position'] );
+        }
+        foreach ( [ 'related_pages_count' => [ 1, 12 ], 'search_results_count' => [ 1, 50 ], 'search_min_chars' => [ 1, 5 ], 'sidebar_width' => [ 180, 480 ], 'toc_min_level' => [ 1, 5 ], 'toc_max_level' => [ 2, 6 ], 'reading_time_wpm' => [ 100, 400 ] ] as $key => [ $minimum, $maximum ] ) {
+            if ( ! in_array( $key, $active_keys, true ) ) {
+                continue;
+            }
+            $input[ $key ] = max( $minimum, min( $maximum, absint( $input[ $key ] ?? $minimum ) ) );
+            Settings::set( $key, $input[ $key ] );
         }
         return $input;
     }
@@ -94,8 +137,10 @@ final class Admin {
 
     public function sanitize_tools( $input ): array {
         $input = is_array( $input ) ? $input : [];
-        $input['debug_logging'] = ! empty( $input['debug_logging'] );
-        Settings::set( 'debug_logging', $input['debug_logging'] );
+        foreach ( [ 'debug_logging', 'console_logging' ] as $key ) {
+            $input[ $key ] = ! empty( $input[ $key ] );
+            Settings::set( $key, $input[ $key ] );
+        }
         return $input;
     }
 

@@ -24,7 +24,7 @@ $wrapper_classes    = isset( $context['wrapper_classes'] ) && is_array( $context
 $action_url         = isset( $context['action_url'] ) ? (string) $context['action_url'] : home_url( '/' );
 $open_button_label  = isset( $context['open_button_label'] ) ? (string) $context['open_button_label'] : __( 'Search Docs', 'trilbdev' );
 $search_placeholder = isset( $context['search_placeholder'] ) ? (string) $context['search_placeholder'] : __( 'Search docs...', 'trilbdev' );
-$submit_label       = isset( $context['submit_label'] ) ? (string) $context['submit_label'] : __( 'Search', 'trilbdev' );
+$submit_label       = isset( $context['submit_label'] ) ? (string) $context['submit_label'] : __( 'Search', 'wikipress' );
 $close_label        = isset( $context['close_label'] ) ? (string) $context['close_label'] : '×';
 $close_aria_label   = __( 'Close search modal', 'trilbdev' );
 

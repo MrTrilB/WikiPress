@@ -24,18 +24,18 @@ final class PermalinkHelper {
             '%root_category%' => __( 'The Wiki categories, from parent to child.', 'wikipress' ),
             '%root_tags%' => __( 'The tags assigned to the Wiki container.', 'wikipress' ),
             '%wiki%' => __( 'The Wiki slug.', 'wikipress' ),
-            '%category%' => __( 'The page categories, from parent to child.', 'wikipress' ),
-            '%tags%' => __( 'The tags assigned to the Wiki page.', 'wikipress' ),
+            '%wiki_category%' => __( 'The Wiki page categories, from parent to child.', 'wikipress' ),
+            '%wiki_tag%' => __( 'The tags assigned to the Wiki page.', 'wikipress' ),
+            '%wiki_page%' => __( 'The Wiki page slug.', 'wikipress' ),
         ];
     }
 
     public static function default_pattern(): string {
-        return '%root%/%root_category%/%wiki%/%category%/%tags%';
+        return '%root%/%root_category%/%wiki%/%wiki_category%/%wiki_tag%/%wiki_page%';
     }
 
     public static function sanitize_pattern( $pattern ): string {
         $pattern = trim( (string) $pattern );
-        $pattern = str_replace( [ '%wiki_root%', '%postname%' ], [ '%root%', '%page%' ], $pattern );
         $allowed = array_keys( self::token_definitions() );
         $segments = [];
 
@@ -76,15 +76,15 @@ final class PermalinkHelper {
             '%root_category%' => $wiki ? self::term_path( Taxonomy::CATEGORY, $wiki->ID ) : '',
             '%root_tags%' => $wiki ? self::term_path( Taxonomy::TAG, $wiki->ID ) : '',
             '%wiki%' => $wiki ? sanitize_title( $wiki->post_name ?: $wiki->post_title ) : '',
-            '%category%' => self::term_path( Taxonomy::CATEGORY, $page->ID ),
-            '%tags%' => self::term_path( Taxonomy::TAG, $page->ID ),
-            '%page%' => sanitize_title( $page->post_name ?: $page->post_title ),
+            '%wiki_category%' => self::term_path( Taxonomy::CATEGORY, $page->ID ),
+            '%wiki_tag%' => self::term_path( Taxonomy::TAG, $page->ID ),
+            '%wiki_page%' => sanitize_title( $page->post_name ?: $page->post_title ),
         ];
 
         $normalized = self::sanitize_pattern( $pattern );
         $path = strtr( $normalized, $values );
-        if ( ! str_contains( $normalized, '%page%' ) ) {
-            $path .= '/' . $values['%page%'];
+        if ( ! str_contains( $normalized, '%wiki_page%' ) ) {
+            $path .= '/' . $values['%wiki_page%'];
         }
         return trim( preg_replace( '#/+#', '/', trim( $path, '/' ) ), '/' );
     }

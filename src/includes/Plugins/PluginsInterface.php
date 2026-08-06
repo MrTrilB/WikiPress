@@ -92,6 +92,18 @@ interface DatabaseProviderInterface {
      */
     public function register_tables(): void;
 }
+
+/**
+ * Provides shortcode definitions for a WikiPress extension.
+ */
+interface ShortcodeProviderInterface {
+    /**
+     * Return definitions created with ShortcodeHelper::define().
+     *
+     * @return array<int, array<string, mixed>>
+     */
+    public function get_shortcodes(): array;
+}
 /**
  * Shortcode provider interface for plugins.
  */

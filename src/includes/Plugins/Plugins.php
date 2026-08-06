@@ -230,7 +230,7 @@ class Plugins {
     }
 
     private function load_plugin_includes( string $plugin_directory ): void {
-        foreach ( [ 'Includes/Includes.php', 'Includes/I18n.php' ] as $includes_file ) {
+        foreach ( [ 'Includes/Includes.php', 'Includes/I18n.php', 'Includes/Shortcodes.php' ] as $includes_file ) {
             $includes_path = trailingslashit( $plugin_directory ) . $includes_file;
             if ( is_readable( $includes_path ) ) {
                 require_once $includes_path;
@@ -298,6 +298,10 @@ class Plugins {
 
             if ( $plugin instanceof DatabaseProviderInterface ) {
                 $plugin->register_tables();
+            }
+
+            if ( $plugin instanceof ShortcodeProviderInterface ) {
+                \TrilBDev\WikiPress\Includes\Functions\Helpers\ShortcodeHelper::register_many( $plugin->get_shortcodes() );
             }
 
             if ( $plugin instanceof AssetsProviderInterface ) {
