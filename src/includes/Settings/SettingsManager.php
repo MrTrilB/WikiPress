@@ -1,4 +1,9 @@
 <?php
+/**
+ * SettingsManager class.
+ *
+ * @package TrilBDev\WikiPress\Includes\Settings
+ */
 
 namespace TrilBDev\WikiPress\Includes\Settings;
 
