@@ -29,7 +29,7 @@ final class SettingsGeneral {
 			$key = SanitizationHelper::key( $key );
 			$id = 'wikipress-' . $key;
 			$name = 'wikipress_general[' . $key . ']';
-			echo '<tr><th scope="row">' . FormFieldHelper::label( $id, $field['label'], $field ) . '</th><td>' . FormFieldHelper::text_input( $name, SanitizationHelper::text( $values[ $key ] ?? '' ), [ 'id' => $id, 'data-permalink-field' => 'permalink' === $key ? 'true' : null ] );
+			echo '<tr><th scope="row">' . FormFieldHelper::label( $id, $field['label'], $field ) . '</th><td>' . FormFieldHelper::text_input( $name, SanitizationHelper::text( $values[ $key ] ?? '' ), [ 'id' => $id, 'data-permalink-field' => 'permalink' === $key ? 'permalink' : null ] );
 			if ( 'permalink' === $key ) {
 				echo '<div class="wikipress-permalink-tokens mt-2" aria-label="' . esc_attr__( 'Available permalink tokens', 'wikipress' ) . '">';
 				foreach ( PermalinkHelper::token_definitions() as $token => $description ) {
