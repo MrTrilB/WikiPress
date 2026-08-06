@@ -141,6 +141,10 @@
 		&:hover { transform: translateX(2px); }
 	}
 
+	.wikipress-sidebar .nav-link.active {
+		font-weight: 700;
+	}
+
 	.wikipress-sidebar-icon {
 		align-items: center;
 		background: #eaf0f6;

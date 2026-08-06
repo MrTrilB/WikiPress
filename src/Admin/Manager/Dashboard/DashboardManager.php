@@ -69,11 +69,24 @@ final class DashboardManager extends Manager {
 
     private function render_welcome(): void {
         ?>
-        <div class="card wikipress-welcome-card border-0 shadow-sm mb-4">
-            <div class="card-body p-4 p-xl-5">
-                <p class="text-uppercase small fw-semibold text-primary mb-2"><?php esc_html_e( 'Your knowledge workspace', 'wikipress' ); ?></p>
-                <h2 class="h3 mb-2"><?php esc_html_e( 'Welcome to WikiPress', 'wikipress' ); ?></h2>
-                <p class="text-secondary mb-0"><?php esc_html_e( 'Build, organise, and share a clear home for your knowledge. Start by creating a Wiki or adding your first page.', 'wikipress' ); ?></p>
+        <div class="row g-4 mb-4">
+            <div class="col-12 col-xl-6">
+                <div class="card wikipress-welcome-card border-0 shadow-sm h-100">
+                    <div class="card-body p-4 p-xl-5">
+                        <p class="text-uppercase small fw-semibold text-primary mb-2"><?php esc_html_e( 'Your knowledge workspace', 'wikipress' ); ?></p>
+                        <h2 class="h3 mb-2"><?php esc_html_e( 'Welcome to WikiPress', 'wikipress' ); ?></h2>
+                        <p class="text-secondary mb-0"><?php esc_html_e( 'Build, organise, and share a clear home for your knowledge. Start by creating a Wiki or adding your first page.', 'wikipress' ); ?></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-xl-6">
+                <div class="card wikipress-news-card border-0 shadow-sm h-100">
+                    <div class="card-body p-4 p-xl-5">
+                        <p class="text-uppercase small fw-semibold text-primary mb-2"><?php esc_html_e( 'From TrilB.Dev', 'wikipress' ); ?></p>
+                        <h2 class="h3 mb-2"><?php esc_html_e( 'Latest News', 'wikipress' ); ?></h2>
+                        <p class="text-secondary mb-0"><?php esc_html_e( 'WikiPress news and updates will appear here soon.', 'wikipress' ); ?></p>
+                    </div>
+                </div>
             </div>
         </div>
         <?php
@@ -89,7 +102,7 @@ final class DashboardManager extends Manager {
             'no_found_rows'  => true,
         ] );
         ?>
-        <div class="card wikipress-recent-card border-0 shadow-sm mb-4">
+        <div class="card wikipress-recent-card border-0 shadow-sm w-100 mb-4">
             <div class="card-header bg-white border-0 d-flex flex-wrap justify-content-between align-items-center gap-2 p-4">
                 <div>
                     <p class="text-uppercase small fw-semibold text-primary mb-1"><?php esc_html_e( 'Keep things moving', 'wikipress' ); ?></p>
