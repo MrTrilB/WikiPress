@@ -88,7 +88,7 @@ final class SettingsManager {
                 'root_slug' => 'wiki',
                 'category_slug' => 'wiki-category',
                 'tag_slug' => 'wiki-tag',
-                'permalink' => '%wiki_root%/%wiki%/%postname%',
+                'permalink' => '%root%/%root_category%/%wiki%/%category%/%tags%',
             ],
             'layout' => [ 'show_search' => true, 'show_toc' => true ],
             'access' => [],

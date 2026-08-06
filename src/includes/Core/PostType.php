@@ -3,6 +3,7 @@
 namespace TrilBDev\WikiPress\Includes\Core;
 
 use TrilBDev\WikiPress\Includes\Settings\Settings;
+use TrilBDev\WikiPress\Includes\Functions\Helpers\PermalinkHelper;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -19,6 +20,8 @@ final class PostType {
     public function register(): void {
         register_post_type( self::WIKI, self::wiki_args() );
         register_post_type( self::PAGE, self::page_args() );
+        add_filter( 'post_type_link', [ PermalinkHelper::class, 'filter_page_permalink' ], 10, 2 );
+        PermalinkHelper::rewrite_rule();
     }
 
     public static function get_post_type_name(): string {

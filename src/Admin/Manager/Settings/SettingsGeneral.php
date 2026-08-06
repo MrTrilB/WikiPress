@@ -3,6 +3,7 @@
 namespace TrilBDev\WikiPress\Admin\Manager\Settings;
 
 use TrilBDev\WikiPress\Includes\Functions\Helpers\FormFieldHelper;
+use TrilBDev\WikiPress\Includes\Functions\Helpers\PermalinkHelper;
 use TrilBDev\WikiPress\Includes\Functions\Helpers\SanitizationHelper;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -28,7 +29,15 @@ final class SettingsGeneral {
 			$key = SanitizationHelper::key( $key );
 			$id = 'wikipress-' . $key;
 			$name = 'wikipress_general[' . $key . ']';
-			echo '<tr><th scope="row">' . FormFieldHelper::label( $id, $field['label'], $field ) . '</th><td>' . FormFieldHelper::text_input( $name, SanitizationHelper::text( $values[ $key ] ?? '' ), [ 'id' => $id ] ) . '</td></tr>';
+			echo '<tr><th scope="row">' . FormFieldHelper::label( $id, $field['label'], $field ) . '</th><td>' . FormFieldHelper::text_input( $name, SanitizationHelper::text( $values[ $key ] ?? '' ), [ 'id' => $id, 'data-permalink-field' => 'permalink' === $key ? 'true' : null ] );
+			if ( 'permalink' === $key ) {
+				echo '<div class="wikipress-permalink-tokens mt-2" aria-label="' . esc_attr__( 'Available permalink tokens', 'wikipress' ) . '">';
+				foreach ( PermalinkHelper::token_definitions() as $token => $description ) {
+					echo '<button type="button" class="btn btn-sm btn-outline-secondary me-1 mb-1" data-permalink-token="' . esc_attr( $token ) . '" title="' . esc_attr( $description ) . '">' . esc_html( $token ) . '</button>';
+				}
+				echo '</div><div class="form-text">' . esc_html__( 'Click a token to add it to the pattern. Tokens are inserted with a trailing slash and reappear when removed.', 'wikipress' ) . '</div>';
+			}
+			echo '</td></tr>';
 		}
 	}
 }

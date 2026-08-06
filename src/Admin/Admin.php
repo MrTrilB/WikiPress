@@ -6,6 +6,7 @@ use TrilBDev\WikiPress\Includes\Tools\DataTransfer;
 use TrilBDev\WikiPress\Includes\Settings\Settings;
 use TrilBDev\WikiPress\Includes\Plugins\Plugins;
 use TrilBDev\WikiPress\Includes\Plugins\SettingsPageProviderInterface;
+use TrilBDev\WikiPress\Includes\Functions\Helpers\PermalinkHelper;
 use TrilBDev\WikiPress\Assets\Assets;
 use TrilBDev\WikiPress\Admin\Manager\Analytics\AnalyticsManager;
 use TrilBDev\WikiPress\Admin\Manager\Dashboard\DashboardManager;
@@ -61,7 +62,7 @@ final class Admin {
         $input = is_array( $input ) ? $input : [];
         $rewrite_changed = false;
         foreach ( [ 'root_name', 'root_slug', 'category_slug', 'tag_slug', 'permalink' ] as $key ) {
-            $value = in_array( $key, [ 'root_slug', 'category_slug', 'tag_slug' ], true ) ? sanitize_title( $input[ $key ] ?? '' ) : sanitize_text_field( $input[ $key ] ?? '' );
+			$value = in_array( $key, [ 'root_slug', 'category_slug', 'tag_slug' ], true ) ? sanitize_title( $input[ $key ] ?? '' ) : ( 'permalink' === $key ? PermalinkHelper::sanitize_pattern( $input[ $key ] ?? '' ) : sanitize_text_field( $input[ $key ] ?? '' ) );
             $rewrite_changed = $rewrite_changed || $value !== (string) Settings::get( $key, '' );
             $input[ $key ] = $value;
             Settings::set( $key, $input[ $key ] );

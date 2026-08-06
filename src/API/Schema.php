@@ -26,6 +26,7 @@ final class Schema {
                 'title' => [ 'type' => 'string', 'required' => true ],
                 'description' => [ 'type' => 'string' ],
                 'status' => [ 'type' => 'string', 'enum' => [ 'draft', 'publish', 'private' ] ],
+				'permalink' => [ 'type' => 'string', 'description' => 'Optional tokenized permalink override for this Wiki.' ],
             ],
         ];
     }

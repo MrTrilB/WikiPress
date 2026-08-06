@@ -13,8 +13,8 @@ final class Taxonomy {
     public const TAG = 'wikipress_tag';
 
     public function register(): void {
-        register_taxonomy( self::CATEGORY, [ PostType::PAGE ], self::category_args() );
-        register_taxonomy( self::TAG, [ PostType::PAGE ], self::tag_args() );
+        register_taxonomy( self::CATEGORY, [ PostType::WIKI, PostType::PAGE ], self::category_args() );
+        register_taxonomy( self::TAG, [ PostType::WIKI, PostType::PAGE ], self::tag_args() );
     }
 
     /**

@@ -15,6 +15,7 @@ use TrilBDev\WikiPress\Includes\Functions\Helpers\PostHelper;
 use TrilBDev\WikiPress\Includes\Functions\Helpers\QueryHelper;
 use TrilBDev\WikiPress\Includes\Functions\Helpers\SanitizationHelper;
 use TrilBDev\WikiPress\Includes\Functions\Helpers\TaxonomyHelper;
+use TrilBDev\WikiPress\Includes\Functions\Helpers\PermalinkHelper;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -64,6 +65,7 @@ final class API {
         if ( is_wp_error( $id ) ) {
             return $id;
         }
+		self::save_wiki_permalink( (int) $id, $payload );
         do_action( 'wikipress_wiki_saved', (int) $id, $payload );
         return self::get_wiki( (int) $id );
     }
@@ -93,6 +95,7 @@ final class API {
         if ( is_wp_error( $updated ) ) {
             return $updated;
         }
+		self::save_wiki_permalink( $id, $payload );
         do_action( 'wikipress_wiki_saved', $id, $payload );
         return self::get_wiki( $id );
     }
@@ -257,6 +260,7 @@ final class API {
             'author' => (int) $post->post_author,
             'page_count' => (int) $pages->found_posts,
             'date' => $post->post_date_gmt,
+			'permalink' => (string) get_post_meta( $post->ID, PermalinkHelper::OVERRIDE_META, true ),
         ];
     }
     /**
@@ -267,5 +271,17 @@ final class API {
      */
     private static function sanitize_status( string $status ): string {
         return SanitizationHelper::one_of( SanitizationHelper::key( $status ), [ 'publish', 'draft', 'private' ], 'draft' );
+    }
+
+    private static function save_wiki_permalink( int $wiki_id, array $payload ): void {
+        if ( ! array_key_exists( 'permalink', $payload ) ) {
+            return;
+        }
+        $pattern = PermalinkHelper::sanitize_pattern( $payload['permalink'] );
+        if ( '' === $pattern ) {
+            delete_post_meta( $wiki_id, PermalinkHelper::OVERRIDE_META );
+            return;
+        }
+        update_post_meta( $wiki_id, PermalinkHelper::OVERRIDE_META, $pattern );
     }
 }
