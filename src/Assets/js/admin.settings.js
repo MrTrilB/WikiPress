@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   document.addEventListener('click', (event) => {
-    const link = event.target.closest('[data-wikipress-settings-tab]');
+    const link = event.target.closest('#wikipress-settings-panel [data-wikipress-settings-tab]');
     if (!link) return;
     event.preventDefault();
     loadTab(link.dataset.wikipressSettingsTab, link.dataset.wikipressSettingsSection || 'general');
