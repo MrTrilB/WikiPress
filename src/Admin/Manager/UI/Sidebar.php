@@ -10,18 +10,11 @@ final class Sidebar {
 	public static function render(): void {
 		$current = sanitize_key( $_GET['page'] ?? 'wikipress' );
 		$groups = [
-			'content' => [
-				'label' => __( 'Content', 'wikipress' ),
+			'manage-wiki' => [
+				'label' => __( 'Manage Wiki', 'wikipress' ),
 				'icon' => 'fa-solid fa-file-lines',
 				'items' => [
 					'wikipress-manage' => [ 'label' => __( 'Manage Wiki', 'wikipress' ), 'icon' => 'fa-solid fa-book-open' ],
-				],
-			],
-			'manage' => [
-				'label' => __( 'Manage', 'wikipress' ),
-				'icon' => 'fa-solid fa-sliders',
-				'items' => [
-					'wikipress-analytics' => [ 'label' => __( 'Analytics', 'wikipress' ), 'icon' => 'fa-solid fa-chart-line' ],
 				],
 			],
 			'settings' => [
@@ -34,6 +27,13 @@ final class Sidebar {
 					'wikipress-settings&tab=third-party' => [ 'label' => __( '3rd Party', 'wikipress' ), 'icon' => 'fa-solid fa-plug' ],
 					'wikipress-settings&tab=access' => [ 'label' => __( 'Access', 'wikipress' ), 'icon' => 'fa-solid fa-user-shield' ],
 					'wikipress-settings&tab=tools' => [ 'label' => __( 'Tools', 'wikipress' ), 'icon' => 'fa-solid fa-screwdriver-wrench' ],
+				],
+			],
+			'tool-box' => [
+				'label' => __( 'Tool Box', 'wikipress' ),
+				'icon' => 'fa-solid fa-toolbox',
+				'items' => [
+					'wikipress-analytics' => [ 'label' => __( 'Analytics', 'wikipress' ), 'icon' => 'fa-solid fa-chart-line' ],
 				],
 			],
 		];

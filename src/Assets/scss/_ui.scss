@@ -110,7 +110,7 @@
 	}
 
 	.wikipress-sidebar-group-items {
-		padding-left: 4px;
+		padding-left: 20px;
 	}
 
 	.wikipress-sidebar-link,
@@ -119,7 +119,7 @@
 		color: var(--wikipress-ink);
 		display: flex;
 		font-size: 1.2rem;
-		font-weight: 700;
+		font-weight: 600;
 		gap: 0.65rem;
 		text-decoration: none;
 		width: 100%;
@@ -146,14 +146,10 @@
 		background: #eaf0f6;
 		border-radius: 0.35rem;
 		display: inline-flex;
-		font-size: 1rem;
+		font-size: 1.15rem;
 		height: 1.65rem;
 		justify-content: center;
 		width: 1.65rem;
-	}
-	
-	.wikipress-group-content {
-		margin-left: 20px;
 	}
 
 	.accordion {
