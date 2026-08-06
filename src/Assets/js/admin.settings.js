@@ -48,8 +48,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const link = event.target.closest('#wikipress-settings-panel [data-wikipress-settings-tab]');
     if (!link) return;
     event.preventDefault();
+    event.stopPropagation();
     loadTab(link.dataset.wikipressSettingsTab, link.dataset.wikipressSettingsSection || 'general');
-  });
+  }, true);
   window.addEventListener('popstate', () => { const state = stateFromHash(); loadTab(state.tab, state.section, false); });
   window.addEventListener('hashchange', () => { const state = stateFromHash(); loadTab(state.tab, state.section, false); });
 

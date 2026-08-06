@@ -28,7 +28,7 @@ final class SettingsLayout {
 		echo '<ul class="nav nav-tabs wikipress-layout-tabs mb-4" role="tablist">';
 		foreach ( $sections as $slug => $label ) {
 			$target = 'layout-' . $slug;
-			echo '<li class="nav-item" role="presentation"><a id="wikipress-tab-' . esc_attr( $target ) . '" class="nav-link ' . ( $section === $slug ? 'active' : '' ) . '" data-bs-toggle="tab" role="tab" aria-controls="' . esc_attr( $target ) . '" aria-selected="' . ( $section === $slug ? 'true' : 'false' ) . '" data-wikipress-settings-tab="layout" data-wikipress-settings-section="' . esc_attr( $slug ) . '" href="#' . esc_attr( $target ) . '">' . esc_html( $label ) . '</a></li>';
+			echo '<li class="nav-item" role="presentation"><a id="wikipress-tab-' . esc_attr( $target ) . '" class="nav-link ' . ( $section === $slug ? 'active' : '' ) . '" role="tab" aria-controls="' . esc_attr( $target ) . '" aria-selected="' . ( $section === $slug ? 'true' : 'false' ) . '" data-wikipress-settings-tab="layout" data-wikipress-settings-section="' . esc_attr( $slug ) . '" href="#' . esc_attr( $target ) . '">' . esc_html( $label ) . '</a></li>';
 		}
 		echo '</ul>';
 
