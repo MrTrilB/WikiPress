@@ -87,7 +87,7 @@ class Plugins {
          * Plugins installed via the normal WordPress plugin system can hook
          * into this action and call Wiki\Plugins::register_plugin().
          */
-        do_action( 'trilbdev_wiki_register_plugin', $this );
+        do_action( 'wikipress_register_plugin', $this );
     }
     /**
      * Retrieves the list of loaded plugin class names.
