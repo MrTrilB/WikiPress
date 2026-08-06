@@ -145,5 +145,11 @@ final class Assets {
         foreach ( $assets['scripts'] ?? [] as $script ) {
             wp_enqueue_script( $script['handle'], $script['src'], $script['deps'] ?? [], $script['version'] ?? WIKIPRESS_VERSION, $script['in_footer'] ?? true );
         }
+        if ( 'wikipress-settings' === sanitize_key( $_GET['page'] ?? '' ) && wp_script_is( 'wikipress-admin-settings', 'enqueued' ) ) {
+            wp_localize_script( 'wikipress-admin-settings', 'wikipressSettingsTabs', [
+                'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+                'nonce' => wp_create_nonce( 'wikipress_settings_tabs' ),
+            ] );
+        }
     }
 }

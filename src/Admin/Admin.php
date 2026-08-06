@@ -7,6 +7,8 @@ use TrilBDev\WikiPress\Includes\Settings\Settings;
 use TrilBDev\WikiPress\Includes\Plugins\Plugins;
 use TrilBDev\WikiPress\Includes\Plugins\SettingsPageProviderInterface;
 use TrilBDev\WikiPress\Includes\Functions\Helpers\PermalinkHelper;
+use TrilBDev\WikiPress\Includes\Functions\Helpers\AjaxHelper;
+use TrilBDev\WikiPress\Includes\Functions\Helpers\LoaderHelper;
 use TrilBDev\WikiPress\Assets\Assets;
 use TrilBDev\WikiPress\Admin\Manager\Analytics\AnalyticsManager;
 use TrilBDev\WikiPress\Admin\Manager\Dashboard\DashboardManager;
@@ -22,16 +24,21 @@ final class Admin {
     private ContentManager $content_manager;
     private SettingsManager $settings_manager;
     private AnalyticsManager $analytics_manager;
+    private LoaderHelper $loader;
 
     public function __construct( Assets $assets ) {
         $this->dashboard_manager = new DashboardManager();
         $this->content_manager = new ContentManager();
         $this->settings_manager = new SettingsManager();
         $this->analytics_manager = new AnalyticsManager();
+        $this->loader = new LoaderHelper();
         $this->dashboard_manager->register_assets( $assets );
         $this->content_manager->register_assets( $assets );
         $this->settings_manager->register_assets( $assets );
         $this->analytics_manager->register_assets( $assets );
+        $this->loader->register_component( $this, [
+            [ 'type' => 'action', 'hook' => 'wp_ajax_wikipress_load_settings_tab', 'callback' => 'load_settings_tab' ],
+        ] )->run();
     }
 
     public function register_admin_menu(): void {
@@ -154,6 +161,19 @@ final class Admin {
 
     public function render_settings(): void {
         $this->settings_manager->render();
+    }
+
+    public function load_settings_tab(): void {
+        if ( ! AjaxHelper::authorized( 'wikipress_settings_tabs', 'manage_options' ) ) {
+            AjaxHelper::unauthorized( __( 'You are not authorized to load WikiPress settings.', 'wikipress' ) );
+        }
+
+        $tab = sanitize_key( $_POST['tab'] ?? 'general' );
+        $layout_section = sanitize_key( $_POST['layout_section'] ?? 'general' );
+        ob_start();
+        $this->settings_manager->render_tab_content( $tab, $layout_section );
+        $html = (string) ob_get_clean();
+        AjaxHelper::success( [ 'html' => $html, 'tab' => $tab, 'layout_section' => $layout_section ] );
     }
 
     public function render_analytics(): void {

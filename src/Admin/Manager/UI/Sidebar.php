@@ -59,7 +59,8 @@ final class Sidebar {
 								<div id="wikipress-group-<?php echo esc_attr( $key ); ?>" class="collapse <?php echo $expanded ? 'show' : ''; ?>">
 									<div class="nav flex-column wikipress-sidebar-group-items">
 										<?php foreach ( $group['items'] as $slug => $item ) : $active_tab = sanitize_key( $_GET['tab'] ?? 'general' ); $is_active = str_starts_with( $slug, 'wikipress-settings&tab=' ) ? ( 'wikipress-settings' === $current && str_ends_with( $slug, $active_tab ) ) : $current === $slug; ?>
-											<a class="nav-link <?php echo $is_active ? 'active' : ''; ?>" <?php echo $is_active ? 'aria-current="page"' : ''; ?> href="<?php echo esc_url( admin_url( 'admin.php?page=' . $slug ) ); ?>"><i class="<?php echo esc_attr( $item['icon'] ); ?> me-2" aria-hidden="true"></i><?php echo esc_html( $item['label'] ); ?></a>
+											<?php $settings_tab = str_starts_with( $slug, 'wikipress-settings&tab=' ) ? sanitize_key( substr( $slug, strlen( 'wikipress-settings&tab=' ) ) ) : ''; ?>
+											<a class="nav-link <?php echo $is_active ? 'active' : ''; ?>" <?php echo $is_active ? 'aria-current="page"' : ''; ?> <?php echo $settings_tab ? 'data-wikipress-settings-tab="' . esc_attr( $settings_tab ) . '"' : ''; ?> href="<?php echo esc_url( $settings_tab ? admin_url( 'admin.php?page=wikipress-settings#' . $settings_tab ) : admin_url( 'admin.php?page=' . $slug ) ); ?>"><i class="<?php echo esc_attr( $item['icon'] ); ?> me-2" aria-hidden="true"></i><?php echo esc_html( $item['label'] ); ?></a>
 										<?php endforeach; ?>
 									</div>
 								</div>

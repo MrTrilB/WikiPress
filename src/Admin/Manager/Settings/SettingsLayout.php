@@ -28,8 +28,8 @@ final class SettingsLayout {
 		echo FormFieldHelper::input( 'wikipress_layout[layout_section]', $section, [ 'type' => 'hidden' ] );
 		echo '<ul class="nav nav-tabs wikipress-layout-tabs mb-4" role="tablist">';
 		foreach ( $sections as $slug => $label ) {
-			$url = UrlHelper::admin_page( 'wikipress-settings', [ 'tab' => 'layout', 'layout_section' => $slug ] );
-			echo '<li class="nav-item" role="presentation"><a class="nav-link ' . ( $section === $slug ? 'active' : '' ) . '" href="' . esc_url( $url ) . '">' . esc_html( $label ) . '</a></li>';
+			$url = UrlHelper::admin_page( 'wikipress-settings', [ 'tab' => 'layout' ] ) . '#layout-' . $slug;
+			echo '<li class="nav-item" role="presentation"><a class="nav-link ' . ( $section === $slug ? 'active' : '' ) . '" data-wikipress-settings-tab="layout" data-wikipress-settings-section="' . esc_attr( $slug ) . '" href="' . esc_url( $url ) . '">' . esc_html( $label ) . '</a></li>';
 		}
 		echo '</ul>';
 
