@@ -54,8 +54,11 @@ class Plugins {
      * @var bool
      */
     private bool $initialized = false;
-
-
+    /**
+     * Get the singleton instance of the Plugins class.
+     *
+     * @return Plugins The singleton instance.
+     */
     public static function get_instance(): Plugins {
         if ( self::$instance === null ) {
             self::$instance = new self();
@@ -171,8 +174,9 @@ class Plugins {
             }
 
             $subfiles = glob( $subdir . '/*.php' ) ?: [];
-            $files = array_merge( $files, array_filter( $subfiles, function ( string $file ) use ( $subdir ): bool {
-                return basename( $file ) === basename( $subdir ) . '.php';
+            $files = array_merge( $files, array_filter( $subfiles, function ( string $file ): bool {
+                $contents = file_get_contents( $file );
+                return is_string( $contents ) && $this->extract_class_name( $contents ) !== '';
             } ) );
         }
 
@@ -230,7 +234,11 @@ class Plugins {
 
         $this->loaded_plugins[] = $fqcn;
     }
-
+    /**
+     * Loads additional includes for a plugin if they exist.
+     *
+     * @param string $plugin_directory The directory of the plugin.
+     */
     private function load_plugin_includes( string $plugin_directory ): void {
         foreach ( [ 'Includes/Includes.php', 'Includes/I18n.php', 'Includes/Shortcodes.php' ] as $includes_file ) {
             $includes_path = trailingslashit( $plugin_directory ) . $includes_file;
@@ -239,7 +247,12 @@ class Plugins {
             }
         }
     }
-
+    /**
+     * Checks if the given plugin directory has the required structure for a WikiPress plugin.
+     *
+     * @param string $plugin_directory The directory to check.
+     * @return bool True if the directory has the required structure, false otherwise.
+     */
     private function has_plugin_structure( string $plugin_directory ): bool {
         return is_readable( $plugin_directory . '/Assets/Assets.php' )
             && is_readable( $plugin_directory . '/Includes/Includes.php' )
@@ -267,8 +280,19 @@ class Plugins {
      * @return string The extracted class name, or an empty string if not found.
      */
     private function extract_class_name( string $content ): string {
-        if ( preg_match( '/class\s+([A-Za-z0-9_]+)/i', $content, $matches ) ) {
-            return trim( $matches[1] );
+        $tokens = token_get_all( $content );
+        $token_count = count( $tokens );
+
+        for ( $index = 0; $index < $token_count; $index++ ) {
+            if ( ! is_array( $tokens[ $index ] ) || T_CLASS !== $tokens[ $index ][0] ) {
+                continue;
+            }
+
+            for ( $index++; $index < $token_count; $index++ ) {
+                if ( is_array( $tokens[ $index ] ) && T_STRING === $tokens[ $index ][0] ) {
+                    return $tokens[ $index ][1];
+                }
+            }
         }
 
         return '';

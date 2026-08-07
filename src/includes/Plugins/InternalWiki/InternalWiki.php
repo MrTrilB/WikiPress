@@ -1,9 +1,8 @@
 <?php
 /**
- * TrilB.Dev Plugin - Demo Wiki Plugin
+ * WikiPress - Internal Wiki
  *
- * @package TrilBDev
- * @subpackage Admin\Wiki\Plugins\Demo
+ * @package WikiPress
  * @since 1.0.0
  */
 
@@ -18,54 +17,107 @@ use TrilBDev\WikiPress\Includes\Plugins\InternalWiki\Includes\Includes;
 use TrilBDev\WikiPress\Includes\Plugins\InternalWiki\Includes\I18n;
 
 class InternalWiki implements PluginInterface, SettingsProviderInterface, AssetsProviderInterface, I18nProviderInterface {
+    /**
+     * Get the plugin slug.
+     *
+     * @return string The plugin slug.
+     */
     public function get_slug(): string {
         return 'wikipress-internal-wiki';
     }
-
+    /**
+     * Get the plugin name.
+     *
+     * @return string The plugin name.
+     */
     public function get_name(): string {
         return 'Internal Wiki';
     }
-
+    /**
+     * Get the plugin version.
+     *
+     * @return string The plugin version.
+     */
     public function get_version(): string {
         return '1.0.0';
     }
-
+    /**
+     * Get the plugin author.
+     *
+     * @return string The plugin author.
+     */
     public function get_author(): string {
         return 'WikiPress Team';
     }
-
+    /**
+     * Get the plugin author URI.
+     *
+     * @return string The plugin author URI.
+     */
     public function get_author_uri(): string {
         return 'https://trilb.dev';
     }
-
+    /**
+     * Get the plugin description.
+     *
+     * @return string The plugin description.
+     */
     public function get_description(): string {
         return 'A plugin that provides an internal wiki system for your WordPress site.';
     }
-
+    /**
+     * Get the plugin URI.
+     *
+     * @return string The plugin URI.
+     */
     public function get_uri(): string {
         return 'https://trilb.dev/collection/web-extension/wordpress/wikipress';
     }
-
+    /**
+     * Get the plugin license.
+     *
+     * @return string The plugin license.
+     */
     public function get_license(): string {
         return 'GPL-2.0-or-later';
     }
-
+    /**
+     * Check if the plugin is active.
+     *
+     * @return bool True if the plugin is active, false otherwise.
+     */
     public function is_active(): bool {
         return true;
     }
-
+    /**
+     * Initialize the plugin.
+     *
+     * @return void
+     */
     public function init(): void {
         Includes::get_instance()->init();
     }
-
+    /**
+     * Register the settings for the plugin.
+     *
+     * @return void
+     */
     public function register_settings(): void {
         Includes::get_instance()->settings()->register();
     }
-
+    /**
+     * Get the settings page for the plugin.
+     *
+     * @return array The settings page configuration.
+     */
     public function register_assets(): void {
         ( new Assets() )->register();
     }
-
+    /**
+     * Load the text domain for the plugin.
+     *
+     * @return void
+     */
     public function load_textdomain(): void {
         I18n::load_textdomain();
     }

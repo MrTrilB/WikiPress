@@ -77,6 +77,7 @@ interface PluginInterface {
 }
 /**
  * Setting provider interface for plugins.
+ * @since 1.0.0
  */
 interface SettingsProviderInterface {
     /**
@@ -89,6 +90,7 @@ interface SettingsProviderInterface {
 
 /**
  * Provides an automatically generated settings tab for a WikiPress plugin.
+ * @since 1.0.0
  */
 interface SettingsPageProviderInterface {
     /**
@@ -108,6 +110,7 @@ interface SettingsPageProviderInterface {
 }
 /**
  * Shortcode provider interface for plugins.
+ * @since 1.0.0
  */
 interface DatabaseProviderInterface {
     /**
@@ -117,9 +120,9 @@ interface DatabaseProviderInterface {
      */
     public function register_tables(): void;
 }
-
 /**
  * Provides shortcode definitions for a WikiPress extension.
+ * @since 1.0.0
  */
 interface ShortcodeProviderInterface {
     /**
@@ -130,7 +133,8 @@ interface ShortcodeProviderInterface {
     public function get_shortcodes(): array;
 }
 /**
- * Shortcode provider interface for plugins.
+ * Assets provider interface for plugins.
+ * @since 1.0.0
  */
 interface AssetsProviderInterface {
     /**
@@ -141,7 +145,8 @@ interface AssetsProviderInterface {
     public function register_assets(): void;
 }
 /**
- * Shortcode provider interface for plugins.
+ * Admin provider interface for plugins.
+ * @since 1.0.0
  */
 interface AdminPageProviderInterface {
     /**
@@ -152,7 +157,8 @@ interface AdminPageProviderInterface {
     public function register_admin_pages(): void;
 }
 /**
- * Shortcode provider interface for plugins.
+ * Rest Rout provider interface for plugins.
+ * @since 1.0.0
  */
 interface RestRouteProviderInterface {
     /**
@@ -163,7 +169,8 @@ interface RestRouteProviderInterface {
     public function register_rest_routes(): void;
 }
 /**
- * Shortcode provider interface for plugins.
+ * Frontend provider interface for plugins.
+ * @since 1.0.0
  */
 interface FrontendProviderInterface {
     /**
@@ -174,7 +181,8 @@ interface FrontendProviderInterface {
     public function register_frontend(): void;
 }
 /**
- * Shortcode provider interface for plugins.
+ * I18n provider interface for plugins.
+ * @since 1.0.0
  */
 interface I18nProviderInterface {
     public function load_textdomain(): void;

@@ -1,9 +1,8 @@
 <?php
 /**
- * TrilB.Dev Plugin - User Roles Manager Wiki Plugin
+ * WikiPress - User Roles Manager
  *
- * @package TrilBDev
- * @subpackage Admin\Wiki\Plugins\UserRolesManager
+ * @package WikiPress
  * @since 1.0.0
  */
 
@@ -22,7 +21,7 @@ use TrilBDev\WikiPress\Includes\Plugins\UserRolesManager\Includes\Admin\RoleMana
 class UserRolesManager implements PluginInterface, SettingsProviderInterface, AssetsProviderInterface, AdminPageProviderInterface, I18nProviderInterface {
     /**
      * Returns the slug of the plugin.
-     *
+     * @since 1.0.0
      * @return string The plugin slug.
      */
     public function get_slug(): string {
@@ -30,15 +29,15 @@ class UserRolesManager implements PluginInterface, SettingsProviderInterface, As
     }
     /**
      * Returns the name of the plugin.
-     *
+     * @since 1.0.0
      * @return string The plugin name.
      */
     public function get_name(): string {
-        return 'WikiPress User Roles Manager Plugin';
+        return 'User Roles Manager';
     }
     /**
      * Returns the version of the plugin.
-     *
+     * @since 1.0.0
      * @return string The plugin version.
      */
     public function get_version(): string {
@@ -46,7 +45,7 @@ class UserRolesManager implements PluginInterface, SettingsProviderInterface, As
     }
     /**
      * Returns the author of the plugin.
-     *
+     * @since 1.0.0
      * @return string The plugin author.
      */
     public function get_author(): string {
@@ -54,7 +53,7 @@ class UserRolesManager implements PluginInterface, SettingsProviderInterface, As
     }
     /**
      * Returns the author URI of the plugin.
-     *
+     * @since 1.0.0
      * @return string The plugin author URI.
      */
     public function get_author_uri(): string {
@@ -62,7 +61,7 @@ class UserRolesManager implements PluginInterface, SettingsProviderInterface, As
     }
     /**
      * Returns the description of the plugin.
-     *
+     * @since 1.0.0
      * @return string The plugin description.
      */
     public function get_description(): string {
@@ -70,7 +69,7 @@ class UserRolesManager implements PluginInterface, SettingsProviderInterface, As
     }
     /**
      * Returns the URI of the plugin.
-     *
+     * @since 1.0.0
      * @return string The plugin URI.
      */
     public function get_uri(): string {
@@ -78,7 +77,7 @@ class UserRolesManager implements PluginInterface, SettingsProviderInterface, As
     }
     /**
      * Returns the license of the plugin.
-     *
+     * @since 1.0.0
      * @return string The plugin license.
      */
     public function get_license(): string {
@@ -86,7 +85,7 @@ class UserRolesManager implements PluginInterface, SettingsProviderInterface, As
     }
     /**
      * Checks if the plugin is active.
-     *
+     * @since 1.0.0
      * @return bool True if the plugin is active, false otherwise.
      */
     public function is_active(): bool {
@@ -94,30 +93,39 @@ class UserRolesManager implements PluginInterface, SettingsProviderInterface, As
     }
     /**
      * Initializes the plugin.
+     * @since 1.0.0
      */
     public function init(): void {
         Includes::get_instance()->init();
     }
     /**
      * Registers the settings for the plugin.
+     * @since 1.0.0
+     * @return void
      */
     public function register_settings(): void {
         Includes::get_instance()->settings()->register();
     }
     /**
      * Registers the assets for the plugin.
+     * @since 1.0.0
+     * @return void
      */
     public function register_assets(): void {
         ( new Assets() )->register();
     }
     /**
      * Registers the admin pages for the plugin.
+     * @since 1.0.0
+     * @return void
      */
     public function register_admin_pages(): void {
         ( new RoleManager() )->register();
     }
     /**
      * Loads the text domain for the plugin.
+     * @since 1.0.0
+     * @return void
      */
     public function load_textdomain(): void {
         I18n::load_textdomain();
