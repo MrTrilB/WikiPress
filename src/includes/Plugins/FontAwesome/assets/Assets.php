@@ -22,8 +22,6 @@ final class Assets {
             return;
         }
 
-        $this->enqueue_vendor_fontawesome();
-
         wp_enqueue_style(
             'wikipress-fontawesome-icon-picker',
             WIKIPRESS_URL . 'src/includes/Plugins/FontAwesome/Assets/dist/css/icon-picker.css',
@@ -49,28 +47,6 @@ final class Assets {
                 'close' => __( 'Close', 'wikipress-fontawesome' ),
             ],
         ] );
-    }
-
-    /**
-     * Enqueue the bundled Font Awesome vendor resource in the document context.
-     *
-     * The vendor package owns the source, technology, version, and Kit settings.
-     * WikiPress only requests its registered resource handles here.
-     *
-     * @return void
-     */
-    private function enqueue_vendor_fontawesome(): void {
-        if ( wp_style_is( 'font-awesome-official', 'registered' ) || wp_style_is( 'font-awesome-official', 'enqueued' ) ) {
-            wp_enqueue_style( 'font-awesome-official' );
-        }
-
-        if ( wp_style_is( 'font-awesome-official-v4shim', 'registered' ) || wp_style_is( 'font-awesome-official-v4shim', 'enqueued' ) ) {
-            wp_enqueue_style( 'font-awesome-official-v4shim' );
-        }
-
-        if ( wp_script_is( 'font-awesome-official', 'registered' ) || wp_script_is( 'font-awesome-official', 'enqueued' ) ) {
-            wp_enqueue_script( 'font-awesome-official' );
-        }
     }
 
     private function should_enqueue_icon_picker(): bool {
