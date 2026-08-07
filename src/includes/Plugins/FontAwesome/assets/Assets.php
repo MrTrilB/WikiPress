@@ -3,6 +3,7 @@
 namespace TrilBDev\WikiPress\Includes\Plugins\FontAwesome\Assets;
 
 use TrilBDev\WikiPress\Includes\Functions\Helpers\LoaderHelper;
+use TrilBDev\WikiPress\Includes\Plugins\FontAwesome\Includes\Settings\Settings;
 
 final class Assets {
     private LoaderHelper $loader;
@@ -21,6 +22,8 @@ final class Assets {
         if ( ! $this->should_enqueue_icon_picker() ) {
             return;
         }
+
+        $this->enqueue_fontawesome();
 
         wp_enqueue_style(
             'wikipress-fontawesome-icon-picker',
@@ -47,6 +50,31 @@ final class Assets {
                 'close' => __( 'Close', 'wikipress-fontawesome' ),
             ],
         ] );
+    }
+
+    /**
+     * Enqueue Font Awesome in the document context used by WikiPress.
+     *
+     * @return void
+     */
+    private function enqueue_fontawesome(): void {
+        if ( 'kit' === Settings::source() && '' !== Settings::kit_id() ) {
+            wp_enqueue_script(
+                'wikipress-fontawesome',
+                'https://kit.fontawesome.com/' . rawurlencode( Settings::kit_id() ) . '.js',
+                [],
+                null,
+                false
+            );
+            return;
+        }
+
+        wp_enqueue_style(
+            'wikipress-fontawesome',
+            'https://use.fontawesome.com/releases/v' . rawurlencode( Settings::version() ) . '/css/all.css',
+            [],
+            Settings::version()
+        );
     }
 
     private function should_enqueue_icon_picker(): bool {

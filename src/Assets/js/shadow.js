@@ -30,6 +30,20 @@
     shadowRoot.appendChild(style.cloneNode(true));
   });
 
+  const copyFontAwesomeStyle = (element) => {
+    if (shadowRoot.contains(element) || !isFontAwesomeAsset(element)) return;
+    shadowRoot.appendChild(element.cloneNode(true));
+  };
+
+  new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      mutation.addedNodes.forEach((node) => {
+        if (node.nodeType !== Node.ELEMENT_NODE) return;
+        if (node.matches?.('link[rel="stylesheet"], style')) copyFontAwesomeStyle(node);
+      });
+    });
+  }).observe(document.head, { childList: true });
+
   while (host.firstChild) {
     shell.appendChild(host.firstChild);
   }
