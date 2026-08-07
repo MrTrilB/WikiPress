@@ -169,6 +169,201 @@ final class FormFieldHelper {
         return self::check( 'checkbox', $name, $value, $label, $options );
 
     }
+
+    /**
+     * Render a Bootstrap button group.
+     *
+     * @param string       $name     The input name for checkbox or radio groups.
+     * @param array        $buttons  Button definitions keyed by value or containing value/label pairs.
+     * @param mixed        $selected The selected value or values.
+     * @param array        $options  Group and button options.
+     * @return string The button group markup.
+     */
+    public static function button_group( string $name, array $buttons = [], $selected = [], array $options = [] ): string {
+
+        $type = in_array( $options['type'] ?? 'radio', [ 'button', 'checkbox', 'radio' ], true ) ? $options['type'] : 'radio';
+        $size = in_array( $options['size'] ?? '', [ 'sm', 'lg' ], true ) ? $options['size'] : '';
+        $group_id = (string) ( $options['id'] ?? sanitize_title( $name . '-group' ) );
+        $group_attributes = array_merge( $options['attributes'] ?? [], $options );
+        unset( $group_attributes['attributes'], $group_attributes['id'], $group_attributes['class'], $group_attributes['type'], $group_attributes['size'], $group_attributes['vertical'], $group_attributes['variant'], $group_attributes['button_class'], $group_attributes['aria_label'], $group_attributes['append_array'] );
+        $group_attributes['id'] = $group_id;
+        $group_attributes['role'] = $options['role'] ?? 'group';
+
+        if ( ! empty( $options['aria_label'] ) ) {
+            $group_attributes['aria-label'] = $options['aria_label'];
+        }
+
+        $html = '<div class="' . esc_attr( self::classes( [ 'btn-group', ! empty( $options['vertical'] ) ? 'btn-group-vertical' : '', $size ? 'btn-group-' . $size : '', $options['class'] ?? '' ] ) ) . '" ' . self::attributes_to_string( $group_attributes ) . '>';
+        $selected_values = array_map( 'strval', (array) $selected );
+        $input_name = $name;
+
+        if ( 'checkbox' === $type && false !== ( $options['append_array'] ?? true ) && ! str_ends_with( $input_name, '[]' ) ) {
+            $input_name .= '[]';
+        }
+
+        foreach ( $buttons as $key => $button ) {
+            $definition = is_array( $button ) ? $button : [];
+            $value = (string) ( $definition['value'] ?? ( is_array( $button ) ? $key : $key ) );
+            $label = (string) ( $definition['label'] ?? ( is_array( $button ) ? $value : $button ) );
+            $id = (string) ( $definition['id'] ?? sanitize_title( $group_id . '-' . $value ) );
+            $variant = (string) ( $definition['variant'] ?? $options['variant'] ?? 'outline-primary' );
+            $button_class = self::classes( [ 'btn', 'btn-' . sanitize_html_class( $variant ), $definition['class'] ?? $options['button_class'] ?? '' ] );
+            $disabled = ! empty( $definition['disabled'] );
+
+            if ( 'button' === $type ) {
+                if ( isset( $definition['dropdown'] ) && is_array( $definition['dropdown'] ) ) {
+                    $html .= self::dropdown_button( $label, $definition['dropdown'], $definition );
+                    continue;
+                }
+
+                $button_options = $definition;
+                $button_options['class'] = $button_class;
+                $button_options['type'] = $definition['type'] ?? 'button';
+                $html .= self::button( $label, $button_options );
+                continue;
+            }
+
+            $input_attributes = array_merge( $definition['input_attributes'] ?? [], [ 'autocomplete' => 'off' ] );
+            $input_attributes['class'] = 'btn-check';
+            $input_attributes['id'] = $id;
+            $input_attributes['type'] = $type;
+            $input_attributes['name'] = $input_name;
+            $input_attributes['value'] = $value;
+
+            $is_selected = in_array( $value, $selected_values, true );
+            if ( $is_selected ) {
+                $input_attributes['checked'] = true;
+            }
+            if ( $disabled ) {
+                $input_attributes['disabled'] = true;
+            }
+
+            $html .= '<input ' . self::attributes_to_string( $input_attributes ) . ' />';
+            $html .= '<label class="' . esc_attr( $button_class ) . '" for="' . esc_attr( $id ) . '">' . esc_html( $label ) . '</label>';
+        }
+
+        return $html . '</div>' . self::feedback( $options );
+    }
+
+    /**
+     * Render a regular Bootstrap button for use in a button group or toolbar.
+     *
+     * @param string $label   Button label.
+     * @param array  $options Button attributes and content options.
+     * @return string The button markup.
+     */
+    public static function button( string $label, array $options = [] ): string {
+
+        $tag = ! empty( $options['href'] ) ? 'a' : 'button';
+        $attributes = array_merge( $options['attributes'] ?? [], $options );
+        unset( $attributes['attributes'], $attributes['href'], $attributes['class'], $attributes['type'], $attributes['label'], $attributes['value'], $attributes['disabled'] );
+        $attributes['class'] = self::classes( [ 'btn', $options['class'] ?? 'btn-primary' ] );
+
+        if ( 'a' === $tag ) {
+            $attributes['href'] = $options['href'];
+        } else {
+            $attributes['type'] = in_array( $options['type'] ?? 'button', [ 'button', 'submit', 'reset' ], true ) ? $options['type'] : 'button';
+        }
+
+        if ( ! empty( $options['disabled'] ) ) {
+            $attributes['disabled'] = true;
+            if ( 'a' === $tag ) {
+                $attributes['aria-disabled'] = 'true';
+                $attributes['tabindex'] = '-1';
+            }
+        }
+
+        return '<' . $tag . ' ' . self::attributes_to_string( $attributes ) . '>' . esc_html( $label ) . '</' . $tag . '>';
+    }
+
+    /**
+     * Render a Bootstrap dropdown button for nesting in a button group.
+     *
+     * @param string $label   Toggle label.
+     * @param array  $items   Dropdown item definitions.
+     * @param array  $options Dropdown and toggle options.
+     * @return string The dropdown button markup.
+     */
+    public static function dropdown_button( string $label, array $items = [], array $options = [] ): string {
+
+        $dropdown_id = (string) ( $options['id'] ?? sanitize_title( $label . '-dropdown' ) );
+        $size = in_array( $options['size'] ?? '', [ 'sm', 'lg' ], true ) ? $options['size'] : '';
+        $variant = (string) ( $options['variant'] ?? 'primary' );
+        $button_class = self::classes( [ 'btn', 'btn-' . sanitize_html_class( $variant ), $size ? 'btn-' . $size : '', $options['class'] ?? '' ] );
+        $attributes = array_merge( $options['attributes'] ?? [], [ 'type' => 'button', 'class' => $button_class, 'id' => $dropdown_id, 'data-bs-toggle' => 'dropdown', 'aria-expanded' => 'false' ] );
+        unset( $attributes['attributes'], $attributes['id'], $attributes['class'], $attributes['type'], $attributes['variant'], $attributes['size'], $attributes['split'], $attributes['dropdown'], $attributes['label'] );
+        $attributes['id'] = $dropdown_id;
+        $attributes['type'] = 'button';
+        $attributes['class'] = $button_class . ( ! empty( $options['split'] ) ? ' dropdown-toggle-split' : ' dropdown-toggle' );
+        $toggle = '<button ' . self::attributes_to_string( $attributes ) . '>' . esc_html( $label );
+
+        if ( ! empty( $options['split'] ) ) {
+            $toggle .= '<span class="visually-hidden">' . esc_html__( 'Toggle Dropdown', 'wikipress' ) . '</span>';
+        }
+
+        $toggle .= '</button>';
+        $menu = '<ul class="dropdown-menu" aria-labelledby="' . esc_attr( $dropdown_id ) . '">';
+
+        foreach ( $items as $item ) {
+            if ( is_string( $item ) ) {
+                $item = [ 'label' => $item ];
+            }
+
+            if ( ! empty( $item['divider'] ) ) {
+                $menu .= '<li><hr class="dropdown-divider"></li>';
+                continue;
+            }
+
+            if ( isset( $item['header'] ) ) {
+                $menu .= '<li><h6 class="dropdown-header">' . esc_html( (string) $item['header'] ) . '</h6></li>';
+                continue;
+            }
+
+            $item_label = (string) ( $item['label'] ?? '' );
+            $item_attributes = array_merge( $item['attributes'] ?? [], [ 'class' => self::classes( [ 'dropdown-item', ! empty( $item['active'] ) ? 'active' : '', ! empty( $item['class'] ) ? $item['class'] : '' ] ) ] );
+            unset( $item_attributes['attributes'], $item_attributes['class'], $item_attributes['active'], $item_attributes['disabled'], $item_attributes['href'], $item_attributes['label'] );
+            $item_tag = ! empty( $item['href'] ) ? 'a' : 'button';
+            $item_attributes['class'] = self::classes( [ 'dropdown-item', ! empty( $item['active'] ) ? 'active' : '', ! empty( $item['class'] ) ? $item['class'] : '' ] );
+            $item_attributes['aria-current'] = ! empty( $item['active'] ) ? 'true' : null;
+
+            if ( 'a' === $item_tag ) {
+                $item_attributes['href'] = $item['href'];
+            } else {
+                $item_attributes['type'] = 'button';
+            }
+
+            if ( ! empty( $item['disabled'] ) ) {
+                $item_attributes['disabled'] = true;
+                $item_attributes['aria-disabled'] = 'true';
+            }
+
+            $menu .= '<li><' . $item_tag . ' ' . self::attributes_to_string( $item_attributes ) . '>' . esc_html( $item_label ) . '</' . $item_tag . '></li>';
+        }
+
+        return '<div class="btn-group">' . $toggle . $menu . '</ul></div>';
+    }
+
+    /**
+     * Render a Bootstrap button toolbar from button group markup.
+     *
+     * @param array $groups  Rendered button group strings.
+     * @param array $options Toolbar options.
+     * @return string The toolbar markup.
+     */
+    public static function button_toolbar( array $groups = [], array $options = [] ): string {
+
+        $attributes = array_merge( $options['attributes'] ?? [], $options );
+        unset( $attributes['attributes'], $attributes['id'], $attributes['class'], $attributes['aria_label'], $attributes['gap'] );
+        $attributes['id'] = (string) ( $options['id'] ?? sanitize_title( 'wikipress-button-toolbar' ) );
+        $attributes['role'] = 'toolbar';
+
+        if ( ! empty( $options['aria_label'] ) ) {
+            $attributes['aria-label'] = $options['aria_label'];
+        }
+
+        $class = self::classes( [ 'btn-toolbar', ! empty( $options['gap'] ) ? 'gap-' . absint( $options['gap'] ) : '', $options['class'] ?? '' ] );
+        return '<div class="' . esc_attr( $class ) . '" ' . self::attributes_to_string( $attributes ) . '>' . implode( '', $groups ) . '</div>';
+    }
     /**
      * Render a checkbox or radio input with label.
      *

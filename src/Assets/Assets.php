@@ -30,6 +30,21 @@ final class Assets {
      */
     public function register(): void {
         add_filter( 'wikipress_base_assets', [ $this, 'default_assets' ], 10, 2 );
+        add_action( 'admin_enqueue_scripts', [ $this, 'dequeue_wp_forms' ], 100 );
+    }
+
+    /**
+     * Remove the WordPress admin forms stylesheet from WikiPress screens.
+     *
+     * @param string $hook_suffix The current admin page hook suffix.
+     * @return void
+     */
+    public function dequeue_wp_forms( string $hook_suffix ): void {
+        if ( false === strpos( $hook_suffix, 'wikipress' ) ) {
+            return;
+        }
+
+        wp_dequeue_style( 'forms' );
     }
     /**
      * Registers assets for a specific page.
