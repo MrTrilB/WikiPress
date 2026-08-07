@@ -1,7 +1,7 @@
 (() => {
   const host = document.querySelector('.wikipress-admin');
 
-  if (!host || ! host.attachShadow || host.shadowRoot) return;
+  if (!host || !host.attachShadow || host.shadowRoot) return;
 
   const shadowRoot = host.attachShadow({ mode: 'open' });
   const shell = document.createElement('div');
@@ -34,6 +34,26 @@
 
   const injectFontAwesomeKitCss = () => {
     document.querySelectorAll('link[rel="stylesheet"][href*="kit.fontawesome.com"]').forEach(injectFontAwesomeLink);
+  };
+
+  // ⭐ NEW: Inject Font Awesome Kit Script into Shadow DOM
+  const injectFontAwesomeKitScript = () => {
+    const kitScript = document.querySelector('script[src*="kit.fontawesome.com"]');
+    if (!kitScript) return;
+
+    // Avoid duplicate injection
+    if (shadowRoot.querySelector(`script[src="${kitScript.src}"]`)) return;
+
+    const shadowScript = document.createElement('script');
+    shadowScript.src = kitScript.src;
+    shadowScript.crossOrigin = kitScript.crossOrigin || 'anonymous';
+    shadowScript.defer = true;
+
+    shadowScript.addEventListener('load', () => {
+      queueFontAwesomeRender();
+    });
+
+    shadowRoot.appendChild(shadowScript);
   };
 
   document.querySelectorAll('link[rel="stylesheet"]').forEach((link) => {
@@ -96,7 +116,9 @@
 
   const renderFontAwesomeInShadow = () => {
     injectFontAwesomeKitCss();
+    injectFontAwesomeKitScript(); // ⭐ NEW: ensure script is inside shadow
     copyFontAwesomeRuntimeCss();
+
     if (renderingFontAwesome || !window.FontAwesome?.dom?.i2svg) return;
 
     renderingFontAwesome = true;
@@ -124,7 +146,9 @@
 
   shadowRoot.appendChild(shell);
   window.wikipressShadowRoot = shadowRoot;
+
   injectFontAwesomeKitCss();
+  injectFontAwesomeKitScript(); // ⭐ NEW: initial script injection
   copyFontAwesomeRuntimeCss();
   queueFontAwesomeRender();
 
