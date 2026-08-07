@@ -11,12 +11,23 @@
   hostStyle.textContent = ':host { display: block; }';
   shadowRoot.appendChild(hostStyle);
 
+  const isFontAwesomeAsset = (element) => {
+    const source = `${element.id || ''} ${element.href || ''} ${element.textContent || ''}`.toLowerCase();
+    return source.includes('fontawesome') || source.includes('font-awesome') || source.includes('.fa-solid') || source.includes('.fa-regular');
+  };
+
   document.querySelectorAll('link[rel="stylesheet"]').forEach((link) => {
     const href = link.href || '';
-    if (!href.toLowerCase().includes('wikipress')) return;
+    if (!href.toLowerCase().includes('wikipress') && !isFontAwesomeAsset(link)) return;
 
     const shadowLink = link.cloneNode(true);
     shadowRoot.appendChild(shadowLink);
+  });
+
+  document.querySelectorAll('style').forEach((style) => {
+    if (!isFontAwesomeAsset(style)) return;
+
+    shadowRoot.appendChild(style.cloneNode(true));
   });
 
   while (host.firstChild) {
