@@ -30,7 +30,8 @@ final class Assets {
      */
     public function register(): void {
         add_filter( 'wikipress_base_assets', [ $this, 'default_assets' ], 10, 2 );
-        add_action( 'admin_enqueue_scripts', [ $this, 'dequeue_wp_forms' ], 100 );
+        add_action( 'admin_enqueue_scripts', [ $this, 'dequeue_wp_forms' ], PHP_INT_MAX );
+        add_action( 'admin_print_styles', [ $this, 'dequeue_wp_forms' ], 0 );
     }
 
     /**
@@ -39,8 +40,10 @@ final class Assets {
      * @param string $hook_suffix The current admin page hook suffix.
      * @return void
      */
-    public function dequeue_wp_forms( string $hook_suffix ): void {
-        if ( false === strpos( $hook_suffix, 'wikipress' ) ) {
+    public function dequeue_wp_forms( string $hook_suffix = '' ): void {
+        $page = sanitize_key( $_GET['page'] ?? '' );
+
+        if ( false === strpos( $hook_suffix, 'wikipress' ) && 0 !== strpos( $page, 'wikipress' ) ) {
             return;
         }
 
