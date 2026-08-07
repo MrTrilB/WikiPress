@@ -9,6 +9,7 @@
   "scripts": {
     "build": "webpack --config webpack.config.js",
     "build:watch": "webpack --watch --mode development --config webpack.config.js",
+    "i18n:pot": "node scripts/generate-pot.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {

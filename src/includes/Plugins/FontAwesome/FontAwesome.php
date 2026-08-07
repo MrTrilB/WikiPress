@@ -1,4 +1,13 @@
 <?php
+/**
+ * Font Awesome plugin integration for WikiPress.
+ *
+ * @package FontAwesome
+ * @subpackage Includes\Plugins\FontAwesome
+ * @textdomain fontawesome
+ * @domainpath Languages
+ * @author WikiPress Team
+ */
 
 namespace TrilBDev\WikiPress\Includes\Plugins\FontAwesome;
 
