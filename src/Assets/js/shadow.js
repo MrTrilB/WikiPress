@@ -22,12 +22,25 @@
       || source.includes('--fa-');
   };
 
+  const injectFontAwesomeLink = (link) => {
+    if (!link?.href || Array.from(shadowRoot.querySelectorAll('link[rel="stylesheet"]')).some((shadowLink) => shadowLink.href === link.href)) return;
+
+    const shadowLink = document.createElement('link');
+    shadowLink.rel = 'stylesheet';
+    shadowLink.href = link.href;
+    shadowLink.media = link.media || 'all';
+    shadowRoot.appendChild(shadowLink);
+  };
+
+  const injectFontAwesomeKitCss = () => {
+    document.querySelectorAll('link[rel="stylesheet"][href*="kit.fontawesome.com"]').forEach(injectFontAwesomeLink);
+  };
+
   document.querySelectorAll('link[rel="stylesheet"]').forEach((link) => {
     const href = link.href || '';
     if (!href.toLowerCase().includes('wikipress') && !isFontAwesomeAsset(link)) return;
 
-    const shadowLink = link.cloneNode(true);
-    shadowRoot.appendChild(shadowLink);
+    injectFontAwesomeLink(link);
   });
 
   document.querySelectorAll('style').forEach((style) => {
@@ -38,6 +51,11 @@
 
   const copyFontAwesomeStyle = (element) => {
     if (shadowRoot.contains(element) || !isFontAwesomeAsset(element)) return;
+    if (element.matches?.('link[rel="stylesheet"]')) {
+      injectFontAwesomeLink(element);
+      return;
+    }
+
     shadowRoot.appendChild(element.cloneNode(true));
   };
 
@@ -77,6 +95,7 @@
   let renderQueued = false;
 
   const renderFontAwesomeInShadow = () => {
+    injectFontAwesomeKitCss();
     copyFontAwesomeRuntimeCss();
     if (renderingFontAwesome || !window.FontAwesome?.dom?.i2svg) return;
 
@@ -105,8 +124,12 @@
 
   shadowRoot.appendChild(shell);
   window.wikipressShadowRoot = shadowRoot;
+  injectFontAwesomeKitCss();
   copyFontAwesomeRuntimeCss();
   queueFontAwesomeRender();
+
+  document.addEventListener('DOMContentLoaded', queueFontAwesomeRender, { once: true });
+  window.addEventListener('load', queueFontAwesomeRender, { once: true });
 
   new MutationObserver((mutations) => {
     if (mutations.some((mutation) => Array.from(mutation.addedNodes).some((node) => {
