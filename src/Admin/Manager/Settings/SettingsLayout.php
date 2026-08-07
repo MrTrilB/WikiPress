@@ -27,7 +27,18 @@ final class SettingsLayout {
 		echo '<nav aria-label="' . esc_attr__( 'Layout settings sections', 'wikipress' ) . '"><div class="nav nav-tabs" id="wikipress-layout-tab" role="tablist">';
 		foreach ( $sections as $slug => $label ) {
 			$target = 'wikipress-layout-' . $slug;
-			echo '<button class="nav-link ' . ( $section === $slug ? 'active' : '' ) . '" id="' . esc_attr( $target . '-tab' ) . '" data-bs-toggle="tab" data-bs-target="#' . esc_attr( $target ) . '" type="button" role="tab" aria-controls="' . esc_attr( $target ) . '" aria-selected="' . ( $section === $slug ? 'true' : 'false' ) . '" data-wikipress-layout-tab="' . esc_attr( $slug ) . '">' . esc_html( $label ) . '</button>';
+			echo FormFieldHelper::button( $label, [
+				'class' => 'nav-link ' . ( $section === $slug ? 'active' : '' ),
+				'attributes' => [
+					'id' => $target . '-tab',
+					'data-bs-toggle' => 'tab',
+					'data-bs-target' => '#' . $target,
+					'role' => 'tab',
+					'aria-controls' => $target,
+					'aria-selected' => $section === $slug ? 'true' : 'false',
+					'data-wikipress-layout-tab' => $slug,
+				],
+			] );
 		}
 		echo '</div></nav><div class="tab-content" id="wikipress-layout-tab-content">';
 		foreach ( $sections as $slug => $label ) {
