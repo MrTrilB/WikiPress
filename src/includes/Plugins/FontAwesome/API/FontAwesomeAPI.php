@@ -10,26 +10,20 @@ final class FontAwesomeAPI {
             return;
         }
 
-        $options = get_option( 'font-awesome', [] );
-        $options = is_array( $options ) ? $options : [];
-        $kit_id = self::kit_id();
+        add_action( 'font_awesome_preferences', [ self::class, 'register_preferences' ] );
+    }
 
-        if ( Settings::source() === 'kit' && $kit_id !== '' ) {
-            $options['kitToken'] = $kit_id;
-            $options['apiToken'] = true;
-            $options['version'] = 'latest';
-        } else {
-            $options['kitToken'] = null;
-            $options['apiToken'] = false;
-            $options['version'] = Settings::version();
+    public static function register_preferences(): void {
+        if ( ! self::is_available() ) {
+            return;
         }
 
-        $options['usePro'] = false;
-        $options['compat'] = true;
-        $options['technology'] = 'webfont';
-        $options['pseudoElements'] = true;
-        $options['dataVersion'] = 4;
-        update_option( 'font-awesome', $options, false );
+        self::instance()->register( [
+            'technology'     => 'svg',
+            'compat'         => true,
+            'pseudoElements' => false,
+            'name'           => 'WikiPress',
+        ] );
     }
 
     public static function is_available(): bool {

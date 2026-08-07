@@ -11,6 +11,7 @@ namespace TrilBDev\WikiPress\Assets;
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
+
 /**
  * Class Assets
  *
