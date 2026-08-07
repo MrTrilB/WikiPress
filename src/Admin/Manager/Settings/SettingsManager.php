@@ -116,7 +116,11 @@ final class SettingsManager extends Manager {
         if ( 'layout' !== $tab ) {
             echo '</tbody></table>';
         }
-        submit_button( __( 'Save Changes', 'wikipress' ), 'primary', 'submit', true, [ 'class' => 'btn btn-primary' ] );
+        echo FormFieldHelper::button( __( 'Save Changes', 'wikipress' ), [
+            'type' => 'submit',
+            'name' => 'submit',
+            'class' => 'btn-primary',
+        ] );
         echo '</div></form>';
         if ( 'tools' === $tab ) {
             $this->tools_page->render_import_form();
