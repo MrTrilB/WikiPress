@@ -218,7 +218,9 @@ class Plugins {
             return;
         }
 
-        $instance = new $fqcn();
+        $instance = is_callable( [ $fqcn, 'get_instance' ] )
+            ? $fqcn::get_instance()
+            : new $fqcn();
         if ( ! $instance instanceof PluginInterface ) {
             LoggerHelper::write_log( sprintf( 'Wiki plugin %s does not implement PluginInterface.', $fqcn ) );
             return;
