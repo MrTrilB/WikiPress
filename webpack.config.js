@@ -3,6 +3,7 @@ const fs = require('fs');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const entries = {
+  shadow: './src/Assets/js/shadow.js',
   bootstrap: [
     './src/Assets/js/bootstrap.js',
     './src/Assets/scss/bootstrap.scss',

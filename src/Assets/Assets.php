@@ -31,7 +31,7 @@ final class Assets {
     public function register(): void {
         add_filter( 'wikipress_base_assets', [ $this, 'default_assets' ], 10, 2 );
         add_action( 'admin_enqueue_scripts', [ $this, 'dequeue_wp_forms' ], PHP_INT_MAX );
-        add_action( 'admin_print_styles', [ $this, 'dequeue_wp_forms' ], 40 );
+        add_action( 'admin_print_styles', [ $this, 'dequeue_wp_forms' ], 0 );
     }
 
     /**
@@ -128,7 +128,10 @@ final class Assets {
             ),
             'scripts' => array_merge(
                 $base['scripts'] ?? [],
-                [ [ 'handle' => 'wikipress-admin-ui', 'src' => WIKIPRESS_URL . 'src/Assets/dist/js/admin.ui.js', 'deps' => [ 'wikipress-bootstrap' ], 'in_footer' => true ] ],
+                [
+                    [ 'handle' => 'wikipress-shadow', 'src' => WIKIPRESS_URL . 'src/Assets/dist/js/shadow.js', 'in_footer' => true ],
+                    [ 'handle' => 'wikipress-admin-ui', 'src' => WIKIPRESS_URL . 'src/Assets/dist/js/admin.ui.js', 'deps' => [ 'wikipress-bootstrap', 'wikipress-shadow' ], 'in_footer' => true ],
+                ],
                 $registered['scripts'] ?? []
             ),
         ] );

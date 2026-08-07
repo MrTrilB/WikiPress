@@ -1,4 +1,6 @@
-document.querySelectorAll('.wikipress-role-form').forEach((form) => {
+const root = window.wikipressShadowRoot || document;
+
+root.querySelectorAll('.wikipress-role-form').forEach((form) => {
   const steps = Array.from(form.querySelectorAll('[data-role-step]'));
   const next = form.querySelector('[data-role-next]');
   const back = form.querySelector('[data-role-back]');

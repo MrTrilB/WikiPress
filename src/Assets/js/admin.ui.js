@@ -1,9 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach((element) => {
+  const root = window.wikipressShadowRoot || document;
+
+  root.querySelectorAll('[data-bs-toggle="tooltip"]').forEach((element) => {
     window.bootstrap?.Tooltip.getOrCreateInstance(element);
   });
 
-  document.querySelectorAll('[data-permalink-field="permalink"]').forEach((field) => {
+  root.querySelectorAll('[data-permalink-field="permalink"]').forEach((field) => {
     const tokenButtons = field.parentElement.querySelectorAll('[data-permalink-token]');
 
     const refreshTokens = () => {

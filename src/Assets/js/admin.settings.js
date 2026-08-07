@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const panel = document.querySelector('#wikipress-settings-panel');
+  const root = window.wikipressShadowRoot || document;
+  const panel = root.querySelector('#wikipress-settings-panel');
   const config = window.wikipressSettingsTabs;
   if (!panel || !config) return;
 
@@ -10,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const setActive = (tab, section) => {
-    document.querySelectorAll('[data-wikipress-settings-tab]').forEach((link) => {
+    root.querySelectorAll('[data-wikipress-settings-tab]').forEach((link) => {
       const active = link.dataset.wikipressSettingsTab === tab && (!link.dataset.wikipressSettingsSection || link.dataset.wikipressSettingsSection === section);
       link.classList.toggle('active', active);
       link.setAttribute('aria-selected', active ? 'true' : 'false');
@@ -19,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
 
-  const bindForms = () => document.querySelectorAll('.wikipress-settings-form, .wikipress-import-form').forEach((form) => {
+  const bindForms = () => root.querySelectorAll('.wikipress-settings-form, .wikipress-import-form').forEach((form) => {
     form.addEventListener('submit', () => {
       const submit = form.querySelector('[type="submit"]');
       if (submit) submit.disabled = true;
@@ -48,8 +49,8 @@ document.addEventListener('DOMContentLoaded', () => {
       .finally(() => panel.removeAttribute('aria-busy'));
   };
 
-  document.addEventListener('click', (event) => {
-    const link = event.target.closest('#wikipress-settings-panel [data-wikipress-settings-tab]');
+  root.addEventListener('click', (event) => {
+    const link = event.target.closest?.('#wikipress-settings-panel [data-wikipress-settings-tab]');
     if (!link) return;
     event.preventDefault();
     event.stopPropagation();

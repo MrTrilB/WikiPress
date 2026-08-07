@@ -1,4 +1,6 @@
-document.querySelectorAll('[data-bootstrap-search]').forEach((field) => {
+const root = window.wikipressShadowRoot || document;
+
+root.querySelectorAll('[data-bootstrap-search]').forEach((field) => {
   if (typeof window.BootstrapSearch !== 'function') return;
 
   let options;
@@ -8,7 +10,7 @@ document.querySelectorAll('[data-bootstrap-search]').forEach((field) => {
     return;
   }
 
-  const hiddenFields = Array.from(document.querySelectorAll(`[data-bootstrap-search-value="${field.id}"]`));
+  const hiddenFields = Array.from(root.querySelectorAll(`[data-bootstrap-search-value="${field.id}"]`));
   const valueKey = options.value || 'value';
   const setValues = (items) => {
     const selected = Array.isArray(items) ? items : [items];

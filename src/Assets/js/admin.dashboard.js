@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
-	document.querySelectorAll('[data-wikipress-count]').forEach((element) => {
+	const root = window.wikipressShadowRoot || document;
+	root.querySelectorAll('[data-wikipress-count]').forEach((element) => {
 		element.classList.add('wikipress-count-ready');
 	});
 });
