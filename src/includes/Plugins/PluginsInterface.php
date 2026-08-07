@@ -1,8 +1,8 @@
 <?php
 /**
- * Plugin interface for all plugins.
+ * WikiPress Plugin interface for all plugins.
  *
- * @package TrilBDev
+ * @package WikiPress
  * @subpackage Includes\Plugins
  */
 namespace TrilBDev\WikiPress\Includes\Plugins;
@@ -32,10 +32,35 @@ interface PluginInterface {
      * @return string The plugin version.
      */
     public function get_version(): string;
+    /**
+     * Get the plugin author.
+     *
+     * @return string The plugin author.
+     */
     public function get_author(): string;
+    /**
+     * Get the plugin author URI.
+     *
+     * @return string The plugin author URI.
+     */
     public function get_author_uri(): string;
+    /**
+     * Get the plugin description.
+     *
+     * @return string The plugin description.
+     */
     public function get_description(): string;
+    /**
+     * Get the plugin URI.
+     *
+     * @return string The plugin URI.
+     */
     public function get_uri(): string;
+    /**
+     * Get the plugin license.
+     *
+     * @return string The plugin license.
+     */
     public function get_license(): string;
     /**
      * Check if the plugin is active.
@@ -148,7 +173,9 @@ interface FrontendProviderInterface {
      */
     public function register_frontend(): void;
 }
-
+/**
+ * Shortcode provider interface for plugins.
+ */
 interface I18nProviderInterface {
     public function load_textdomain(): void;
 }

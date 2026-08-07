@@ -1,11 +1,11 @@
 <?php
 /**
- * TrilB.Dev Plugin - Wiki Plugins
+ * WikiPress - Plugins
  *
- * Handles discovery and loading of Wiki plugin modules.
+ * Handles discovery and loading of WikiPress plugin modules.
  *
- * @package TrilBDev
- * @subpackage Includes\Wiki\Plugins
+ * @package WikiPress
+ * @subpackage Includes\WikiPress\Plugins
  * @since 1.0.0
  */
 
@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Class Plugins
  *
- * Manages the discovery, loading, and initialization of Wiki plugin modules.
+ * Manages the discovery, loading, and initialization of WikiPress plugin modules.
  */
 class Plugins {
     /**
@@ -82,10 +82,10 @@ class Plugins {
         }
 
         /**
-         * Allow WordPress plugins to register Wiki extensions.
+         * Allow WordPress plugins to register WikiPress extensions.
          *
          * Plugins installed via the normal WordPress plugin system can hook
-         * into this action and call Wiki\Plugins::register_plugin().
+         * into this action and call WikiPress\Plugins::register_plugin().
          */
         do_action( 'wikipress_register_plugin', $this );
     }
@@ -204,7 +204,7 @@ class Plugins {
         try {
             require_once $file;
         } catch ( \Throwable $e ) {
-            LoggerHelper::write_log( sprintf( 'Wiki plugin loader failed to require file %s: %s', $file, $e->getMessage() ) );
+            LoggerHelper::write_log( sprintf( 'WikiPress plugin loader failed to require file %s: %s', $file, $e->getMessage() ) );
             return;
         }
 
@@ -222,7 +222,7 @@ class Plugins {
             ? $fqcn::get_instance()
             : new $fqcn();
         if ( ! $instance instanceof PluginInterface ) {
-            LoggerHelper::write_log( sprintf( 'Wiki plugin %s does not implement PluginInterface.', $fqcn ) );
+            LoggerHelper::write_log( sprintf( 'WikiPress plugin %s does not implement PluginInterface.', $fqcn ) );
             return;
         }
 
@@ -241,9 +241,7 @@ class Plugins {
     }
 
     private function has_plugin_structure( string $plugin_directory ): bool {
-        return is_dir( $plugin_directory . '/Assets/dist/css' )
-            && is_dir( $plugin_directory . '/Assets/dist/js' )
-            && is_readable( $plugin_directory . '/Assets/Assets.php' )
+        return is_readable( $plugin_directory . '/Assets/Assets.php' )
             && is_readable( $plugin_directory . '/Includes/Includes.php' )
             && is_readable( $plugin_directory . '/Includes/I18n.php' )
             && is_readable( $plugin_directory . '/Includes/Settings/Settings.php' )
@@ -328,7 +326,7 @@ class Plugins {
 
             $plugin->init();
         } catch ( \Throwable $e ) {
-            LoggerHelper::write_log( sprintf( 'Wiki plugin %s failed to initialize: %s', $plugin->get_slug(), $e->getMessage() ) );
+            LoggerHelper::write_log( sprintf( 'WikiPress plugin %s failed to initialize: %s', $plugin->get_slug(), $e->getMessage() ) );
         }
     }
     /**
