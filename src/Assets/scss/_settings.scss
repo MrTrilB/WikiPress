@@ -30,6 +30,16 @@
 		max-width: 100%;
 	}
 
+	.wikipress-settings-form {
+		.tab-content {
+			margin-top: 1rem;
+		}
+
+		> .card-body > .btn {
+			margin-top: 1rem;
+		}
+	}
+
 	.wikipress-settings-tab-content {
 		transition: opacity 150ms ease;
 
