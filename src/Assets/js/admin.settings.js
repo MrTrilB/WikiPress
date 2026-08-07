@@ -54,19 +54,57 @@ document.addEventListener('DOMContentLoaded', () => {
       .then((response) => response.json())
       .then((response) => {
         if (!response.success) throw new Error('Unable to save plugin settings');
-        window.bootstrap?.Modal.getOrCreateInstance(modal).hide();
+        closePluginModal(modal);
       })
       .catch(() => { modal.querySelector('.modal-body')?.classList.add('is-invalid'); })
       .finally(() => { button.disabled = false; });
+  };
+
+  const removePluginModalBackdrop = (modal) => {
+    const scope = modal?.getRootNode?.() || root;
+    scope.querySelector?.('.wikipress-plugin-modal-backdrop')?.remove();
+    document.body.classList.remove('modal-open');
+  };
+
+  const closePluginModal = (modal) => {
+    if (!modal) return;
+
+    if (window.bootstrap?.Modal) {
+      window.bootstrap.Modal.getOrCreateInstance(modal).hide();
+    }
+
+    modal.classList.remove('show');
+    modal.setAttribute('aria-hidden', 'true');
+    modal.style.display = 'none';
+    removePluginModalBackdrop(modal);
   };
 
   const openPluginModal = (trigger) => {
     const targetSelector = trigger.dataset.bsTarget;
     const scope = trigger.getRootNode?.() || root;
     const modal = scope.querySelector?.(targetSelector) || root.querySelector(targetSelector);
-    if (!modal || !window.bootstrap?.Modal) return false;
+    if (!modal) return false;
 
-    window.bootstrap.Modal.getOrCreateInstance(modal).show(trigger);
+    const modalScope = modal.getRootNode?.() || root;
+    modalScope.querySelector?.('.wikipress-plugin-modal-backdrop')?.remove();
+
+    if (window.bootstrap?.Modal) {
+      window.bootstrap.Modal.getOrCreateInstance(modal).show(trigger);
+    }
+
+    modal.classList.add('show');
+    modal.setAttribute('aria-hidden', 'false');
+    modal.setAttribute('aria-modal', 'true');
+    modal.style.display = 'block';
+    modal.style.zIndex = '1055';
+
+    const backdrop = document.createElement('div');
+    backdrop.className = 'modal-backdrop fade show wikipress-plugin-modal-backdrop';
+    backdrop.style.zIndex = '1050';
+    backdrop.addEventListener('click', () => closePluginModal(modal));
+    modalScope.appendChild(backdrop);
+    document.body.classList.add('modal-open');
+
     return true;
   };
 
@@ -77,6 +115,16 @@ document.addEventListener('DOMContentLoaded', () => {
     trigger.addEventListener('click', (event) => {
       event.preventDefault();
       openPluginModal(trigger);
+    });
+  });
+
+  const bindPluginModalDismissals = () => root.querySelectorAll('.wikipress-plugin-settings-modal [data-bs-dismiss="modal"]').forEach((button) => {
+    if (button.dataset.wikipressModalDismissBound) return;
+
+    button.dataset.wikipressModalDismissBound = 'true';
+    button.addEventListener('click', (event) => {
+      event.preventDefault();
+      closePluginModal(button.closest('.wikipress-plugin-settings-modal'));
     });
   });
 
@@ -119,6 +167,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (updateHash) window.history.pushState({}, '', `${window.location.pathname}${window.location.search}#${response.data.tab === 'layout' ? `layout-${response.data.layout_section}` : response.data.tab}`);
         bindForms();
         bindPluginModals();
+        bindPluginModalDismissals();
         const nextContent = panel.querySelector('.wikipress-settings-tab-content');
         if (nextContent) requestAnimationFrame(() => nextContent.classList.remove('is-loading'));
       })
@@ -183,4 +232,5 @@ document.addEventListener('DOMContentLoaded', () => {
   if (window.location.hash && 'layout' !== initial.tab && (initial.tab !== panel.dataset.currentTab || initial.section !== panel.dataset.currentSection)) loadTab(initial.tab, initial.section, false);
   bindForms();
   bindPluginModals();
+  bindPluginModalDismissals();
 });
