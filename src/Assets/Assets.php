@@ -135,6 +135,28 @@ final class Assets {
                 $registered['scripts'] ?? []
             ),
         ] );
+
+        $this->enqueue_fontawesome_vendor_assets();
+    }
+
+    /**
+     * Request Font Awesome through the official vendor handle.
+     *
+     * The vendor remains responsible for registering the resource URL and
+     * selecting CDN, Kit, Web Font, or SVG technology.
+     *
+     * @return void
+     */
+    private function enqueue_fontawesome_vendor_assets(): void {
+        foreach ( [ 'font-awesome-official', 'font-awesome-official-v4shim' ] as $handle ) {
+            if ( wp_style_is( $handle, 'registered' ) || wp_style_is( $handle, 'enqueued' ) ) {
+                wp_enqueue_style( $handle );
+            }
+
+            if ( wp_script_is( $handle, 'registered' ) || wp_script_is( $handle, 'enqueued' ) ) {
+                wp_enqueue_script( $handle );
+            }
+        }
     }
     /**
      * Enqueues the registered assets for a given context.
