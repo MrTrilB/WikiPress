@@ -200,39 +200,45 @@ class Plugins {
             return;
         }
 
-        $this->load_plugin_includes( dirname( $file ) );
-
         $namespace = $this->extract_namespace( $contents );
         $class_name = $this->extract_class_name( $contents );
+        $expected_class = $namespace !== '' && $class_name !== ''
+            ? sprintf( '%s\\%s', trim( $namespace, '\\' ), $class_name )
+            : $class_name;
+        $declared_before = get_declared_classes();
 
         try {
+            $this->load_plugin_includes( dirname( $file ) );
             require_once $file;
+
+            $plugin_classes = array_filter(
+                array_diff( get_declared_classes(), $declared_before ),
+                static fn ( string $class ): bool => is_subclass_of( $class, PluginInterface::class )
+            );
+
+            $fqcn = ! empty( $plugin_classes )
+                ? (string) reset( $plugin_classes )
+                : $expected_class;
+
+            if ( ! class_exists( $fqcn ) || ! is_a( $fqcn, PluginInterface::class, true ) ) {
+                LoggerHelper::write_log( sprintf( 'WikiPress plugin file %s does not declare a PluginInterface implementation.', $file ) );
+                return;
+            }
+
+            $instance = is_callable( [ $fqcn, 'get_instance' ] )
+                ? $fqcn::get_instance()
+                : new $fqcn();
+
+            if ( ! $instance instanceof PluginInterface ) {
+                LoggerHelper::write_log( sprintf( 'WikiPress plugin %s does not implement PluginInterface.', $fqcn ) );
+                return;
+            }
+
+            $this->register_plugin_instance( $instance );
+            $this->loaded_plugins[] = $fqcn;
         } catch ( \Throwable $e ) {
             LoggerHelper::write_log( sprintf( 'WikiPress plugin loader failed to require file %s: %s', $file, $e->getMessage() ) );
-            return;
         }
-
-        if ( $class_name === '' ) {
-            return;
-        }
-
-        $fqcn = $namespace !== '' ? sprintf( '%s\\%s', trim( $namespace, '\\' ), $class_name ) : $class_name;
-
-        if ( ! class_exists( $fqcn ) ) {
-            return;
-        }
-
-        $instance = is_callable( [ $fqcn, 'get_instance' ] )
-            ? $fqcn::get_instance()
-            : new $fqcn();
-        if ( ! $instance instanceof PluginInterface ) {
-            LoggerHelper::write_log( sprintf( 'WikiPress plugin %s does not implement PluginInterface.', $fqcn ) );
-            return;
-        }
-
-        $this->register_plugin_instance( $instance );
-
-        $this->loaded_plugins[] = $fqcn;
     }
     /**
      * Loads additional includes for a plugin if they exist.

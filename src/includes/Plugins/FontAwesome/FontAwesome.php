@@ -35,36 +35,6 @@ final class FontAwesome implements PluginInterface, SettingsProviderInterface, S
      */
     private ?IconPicker $icon_picker = null;
     /**
-     * Get the singleton instance of the FontAwesome plugin.
-     *
-     * @return self The singleton instance of the FontAwesome plugin.
-     */
-    public static function get_instance(): self {
-        return self::$instance ??= new self();
-    }
-    /**
-     * Private constructor to prevent direct instantiation.
-     */
-    private function __construct() {}
-    /**
-     * Initialize the FontAwesome plugin.
-     *
-     * This method configures the FontAwesome API and initializes the IconPicker
-     * if the FontAwesome library is available. It also initializes the Includes
-     * class for additional functionality.
-     */
-    public function init(): void {
-        FontAwesomeAPI::configure();
-
-        if ( $this->is_available() ) {
-
-            $this->icon_picker = IconPicker::get_instance();
-
-        }
-
-        Includes::get_instance()->init();
-    }
-    /**
      * Check if the FontAwesome library is available.
      *
      * @return bool True if the FontAwesome library is available, false otherwise.
@@ -195,5 +165,35 @@ final class FontAwesome implements PluginInterface, SettingsProviderInterface, S
      */
     public function get_icon_picker(): ?IconPicker {
         return $this->icon_picker;
+    }
+    /**
+     * Get the singleton instance of the FontAwesome plugin.
+     *
+     * @return self The singleton instance of the FontAwesome plugin.
+     */
+    public static function get_instance(): self {
+        return self::$instance ??= new self();
+    }
+    /**
+     * Private constructor to prevent direct instantiation.
+     */
+    private function __construct() {}
+    /**
+     * Initialize the FontAwesome plugin.
+     *
+     * This method configures the FontAwesome API and initializes the IconPicker
+     * if the FontAwesome library is available. It also initializes the Includes
+     * class for additional functionality.
+     */
+    public function init(): void {
+        FontAwesomeAPI::configure();
+
+        if ( $this->is_available() ) {
+
+            $this->icon_picker = IconPicker::get_instance();
+
+        }
+
+        Includes::get_instance()->init();
     }
 }
