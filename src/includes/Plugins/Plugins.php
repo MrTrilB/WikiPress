@@ -108,6 +108,43 @@ class Plugins {
     public function get_registered_plugins(): array {
         return $this->registered_plugins;
     }
+
+    /**
+     * Determines whether a plugin is enabled.
+     *
+     * Plugins without a saved state remain enabled for backwards compatibility.
+     *
+     * @param string $slug Plugin slug.
+     * @return bool True when the plugin is enabled.
+     */
+    public function is_plugin_enabled( string $slug ): bool {
+        $states = Settings::get_group( 'plugins', [] );
+        if ( ! is_array( $states ) || ! array_key_exists( $slug, $states ) ) {
+            return true;
+        }
+
+        return (bool) $states[ $slug ];
+    }
+
+    /**
+     * Persists a plugin's enabled state.
+     *
+     * @param string $slug Plugin slug.
+     * @param bool   $enabled Whether the plugin should be enabled.
+     * @return bool True when the state is saved.
+     */
+    public function set_plugin_enabled( string $slug, bool $enabled ): bool {
+        $slug = sanitize_key( $slug );
+        if ( '' === $slug || ! isset( $this->registered_plugins[ $slug ] ) ) {
+            return false;
+        }
+
+        $states = Settings::get_group( 'plugins', [] );
+        $states = is_array( $states ) ? $states : [];
+        $states[ $slug ] = $enabled;
+
+        return Settings::set_group( 'plugins', $states );
+    }
     /**
      * Registers a plugin instance with the plugin system.
      *
@@ -133,7 +170,7 @@ class Plugins {
 
         $this->registered_plugins[ $slug ] = $plugin;
 
-        if ( $this->initialized && $this->auto_activate ) {
+        if ( $this->initialized && $this->auto_activate && $this->is_plugin_enabled( $slug ) ) {
             $this->initialize_plugin( $plugin );
         }
     }
@@ -300,7 +337,7 @@ class Plugins {
      * @param PluginInterface $plugin The plugin instance to initialize.
      */
     private function initialize_plugin( PluginInterface $plugin ): void {
-        if ( ! $plugin->is_active() ) {
+        if ( ! $plugin->is_active() || ! $this->is_plugin_enabled( $plugin->get_slug() ) ) {
             return;
         }
 

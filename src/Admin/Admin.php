@@ -5,6 +5,7 @@ namespace TrilBDev\WikiPress\Admin;
 use TrilBDev\WikiPress\Includes\Tools\DataTransfer;
 use TrilBDev\WikiPress\Includes\Settings\Settings;
 use TrilBDev\WikiPress\Includes\Plugins\Plugins;
+use TrilBDev\WikiPress\Includes\Plugins\PluginInterface;
 use TrilBDev\WikiPress\Includes\Plugins\SettingsPageProviderInterface;
 use TrilBDev\WikiPress\Includes\Functions\Helpers\PermalinkHelper;
 use TrilBDev\WikiPress\Includes\Functions\Helpers\AjaxHelper;
@@ -38,6 +39,7 @@ final class Admin {
         $this->analytics_manager->register_assets( $assets );
         $this->loader->register_component( $this, [
             [ 'type' => 'action', 'hook' => 'wp_ajax_wikipress_load_settings_tab', 'callback' => 'load_settings_tab' ],
+            [ 'type' => 'action', 'hook' => 'wp_ajax_wikipress_toggle_plugin', 'callback' => 'toggle_plugin' ],
         ] )->run();
     }
 
@@ -176,6 +178,26 @@ final class Admin {
         AjaxHelper::success( [ 'html' => $html, 'tab' => $tab, 'layout_section' => $layout_section ] );
     }
 
+    public function toggle_plugin(): void {
+        if ( ! AjaxHelper::authorized( 'wikipress_plugin_toggle', 'manage_options' ) ) {
+            AjaxHelper::unauthorized( __( 'You are not authorized to manage WikiPress plugins.', 'wikipress' ) );
+        }
+
+        $slug = sanitize_key( wp_unslash( $_POST['slug'] ?? '' ) );
+        $enabled = ! empty( $_POST['enabled'] );
+        $plugin = Plugins::get_instance()->get_registered_plugins()[ $slug ] ?? null;
+
+        if ( ! $plugin instanceof \TrilBDev\WikiPress\Includes\Plugins\PluginInterface ) {
+            AjaxHelper::error( [ 'message' => __( 'The requested WikiPress plugin was not found.', 'wikipress' ) ], 404 );
+        }
+
+        if ( ! Plugins::get_instance()->set_plugin_enabled( $slug, $enabled ) ) {
+            AjaxHelper::error( [ 'message' => __( 'The WikiPress plugin state could not be saved.', 'wikipress' ) ], 500 );
+        }
+
+        AjaxHelper::success( [ 'slug' => $slug, 'enabled' => $enabled ] );
+    }
+
     public function render_analytics(): void {
         $this->analytics_manager->render();
     }
@@ -226,7 +248,7 @@ final class Admin {
     private function plugin_settings_pages(): array {
         $pages = [];
         foreach ( Plugins::get_instance()->get_registered_plugins() as $plugin ) {
-            if ( ! $plugin instanceof SettingsPageProviderInterface || ! $plugin->is_active() ) {
+            if ( ! $plugin instanceof PluginInterface || ! $plugin instanceof SettingsPageProviderInterface || ! Plugins::get_instance()->is_plugin_enabled( $plugin->get_slug() ) ) {
                 continue;
             }
 

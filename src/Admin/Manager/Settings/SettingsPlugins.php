@@ -4,6 +4,7 @@ use TrilBDev\WikiPress\Includes\Functions\Helpers\FormFieldHelper;
 use TrilBDev\WikiPress\Includes\Functions\Helpers\SanitizationHelper;
 use TrilBDev\WikiPress\Includes\Functions\Helpers\UrlHelper;
 use TrilBDev\WikiPress\Includes\Plugins\Plugins;
+use TrilBDev\WikiPress\Includes\Plugins\PluginInterface;
 use TrilBDev\WikiPress\Includes\Plugins\SettingsPageProviderInterface;
 
 final class SettingsPlugins {
@@ -61,7 +62,7 @@ final class SettingsPlugins {
     private function settings_pages(): array {
         $pages = [];
         foreach ( Plugins::get_instance()->get_registered_plugins() as $plugin ) {
-            if ( ! $plugin instanceof SettingsPageProviderInterface || ! $plugin->is_active() ) {
+            if ( ! $plugin instanceof PluginInterface || ! $plugin instanceof SettingsPageProviderInterface || ! Plugins::get_instance()->is_plugin_enabled( $plugin->get_slug() ) ) {
                 continue;
             }
 
@@ -99,13 +100,14 @@ final class SettingsPlugins {
     }
 
     private function render_wikipress_plugin_card( $plugin ): void {
+        $enabled = Plugins::get_instance()->is_plugin_enabled( $plugin->get_slug() );
         $settings_page = $plugin instanceof SettingsPageProviderInterface ? $plugin->get_settings_page() : [];
         $settings_url = ! empty( $settings_page['slug'] ) ? UrlHelper::admin_page( 'wikipress-settings', [ 'tab' => SanitizationHelper::key( $settings_page['slug'] ) ] ) : UrlHelper::admin_page( 'wikipress-settings', [ 'tab' => 'plugins' ] );
         ?>
         <div class="col-12 col-md-6 col-xl-4 d-flex">
             <article class="card wikipress-plugin-card shadow-sm h-100 w-100">
                 <div class="card-header d-flex align-items-center gap-2">
-                    <?php echo FormFieldHelper::switch( 'wikipress-plugin-status', '1', '', [ 'id' => 'wikipress-plugin-status-' . SanitizationHelper::key( $plugin->get_slug() ), 'checked' => $plugin->is_active(), 'disabled' => true, 'aria-label' => sprintf( __( 'Enable %s', 'wikipress' ), $plugin->get_name() ) ] ); ?>
+                    <?php echo FormFieldHelper::switch( 'wikipress-plugin-status', '1', '', [ 'id' => 'wikipress-plugin-status-' . SanitizationHelper::key( $plugin->get_slug() ), 'checked' => $enabled, 'data-wikipress-plugin-toggle' => 'true', 'data-plugin-slug' => $plugin->get_slug(), 'aria-label' => sprintf( __( 'Enable %s', 'wikipress' ), $plugin->get_name() ) ] ); ?>
                     <span class="fw-semibold"><?php echo esc_html( $plugin->get_name() ); ?></span>
                 </div>
                 <div class="card-body d-flex flex-column">

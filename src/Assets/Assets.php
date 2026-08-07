@@ -193,6 +193,7 @@ final class Assets {
             wp_localize_script( 'wikipress-admin-settings', 'wikipressSettingsTabs', [
                 'ajaxUrl' => admin_url( 'admin-ajax.php' ),
                 'nonce' => wp_create_nonce( 'wikipress_settings_tabs' ),
+                'pluginNonce' => wp_create_nonce( 'wikipress_plugin_toggle' ),
             ] );
         }
     }

@@ -27,6 +27,19 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  const togglePlugin = (toggle) => {
+    const enabled = toggle.checked;
+    toggle.disabled = true;
+    const body = new URLSearchParams({ action: 'wikipress_toggle_plugin', nonce: config.pluginNonce, slug: toggle.dataset.pluginSlug || '', enabled: enabled ? '1' : '0' });
+    fetch(config.ajaxUrl, { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }, body })
+      .then((response) => response.json())
+      .then((response) => {
+        if (!response.success) throw new Error('Unable to save plugin state');
+      })
+      .catch(() => { toggle.checked = !enabled; })
+      .finally(() => { toggle.disabled = false; });
+  };
+
   const activateLayoutTab = (button) => {
     const target = root.querySelector(button.dataset.bsTarget);
     if (!target) return;
@@ -88,6 +101,10 @@ document.addEventListener('DOMContentLoaded', () => {
     event.preventDefault();
     event.stopPropagation();
     loadTab(link.dataset.wikipressSettingsTab, link.dataset.wikipressSettingsSection || 'general');
+  }, true);
+  root.addEventListener('change', (event) => {
+    const toggle = event.target.closest?.('[data-wikipress-plugin-toggle]');
+    if (toggle) togglePlugin(toggle);
   }, true);
   const navigateFromHash = () => {
     const state = stateFromHash();
