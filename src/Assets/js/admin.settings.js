@@ -60,6 +60,26 @@ document.addEventListener('DOMContentLoaded', () => {
       .finally(() => { button.disabled = false; });
   };
 
+  const openPluginModal = (trigger) => {
+    const targetSelector = trigger.dataset.bsTarget;
+    const scope = trigger.getRootNode?.() || root;
+    const modal = scope.querySelector?.(targetSelector) || root.querySelector(targetSelector);
+    if (!modal || !window.bootstrap?.Modal) return false;
+
+    window.bootstrap.Modal.getOrCreateInstance(modal).show(trigger);
+    return true;
+  };
+
+  const bindPluginModals = () => root.querySelectorAll('[data-bs-toggle="modal"][data-bs-target]').forEach((trigger) => {
+    if (trigger.dataset.wikipressModalBound) return;
+
+    trigger.dataset.wikipressModalBound = 'true';
+    trigger.addEventListener('click', (event) => {
+      event.preventDefault();
+      openPluginModal(trigger);
+    });
+  });
+
   const activateLayoutTab = (button) => {
     const target = root.querySelector(button.dataset.bsTarget);
     if (!target) return;
@@ -98,6 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
         setActive(response.data.tab, response.data.layout_section);
         if (updateHash) window.history.pushState({}, '', `${window.location.pathname}${window.location.search}#${response.data.tab === 'layout' ? `layout-${response.data.layout_section}` : response.data.tab}`);
         bindForms();
+        bindPluginModals();
         const nextContent = panel.querySelector('.wikipress-settings-tab-content');
         if (nextContent) requestAnimationFrame(() => nextContent.classList.remove('is-loading'));
       })
@@ -108,12 +129,9 @@ document.addEventListener('DOMContentLoaded', () => {
   root.addEventListener('click', (event) => {
     const modalTrigger = event.target.closest?.('[data-bs-toggle="modal"][data-bs-target]');
     if (modalTrigger) {
-      const modal = root.querySelector(modalTrigger.dataset.bsTarget);
-      if (modal && window.bootstrap?.Modal) {
-        event.preventDefault();
-        window.bootstrap.Modal.getOrCreateInstance(modal).show();
-        return;
-      }
+      event.preventDefault();
+      openPluginModal(modalTrigger);
+      return;
     }
 
     const layoutButton = event.target.closest?.('[data-wikipress-layout-tab]');
@@ -164,4 +182,5 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   if (window.location.hash && 'layout' !== initial.tab && (initial.tab !== panel.dataset.currentTab || initial.section !== panel.dataset.currentSection)) loadTab(initial.tab, initial.section, false);
   bindForms();
+  bindPluginModals();
 });
