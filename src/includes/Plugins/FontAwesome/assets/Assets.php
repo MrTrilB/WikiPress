@@ -3,7 +3,6 @@
 namespace TrilBDev\WikiPress\Includes\Plugins\FontAwesome\Assets;
 
 use TrilBDev\WikiPress\Includes\Functions\Helpers\LoaderHelper;
-use TrilBDev\WikiPress\Includes\Plugins\FontAwesome\Includes\Settings\Settings;
 
 final class Assets {
     private LoaderHelper $loader;
@@ -23,7 +22,7 @@ final class Assets {
             return;
         }
 
-        $this->enqueue_fontawesome();
+        $this->enqueue_vendor_fontawesome();
 
         wp_enqueue_style(
             'wikipress-fontawesome-icon-picker',
@@ -53,28 +52,25 @@ final class Assets {
     }
 
     /**
-     * Enqueue Font Awesome in the document context used by WikiPress.
+     * Enqueue the bundled Font Awesome vendor resource in the document context.
+     *
+     * The vendor package owns the source, technology, version, and Kit settings.
+     * WikiPress only requests its registered resource handles here.
      *
      * @return void
      */
-    private function enqueue_fontawesome(): void {
-        if ( 'kit' === Settings::source() && '' !== Settings::kit_id() ) {
-            wp_enqueue_script(
-                'wikipress-fontawesome',
-                'https://kit.fontawesome.com/' . rawurlencode( Settings::kit_id() ) . '.js',
-                [],
-                null,
-                false
-            );
-            return;
+    private function enqueue_vendor_fontawesome(): void {
+        if ( wp_style_is( 'font-awesome-official', 'registered' ) || wp_style_is( 'font-awesome-official', 'enqueued' ) ) {
+            wp_enqueue_style( 'font-awesome-official' );
         }
 
-        wp_enqueue_style(
-            'wikipress-fontawesome',
-            'https://use.fontawesome.com/releases/v' . rawurlencode( Settings::version() ) . '/css/all.css',
-            [],
-            Settings::version()
-        );
+        if ( wp_style_is( 'font-awesome-official-v4shim', 'registered' ) || wp_style_is( 'font-awesome-official-v4shim', 'enqueued' ) ) {
+            wp_enqueue_style( 'font-awesome-official-v4shim' );
+        }
+
+        if ( wp_script_is( 'font-awesome-official', 'registered' ) || wp_script_is( 'font-awesome-official', 'enqueued' ) ) {
+            wp_enqueue_script( 'font-awesome-official' );
+        }
     }
 
     private function should_enqueue_icon_picker(): bool {
