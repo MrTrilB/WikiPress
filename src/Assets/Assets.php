@@ -31,7 +31,7 @@ final class Assets {
     public function register(): void {
         add_filter( 'wikipress_base_assets', [ $this, 'default_assets' ], 10, 2 );
         add_action( 'admin_enqueue_scripts', [ $this, 'dequeue_wp_forms' ], PHP_INT_MAX );
-        add_action( 'admin_print_styles', [ $this, 'dequeue_wp_forms' ], 0 );
+        add_action( 'admin_print_styles', [ $this, 'dequeue_wp_forms' ], 40 );
     }
 
     /**
