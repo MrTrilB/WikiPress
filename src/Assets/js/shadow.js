@@ -41,6 +41,16 @@
     shadowRoot.appendChild(element.cloneNode(true));
   };
 
+  const copyFontAwesomeRuntimeCss = () => {
+    const css = window.FontAwesome?.dom?.css?.();
+    if (!css || shadowRoot.querySelector('#wikipress-fontawesome-runtime-css')) return;
+
+    const style = document.createElement('style');
+    style.id = 'wikipress-fontawesome-runtime-css';
+    style.textContent = css;
+    shadowRoot.appendChild(style);
+  };
+
   const isFontAwesomeScript = (element) => {
     const source = `${element.id || ''} ${element.src || ''}`.toLowerCase();
     return source.includes('fontawesome') || source.includes('font-awesome');
@@ -67,6 +77,7 @@
   let renderQueued = false;
 
   const renderFontAwesomeInShadow = () => {
+    copyFontAwesomeRuntimeCss();
     if (renderingFontAwesome || !window.FontAwesome?.dom?.i2svg) return;
 
     renderingFontAwesome = true;
@@ -74,6 +85,7 @@
       .catch(() => {})
       .finally(() => {
         renderingFontAwesome = false;
+        copyFontAwesomeRuntimeCss();
       });
   };
 
@@ -93,6 +105,7 @@
 
   shadowRoot.appendChild(shell);
   window.wikipressShadowRoot = shadowRoot;
+  copyFontAwesomeRuntimeCss();
   queueFontAwesomeRender();
 
   new MutationObserver((mutations) => {
