@@ -1,6 +1,6 @@
 # WikiPress Plugin Template
 
-Every discovered WikiPress plugin uses this structure:
+Every discovered WikiPress plugin should use this structure:
 
 ```text
 PluginName/
@@ -21,7 +21,7 @@ PluginName/
 `- PluginName.php
 ```
 
-`PluginName.php` must implement `PluginInterface`. The loader calls the optional capability methods when the plugin implements their corresponding interfaces, then calls `init()`.
+`PluginName.php` must implement `PluginInterface`. The loader discovers direct PHP bootstrap files in each plugin directory and validates that contract at runtime; the `Assets`, `Includes`, settings, and language directories are optional. It calls optional capability methods when the plugin implements their corresponding interfaces, then calls `init()`.
 
 A plugin should use composition for its `Assets`, `Includes`, and `Settings` classes. WikiPress core service classes are final and must not be extended.
 

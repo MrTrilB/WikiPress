@@ -169,10 +169,6 @@ class Plugins {
         $subdirs = glob( $directory . '/*', GLOB_ONLYDIR ) ?: [];
 
         foreach ( $subdirs as $subdir ) {
-            if ( ! $this->has_plugin_structure( $subdir ) ) {
-                continue;
-            }
-
             $subfiles = glob( $subdir . '/*.php' ) ?: [];
             $files = array_merge( $files, array_filter( $subfiles, function ( string $file ): bool {
                 $contents = file_get_contents( $file );
@@ -252,19 +248,6 @@ class Plugins {
                 require_once $includes_path;
             }
         }
-    }
-    /**
-     * Checks if the given plugin directory has the required structure for a WikiPress plugin.
-     *
-     * @param string $plugin_directory The directory to check.
-     * @return bool True if the directory has the required structure, false otherwise.
-     */
-    private function has_plugin_structure( string $plugin_directory ): bool {
-        return is_readable( $plugin_directory . '/Assets/Assets.php' )
-            && is_readable( $plugin_directory . '/Includes/Includes.php' )
-            && is_readable( $plugin_directory . '/Includes/I18n.php' )
-            && is_readable( $plugin_directory . '/Includes/Settings/Settings.php' )
-            && is_dir( $plugin_directory . '/Language' );
     }
     /**
      * Extracts the namespace from the given PHP file content.
