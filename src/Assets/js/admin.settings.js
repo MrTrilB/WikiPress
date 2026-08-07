@@ -27,9 +27,32 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  const activateLayoutTab = (button) => {
+    const target = root.querySelector(button.dataset.bsTarget);
+    if (!target) return;
+
+    const current = root.querySelector('#wikipress-layout-tab .nav-link.active');
+    const currentPane = root.querySelector('#wikipress-layout-tab-content .tab-pane.active');
+    if (current === button && currentPane === target) return;
+
+    root.querySelectorAll('#wikipress-layout-tab .nav-link').forEach((tab) => {
+      const active = tab === button;
+      tab.classList.toggle('active', active);
+      tab.setAttribute('aria-selected', active ? 'true' : 'false');
+    });
+
+    if (currentPane) {
+      currentPane.classList.remove('show');
+      window.setTimeout(() => currentPane.classList.remove('active'), 150);
+    }
+
+    target.classList.add('active');
+    requestAnimationFrame(() => target.classList.add('show'));
+  };
+
   const loadTab = (tab, section, updateHash = true) => {
     const currentContent = panel.querySelector('.wikipress-settings-tab-content');
-    if (currentContent) currentContent.classList.remove('show');
+    if (currentContent) currentContent.classList.add('is-loading');
     panel.setAttribute('aria-busy', 'true');
     const body = new URLSearchParams({ action: 'wikipress_load_settings_tab', nonce: config.nonce, tab, layout_section: section });
     fetch(config.ajaxUrl, { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }, body })
@@ -43,24 +66,51 @@ document.addEventListener('DOMContentLoaded', () => {
         if (updateHash) window.history.pushState({}, '', `${window.location.pathname}${window.location.search}#${response.data.tab === 'layout' ? `layout-${response.data.layout_section}` : response.data.tab}`);
         bindForms();
         const nextContent = panel.querySelector('.wikipress-settings-tab-content');
-        if (nextContent) requestAnimationFrame(() => nextContent.classList.add('show'));
+        if (nextContent) requestAnimationFrame(() => nextContent.classList.remove('is-loading'));
       })
-      .catch(() => { window.location.reload(); })
+      .catch(() => { panel.classList.remove('is-loading'); })
       .finally(() => panel.removeAttribute('aria-busy'));
   };
 
   root.addEventListener('click', (event) => {
+    const layoutButton = event.target.closest?.('[data-wikipress-layout-tab]');
+    if (layoutButton) {
+      event.preventDefault();
+      activateLayoutTab(layoutButton);
+      window.history.pushState({}, '', `${window.location.pathname}${window.location.search}#layout-${layoutButton.dataset.wikipressLayoutTab}`);
+      panel.dataset.currentTab = 'layout';
+      panel.dataset.currentSection = layoutButton.dataset.wikipressLayoutTab;
+      return;
+    }
+
     const link = event.target.closest?.('#wikipress-settings-panel [data-wikipress-settings-tab]');
     if (!link) return;
     event.preventDefault();
     event.stopPropagation();
     loadTab(link.dataset.wikipressSettingsTab, link.dataset.wikipressSettingsSection || 'general');
   }, true);
-  window.addEventListener('popstate', () => { const state = stateFromHash(); loadTab(state.tab, state.section, false); });
-  window.addEventListener('hashchange', () => { const state = stateFromHash(); loadTab(state.tab, state.section, false); });
+  const navigateFromHash = () => {
+    const state = stateFromHash();
+    if ('layout' === state.tab) {
+      const button = root.querySelector(`[data-wikipress-layout-tab="${state.section}"]`);
+      if (button) {
+        activateLayoutTab(button);
+        panel.dataset.currentTab = 'layout';
+        panel.dataset.currentSection = state.section;
+      }
+      return;
+    }
+    loadTab(state.tab, state.section, false);
+  };
+  window.addEventListener('popstate', navigateFromHash);
+  window.addEventListener('hashchange', navigateFromHash);
 
   const initial = stateFromHash();
   setActive(initial.tab, initial.section);
-  if (window.location.hash && (initial.tab !== panel.dataset.currentTab || initial.section !== panel.dataset.currentSection)) loadTab(initial.tab, initial.section, false);
+  if ('layout' === initial.tab) {
+    const button = root.querySelector(`[data-wikipress-layout-tab="${initial.section}"]`);
+    if (button) activateLayoutTab(button);
+  }
+  if (window.location.hash && 'layout' !== initial.tab && (initial.tab !== panel.dataset.currentTab || initial.section !== panel.dataset.currentSection)) loadTab(initial.tab, initial.section, false);
   bindForms();
 });

@@ -24,18 +24,26 @@ final class SettingsLayout {
 			'page' => __( 'Wiki Page', 'wikipress' ),
 		];
 		$section = isset( $sections[ $section ] ) ? $section : 'general';
-		echo '<tr class="wikipress-layout-state"><td colspan="2">' . FormFieldHelper::input( 'wikipress_layout[layout_section]', $section, [ 'type' => 'hidden' ] ) . '</td></tr>';
-		echo '<tr class="wikipress-layout-navigation"><td colspan="2"><ul class="nav nav-tabs wikipress-layout-tabs mb-0" role="tablist">';
+		echo '<nav aria-label="' . esc_attr__( 'Layout settings sections', 'wikipress' ) . '"><div class="nav nav-tabs" id="wikipress-layout-tab" role="tablist">';
 		foreach ( $sections as $slug => $label ) {
-			$target = 'layout-' . $slug;
-			echo '<li class="nav-item" role="presentation"><a id="wikipress-tab-' . esc_attr( $target ) . '" class="nav-link ' . ( $section === $slug ? 'active' : '' ) . '" role="tab" aria-controls="' . esc_attr( $target ) . '" aria-selected="' . ( $section === $slug ? 'true' : 'false' ) . '" data-wikipress-settings-tab="layout" data-wikipress-settings-section="' . esc_attr( $slug ) . '" href="#' . esc_attr( $target ) . '">' . esc_html( $label ) . '</a></li>';
+			$target = 'wikipress-layout-' . $slug;
+			echo '<button class="nav-link ' . ( $section === $slug ? 'active' : '' ) . '" id="' . esc_attr( $target . '-tab' ) . '" data-bs-toggle="tab" data-bs-target="#' . esc_attr( $target ) . '" type="button" role="tab" aria-controls="' . esc_attr( $target ) . '" aria-selected="' . ( $section === $slug ? 'true' : 'false' ) . '" data-wikipress-layout-tab="' . esc_attr( $slug ) . '">' . esc_html( $label ) . '</button>';
 		}
-		echo '</ul></td></tr>';
+		echo '</div></nav><div class="tab-content" id="wikipress-layout-tab-content">';
+		foreach ( $sections as $slug => $label ) {
+			$target = 'wikipress-layout-' . $slug;
+			echo '<div class="tab-pane fade ' . ( $section === $slug ? 'show active' : '' ) . '" id="' . esc_attr( $target ) . '" role="tabpanel" aria-labelledby="' . esc_attr( $target . '-tab' ) . '" tabindex="0"><table class="form-table table align-middle"><tbody>';
+			$this->render_fields( $values, $slug );
+			echo '</tbody></table></div>';
+		}
+		echo '</div>';
+	}
 
+	private function render_fields( array $values, string $section ): void {
 		$fields = $this->fields( $section );
 		foreach ( $fields as $key => $field ) {
 			$key = SanitizationHelper::key( $key );
-			$id = 'wikipress-' . $key;
+			$id = 'wikipress-layout-' . $section . '-' . $key;
 			$name = 'wikipress_layout[' . $key . ']';
 			$type = $field['type'] ?? 'checkbox';
 			echo '<tr><th scope="row">' . FormFieldHelper::label( $id, $field['label'], $field ) . '</th><td>';

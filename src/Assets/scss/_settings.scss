@@ -28,4 +28,13 @@
 	.wikipress-import-form {
 		max-width: 960px;
 	}
+
+	.wikipress-settings-tab-content {
+		transition: opacity 150ms ease;
+
+		&.is-loading {
+			opacity: .65;
+			pointer-events: none;
+		}
+	}
 }

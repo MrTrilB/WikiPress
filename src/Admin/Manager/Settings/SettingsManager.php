@@ -98,11 +98,14 @@ final class SettingsManager extends Manager {
         }
         echo '<form method="post" action="options.php" class="wikipress-settings-form card shadow-sm">';
         settings_fields( 'wikipress_settings' );
-        echo '<div class="card-body"><table class="form-table table align-middle"><tbody>';
+        echo '<div class="card-body">';
+        if ( 'layout' === $tab ) {
+            $this->layout_page->render( $values, SanitizationHelper::key( $layout_section, 'general' ) );
+        } else {
+            echo '<table class="form-table table align-middle"><tbody>';
+        }
         if ( 'general' === $tab ) {
             $this->general_page->render( $values );
-        } elseif ( 'layout' === $tab ) {
-            $this->layout_page->render( $values, SanitizationHelper::key( $layout_section, 'general' ) );
         } elseif ( 'access' === $tab ) {
             $this->access_page->render( $values );
         } elseif ( $this->plugins_page->has_settings_page( $tab ) ) {
@@ -110,7 +113,9 @@ final class SettingsManager extends Manager {
         } elseif ( 'tools' === $tab ) {
             $this->tools_page->render( $values );
         }
-        echo '</tbody></table>';
+        if ( 'layout' !== $tab ) {
+            echo '</tbody></table>';
+        }
         submit_button( __( 'Save Changes', 'wikipress' ), 'primary', 'submit', true, [ 'class' => 'btn btn-primary' ] );
         echo '</div></form>';
         if ( 'tools' === $tab ) {
