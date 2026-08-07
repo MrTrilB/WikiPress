@@ -1,5 +1,12 @@
 <?php
-
+/**
+ * Admin class for WikiPress plugin.
+ *
+ * @package WikiPress
+ * @subpackage Admin
+ * @since 1.0.0
+ * 
+ */
 namespace TrilBDev\WikiPress\Admin;
 
 use TrilBDev\WikiPress\Includes\Tools\DataTransfer;
@@ -21,10 +28,35 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 final class Admin {
+    /**
+     * Singleton instance of the Admin class.
+     *
+     * @var self|null
+     */
     private DashboardManager $dashboard_manager;
+    /**
+     * ContentManager instance for managing content-related admin pages.
+     *
+     * @var ContentManager
+     */
     private ContentManager $content_manager;
+    /**
+     * SettingsManager instance for managing settings-related admin pages.
+     *
+     * @var SettingsManager
+     */
     private SettingsManager $settings_manager;
+    /**
+     * AnalyticsManager instance for managing analytics-related admin pages.
+     *
+     * @var AnalyticsManager
+     */
     private AnalyticsManager $analytics_manager;
+    /**
+     * LoaderHelper instance for managing action and filter hooks.
+     *
+     * @var LoaderHelper
+     */
     private LoaderHelper $loader;
 
     public function __construct( Assets $assets ) {
@@ -40,9 +72,13 @@ final class Admin {
         $this->loader->register_component( $this, [
             [ 'type' => 'action', 'hook' => 'wp_ajax_wikipress_load_settings_tab', 'callback' => 'load_settings_tab' ],
             [ 'type' => 'action', 'hook' => 'wp_ajax_wikipress_toggle_plugin', 'callback' => 'toggle_plugin' ],
+            [ 'type' => 'action', 'hook' => 'wp_ajax_wikipress_save_plugin_settings', 'callback' => 'save_plugin_settings' ],
         ] )->run();
     }
-
+    /**
+     * Register admin menu pages and subpages.
+     * @since 1.0.0
+     */
     public function register_admin_menu(): void {
         $manager_capability = $this->capability( 'manager_wiki', 'manage_options' );
         add_menu_page( __( 'WikiPress', 'wikipress' ), __( 'WikiPress', 'wikipress' ), $manager_capability, 'wikipress', [ $this, 'render_dashboard' ], 'dashicons-book-alt', 30 );
@@ -51,7 +87,12 @@ final class Admin {
         add_submenu_page( 'wikipress', __( 'Settings', 'wikipress' ), __( 'Settings', 'wikipress' ), 'manage_options', 'wikipress-settings', [ $this, 'render_settings' ] );
         add_submenu_page( 'wikipress', __( 'Analytics', 'wikipress' ), __( 'Analytics', 'wikipress' ), $this->capability( 'view_analytics', 'manage_options' ), 'wikipress-analytics', [ $this, 'render_analytics' ] );
     }
-
+    /**
+     * Register settings for the WikiPress plugin.
+     *
+     * This method registers the settings for the WikiPress plugin, including general, layout, access, and tools settings.
+     * It also registers settings for active WikiPress plugins that provide their own settings pages.
+     */
     public function register_settings(): void {
         register_setting( 'wikipress_settings', 'wikipress_general', [ 'sanitize_callback' => [ $this, 'sanitize_general' ] ] );
         register_setting( 'wikipress_settings', 'wikipress_layout', [ 'sanitize_callback' => [ $this, 'sanitize_layout' ] ] );
@@ -66,7 +107,12 @@ final class Admin {
             );
         }
     }
-
+    /**
+     * Sanitize general settings input.
+     *
+     * @param mixed $input The input settings to sanitize.
+     * @return array The sanitized settings.
+     */
     public function sanitize_general( $input ): array {
         $input = is_array( $input ) ? $input : [];
         $rewrite_changed = false;
@@ -81,7 +127,12 @@ final class Admin {
         }
         return $input;
     }
-
+    /**
+     * Sanitize layout settings input.
+     *
+     * @param mixed $input The input settings to sanitize.
+     * @return array The sanitized settings.
+     */
     public function sanitize_layout( $input ): array {
         $input = is_array( $input ) ? $input : [];
         $section = sanitize_key( $input['layout_section'] ?? 'general' );
@@ -134,7 +185,12 @@ final class Admin {
         }
         return $input;
     }
-
+    /**
+     * Sanitize access settings input.
+     *
+     * @param mixed $input The input settings to sanitize.
+     * @return array The sanitized settings.
+     */
     public function sanitize_access( $input ): array {
         $input = is_array( $input ) ? $input : [];
         foreach ( [ 'create_wikis', 'write_pages', 'view_analytics', 'manage_plugins' ] as $key ) {
@@ -143,7 +199,12 @@ final class Admin {
         }
         return $input;
     }
-
+    /**
+     * Sanitize tools settings input.
+     *
+     * @param mixed $input The input settings to sanitize.
+     * @return array The sanitized settings.
+     */
     public function sanitize_tools( $input ): array {
         $input = is_array( $input ) ? $input : [];
         foreach ( [ 'debug_logging', 'console_logging' ] as $key ) {
@@ -152,19 +213,39 @@ final class Admin {
         }
         return $input;
     }
-
+    /**
+     * Render the dashboard page.
+     *
+     * This method is responsible for rendering the dashboard page of the WikiPress plugin.
+     * It delegates the rendering to the DashboardManager instance.
+     */
     public function render_dashboard(): void {
         $this->dashboard_manager->render();
     }
-
+    /**
+     * Render the manage wikis page.
+     *
+     * This method is responsible for rendering the manage wikis page of the WikiPress plugin.
+     * It delegates the rendering to the ContentManager instance.
+     */
     public function render_wikis(): void {
         $this->content_manager->render();
     }
-
+    /**
+     * Render the settings page.
+     *
+     * This method is responsible for rendering the settings page of the WikiPress plugin.
+     * It delegates the rendering to the SettingsManager instance.
+     */
     public function render_settings(): void {
         $this->settings_manager->render();
     }
-
+    /**
+     * Render the analytics page.
+     *
+     * This method is responsible for rendering the analytics page of the WikiPress plugin.
+     * It delegates the rendering to the AnalyticsManager instance.
+     */
     public function load_settings_tab(): void {
         if ( ! AjaxHelper::authorized( 'wikipress_settings_tabs', 'manage_options' ) ) {
             AjaxHelper::unauthorized( __( 'You are not authorized to load WikiPress settings.', 'wikipress' ) );
@@ -177,7 +258,12 @@ final class Admin {
         $html = (string) ob_get_clean();
         AjaxHelper::success( [ 'html' => $html, 'tab' => $tab, 'layout_section' => $layout_section ] );
     }
-
+    /**
+     * Toggle the enabled state of a WikiPress plugin.
+     *
+     * This method handles the AJAX request to enable or disable a WikiPress plugin.
+     * It checks for authorization, validates the plugin slug, and updates the plugin's enabled state.
+     */
     public function toggle_plugin(): void {
         if ( ! AjaxHelper::authorized( 'wikipress_plugin_toggle', 'manage_options' ) ) {
             AjaxHelper::unauthorized( __( 'You are not authorized to manage WikiPress plugins.', 'wikipress' ) );
@@ -198,10 +284,40 @@ final class Admin {
         AjaxHelper::success( [ 'slug' => $slug, 'enabled' => $enabled ] );
     }
 
+    /**
+     * Saves settings submitted from a WikiPress plugin modal.
+     */
+    public function save_plugin_settings(): void {
+        if ( ! AjaxHelper::authorized( 'wikipress_plugin_settings', 'manage_options' ) ) {
+            AjaxHelper::unauthorized( __( 'You are not authorized to save WikiPress plugin settings.', 'wikipress' ) );
+        }
+
+        $slug = sanitize_key( wp_unslash( $_POST['slug'] ?? '' ) );
+        $plugin = Plugins::get_instance()->get_registered_plugins()[ $slug ] ?? null;
+        if ( ! $plugin instanceof PluginInterface || ! $plugin instanceof SettingsPageProviderInterface ) {
+            AjaxHelper::error( [ 'message' => __( 'The requested WikiPress plugin settings were not found.', 'wikipress' ) ], 404 );
+        }
+
+        $input = isset( $_POST['settings'] ) && is_array( $_POST['settings'] ) ? wp_unslash( $_POST['settings'] ) : [];
+        $settings = $plugin->sanitize_settings( $input );
+
+        AjaxHelper::success( [ 'slug' => $slug, 'settings' => $settings ] );
+    }
+    /**
+     * Render the analytics page.
+     *
+     * This method is responsible for rendering the analytics page of the WikiPress plugin.
+     * It delegates the rendering to the AnalyticsManager instance.
+     */
     public function render_analytics(): void {
         $this->analytics_manager->render();
     }
-
+    /**
+     * Sanitize general settings input.
+     *
+     * @param mixed $input The input settings to sanitize.
+     * @return array The sanitized settings.
+     */
     public function export_data(): void {
         if ( ! current_user_can( 'manage_options' ) ) {
             wp_die( esc_html__( 'You are not allowed to export WikiPress data.', 'wikipress' ), 403 );
@@ -213,7 +329,12 @@ final class Admin {
         echo wp_json_encode( DataTransfer::export(), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES );
         exit;
     }
-
+    /**
+     * Sanitize general settings input.
+     *
+     * @param mixed $input The input settings to sanitize.
+     * @return array The sanitized settings.
+     */
     public function import_data(): void {
         if ( ! current_user_can( 'manage_options' ) ) {
             wp_die( esc_html__( 'You are not allowed to import WikiPress data.', 'wikipress' ), 403 );
@@ -234,7 +355,13 @@ final class Admin {
         wp_safe_redirect( admin_url( 'admin.php?page=wikipress-settings&tab=tools&imported=1' ) );
         exit;
     }
-
+    /**
+     * Get the capability for a given key, with a fallback.
+     *
+     * @param string $key The settings key to retrieve the capability for.
+     * @param string $fallback The fallback capability if the key is not set or invalid.
+     * @return string The capability associated with the key, or the fallback if not valid.
+     */
     private function capability( string $key, string $fallback ): string {
         $capability = sanitize_key( (string) Settings::get( $key, $fallback ) );
         return in_array( $capability, [ 'manage_options', 'edit_posts', 'publish_posts', 'manage_categories', 'delete_posts' ], true ) ? $capability : $fallback;

@@ -40,6 +40,26 @@ document.addEventListener('DOMContentLoaded', () => {
       .finally(() => { toggle.disabled = false; });
   };
 
+  const savePluginSettings = (button) => {
+    const modal = button.closest('.wikipress-plugin-settings-modal');
+    const form = modal?.querySelector('[data-plugin-settings-form]');
+    if (!modal || !form) return;
+
+    button.disabled = true;
+    const body = new URLSearchParams(new FormData(form));
+    body.set('action', 'wikipress_save_plugin_settings');
+    body.set('nonce', config.pluginSettingsNonce);
+    body.set('slug', form.dataset.pluginSlug || '');
+    fetch(config.ajaxUrl, { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }, body })
+      .then((response) => response.json())
+      .then((response) => {
+        if (!response.success) throw new Error('Unable to save plugin settings');
+        window.bootstrap?.Modal.getOrCreateInstance(modal).hide();
+      })
+      .catch(() => { modal.querySelector('.modal-body')?.classList.add('is-invalid'); })
+      .finally(() => { button.disabled = false; });
+  };
+
   const activateLayoutTab = (button) => {
     const target = root.querySelector(button.dataset.bsTarget);
     if (!target) return;
@@ -86,6 +106,16 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   root.addEventListener('click', (event) => {
+    const modalTrigger = event.target.closest?.('[data-bs-toggle="modal"][data-bs-target]');
+    if (modalTrigger) {
+      const modal = root.querySelector(modalTrigger.dataset.bsTarget);
+      if (modal && window.bootstrap?.Modal) {
+        event.preventDefault();
+        window.bootstrap.Modal.getOrCreateInstance(modal).show();
+        return;
+      }
+    }
+
     const layoutButton = event.target.closest?.('[data-wikipress-layout-tab]');
     if (layoutButton) {
       event.preventDefault();
@@ -105,6 +135,10 @@ document.addEventListener('DOMContentLoaded', () => {
   root.addEventListener('change', (event) => {
     const toggle = event.target.closest?.('[data-wikipress-plugin-toggle]');
     if (toggle) togglePlugin(toggle);
+  }, true);
+  root.addEventListener('click', (event) => {
+    const saveButton = event.target.closest?.('[data-plugin-settings-save]');
+    if (saveButton) savePluginSettings(saveButton);
   }, true);
   const navigateFromHash = () => {
     const state = stateFromHash();
