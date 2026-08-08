@@ -133,7 +133,7 @@ final class SettingsManager extends Manager {
         $tab = $this->normalize_tab( $tab );
         $groups = Settings::get_all();
         $values = $groups[ $tab ] ?? [];
-        echo '<div class="wikipress-settings-tab-content fade show" role="tabpanel">';
+        echo '<div class="wikipress-settings-tab-content" role="tabpanel">';
         $tab_context = [
             'general' => [ 'description' => __( 'Configure WikiPress names, URL slugs, and permalink settings.', 'wikipress' ), 'tooltip' => __( 'These settings affect how WikiPress content is identified and linked throughout the site.', 'wikipress' ) ],
             'layout' => [ 'description' => __( 'Choose which navigation and page layout features WikiPress displays.', 'wikipress' ), 'tooltip' => __( 'Layout settings control the visitor-facing WikiPress interface.', 'wikipress' ) ],
