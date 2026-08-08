@@ -52,6 +52,7 @@ final class SettingsGeneral {
 				foreach ( PermalinkHelper::token_definitions() as $token => $description ) {
 					echo FormFieldHelper::button( $token, [
 					'class' => 'btn-sm btn-outline-secondary me-1 mb-1',
+					'type' => 'button',
 					'attributes' => [
 						'data-permalink-token' => $token,
 						'title' => $description,

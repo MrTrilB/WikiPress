@@ -44,7 +44,8 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     tokenButtons.forEach((button) => {
-      button.addEventListener('click', () => {
+      button.addEventListener('click', (event) => {
+        event.preventDefault();
         const token = button.dataset.permalinkToken || '';
         if (!token || field.value.includes(token)) return;
 
