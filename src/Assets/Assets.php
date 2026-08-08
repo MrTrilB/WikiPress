@@ -88,6 +88,25 @@ final class Assets {
                 ],
             ],
         ];
+
+        if ( 'admin' === $context ) {
+            $defaults['styles'][] = [
+                'handle' => 'wikipress-admin-ui',
+                'src' => WIKIPRESS_URL . 'src/Assets/dist/css/admin.ui.css',
+            ];
+            $defaults['scripts'][] = [
+                'handle' => 'wikipress-shadow',
+                'src' => WIKIPRESS_URL . 'src/Assets/dist/js/shadow.js',
+                'in_footer' => true,
+            ];
+            $defaults['scripts'][] = [
+                'handle' => 'wikipress-admin-ui',
+                'src' => WIKIPRESS_URL . 'src/Assets/dist/js/admin.ui.js',
+                'deps' => [ 'wikipress-bootstrap', 'wikipress-shadow' ],
+                'in_footer' => true,
+            ];
+        }
+
         return [ 'base' => $defaults ] + $defaults;
     }
 
@@ -122,19 +141,8 @@ final class Assets {
         $registered = $this->pages[ $page ] ?? [];
         $base = apply_filters( 'wikipress_base_assets', [], 'admin' );
         $this->enqueue_registered( 'admin', [
-            'styles'  => array_merge(
-                $base['styles'] ?? [],
-                [ [ 'handle' => 'wikipress-admin-ui', 'src' => WIKIPRESS_URL . 'src/Assets/dist/css/admin.ui.css' ] ],
-                $registered['styles'] ?? []
-            ),
-            'scripts' => array_merge(
-                $base['scripts'] ?? [],
-                [
-                    [ 'handle' => 'wikipress-shadow', 'src' => WIKIPRESS_URL . 'src/Assets/dist/js/shadow.js', 'in_footer' => true ],
-                    [ 'handle' => 'wikipress-admin-ui', 'src' => WIKIPRESS_URL . 'src/Assets/dist/js/admin.ui.js', 'deps' => [ 'wikipress-bootstrap', 'wikipress-shadow' ], 'in_footer' => true ],
-                ],
-                $registered['scripts'] ?? []
-            ),
+            'styles'  => array_merge( $base['styles'] ?? [], $registered['styles'] ?? [] ),
+            'scripts' => array_merge( $base['scripts'] ?? [], $registered['scripts'] ?? [] ),
         ] );
 
         $this->enqueue_fontawesome_vendor_assets();

@@ -34,7 +34,7 @@
 
     const injectScriptMirror = (element) => {
         const handle = getHandle(element);
-        if (!element.src || (!handle.startsWith('wikipress-') && !isFontAwesomeAsset(element))) return;
+        if (!element.src || !handle.startsWith('wikipress-') || isFontAwesomeAsset(element)) return;
         if ([...shadowRoot.querySelectorAll('script[data-wikipress-shadow-asset]')].some((script) => script.src === element.src)) return;
 
         const script = document.createElement('script');
