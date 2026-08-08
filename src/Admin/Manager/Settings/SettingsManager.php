@@ -196,7 +196,14 @@ final class SettingsManager extends Manager {
      * @param Assets $assets The Assets instance to register assets with.
      */
     public function register_assets( Assets $assets ): void {
-        $this->register_page_assets( $assets, [ 'wikipress-settings' ], 'settings' );
+        $settings_assets = $this->assets( 'settings' );
+        $settings_assets['scripts'][] = [
+            'handle' => 'wikipress-admin-plugins',
+            'src' => WIKIPRESS_URL . 'src/Assets/dist/js/admin.plugins.js',
+            'deps' => [ 'wikipress-bootstrap', 'wikipress-shadow' ],
+            'in_footer' => true,
+        ];
+        $assets->register_page( 'wikipress-settings', $settings_assets );
     }
 
 }

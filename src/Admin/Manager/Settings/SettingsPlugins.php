@@ -1,5 +1,13 @@
 <?php
+/**
+ * SettingsPlugins class for WikiPress plugin.
+ *
+ * @package WikiPress
+ * @subpackage Admin\Manager\Settings
+ * @since 1.0.0
+ */
 namespace TrilBDev\WikiPress\Admin\Manager\Settings;
+
 use TrilBDev\WikiPress\Includes\Functions\Helpers\FormFieldHelper;
 use TrilBDev\WikiPress\Includes\Functions\Helpers\SanitizationHelper;
 use TrilBDev\WikiPress\Includes\Settings\Settings;
@@ -8,10 +16,21 @@ use TrilBDev\WikiPress\Includes\Plugins\PluginInterface;
 use TrilBDev\WikiPress\Includes\Plugins\SettingsPageProviderInterface;
 
 final class SettingsPlugins {
+    /**
+     * Check if a settings page exists for the given slug.
+     *
+     * @param string $slug The slug of the settings page.
+     * @return bool True if the settings page exists, false otherwise.
+     */
     public function has_settings_page( string $slug ): bool {
         return isset( $this->settings_pages()[ $slug ] );
     }
-
+    /**
+     * Render the settings page for the given slug.
+     *
+     * @param string $slug The slug of the settings page.
+     * @param array $values The current values of the settings.
+     */
     public function render_settings_page( string $slug, array $values ): void {
         $page = $this->settings_pages()[ $slug ] ?? null;
         if ( ! is_array( $page ) ) {
@@ -49,7 +68,11 @@ final class SettingsPlugins {
         }
         echo '</td></tr>';
     }
-
+    /**
+     * Render the settings page for the given tab.
+     *
+     * @param string $tab The tab to render.
+     */
     public function render( string $tab ): void {
         if ( 'third-party' === $tab ) {
             $this->render_third_party_plugins();
@@ -58,7 +81,11 @@ final class SettingsPlugins {
 
         $this->render_wikipress_plugins();
     }
-
+    /**
+     * Get the registered settings pages from enabled plugins.
+     *
+     * @return array An associative array of registered settings pages.
+     */
     private function settings_pages(): array {
         $pages = [];
         foreach ( Plugins::get_instance()->get_registered_plugins() as $plugin ) {
@@ -74,7 +101,10 @@ final class SettingsPlugins {
         }
         return $pages;
     }
-
+    /**
+     * Render the WikiPress plugins section.
+     * @since 1.0.0
+     */
     private function render_wikipress_plugins(): void {
         ?>
         <div class="row g-4">
@@ -84,7 +114,10 @@ final class SettingsPlugins {
         </div>
         <?php
     }
-
+    /**
+     * Render the third-party plugins section.
+     * @since 1.0.0
+     */
     private function render_third_party_plugins(): void {
         if ( ! function_exists( 'get_plugins' ) ) {
             require_once ABSPATH . 'wp-admin/includes/plugin.php';
@@ -98,11 +131,16 @@ final class SettingsPlugins {
         </div>
         <?php
     }
-
+    /**
+     * Render a card for a third-party plugin.
+     *
+     * @param string $file The plugin file path.
+     * @param array $plugin The plugin data.
+     */
     private function render_wikipress_plugin_card( $plugin ): void {
         $enabled = Plugins::get_instance()->is_plugin_enabled( $plugin->get_slug() );
         $settings_page = $plugin instanceof SettingsPageProviderInterface ? $plugin->get_settings_page() : [];
-        $modal_id = 'wikipress-plugin-settings-' . SanitizationHelper::key( $plugin->get_slug() );
+        $modal_id = SanitizationHelper::key( $plugin->get_slug() );
         ?>
         <div class="col-12 col-md-6 col-xl-4 d-flex">
             <article class="card wikipress-plugin-card shadow-sm h-100 w-100">
@@ -128,7 +166,12 @@ final class SettingsPlugins {
             $this->render_plugin_settings_modal( $plugin, $settings_page, $modal_id );
         }
     }
-
+    /**
+     * Render a card for a third-party plugin.
+     *
+     * @param string $file The plugin file path.
+     * @param array $plugin The plugin data.
+     */
     private function render_plugin_settings_modal( PluginInterface $plugin, array $settings_page, string $modal_id ): void {
         $values = Settings::get_group( SanitizationHelper::key( $settings_page['slug'] ), [] ) ?? [];
         ?>
@@ -166,7 +209,13 @@ final class SettingsPlugins {
         </div>
         <?php
     }
-
+    /**
+     * Render the settings fields for a plugin's settings page.
+     *
+     * @param array $settings_page The settings page configuration.
+     * @param array $values The current values of the settings.
+     * @param string $prefix The prefix for the field IDs.
+     */
     private function render_plugin_settings_fields( array $settings_page, array $values, string $prefix ): void {
         foreach ( $settings_page['fields'] as $field ) {
             $key = SanitizationHelper::key( $field['key'] ?? '' );
@@ -195,7 +244,12 @@ final class SettingsPlugins {
             echo '</div>';
         }
     }
-
+    /**
+     * Render a card for a third-party plugin.
+     *
+     * @param string $file The plugin file path.
+     * @param array $plugin The plugin data.
+     */
     private function render_third_party_plugin_card( string $file, array $plugin ): void {
         $active = function_exists( 'is_plugin_active' ) && is_plugin_active( $file );
         ?>
