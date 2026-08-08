@@ -266,7 +266,7 @@ final class SettingsPlugins {
             } elseif ( 'text' === $type ) {
                 echo FormFieldHelper::input( $name, is_scalar( $value ) ? (string) $value : '', [ 'id' => $id, 'type' => 'text' ] );
             }
-            echo 'table' === $layout ? '</td></tr>' : '</div></div></article>';
+            echo 'table' === $layout ? '</td></tr>' : '</div></article>';
         }
 
         if ( 'table' === $layout ) {
