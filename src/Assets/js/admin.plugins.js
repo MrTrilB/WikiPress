@@ -99,6 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const trigger = event.target.closest?.('[data-bs-toggle="modal"][data-bs-target]');
         if (trigger) {
             event.preventDefault();
+            event.stopPropagation();
             openPluginModal(trigger);
             return;
         }
