@@ -16,5 +16,35 @@
 		.modal-dialog { max-height: calc(100vh - 3.5rem); }
 		.modal-content { max-height: calc(100vh - 3.5rem); }
 		.modal-body { overflow-y: auto; }
+
+		.wikipress-plugin-settings-fields-box {
+			display: grid;
+			gap: 1rem;
+			grid-template-columns: 1fr;
+
+			@media (min-width: 576px) {
+				grid-template-columns: repeat(2, minmax(0, 1fr));
+			}
+
+			@media (min-width: 1200px) {
+				grid-template-columns: repeat(4, minmax(0, 1fr));
+			}
+		}
+
+		.wikipress-plugin-settings-field {
+			border-color: var(--wikipress-line);
+			background: var(--bs-light);
+
+			.card-body { padding: 1rem; }
+			.form-label { margin-bottom: 0; }
+			.form-check { margin-top: 0; }
+			.form-text { margin-top: .35rem; }
+		}
+
+		.wikipress-plugin-settings-field-description {
+			margin-top: .75rem;
+			margin-bottom: 0;
+		}
+
 	}
 }

@@ -221,7 +221,9 @@ final class SettingsPlugins {
         $layout = in_array( $layout, [ 'table', 'box' ], true ) ? $layout : 'box';
 
         if ( 'table' === $layout ) {
-            echo '<div class="table-responsive"><table class="table align-middle"><tbody>';
+            echo '<div class="table-responsive wikipress-plugin-settings-fields wikipress-plugin-settings-fields-table"><table class="table align-middle"><tbody>';
+        } else {
+            echo '<div class="wikipress-plugin-settings-fields wikipress-plugin-settings-fields-box">';
         }
 
         foreach ( $settings_page['fields'] as $field ) {
@@ -236,7 +238,6 @@ final class SettingsPlugins {
             $id = SanitizationHelper::key( $prefix . '-' . $key );
             $name = 'settings[' . $key . ']';
             $label = FormFieldHelper::label( $id, (string) ( $field['label'] ?? $key ), [
-                'description' => (string) ( $field['description'] ?? '' ),
                 'tooltip' => (string) ( $field['tooltip'] ?? '' ),
                 'tooltip_type' => SanitizationHelper::key( $field['tooltip_type'] ?? 'question', 'question' ),
                 'tooltip_icon' => (string) ( $field['tooltip_icon'] ?? '' ),
@@ -244,20 +245,34 @@ final class SettingsPlugins {
             if ( 'table' === $layout ) {
                 echo '<tr><th scope="row" class="w-50">' . $label . '</th><td>';
             } else {
-                echo '<div class="mb-3">' . $label;
+                echo '<article class="wikipress-plugin-settings-field card h-100"><div class="card-body">';
+                echo '<div class="wikipress-plugin-settings-field-header d-flex align-items-start justify-content-between gap-3">' . $label;
+                if ( 'checkbox' === $type ) {
+                    echo FormFieldHelper::switch( $name, '1', '', [ 'id' => $id, 'checked' => ! empty( $value ), 'wrapper_class' => 'ms-auto flex-shrink-0' ] );
+                }
+                echo '</div>';
+                if ( ! empty( $field['description'] ) ) {
+                    echo '<p class="wikipress-plugin-settings-field-description text-secondary mb-3">' . esc_html( (string) $field['description'] ) . '</p>';
+                }
             }
-            if ( 'select' === $type ) {
+            if ( 'table' === $layout && 'select' === $type ) {
+                echo FormFieldHelper::select( $name, (array) ( $field['options'] ?? [] ), $value, [ 'id' => $id ] );
+            } elseif ( 'table' === $layout && 'text' === $type ) {
+                echo FormFieldHelper::input( $name, is_scalar( $value ) ? (string) $value : '', [ 'id' => $id, 'type' => 'text' ] );
+            } elseif ( 'table' === $layout ) {
+                echo FormFieldHelper::checkbox( $name, '1', '', [ 'id' => $id, 'checked' => ! empty( $value ) ] );
+            } elseif ( 'select' === $type ) {
                 echo FormFieldHelper::select( $name, (array) ( $field['options'] ?? [] ), $value, [ 'id' => $id ] );
             } elseif ( 'text' === $type ) {
                 echo FormFieldHelper::input( $name, is_scalar( $value ) ? (string) $value : '', [ 'id' => $id, 'type' => 'text' ] );
-            } else {
-                echo FormFieldHelper::checkbox( $name, '1', '', [ 'id' => $id, 'checked' => ! empty( $value ) ] );
             }
-            echo 'table' === $layout ? '</td></tr>' : '</div>';
+            echo 'table' === $layout ? '</td></tr>' : '</div></div></article>';
         }
 
         if ( 'table' === $layout ) {
             echo '</tbody></table></div>';
+        } else {
+            echo '</div>';
         }
     }
     /**
