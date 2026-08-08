@@ -96,7 +96,7 @@ final class ToolsManager extends Manager {
      * @return void
      */
     public function render(): void {
-        $tool = sanitize_key( $_GET['tool'] ?? 'debug' );
+        $tool = SanitizationHelper::key( $_GET['tool'] ?? 'debug', 'debug' );
         $tool = in_array( $tool, [ 'analytics', 'debug', 'import', 'export' ], true ) ? $tool : 'debug';
         $this->header( $this->title( $tool ) );
         if ( 'analytics' === $tool ) {
