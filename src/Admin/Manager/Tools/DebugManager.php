@@ -8,13 +8,30 @@
  */
 namespace TrilBDev\WikiPress\Admin\Manager\Tools;
 
+use TrilBDev\WikiPress\Admin\Manager\Manager;
 use TrilBDev\WikiPress\Includes\Functions\Helpers\FormFieldHelper;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-final class DebugManager {
+final class DebugManager extends Manager {
+    /**
+     * Constructor for the DebugManager class.
+     *
+     * @since 1.0.0
+     */
+    public function __construct() {
+    }
+    /**
+     * Render the debug settings page content.
+     *
+     * @return void
+     */
+    public function render_page_content(): void {
+        echo '<div class="card shadow-sm"><div class="card-body"><h2 class="h5">' . esc_html__( 'Debug logging', 'wikipress' ) . '</h2><p class="text-secondary">' . esc_html__( 'Configure diagnostic logging from the Tools settings tab.', 'wikipress' ) . '</p><a class="btn btn-primary" href="' . esc_url( admin_url( 'admin.php?page=wikipress-settings&tab=tools' ) ) . '">' . esc_html__( 'Open Tools Settings', 'wikipress' ) . '</a></div></div>';
+    }
+
     /**
      * Render debug-related settings fields.
      *

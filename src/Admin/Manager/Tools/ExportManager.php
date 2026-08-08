@@ -8,6 +8,7 @@
  */
 namespace TrilBDev\WikiPress\Admin\Manager\Tools;
 
+use TrilBDev\WikiPress\Admin\Manager\Manager;
 use TrilBDev\WikiPress\Includes\Functions\Helpers\FormFieldHelper;
 use TrilBDev\WikiPress\Includes\Functions\Helpers\UrlHelper;
 
@@ -15,7 +16,25 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-final class ExportManager {
+final class ExportManager extends Manager {
+    /**
+     * Render the JSON export form below the tools settings form.
+     *
+     * @return void
+     */
+    public function __construct() {
+    }
+    /**
+     * Render the JSON export form below the tools settings form.
+     *
+     * @return void
+     */
+    public function render_page_content(): void {
+        echo '<div class="card shadow-sm"><div class="card-body"><h2 class="h5">' . esc_html__( 'Export WikiPress data', 'wikipress' ) . '</h2><p class="text-secondary">' . esc_html__( 'Download your WikiPress content and settings as a JSON file.', 'wikipress' ) . '</p>';
+        echo FormFieldHelper::button( esc_html__( 'Export WikiPress JSON', 'wikipress' ), [ 'href' => UrlHelper::admin_action_nonce( 'wikipress_export', 'wikipress_export' ), 'class' => 'btn-outline-primary' ] );
+        echo '</div></div>';
+    }
+
     /**
      * Render export and database tool fields.
      *

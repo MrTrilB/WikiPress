@@ -14,7 +14,7 @@ use TrilBDev\WikiPress\Includes\Functions\Admin\FunctionsPlugins;
 use TrilBDev\WikiPress\Includes\Functions\Helpers\AjaxHelper;
 use TrilBDev\WikiPress\Includes\Functions\Helpers\LoaderHelper;
 use TrilBDev\WikiPress\Assets\Assets;
-use TrilBDev\WikiPress\Admin\Manager\Tools\AnalyticsManager;
+use TrilBDev\WikiPress\Admin\Manager\Tools\ToolsManager;
 use TrilBDev\WikiPress\Admin\Manager\Dashboard\DashboardManager;
 use TrilBDev\WikiPress\Admin\Manager\Settings\SettingsManager;
 use TrilBDev\WikiPress\Admin\Manager\Content\ContentManager;
@@ -43,11 +43,11 @@ final class Admin {
      */
     private SettingsManager $settings_manager;
     /**
-     * AnalyticsManager instance for managing analytics-related admin pages.
+    * ToolsManager instance for managing tools-related admin pages.
      *
-     * @var AnalyticsManager
+    * @var ToolsManager
      */
-    private AnalyticsManager $analytics_manager;
+    private ToolsManager $tools_manager;
     /**
      * LoaderHelper instance for managing action and filter hooks.
      *
@@ -65,13 +65,13 @@ final class Admin {
         $this->dashboard_manager = new DashboardManager();
         $this->content_manager = new ContentManager();
         $this->settings_manager = new SettingsManager();
-        $this->analytics_manager = new AnalyticsManager();
+        $this->tools_manager = new ToolsManager();
         $this->plugin_functions = new FunctionsPlugins();
         $this->loader = new LoaderHelper();
         $this->dashboard_manager->register_assets( $assets );
         $this->content_manager->register_assets( $assets );
         $this->settings_manager->register_assets( $assets );
-        $this->analytics_manager->register_assets( $assets );
+        $this->tools_manager->register_assets( $assets );
         $this->loader->register_component( $this, [
             [ 'type' => 'action', 'hook' => 'wp_ajax_wikipress_load_settings_tab', 'callback' => 'load_settings_tab' ],
         ] );
@@ -90,7 +90,7 @@ final class Admin {
         add_submenu_page( 'wikipress', __( 'Dashboard', 'wikipress' ), __( 'Dashboard', 'wikipress' ), 'manage_options', 'wikipress', [ $this, 'render_dashboard' ] );
         add_submenu_page( 'wikipress', __( 'Manage Wiki', 'wikipress' ), __( 'Manage Wiki', 'wikipress' ), $this->capability( 'manager_wiki', 'manage_options' ), 'wikipress-manage', [ $this, 'render_wikis' ] );
         add_submenu_page( 'wikipress', __( 'Settings', 'wikipress' ), __( 'Settings', 'wikipress' ), 'manage_options', 'wikipress-settings', [ $this, 'render_settings' ] );
-        add_submenu_page( 'wikipress', __( 'Analytics', 'wikipress' ), __( 'Analytics', 'wikipress' ), $this->capability( 'view_analytics', 'manage_options' ), 'wikipress-analytics', [ $this, 'render_analytics' ] );
+        add_submenu_page( 'wikipress', __( 'Tools', 'wikipress' ), __( 'Tools', 'wikipress' ), $this->capability( 'view_tools', 'manage_options' ), 'wikipress-tools', [ $this, 'render_tools' ] );
     }
     /**
      * Render the dashboard page.
@@ -120,6 +120,14 @@ final class Admin {
         $this->settings_manager->render();
     }
     /**
+     * Render the tools page.
+     *
+     * @return void
+     */
+    public function render_tools(): void {
+        $this->tools_manager->render();
+    }
+    /**
      * Render the analytics page.
      *
      * This method is responsible for rendering the analytics page of the WikiPress plugin.
@@ -136,15 +144,6 @@ final class Admin {
         $this->settings_manager->render_tab_content( $tab, $layout_section );
         $html = (string) ob_get_clean();
         AjaxHelper::success( [ 'html' => $html, 'tab' => $tab, 'layout_section' => $layout_section ] );
-    }
-    /**
-     * Render the analytics page.
-     *
-     * This method is responsible for rendering the analytics page of the WikiPress plugin.
-     * It delegates the rendering to the AnalyticsManager instance.
-     */
-    public function render_analytics(): void {
-        $this->analytics_manager->render();
     }
     /**
      * Get the capability for a given key, with a fallback.

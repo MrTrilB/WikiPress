@@ -38,10 +38,10 @@ final class Sidebar {
 				'label' => __( 'Tools', 'wikipress' ),
 				'icon' => 'fa-solid fa-toolbox',
 				'items' => [
-					'wikipress-analytics' => [ 'label' => __( 'Analytics', 'wikipress' ), 'icon' => 'fa-solid fa-chart-line' ],
-					'wikipress-import' => [ 'label' => __( 'Import', 'wikipress' ), 'icon' => 'fa-solid fa-file-import' ],
-					'wikipress-export' => [ 'label' => __( 'Export', 'wikipress' ), 'icon' => 'fa-solid fa-file-export' ],
-					'wikipress-debug' => [ 'label' => __( 'Debug', 'wikipress' ), 'icon' => 'fa-solid fa-bug-slash' ],
+					'wikipress-tools&tool=debug' => [ 'label' => __( 'Debug', 'wikipress' ), 'icon' => 'fa-solid fa-bug-slash' ],
+					'wikipress-tools&tool=import' => [ 'label' => __( 'Import', 'wikipress' ), 'icon' => 'fa-solid fa-file-import' ],
+					'wikipress-tools&tool=export' => [ 'label' => __( 'Export', 'wikipress' ), 'icon' => 'fa-solid fa-file-export' ],
+					'wikipress-tools&tool=analytics' => [ 'label' => __( 'Analytics', 'wikipress' ), 'icon' => 'fa-solid fa-chart-line' ],
 				],
 			],
 		];
@@ -57,7 +57,8 @@ final class Sidebar {
 						<span class="wikipress-sidebar-icon" aria-hidden="true"><i class="fa-solid fa-house"></i></span><?php esc_html_e( 'Dashboard', 'wikipress' ); ?>
 					</a>
 					<div id="wikipress-sidebar-groups">
-						<?php foreach ( $groups as $key => $group ) : $expanded = 'settings' === $key ? 'wikipress-settings' === $current : in_array( $current, array_keys( $group['items'] ), true ); ?>
+						<?php $active_tool = sanitize_key( $_GET['tool'] ?? 'analytics' ); ?>
+						<?php foreach ( $groups as $key => $group ) : $expanded = 'settings' === $key ? 'wikipress-settings' === $current : ( 'tools' === $key ? 'wikipress-tools' === $current : in_array( $current, array_keys( $group['items'] ), true ) ); ?>
 							<div class="wikipress-sidebar-group">
 								<h3 class="wikipress-sidebar-group-heading">
 									<button class="wikipress-sidebar-link wikipress-sidebar-group-link border-0 bg-transparent w-100 text-start <?php echo $expanded ? '' : 'collapsed'; ?>" type="button" data-bs-toggle="collapse" data-bs-target="#wikipress-group-<?php echo esc_attr( $key ); ?>" aria-expanded="<?php echo $expanded ? 'true' : 'false'; ?>" aria-controls="wikipress-group-<?php echo esc_attr( $key ); ?>">
@@ -66,7 +67,7 @@ final class Sidebar {
 								</h3>
 								<div id="wikipress-group-<?php echo esc_attr( $key ); ?>" class="collapse <?php echo $expanded ? 'show' : ''; ?>">
 									<div class="nav flex-column wikipress-sidebar-group-items">
-										<?php foreach ( $group['items'] as $slug => $item ) : $active_tab = sanitize_key( $_GET['tab'] ?? 'general' ); $is_active = str_starts_with( $slug, 'wikipress-settings&tab=' ) ? ( 'wikipress-settings' === $current && str_ends_with( $slug, $active_tab ) ) : $current === $slug; ?>
+										<?php foreach ( $group['items'] as $slug => $item ) : $active_tab = sanitize_key( $_GET['tab'] ?? 'general' ); $item_tool = str_starts_with( $slug, 'wikipress-tools&tool=' ) ? substr( $slug, strlen( 'wikipress-tools&tool=' ) ) : ''; $is_active = str_starts_with( $slug, 'wikipress-settings&tab=' ) ? ( 'wikipress-settings' === $current && str_ends_with( $slug, $active_tab ) ) : ( '' !== $item_tool ? ( 'wikipress-tools' === $current && $item_tool === $active_tool ) : $current === $slug ); ?>
 											<a class="nav-link <?php echo $is_active ? 'active' : ''; ?>" <?php echo $is_active ? 'aria-current="page"' : ''; ?> href="<?php echo esc_url( admin_url( 'admin.php?page=' . $slug ) ); ?>"><i class="<?php echo esc_attr( $item['icon'] ); ?> me-2" aria-hidden="true"></i><?php echo esc_html( $item['label'] ); ?></a>
 										<?php endforeach; ?>
 									</div>

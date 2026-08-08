@@ -7,6 +7,7 @@
  */
 namespace TrilBDev\WikiPress\Admin\Manager\Tools;
 
+use TrilBDev\WikiPress\Admin\Manager\Manager;
 use TrilBDev\WikiPress\Includes\Functions\Helpers\FormFieldHelper;
 use TrilBDev\WikiPress\Includes\Functions\Helpers\UrlHelper;
 
@@ -14,7 +15,15 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-final class ImportManager {
+final class ImportManager extends Manager {
+    /**
+     * Constructor for the ImportManager class.
+     *
+     * @since 1.0.0
+     */
+    public function __construct() {
+    }
+
     /**
      * Render the JSON import form below the tools settings form.
      *
