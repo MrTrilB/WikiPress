@@ -1,16 +1,4 @@
 .wikipress-admin {
-	.wikipress-plugin-card {
-		.card-header { background: #fff; border-color: var(--wikipress-line); }
-		.card-body { display: flex; flex-direction: column; }
-	}
-
-	.wikipress-plugin-icon {
-		color: var(--wikipress-blue);
-		font-size: 2rem;
-		height: 2rem;
-		width: 2rem;
-	}
-
 	.nav-tabs {
 		border-bottom-color: var(--bs-border-color);
 

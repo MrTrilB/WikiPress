@@ -4,6 +4,7 @@
  *
  * @package TrilBDev
  * @subpackage Assets
+                    [ 'handle' => 'wikipress-admin-plugins', 'src' => WIKIPRESS_URL . 'src/Assets/dist/js/admin.plugins.js', 'deps' => [ 'wikipress-bootstrap', 'wikipress-shadow' ], 'in_footer' => true ],
  * @since 1.0.0
  */
 namespace TrilBDev\WikiPress\Assets;
@@ -189,13 +190,18 @@ final class Assets {
         foreach ( $assets['scripts'] ?? [] as $script ) {
             wp_enqueue_script( $script['handle'], $script['src'], $script['deps'] ?? [], $script['version'] ?? WIKIPRESS_VERSION, $script['in_footer'] ?? true );
         }
-        if ( 'wikipress-settings' === sanitize_key( $_GET['page'] ?? '' ) && wp_script_is( 'wikipress-admin-settings', 'enqueued' ) ) {
-            wp_localize_script( 'wikipress-admin-settings', 'wikipressSettingsTabs', [
+        if ( 'wikipress-settings' === sanitize_key( $_GET['page'] ?? '' ) ) {
+            $settings_config = [
                 'ajaxUrl' => admin_url( 'admin-ajax.php' ),
                 'nonce' => wp_create_nonce( 'wikipress_settings_tabs' ),
                 'pluginNonce' => wp_create_nonce( 'wikipress_plugin_toggle' ),
                 'pluginSettingsNonce' => wp_create_nonce( 'wikipress_plugin_settings' ),
-            ] );
+            ];
+            foreach ( [ 'wikipress-admin-settings', 'wikipress-admin-plugins' ] as $handle ) {
+                if ( wp_script_is( $handle, 'enqueued' ) ) {
+                    wp_localize_script( $handle, 'wikipressSettingsTabs', $settings_config );
+                }
+            }
         }
     }
 }

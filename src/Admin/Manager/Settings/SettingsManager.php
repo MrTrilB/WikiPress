@@ -1,22 +1,83 @@
 <?php
-
+/**
+ * SettingsManager class for WikiPress plugin.
+ *
+ * @package TrilBDev\WikiPress
+ * @subpackage Admin\Manager\Settings
+ * @since 1.0.0
+ */
 namespace TrilBDev\WikiPress\Admin\Manager\Settings;
 
 use TrilBDev\WikiPress\Admin\Manager\Manager;
 use TrilBDev\WikiPress\Assets\Assets;
 use TrilBDev\WikiPress\Includes\Settings\Settings;
+use TrilBDev\WikiPress\Admin\Manager\Settings\SettingsPlugins;
 use TrilBDev\WikiPress\Includes\Functions\Helpers\SanitizationHelper;
 use TrilBDev\WikiPress\Includes\Functions\Helpers\FormFieldHelper;
+use TrilBDev\WikiPress\Admin\Manager\Tools\DebugManager;
+use TrilBDev\WikiPress\Admin\Manager\Tools\ExportManager;
+use TrilBDev\WikiPress\Admin\Manager\Tools\ImportManager;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
 final class SettingsManager extends Manager {
+    /**
+     * The SettingsGeneral instance.
+     *
+     * @since 1.0.0
+     * @access private
+     * @var SettingsGeneral $general_page The SettingsGeneral instance.
+     */
     private SettingsGeneral $general_page;
+    /**
+     * The SettingsLayout instance.
+     *
+     * @since 1.0.0
+     * @access private
+     * @var SettingsLayout $layout_page The SettingsLayout instance.
+     */
     private SettingsLayout $layout_page;
+    /**
+     * The SettingsAccess instance.
+     *
+     * @since 1.0.0
+     * @access private
+     * @var SettingsAccess $access_page The SettingsAccess instance.
+     */
     private SettingsAccess $access_page;
-    private SettingsTools $tools_page;
+    /**
+    * The DebugManager instance.
+     *
+     * @since 1.0.0
+     * @access private
+    * @var DebugManager $debug_manager The DebugManager instance.
+     */
+    private DebugManager $debug_manager;
+    /**
+     * The ExportManager instance.
+     *
+     * @since 1.0.0
+     * @access private
+     * @var ExportManager $export_manager The ExportManager instance.
+     */
+    private ExportManager $export_manager;
+    /**
+     * The ImportManager instance.
+     *
+     * @since 1.0.0
+     * @access private
+     * @var ImportManager $import_manager The ImportManager instance.
+     */
+    private ImportManager $import_manager;
+    /**
+     * The SettingsPlugins instance.
+     *
+     * @since 1.0.0
+     * @access private
+     * @var SettingsPlugins $plugins_page The SettingsPlugins instance.
+     */
     private SettingsPlugins $plugins_page;
 
     /**
@@ -41,10 +102,37 @@ final class SettingsManager extends Manager {
          * @since 1.0.0
          */
         $this->page = 'dashboard';
+        /**
+         * Initialize the settings pages.
+         *
+         * @since 1.0.0
+         */
         $this->general_page = new SettingsGeneral();
+        /**
+         * Initialize the settings pages.
+         *
+         * @since 1.0.0
+         */
         $this->layout_page = new SettingsLayout();
+        /**
+         * Initialize the settings pages.
+         *
+         * @since 1.0.0
+         */
         $this->access_page = new SettingsAccess();
-        $this->tools_page = new SettingsTools();
+        /**
+         * Initialize the settings pages.
+         *
+         * @since 1.0.0
+         */
+        $this->debug_manager = new DebugManager();
+        $this->export_manager = new ExportManager();
+        $this->import_manager = new ImportManager();
+        /**
+         * Initialize the settings pages.
+         *
+         * @since 1.0.0
+         */
         $this->plugins_page = new SettingsPlugins();
     }
     /**
@@ -74,6 +162,8 @@ final class SettingsManager extends Manager {
 
     /**
      * Render the settings panel returned by the AJAX tab loader.
+     * @since 1.0.0
+     * @param string $tab The tab to render.
      */
     public function render_tab_content( string $tab, string $layout_section = 'general' ): void {
         $tab = $this->normalize_tab( $tab );
@@ -111,7 +201,8 @@ final class SettingsManager extends Manager {
         } elseif ( $this->plugins_page->has_settings_page( $tab ) ) {
             $this->plugins_page->render_settings_page( $tab, $values );
         } elseif ( 'tools' === $tab ) {
-            $this->tools_page->render( $values );
+            $this->debug_manager->render( $values );
+            $this->export_manager->render();
         }
         if ( 'layout' !== $tab ) {
             echo '</tbody></table>';
@@ -123,11 +214,17 @@ final class SettingsManager extends Manager {
         ] );
         echo '</div></form>';
         if ( 'tools' === $tab ) {
-            $this->tools_page->render_import_form();
+            $this->import_manager->render();
         }
         echo '</div>';
     }
-
+    /**
+     * Normalize the tab name to ensure it is valid.
+     *
+     * @since 1.0.0
+     * @param string $tab The tab name to normalize.
+     * @return string The normalized tab name.
+     */
     private function normalize_tab( string $tab ): string {
         $allowed = [ 'general', 'layout', 'access', 'tools', 'plugins', 'third-party' ];
         if ( in_array( $tab, $allowed, true ) || $this->plugins_page->has_settings_page( $tab ) ) {
@@ -135,7 +232,12 @@ final class SettingsManager extends Manager {
         }
         return 'general';
     }
-
+    /**
+     * Register assets for the settings page.
+     *
+     * @since 1.0.0
+     * @param Assets $assets The Assets instance to register assets with.
+     */
     public function register_assets( Assets $assets ): void {
         $this->register_page_assets( $assets, [ 'wikipress-settings' ], 'settings' );
     }

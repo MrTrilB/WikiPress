@@ -1,5 +1,11 @@
 <?php
-
+/**
+ * Footer UI component for WikiPress admin pages.
+ *
+ * @package TrilBDev\WikiPress
+ * @subpackage Admin\Manager\UI
+ * @since 1.0.0
+ */
 namespace TrilBDev\WikiPress\Admin\Manager\UI;
 
 if ( ! defined( 'ABSPATH' ) ) {

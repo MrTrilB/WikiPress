@@ -27,107 +27,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  const togglePlugin = (toggle) => {
-    const enabled = toggle.checked;
-    toggle.disabled = true;
-    const body = new URLSearchParams({ action: 'wikipress_toggle_plugin', nonce: config.pluginNonce, slug: toggle.dataset.pluginSlug || '', enabled: enabled ? '1' : '0' });
-    fetch(config.ajaxUrl, { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }, body })
-      .then((response) => response.json())
-      .then((response) => {
-        if (!response.success) throw new Error('Unable to save plugin state');
-      })
-      .catch(() => { toggle.checked = !enabled; })
-      .finally(() => { toggle.disabled = false; });
-  };
-
-  const savePluginSettings = (button) => {
-    const modal = button.closest('.wikipress-plugin-settings-modal');
-    const form = modal?.querySelector('[data-plugin-settings-form]');
-    if (!modal || !form) return;
-
-    button.disabled = true;
-    const body = new URLSearchParams(new FormData(form));
-    body.set('action', 'wikipress_save_plugin_settings');
-    body.set('nonce', config.pluginSettingsNonce);
-    body.set('slug', form.dataset.pluginSlug || '');
-    fetch(config.ajaxUrl, { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }, body })
-      .then((response) => response.json())
-      .then((response) => {
-        if (!response.success) throw new Error('Unable to save plugin settings');
-        closePluginModal(modal);
-      })
-      .catch(() => { modal.querySelector('.modal-body')?.classList.add('is-invalid'); })
-      .finally(() => { button.disabled = false; });
-  };
-
-  const removePluginModalBackdrop = (modal) => {
-    const scope = modal?.getRootNode?.() || root;
-    scope.querySelector?.('.wikipress-plugin-modal-backdrop')?.remove();
-    document.body.classList.remove('modal-open');
-  };
-
-  const closePluginModal = (modal) => {
-    if (!modal) return;
-
-    if (window.bootstrap?.Modal) {
-      window.bootstrap.Modal.getOrCreateInstance(modal).hide();
-    }
-
-    modal.classList.remove('show');
-    modal.setAttribute('aria-hidden', 'true');
-    modal.style.display = 'none';
-    removePluginModalBackdrop(modal);
-  };
-
-  const openPluginModal = (trigger) => {
-    const targetSelector = trigger.dataset.bsTarget;
-    const scope = trigger.getRootNode?.() || root;
-    const modal = scope.querySelector?.(targetSelector) || root.querySelector(targetSelector);
-    if (!modal) return false;
-
-    const modalScope = modal.getRootNode?.() || root;
-    modalScope.querySelector?.('.wikipress-plugin-modal-backdrop')?.remove();
-
-    if (window.bootstrap?.Modal) {
-      window.bootstrap.Modal.getOrCreateInstance(modal).show(trigger);
-    }
-
-    modal.classList.add('show');
-    modal.setAttribute('aria-hidden', 'false');
-    modal.setAttribute('aria-modal', 'true');
-    modal.style.display = 'block';
-    modal.style.zIndex = '1055';
-
-    const backdrop = document.createElement('div');
-    backdrop.className = 'modal-backdrop fade show wikipress-plugin-modal-backdrop';
-    backdrop.style.zIndex = '1050';
-    backdrop.addEventListener('click', () => closePluginModal(modal));
-    modalScope.appendChild(backdrop);
-    document.body.classList.add('modal-open');
-
-    return true;
-  };
-
-  const bindPluginModals = () => root.querySelectorAll('[data-bs-toggle="modal"][data-bs-target]').forEach((trigger) => {
-    if (trigger.dataset.wikipressModalBound) return;
-
-    trigger.dataset.wikipressModalBound = 'true';
-    trigger.addEventListener('click', (event) => {
-      event.preventDefault();
-      openPluginModal(trigger);
-    });
-  });
-
-  const bindPluginModalDismissals = () => root.querySelectorAll('.wikipress-plugin-settings-modal [data-bs-dismiss="modal"]').forEach((button) => {
-    if (button.dataset.wikipressModalDismissBound) return;
-
-    button.dataset.wikipressModalDismissBound = 'true';
-    button.addEventListener('click', (event) => {
-      event.preventDefault();
-      closePluginModal(button.closest('.wikipress-plugin-settings-modal'));
-    });
-  });
-
   const activateLayoutTab = (button) => {
     const target = root.querySelector(button.dataset.bsTarget);
     if (!target) return;
@@ -166,8 +65,6 @@ document.addEventListener('DOMContentLoaded', () => {
         setActive(response.data.tab, response.data.layout_section);
         if (updateHash) window.history.pushState({}, '', `${window.location.pathname}${window.location.search}#${response.data.tab === 'layout' ? `layout-${response.data.layout_section}` : response.data.tab}`);
         bindForms();
-        bindPluginModals();
-        bindPluginModalDismissals();
         const nextContent = panel.querySelector('.wikipress-settings-tab-content');
         if (nextContent) requestAnimationFrame(() => nextContent.classList.remove('is-loading'));
       })
@@ -176,13 +73,6 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   root.addEventListener('click', (event) => {
-    const modalTrigger = event.target.closest?.('[data-bs-toggle="modal"][data-bs-target]');
-    if (modalTrigger) {
-      event.preventDefault();
-      openPluginModal(modalTrigger);
-      return;
-    }
-
     const layoutButton = event.target.closest?.('[data-wikipress-layout-tab]');
     if (layoutButton) {
       event.preventDefault();
@@ -198,14 +88,6 @@ document.addEventListener('DOMContentLoaded', () => {
     event.preventDefault();
     event.stopPropagation();
     loadTab(link.dataset.wikipressSettingsTab, link.dataset.wikipressSettingsSection || 'general');
-  }, true);
-  root.addEventListener('change', (event) => {
-    const toggle = event.target.closest?.('[data-wikipress-plugin-toggle]');
-    if (toggle) togglePlugin(toggle);
-  }, true);
-  root.addEventListener('click', (event) => {
-    const saveButton = event.target.closest?.('[data-plugin-settings-save]');
-    if (saveButton) savePluginSettings(saveButton);
   }, true);
   const navigateFromHash = () => {
     const state = stateFromHash();
@@ -231,6 +113,4 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   if (window.location.hash && 'layout' !== initial.tab && (initial.tab !== panel.dataset.currentTab || initial.section !== panel.dataset.currentSection)) loadTab(initial.tab, initial.section, false);
   bindForms();
-  bindPluginModals();
-  bindPluginModalDismissals();
 });

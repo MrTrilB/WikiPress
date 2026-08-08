@@ -1,5 +1,11 @@
 <?php
-
+/**
+ * Settings layout fields.
+ *
+ * @package TrilBDev
+ * @subpackage Admin\Manager\Settings
+ * @since 1.0.0
+ */
 namespace TrilBDev\WikiPress\Admin\Manager\Settings;
 
 use TrilBDev\WikiPress\Includes\Functions\Helpers\FormFieldHelper;
@@ -49,7 +55,13 @@ final class SettingsLayout {
 		}
 		echo '</div>';
 	}
-
+	/**
+	 * Render the fields for a specific section.
+	 *
+	 * @param array<string, mixed> $values Current settings.
+	 * @param string $section Section slug.
+	 * @return void
+	 */
 	private function render_fields( array $values, string $section ): void {
 		$fields = $this->fields( $section );
 		foreach ( $fields as $key => $field ) {
@@ -70,7 +82,12 @@ final class SettingsLayout {
 			echo '</td></tr>';
 		}
 	}
-
+	/**
+	 * Get the fields for a specific section.
+	 *
+	 * @param string $section Section slug.
+	 * @return array<string, mixed> Fields for the section.
+	 */
 	private function fields( string $section ): array {
 		$toggle = static fn( string $label, string $description, string $tooltip, bool $default = false ): array => [ 'label' => $label, 'description' => $description, 'tooltip' => $tooltip, 'default' => $default ];
 		return match ( $section ) {

@@ -1,6 +1,12 @@
 <?php
-
-namespace TrilBDev\WikiPress\Admin\Manager\Analytics;
+/**
+ * AnalyticsManager class for WikiPress plugin.
+ *
+ * @package WikiPress
+ * @subpackage Admin\Manager\Tools
+ * @since 1.0.0
+ */
+namespace TrilBDev\WikiPress\Admin\Manager\Tools;
 
 use TrilBDev\WikiPress\Admin\Manager\Manager;
 use TrilBDev\WikiPress\Assets\Assets;

@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * Settings access restriction fields.
+ *
+ * @package TrilBDev
+ * @subpackage Admin\Manager\Settings
+ */
 namespace TrilBDev\WikiPress\Admin\Manager\Settings;
 
 use TrilBDev\WikiPress\Includes\Functions\Helpers\FormFieldHelper;

@@ -18,6 +18,10 @@ use TrilBDev\WikiPress\Assets\Assets;
 use TrilBDev\WikiPress\Includes\Includes;
 use TrilBDev\WikiPress\Includes\Core\WP\I18n;
 use TrilBDev\WikiPress\Includes\Functions\Helpers\LoaderHelper;
+use TrilBDev\WikiPress\Includes\Functions\Admin\FunctionsExport;
+use TrilBDev\WikiPress\Includes\Functions\Admin\FunctionsImport;
+use TrilBDev\WikiPress\Includes\Functions\Admin\FunctionsPlugins;
+use TrilBDev\WikiPress\Includes\Functions\Admin\FunctionsSettings;
 use TrilBDev\WikiPress\API\Routes;
 use TrilBDev\WikiPress\Includes\Analytics\Analytics;
 use TrilBDev\WikiPress\Includes\Plugins\Plugins;
@@ -100,6 +104,12 @@ class WikiPress {
 	 * @access protected
 	 */
 	protected Plugins $plugins;
+
+	protected FunctionsExport $export_functions;
+
+	protected FunctionsImport $import_functions;
+
+	protected FunctionsSettings $settings_functions;
 
 	/**
 	 * The unique identifier of this plugin.
@@ -191,13 +201,16 @@ class WikiPress {
 		$this->admin = new Admin( $this->assets );
 		$this->frontend = new Frontend();
 		$this->plugins = Plugins::get_instance();
+		$this->export_functions = new FunctionsExport();
+		$this->import_functions = new FunctionsImport();
+		$this->settings_functions = new FunctionsSettings( new FunctionsPlugins() );
 
 		$this->loader->add_action( 'init', $this->includes, 'init' );
 		$this->loader->add_action( 'init', $this->plugins, 'init', 20 );
 		$this->loader->add_action( 'admin_menu', $this->admin, 'register_admin_menu' );
-		$this->loader->add_action( 'admin_init', $this->admin, 'register_settings' );
-		$this->loader->add_action( 'admin_post_wikipress_export', $this->admin, 'export_data' );
-		$this->loader->add_action( 'admin_post_wikipress_import', $this->admin, 'import_data' );
+		$this->loader->add_action( 'admin_init', $this->settings_functions, 'register_settings' );
+		$this->loader->add_action( 'admin_post_wikipress_export', $this->export_functions, 'export_data' );
+		$this->loader->add_action( 'admin_post_wikipress_import', $this->import_functions, 'import_data' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $this->assets, 'enqueue_admin' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $this->assets, 'enqueue_frontend' );
 		$this->loader->add_action( 'wp_head', Analytics::class, 'track_view' );

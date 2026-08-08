@@ -1,0 +1,20 @@
+
+.wikipress-admin {
+	.wikipress-plugin-card {
+		.card-header { background: #fff; border-color: var(--wikipress-line); }
+		.card-body { display: flex; flex-direction: column; }
+	}
+
+	.wikipress-plugin-icon {
+		color: var(--wikipress-blue);
+		font-size: 2rem;
+		height: 2rem;
+		width: 2rem;
+	}
+
+	.wikipress-plugin-settings-modal {
+		.modal-dialog { max-height: calc(100vh - 3.5rem); }
+		.modal-content { max-height: calc(100vh - 3.5rem); }
+		.modal-body { overflow-y: auto; }
+	}
+}

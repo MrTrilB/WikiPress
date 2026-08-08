@@ -1,5 +1,11 @@
 <?php
-
+/**
+ * Sidebar UI component for WikiPress admin pages.
+ *
+ * @package TrilBDev\WikiPress
+ * @subpackage Admin\Manager\UI
+ * @since 1.0.0
+ */
 namespace TrilBDev\WikiPress\Admin\Manager\UI;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -26,14 +32,16 @@ final class Sidebar {
 					'wikipress-settings&tab=plugins' => [ 'label' => __( 'Plugins', 'wikipress' ), 'icon' => 'fa-solid fa-puzzle-piece' ],
 					'wikipress-settings&tab=third-party' => [ 'label' => __( '3rd Party', 'wikipress' ), 'icon' => 'fa-solid fa-plug' ],
 					'wikipress-settings&tab=access' => [ 'label' => __( 'Access', 'wikipress' ), 'icon' => 'fa-solid fa-user-shield' ],
-					'wikipress-settings&tab=tools' => [ 'label' => __( 'Tools', 'wikipress' ), 'icon' => 'fa-solid fa-screwdriver-wrench' ],
 				],
 			],
-			'tool-box' => [
-				'label' => __( 'Tool Box', 'wikipress' ),
+			'tools' => [
+				'label' => __( 'Tools', 'wikipress' ),
 				'icon' => 'fa-solid fa-toolbox',
 				'items' => [
 					'wikipress-analytics' => [ 'label' => __( 'Analytics', 'wikipress' ), 'icon' => 'fa-solid fa-chart-line' ],
+					'wikipress-import' => [ 'label' => __( 'Import', 'wikipress' ), 'icon' => 'fa-solid fa-file-import' ],
+					'wikipress-export' => [ 'label' => __( 'Export', 'wikipress' ), 'icon' => 'fa-solid fa-file-export' ],
+					'wikipress-debug' => [ 'label' => __( 'Debug', 'wikipress' ), 'icon' => 'fa-solid fa-bug-slash' ],
 				],
 			],
 		];

@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * Settings general fields.
+ * @package WikiPress
+ * @subpackage Admin\Manager\Settings
+ * @since 1.0.0
+ */
 namespace TrilBDev\WikiPress\Admin\Manager\Settings;
 
 use TrilBDev\WikiPress\Includes\Functions\Helpers\FormFieldHelper;
