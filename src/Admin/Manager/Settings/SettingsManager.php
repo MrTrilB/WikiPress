@@ -114,7 +114,6 @@ final class SettingsManager extends Manager {
             'general' => [ 'description' => __( 'Configure WikiPress names, URL slugs, and permalink settings.', 'wikipress' ), 'tooltip' => __( 'These settings affect how WikiPress content is identified and linked throughout the site.', 'wikipress' ) ],
             'layout' => [ 'description' => __( 'Choose which navigation and page layout features WikiPress displays.', 'wikipress' ), 'tooltip' => __( 'Layout settings control the visitor-facing WikiPress interface.', 'wikipress' ) ],
             'access' => [ 'description' => __( 'Set the minimum WordPress capabilities required for WikiPress tasks.', 'wikipress' ), 'tooltip' => __( 'Choose carefully so editors and administrators retain the access they need.', 'wikipress' ) ],
-            'tools' => [ 'description' => __( 'Manage diagnostics and import or export WikiPress data.', 'wikipress' ), 'tooltip' => __( 'Use import and export tools carefully and keep debug logging disabled when it is not needed.', 'wikipress' ) ],
             'plugins' => [ 'description' => __( 'View the WikiPress plugins installed on this site.', 'wikipress' ), 'tooltip' => __( 'Plugin-specific configuration is available from each plugin settings page when provided.', 'wikipress' ) ],
             'third-party' => [ 'description' => __( 'View third-party plugins installed on this site.', 'wikipress' ), 'tooltip' => __( 'Third-party plugin settings are managed through WordPress or the plugin author’s own settings page.', 'wikipress' ) ],
         ];
@@ -139,7 +138,6 @@ final class SettingsManager extends Manager {
             'general' => [ 'description' => __( 'Configure WikiPress names, URL slugs, and permalink settings.', 'wikipress' ), 'tooltip' => __( 'These settings affect how WikiPress content is identified and linked throughout the site.', 'wikipress' ) ],
             'layout' => [ 'description' => __( 'Choose which navigation and page layout features WikiPress displays.', 'wikipress' ), 'tooltip' => __( 'Layout settings control the visitor-facing WikiPress interface.', 'wikipress' ) ],
             'access' => [ 'description' => __( 'Set the minimum WordPress capabilities required for WikiPress tasks.', 'wikipress' ), 'tooltip' => __( 'Choose carefully so editors and administrators retain the access they need.', 'wikipress' ) ],
-            'tools' => [ 'description' => __( 'Manage diagnostics and import or export WikiPress data.', 'wikipress' ), 'tooltip' => __( 'Use import and export tools carefully and keep debug logging disabled when it is not needed.', 'wikipress' ) ],
             'plugins' => [ 'description' => __( 'View the WikiPress plugins installed on this site.', 'wikipress' ), 'tooltip' => __( 'Plugin-specific configuration is available from each plugin settings page when provided.', 'wikipress' ) ],
             'third-party' => [ 'description' => __( 'View third-party plugins installed on this site.', 'wikipress' ), 'tooltip' => __( 'Third-party plugin settings are managed through WordPress or the plugin author’s own settings page.', 'wikipress' ) ],
         ];

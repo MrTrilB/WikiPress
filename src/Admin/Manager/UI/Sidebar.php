@@ -57,7 +57,7 @@ final class Sidebar {
 						<span class="wikipress-sidebar-icon" aria-hidden="true"><i class="fa-solid fa-house"></i></span><?php esc_html_e( 'Dashboard', 'wikipress' ); ?>
 					</a>
 					<div id="wikipress-sidebar-groups">
-						<?php $active_tool = sanitize_key( $_GET['tool'] ?? 'analytics' ); ?>
+						<?php $active_tool = sanitize_key( $_GET['tool'] ?? 'debug' ); ?>
 						<?php foreach ( $groups as $key => $group ) : $expanded = 'settings' === $key ? 'wikipress-settings' === $current : ( 'tools' === $key ? 'wikipress-tools' === $current : in_array( $current, array_keys( $group['items'] ), true ) ); ?>
 							<div class="wikipress-sidebar-group">
 								<h3 class="wikipress-sidebar-group-heading">
