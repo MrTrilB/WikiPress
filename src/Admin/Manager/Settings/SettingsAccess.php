@@ -32,8 +32,24 @@ final class SettingsAccess {
 			$key = SanitizationHelper::key( $key );
 			$id = 'wikipress-access-' . $key;
 			$name = 'wikipress_access[' . $key . ']';
-			$options = [ 'manage_options' => 'Administrators', 'edit_posts' => 'Editors', 'publish_posts' => 'Authors' ];
-			echo '<tr><th scope="row">' . FormFieldHelper::label( $id, $field['label'], $field ) . '</th><td>' . FormFieldHelper::select( $name, $options, SanitizationHelper::key( $values[ $key ] ?? 'manage_options', 'manage_options' ), [ 'id' => $id ] ) . '</td></tr>';
+			$options = [
+				[ 'value' => 'manage_options', 'label' => __( 'Administrators', 'wikipress' ) ],
+				[ 'value' => 'edit_posts', 'label' => __( 'Editors', 'wikipress' ) ],
+				[ 'value' => 'publish_posts', 'label' => __( 'Authors', 'wikipress' ) ],
+			];
+			$current = $values[ $key ] ?? 'manage_options';
+			$current = is_array( $current ) ? $current : [ $current ];
+			$current = array_values( array_filter( array_map( 'sanitize_key', $current ) ) );
+			$selected = [];
+			foreach ( $options as $option ) {
+				if ( in_array( $option['value'], $current, true ) ) {
+					$selected[] = $option;
+				}
+			}
+			if ( empty( $selected ) ) {
+				$selected[] = $options[0];
+			}
+			echo '<tr><th scope="row">' . FormFieldHelper::label( $id, $field['label'], $field ) . '</th><td>' . FormFieldHelper::bootstrap_search_multiselect( $name, [ 'id' => $id, 'data' => $options, 'input_label' => 'label', 'dropdown_label' => 'label', 'value' => 'value', 'selected_items' => $selected, 'maximum_items' => 0 ] ) . '</td></tr>';
 		}
 	}
 }

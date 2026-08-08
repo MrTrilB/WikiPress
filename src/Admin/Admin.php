@@ -153,8 +153,16 @@ final class Admin {
      * @return string The capability associated with the key, or the fallback if not valid.
      */
     private function capability( string $key, string $fallback ): string {
-        $capability = sanitize_key( (string) Settings::get( $key, $fallback ) );
-        return in_array( $capability, [ 'manage_options', 'edit_posts', 'publish_posts', 'manage_categories', 'delete_posts' ], true ) ? $capability : $fallback;
+        $value = Settings::get( $key, $fallback );
+        $values = is_array( $value ) ? $value : [ $value ];
+        $allowed = [ 'manage_options', 'edit_posts', 'publish_posts', 'manage_categories', 'delete_posts' ];
+        foreach ( $values as $value ) {
+            $capability = sanitize_key( (string) $value );
+            if ( in_array( $capability, $allowed, true ) ) {
+                return $capability;
+            }
+        }
+        return $fallback;
     }
 
 }

@@ -112,8 +112,11 @@ final class FunctionsSettings {
 
     public function sanitize_access( $input ): array {
         $input = is_array( $input ) ? $input : [];
+        $allowed = [ 'manage_options', 'edit_posts', 'publish_posts' ];
         foreach ( [ 'create_wikis', 'write_pages', 'view_analytics', 'manage_plugins' ] as $key ) {
-            $input[ $key ] = sanitize_key( $input[ $key ] ?? 'manage_options' );
+            $values = is_array( $input[ $key ] ?? null ) ? $input[ $key ] : [ $input[ $key ] ?? 'manage_options' ];
+            $values = array_values( array_unique( array_intersect( $allowed, array_map( 'sanitize_key', $values ) ) ) );
+            $input[ $key ] = empty( $values ) ? [ 'manage_options' ] : $values;
             Settings::set( $key, $input[ $key ] );
         }
         return $input;
