@@ -90,7 +90,7 @@ final class Admin {
         add_submenu_page( 'wikipress', __( 'Dashboard', 'wikipress' ), __( 'Dashboard', 'wikipress' ), 'manage_options', 'wikipress', [ $this, 'render_dashboard' ] );
         add_submenu_page( 'wikipress', __( 'Manage Wiki', 'wikipress' ), __( 'Manage Wiki', 'wikipress' ), $this->capability( 'manager_wiki', 'manage_options' ), 'wikipress-manage', [ $this, 'render_wikis' ] );
         add_submenu_page( 'wikipress', __( 'Settings', 'wikipress' ), __( 'Settings', 'wikipress' ), 'manage_options', 'wikipress-settings', [ $this, 'render_settings' ] );
-        add_submenu_page( 'wikipress', __( 'Tools', 'wikipress' ), __( 'Tools', 'wikipress' ), $this->capability( 'view_tools', 'manage_options' ), 'wikipress-tools', [ $this, 'render_tools' ] );
+        add_submenu_page( 'wikipress', __( 'Tools', 'wikipress' ), __( 'Tools', 'wikipress' ), $this->capability( 'view_tools', 'manage_options' ), 'wikipress-tools&tool=debug', [ $this, 'render_tools' ] );
     }
     /**
      * Render the dashboard page.

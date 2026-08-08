@@ -103,33 +103,43 @@ final class SettingsManager extends Manager {
          */
         $this->page = 'dashboard';
         /**
-         * Initialize the settings pages.
+         * Initialize the General Settings pages.
          *
          * @since 1.0.0
          */
         $this->general_page = new SettingsGeneral();
         /**
-         * Initialize the settings pages.
+         * Initialize the Layout Settings pages.
          *
          * @since 1.0.0
          */
         $this->layout_page = new SettingsLayout();
         /**
-         * Initialize the settings pages.
+         * Initialize the Access Settings page.
          *
          * @since 1.0.0
          */
         $this->access_page = new SettingsAccess();
         /**
-         * Initialize the settings pages.
+         * Initialize the Debug Manager page.
          *
          * @since 1.0.0
          */
         $this->debug_manager = new DebugManager();
+        /**
+         * Initialize the Export Manager page.
+         *
+         * @since 1.0.0
+         */
         $this->export_manager = new ExportManager();
+        /**
+         * Initialize the Import Manager page.
+         *
+         * @since 1.0.0
+         */
         $this->import_manager = new ImportManager();
         /**
-         * Initialize the settings pages.
+         * Initialize the Plugins Settings pages.
          *
          * @since 1.0.0
          */

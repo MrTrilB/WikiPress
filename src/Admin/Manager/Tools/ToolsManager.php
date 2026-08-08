@@ -64,9 +64,29 @@ final class ToolsManager extends Manager {
          * @since 1.0.0
          */
         $this->page = 'tools';
+        /**
+         * Initialize the Debug Manager page.
+         *
+         * @since 1.0.0
+         */
         $this->debug_manager = new DebugManager();
+        /**
+         * Initialize the Export Manager page.
+         *
+         * @since 1.0.0
+         */
         $this->export_manager = new ExportManager();
+        /**
+         * Initialize the Import Manager page.
+         *
+         * @since 1.0.0
+         */
         $this->import_manager = new ImportManager();
+        /**
+         * Initialize the Analytics Manager page.
+         *
+         * @since 1.0.0
+         */
         $this->analytics_manager = new AnalyticsManager();
     }
     /**
@@ -76,8 +96,8 @@ final class ToolsManager extends Manager {
      * @return void
      */
     public function render(): void {
-        $tool = sanitize_key( $_GET['tool'] ?? 'analytics' );
-        $tool = in_array( $tool, [ 'analytics', 'debug', 'import', 'export' ], true ) ? $tool : 'analytics';
+        $tool = sanitize_key( $_GET['tool'] ?? 'debug' );
+        $tool = in_array( $tool, [ 'analytics', 'debug', 'import', 'export' ], true ) ? $tool : 'debug';
         $this->header( $this->title( $tool ) );
         if ( 'analytics' === $tool ) {
             $this->analytics_manager->render_content();
