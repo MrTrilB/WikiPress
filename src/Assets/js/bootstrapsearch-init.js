@@ -31,5 +31,13 @@ root.querySelectorAll('[data-bootstrap-search]').forEach((field) => {
 
   options.onSelectItem = setValues;
   new window.BootstrapSearch(field, options);
+  if (root instanceof ShadowRoot && !root.querySelector('#bootstrap-search-multiselect-styles')) {
+    const styles = document.getElementById('bootstrap-search-multiselect-styles');
+    if (styles) root.appendChild(styles.cloneNode(true));
+  }
+  const fieldContainer = field.parentElement?.parentElement;
+  fieldContainer?.addEventListener('click', (event) => {
+    event.stopPropagation();
+  });
   if (options.selectedItems?.length) setValues(options.selectedItems);
 });
