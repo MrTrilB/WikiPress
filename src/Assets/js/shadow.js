@@ -11,20 +11,36 @@
     hostStyle.textContent = ':host { display: block; }';
     shadowRoot.appendChild(hostStyle);
 
+    // --- Inject required CSS files ---
+    const injectCss = (href) => {
+        if (!href) return;
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = href;
+        shadowRoot.appendChild(link);
+    };
+
+    // 1. Your plugin CSS
+    injectCss(wikipressSettingsTabs?.adminCssUrl);
+
+    // 2. WordPress admin base styles
+    document.querySelectorAll('link[href*="/wp-admin/"], link[href*="dashicons"]').forEach(link => {
+        injectCss(link.href);
+    });
+
+    // 3. Bootstrap CSS (if used)
+    const bootstrapCss = document.querySelector('link[href*="bootstrap"]');
+    if (bootstrapCss) injectCss(bootstrapCss.href);
+
+    // 4. Font Awesome Kit CSS
+    const kitLink = document.querySelector('link[href*="kit.fontawesome.com"]');
+    if (kitLink) injectCss(kitLink.href);
+
     // Move WP content into shadow
     while (host.firstChild) {
         shell.appendChild(host.firstChild);
     }
     shadowRoot.appendChild(shell);
-
-    // --- Load Font Awesome Kit CSS once ---
-    const kitLink = document.querySelector('link[href*="kit.fontawesome.com"]');
-    if (kitLink) {
-        const clone = document.createElement('link');
-        clone.rel = 'stylesheet';
-        clone.href = kitLink.href;
-        shadowRoot.appendChild(clone);
-    }
 
     // --- Load FA runtime CSS once ---
     const injectRuntimeCss = () => {
