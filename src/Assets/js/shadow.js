@@ -10,14 +10,6 @@
     hostStyle.textContent = ':host { display: block; }';
     shadowRoot.appendChild(hostStyle);
 
-    const handles = new Set([
-        'wikipress-bootstrap',
-        'wikipress-bootstrapsearch',
-        'wikipress-admin-ui',
-        'font-awesome-official',
-        'font-awesome-official-v4shim'
-    ]);
-
     const getHandle = (element) => {
         const id = element.id || '';
         return id.replace(/-(css|js)$/, '').replace(/^wp-(style|script)-/, '');
@@ -29,7 +21,8 @@
     };
 
     const injectCss = (element) => {
-        if (!element.href || (!handles.has(getHandle(element)) && !isFontAwesomeAsset(element))) return;
+        const handle = getHandle(element);
+        if (!element.href || (!handle.startsWith('wikipress-') && !isFontAwesomeAsset(element))) return;
         if ([...shadowRoot.querySelectorAll('link[rel="stylesheet"]')].some((link) => link.href === element.href)) return;
 
         const link = document.createElement('link');
@@ -39,7 +32,20 @@
         shadowRoot.appendChild(link);
     };
 
+    const injectScriptMirror = (element) => {
+        const handle = getHandle(element);
+        if (!element.src || (!handle.startsWith('wikipress-') && !isFontAwesomeAsset(element))) return;
+        if ([...shadowRoot.querySelectorAll('script[data-wikipress-shadow-asset]')].some((script) => script.src === element.src)) return;
+
+        const script = document.createElement('script');
+        script.type = 'application/x-wikipress-shadow-asset';
+        script.src = element.src;
+        script.dataset.wikipressShadowAsset = 'true';
+        shadowRoot.appendChild(script);
+    };
+
     document.querySelectorAll('link[rel="stylesheet"]').forEach(injectCss);
+    document.querySelectorAll('script[src]').forEach(injectScriptMirror);
 
     while (host.firstChild) {
         shell.appendChild(host.firstChild);
@@ -90,7 +96,10 @@
             mutation.addedNodes.forEach((node) => {
                 if (node.nodeType !== Node.ELEMENT_NODE) return;
                 if (node.matches?.('link[rel="stylesheet"]')) injectCss(node);
-                if (node.matches?.('script') && isFontAwesomeAsset(node)) node.addEventListener('load', renderIcons, { once: true });
+                if (node.matches?.('script[src]')) {
+                    injectScriptMirror(node);
+                    if (isFontAwesomeAsset(node)) node.addEventListener('load', renderIcons, { once: true });
+                }
             });
         });
     }).observe(document.documentElement, { childList: true, subtree: true });
