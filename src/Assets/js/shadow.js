@@ -89,7 +89,7 @@
         if (node.matches?.('script')) watchFontAwesomeScript(node);
       });
     });
-  }).observe(document.head, { childList: true });
+  }).observe(document.documentElement, { childList: true, subtree: true });
 
   let renderingFontAwesome = false;
   let renderQueued = false;
@@ -129,6 +129,9 @@
   injectFontAwesomeKitCss();
   copyFontAwesomeRuntimeCss();
   queueFontAwesomeRender();
+
+  document.addEventListener('DOMContentLoaded', queueFontAwesomeRender, { once: true });
+  window.addEventListener('load', queueFontAwesomeRender, { once: true });
 
   new MutationObserver((mutations) => {
     if (mutations.some((mutation) => Array.from(mutation.addedNodes).some((node) => {
