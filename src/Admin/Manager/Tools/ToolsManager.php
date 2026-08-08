@@ -14,6 +14,7 @@ use TrilBDev\WikiPress\Admin\Manager\Tools\ExportManager;
 use TrilBDev\WikiPress\Admin\Manager\Tools\ImportManager;
 use TrilBDev\WikiPress\Admin\Manager\Tools\AnalyticsManager;
 use TrilBDev\WikiPress\Assets\Assets;
+use TrilBDev\WikiPress\Includes\Functions\Helpers\SanitizationHelper;
 
 
 final class ToolsManager extends Manager {

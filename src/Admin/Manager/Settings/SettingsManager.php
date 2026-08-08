@@ -14,9 +14,6 @@ use TrilBDev\WikiPress\Includes\Settings\Settings;
 use TrilBDev\WikiPress\Admin\Manager\Settings\SettingsPlugins;
 use TrilBDev\WikiPress\Includes\Functions\Helpers\SanitizationHelper;
 use TrilBDev\WikiPress\Includes\Functions\Helpers\FormFieldHelper;
-use TrilBDev\WikiPress\Admin\Manager\Tools\DebugManager;
-use TrilBDev\WikiPress\Admin\Manager\Tools\ExportManager;
-use TrilBDev\WikiPress\Admin\Manager\Tools\ImportManager;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -47,30 +44,6 @@ final class SettingsManager extends Manager {
      * @var SettingsAccess $access_page The SettingsAccess instance.
      */
     private SettingsAccess $access_page;
-    /**
-    * The DebugManager instance.
-     *
-     * @since 1.0.0
-     * @access private
-    * @var DebugManager $debug_manager The DebugManager instance.
-     */
-    private DebugManager $debug_manager;
-    /**
-     * The ExportManager instance.
-     *
-     * @since 1.0.0
-     * @access private
-     * @var ExportManager $export_manager The ExportManager instance.
-     */
-    private ExportManager $export_manager;
-    /**
-     * The ImportManager instance.
-     *
-     * @since 1.0.0
-     * @access private
-     * @var ImportManager $import_manager The ImportManager instance.
-     */
-    private ImportManager $import_manager;
     /**
      * The SettingsPlugins instance.
      *
@@ -120,24 +93,6 @@ final class SettingsManager extends Manager {
          * @since 1.0.0
          */
         $this->access_page = new SettingsAccess();
-        /**
-         * Initialize the Debug Manager page.
-         *
-         * @since 1.0.0
-         */
-        $this->debug_manager = new DebugManager();
-        /**
-         * Initialize the Export Manager page.
-         *
-         * @since 1.0.0
-         */
-        $this->export_manager = new ExportManager();
-        /**
-         * Initialize the Import Manager page.
-         *
-         * @since 1.0.0
-         */
-        $this->import_manager = new ImportManager();
         /**
          * Initialize the Plugins Settings pages.
          *
@@ -210,9 +165,6 @@ final class SettingsManager extends Manager {
             $this->access_page->render( $values );
         } elseif ( $this->plugins_page->has_settings_page( $tab ) ) {
             $this->plugins_page->render_settings_page( $tab, $values );
-        } elseif ( 'tools' === $tab ) {
-            $this->debug_manager->render( $values );
-            $this->export_manager->render();
         }
         if ( 'layout' !== $tab ) {
             echo '</tbody></table>';
@@ -223,9 +175,6 @@ final class SettingsManager extends Manager {
             'class' => 'btn-primary',
         ] );
         echo '</div></form>';
-        if ( 'tools' === $tab ) {
-            $this->import_manager->render();
-        }
         echo '</div>';
     }
     /**
