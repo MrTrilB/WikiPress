@@ -11,49 +11,72 @@
     hostStyle.textContent = ':host { display: block; }';
     shadowRoot.appendChild(hostStyle);
 
-    // --- Inject required CSS files ---
-    const injectCss = (href) => {
+    // --- Utility: detect FA assets ---
+    const isFontAwesomeAsset = (element) => {
+        const source = `${element.id || ''} ${element.href || ''} ${element.textContent || ''}`.toLowerCase();
+        return (
+            source.includes('fontawesome') ||
+            source.includes('font-awesome') ||
+            source.includes('font awesome') ||
+            source.includes('.fa-solid') ||
+            source.includes('.fa-regular') ||
+            source.includes('.svg-inline--fa') ||
+            source.includes('--fa-')
+        );
+    };
+
+    // --- Inject CSS into shadow (deduped) ---
+    const injectCss = (href, media = 'all') => {
         if (!href) return;
+        if ([...shadowRoot.querySelectorAll('link[rel="stylesheet"]')].some(l => l.href === href)) return;
+
         const link = document.createElement('link');
         link.rel = 'stylesheet';
         link.href = href;
+        link.media = media;
         shadowRoot.appendChild(link);
     };
 
-    // 1. Your plugin CSS
-    injectCss(wikipressSettingsTabs?.adminCssUrl);
-
-    // 2. WordPress admin base styles
-    document.querySelectorAll('link[href*="/wp-admin/"], link[href*="dashicons"]').forEach(link => {
-        injectCss(link.href);
-    });
-
-    // 3. Bootstrap CSS (if used)
-    const bootstrapCss = document.querySelector('link[href*="bootstrap"]');
-    if (bootstrapCss) injectCss(bootstrapCss.href);
-
-    // 4. Font Awesome Kit CSS
-    const kitLink = document.querySelector('link[href*="kit.fontawesome.com"]');
-    if (kitLink) injectCss(kitLink.href);
-
-    // Move WP content into shadow
-    while (host.firstChild) {
-        shell.appendChild(host.firstChild);
-    }
-    shadowRoot.appendChild(shell);
-
-    // --- Load FA runtime CSS once ---
-    const injectRuntimeCss = () => {
-        const css = window.FontAwesome?.dom?.css?.();
-        if (!css || shadowRoot.querySelector('#fa-runtime')) return;
-
-        const style = document.createElement('style');
-        style.id = 'fa-runtime';
-        style.textContent = css;
-        shadowRoot.appendChild(style);
+    // --- Inject FA Kit CSS ---
+    const injectFontAwesomeKitCss = () => {
+        document.querySelectorAll('link[rel="stylesheet"][href*="kit.fontawesome.com"]').forEach(link => {
+            injectCss(link.href, link.media);
+        });
     };
 
-    // --- Render icons inside shadow ---
+    // --- Inject WikiPress + WP Admin CSS (same behaviour as original) ---
+    document.querySelectorAll('link[rel="stylesheet"]').forEach((link) => {
+        const href = link.href || '';
+        if (!href.toLowerCase().includes('wikipress') && !isFontAwesomeAsset(link)) return;
+        injectCss(href, link.media);
+    });
+
+    // --- Inject FA <style> blocks (deduped) ---
+    document.querySelectorAll('style').forEach((style) => {
+        if (!isFontAwesomeAsset(style)) return;
+
+        const clone = style.cloneNode(true);
+        if (![...shadowRoot.querySelectorAll('style')].some(s => s.textContent === clone.textContent)) {
+            shadowRoot.appendChild(clone);
+        }
+    });
+
+    // --- Inject FA runtime CSS once ---
+    const injectRuntimeCss = () => {
+        const css = window.FontAwesome?.dom?.css?.();
+        if (!css) return;
+
+        const existing = shadowRoot.querySelector('#wikipress-fontawesome-runtime-css');
+        if (existing && existing.textContent === css) return;
+
+        const style = existing || document.createElement('style');
+        style.id = 'wikipress-fontawesome-runtime-css';
+        style.textContent = css;
+
+        if (!existing) shadowRoot.appendChild(style);
+    };
+
+    // --- Render FA icons inside shadow ---
     let queued = false;
     const renderIcons = () => {
         if (queued) return;
@@ -62,6 +85,7 @@
         requestAnimationFrame(() => {
             queued = false;
 
+            injectFontAwesomeKitCss();
             injectRuntimeCss();
 
             if (window.FontAwesome?.dom?.i2svg) {
@@ -71,20 +95,29 @@
         });
     };
 
-    // Initial render
+    // --- Move WP content into shadow ---
+    while (host.firstChild) {
+        shell.appendChild(host.firstChild);
+    }
+    shadowRoot.appendChild(shell);
+
+    window.wikipressShadowRoot = shadowRoot;
+
+    // Initial FA load
+    injectFontAwesomeKitCss();
+    injectRuntimeCss();
     renderIcons();
 
-    // Re-render only when icons are added inside the shadow
+    // --- Watch only the WikiPress shell (not entire WP admin) ---
     new MutationObserver((mutations) => {
-        if (mutations.some(m =>
+        const needsRender = mutations.some(m =>
             [...m.addedNodes].some(n =>
                 n.nodeType === 1 &&
                 (n.matches?.('i[class*="fa-"]') || n.querySelector?.('i[class*="fa-"]'))
             )
-        )) {
-            renderIcons();
-        }
+        );
+
+        if (needsRender) renderIcons();
     }).observe(shell, { childList: true, subtree: true });
 
-    window.wikipressShadowRoot = shadowRoot;
 })();
