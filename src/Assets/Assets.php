@@ -4,7 +4,6 @@
  *
  * @package TrilBDev
  * @subpackage Assets
-                    [ 'handle' => 'wikipress-admin-plugins', 'src' => WIKIPRESS_URL . 'src/Assets/dist/js/admin.plugins.js', 'deps' => [ 'wikipress-bootstrap', 'wikipress-shadow' ], 'in_footer' => true ],
  * @since 1.0.0
  */
 namespace TrilBDev\WikiPress\Assets;

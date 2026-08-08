@@ -11,72 +11,91 @@
     hostStyle.textContent = ':host { display: block; }';
     shadowRoot.appendChild(hostStyle);
 
-    // --- Utility: detect FA assets ---
-    const isFontAwesomeAsset = (element) => {
-        const source = `${element.id || ''} ${element.href || ''} ${element.textContent || ''}`.toLowerCase();
-        return (
-            source.includes('fontawesome') ||
-            source.includes('font-awesome') ||
-            source.includes('font awesome') ||
-            source.includes('.fa-solid') ||
-            source.includes('.fa-regular') ||
-            source.includes('.svg-inline--fa') ||
-            source.includes('--fa-')
-        );
-    };
+    // ------------------------------------------------------------
+    // 1. COLLECT ALL CSS/JS FROM YOUR WP HANDLES
+    // ------------------------------------------------------------
 
-    // --- Inject CSS into shadow (deduped) ---
-    const injectCss = (href, media = 'all') => {
+    const WIKIPRESS_HANDLES = [
+        'wikipress-bootstrap',
+        'wikipress-bootstrapsearch',
+        'wikipress-admin-ui',
+        'wikipress-shadow',
+        'font-awesome-official'
+    ];
+
+    const collectedCss = [];
+    const collectedJs = [];
+
+    // WP outputs <link> and <script> tags with handle names in id=""
+    document.querySelectorAll('link[rel="stylesheet"], script').forEach(el => {
+        const id = el.id || '';
+        const handle = id.replace(/^wp-(style|script)-/, '');
+
+        if (WIKIPRESS_HANDLES.includes(handle)) {
+            if (el.tagName === 'LINK') collectedCss.push(el.href);
+            if (el.tagName === 'SCRIPT') collectedJs.push(el.src);
+        }
+    });
+
+    // ------------------------------------------------------------
+    // 2. INJECT CSS INTO SHADOW ROOT (DEDUPED)
+    // ------------------------------------------------------------
+
+    const injectCss = (href) => {
         if (!href) return;
         if ([...shadowRoot.querySelectorAll('link[rel="stylesheet"]')].some(l => l.href === href)) return;
 
         const link = document.createElement('link');
         link.rel = 'stylesheet';
         link.href = href;
-        link.media = media;
         shadowRoot.appendChild(link);
     };
 
-    // --- Inject FA Kit CSS ---
-    const injectFontAwesomeKitCss = () => {
-        document.querySelectorAll('link[rel="stylesheet"][href*="kit.fontawesome.com"]').forEach(link => {
-            injectCss(link.href, link.media);
-        });
+    collectedCss.forEach(injectCss);
+
+    // ------------------------------------------------------------
+    // 3. INJECT JS INTO SHADOW ROOT (DEDUPED)
+    // ------------------------------------------------------------
+
+    const injectJs = (src) => {
+        if (!src) return;
+        if ([...shadowRoot.querySelectorAll('script')].some(s => s.src === src)) return;
+
+        const script = document.createElement('script');
+        script.src = src;
+        script.defer = true;
+        shadowRoot.appendChild(script);
     };
 
-    // --- Inject WikiPress + WP Admin CSS (same behaviour as original) ---
-    document.querySelectorAll('link[rel="stylesheet"]').forEach((link) => {
-        const href = link.href || '';
-        if (!href.toLowerCase().includes('wikipress') && !isFontAwesomeAsset(link)) return;
-        injectCss(href, link.media);
-    });
+    collectedJs.forEach(injectJs);
 
-    // --- Inject FA <style> blocks (deduped) ---
-    document.querySelectorAll('style').forEach((style) => {
-        if (!isFontAwesomeAsset(style)) return;
+    // ------------------------------------------------------------
+    // 4. MOVE WP CONTENT INTO SHADOW
+    // ------------------------------------------------------------
 
-        const clone = style.cloneNode(true);
-        if (![...shadowRoot.querySelectorAll('style')].some(s => s.textContent === clone.textContent)) {
-            shadowRoot.appendChild(clone);
-        }
-    });
+    while (host.firstChild) {
+        shell.appendChild(host.firstChild);
+    }
+    shadowRoot.appendChild(shell);
 
-    // --- Inject FA runtime CSS once ---
+    // ------------------------------------------------------------
+    // 5. FONT AWESOME KIT + RUNTIME CSS + SVG RENDERING
+    // ------------------------------------------------------------
+
     const injectRuntimeCss = () => {
         const css = window.FontAwesome?.dom?.css?.();
         if (!css) return;
 
-        const existing = shadowRoot.querySelector('#wikipress-fontawesome-runtime-css');
+        const existing = shadowRoot.querySelector('#fa-runtime');
         if (existing && existing.textContent === css) return;
 
         const style = existing || document.createElement('style');
-        style.id = 'wikipress-fontawesome-runtime-css';
+        style.id = 'fa-runtime';
         style.textContent = css;
 
         if (!existing) shadowRoot.appendChild(style);
     };
 
-    // --- Render FA icons inside shadow ---
     let queued = false;
     const renderIcons = () => {
         if (queued) return;
@@ -85,7 +104,6 @@
         requestAnimationFrame(() => {
             queued = false;
 
-            injectFontAwesomeKitCss();
             injectRuntimeCss();
 
             if (window.FontAwesome?.dom?.i2svg) {
@@ -95,20 +113,10 @@
         });
     };
 
-    // --- Move WP content into shadow ---
-    while (host.firstChild) {
-        shell.appendChild(host.firstChild);
-    }
-    shadowRoot.appendChild(shell);
-
-    window.wikipressShadowRoot = shadowRoot;
-
-    // Initial FA load
-    injectFontAwesomeKitCss();
-    injectRuntimeCss();
+    // Initial render
     renderIcons();
 
-    // --- Watch only the WikiPress shell (not entire WP admin) ---
+    // Re-render only when icons appear inside the shadow
     new MutationObserver((mutations) => {
         const needsRender = mutations.some(m =>
             [...m.addedNodes].some(n =>
@@ -120,4 +128,5 @@
         if (needsRender) renderIcons();
     }).observe(shell, { childList: true, subtree: true });
 
+    window.wikipressShadowRoot = shadowRoot;
 })();
