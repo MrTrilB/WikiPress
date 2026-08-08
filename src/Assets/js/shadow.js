@@ -6,127 +6,101 @@
     const shell = document.createElement('div');
     shell.className = 'wikipress-admin';
 
-    // Basic host styling
     const hostStyle = document.createElement('style');
     hostStyle.textContent = ':host { display: block; }';
     shadowRoot.appendChild(hostStyle);
 
-    // ------------------------------------------------------------
-    // 1. COLLECT ALL CSS/JS FROM YOUR WP HANDLES
-    // ------------------------------------------------------------
-
-    const WIKIPRESS_HANDLES = [
+    const handles = new Set([
         'wikipress-bootstrap',
         'wikipress-bootstrapsearch',
         'wikipress-admin-ui',
-        'wikipress-shadow',
-        'font-awesome-official'
-    ];
+        'font-awesome-official',
+        'font-awesome-official-v4shim'
+    ]);
 
-    const collectedCss = [];
-    const collectedJs = [];
+    const getHandle = (element) => {
+        const id = element.id || '';
+        return id.replace(/-(css|js)$/, '').replace(/^wp-(style|script)-/, '');
+    };
 
-    // WP outputs <link> and <script> tags with handle names in id=""
-    document.querySelectorAll('link[rel="stylesheet"], script').forEach(el => {
-        const id = el.id || '';
-        const handle = id.replace(/^wp-(style|script)-/, '');
+    const isFontAwesomeAsset = (element) => {
+        const source = `${element.id || ''} ${element.href || ''} ${element.src || ''} ${element.textContent || ''}`.toLowerCase();
+        return source.includes('fontawesome') || source.includes('font-awesome') || source.includes('kit.fontawesome.com');
+    };
 
-        if (WIKIPRESS_HANDLES.includes(handle)) {
-            if (el.tagName === 'LINK') collectedCss.push(el.href);
-            if (el.tagName === 'SCRIPT') collectedJs.push(el.src);
-        }
-    });
-
-    // ------------------------------------------------------------
-    // 2. INJECT CSS INTO SHADOW ROOT (DEDUPED)
-    // ------------------------------------------------------------
-
-    const injectCss = (href) => {
-        if (!href) return;
-        if ([...shadowRoot.querySelectorAll('link[rel="stylesheet"]')].some(l => l.href === href)) return;
+    const injectCss = (element) => {
+        if (!element.href || (!handles.has(getHandle(element)) && !isFontAwesomeAsset(element))) return;
+        if ([...shadowRoot.querySelectorAll('link[rel="stylesheet"]')].some((link) => link.href === element.href)) return;
 
         const link = document.createElement('link');
         link.rel = 'stylesheet';
-        link.href = href;
+        link.href = element.href;
+        link.media = element.media || 'all';
         shadowRoot.appendChild(link);
     };
 
-    collectedCss.forEach(injectCss);
-
-    // ------------------------------------------------------------
-    // 3. INJECT JS INTO SHADOW ROOT (DEDUPED)
-    // ------------------------------------------------------------
-
-    const injectJs = (src) => {
-        if (!src) return;
-        if ([...shadowRoot.querySelectorAll('script')].some(s => s.src === src)) return;
-
-        const script = document.createElement('script');
-        script.src = src;
-        script.defer = true;
-        shadowRoot.appendChild(script);
-    };
-
-    collectedJs.forEach(injectJs);
-
-    // ------------------------------------------------------------
-    // 4. MOVE WP CONTENT INTO SHADOW
-    // ------------------------------------------------------------
+    document.querySelectorAll('link[rel="stylesheet"]').forEach(injectCss);
 
     while (host.firstChild) {
         shell.appendChild(host.firstChild);
     }
     shadowRoot.appendChild(shell);
-
-    // ------------------------------------------------------------
-    // 5. FONT AWESOME KIT + RUNTIME CSS + SVG RENDERING
-    // ------------------------------------------------------------
+    window.wikipressShadowRoot = shadowRoot;
 
     const injectRuntimeCss = () => {
         const css = window.FontAwesome?.dom?.css?.();
         if (!css) return;
 
         const existing = shadowRoot.querySelector('#fa-runtime');
-        if (existing && existing.textContent === css) return;
+        if (existing?.textContent === css) return;
 
         const style = existing || document.createElement('style');
         style.id = 'fa-runtime';
         style.textContent = css;
-
         if (!existing) shadowRoot.appendChild(style);
     };
 
-    let queued = false;
+    let renderQueued = false;
+    let rendering = false;
     const renderIcons = () => {
-        if (queued) return;
-        queued = true;
+        if (renderQueued || rendering) return;
+        renderQueued = true;
 
         requestAnimationFrame(() => {
-            queued = false;
-
+            renderQueued = false;
             injectRuntimeCss();
+            if (!window.FontAwesome?.dom?.i2svg) return;
 
-            if (window.FontAwesome?.dom?.i2svg) {
-                window.FontAwesome.dom.i2svg({ node: shell });
-                injectRuntimeCss();
-            }
+            rendering = true;
+            Promise.resolve(window.FontAwesome.dom.i2svg({ node: shell }))
+                .catch(() => {})
+                .finally(() => {
+                    rendering = false;
+                    injectRuntimeCss();
+                });
         });
     };
 
-    // Initial render
     renderIcons();
+    document.addEventListener('DOMContentLoaded', renderIcons, { once: true });
+    window.addEventListener('load', renderIcons, { once: true });
 
-    // Re-render only when icons appear inside the shadow
     new MutationObserver((mutations) => {
-        const needsRender = mutations.some(m =>
-            [...m.addedNodes].some(n =>
-                n.nodeType === 1 &&
-                (n.matches?.('i[class*="fa-"]') || n.querySelector?.('i[class*="fa-"]'))
-            )
-        );
+        mutations.forEach((mutation) => {
+            mutation.addedNodes.forEach((node) => {
+                if (node.nodeType !== Node.ELEMENT_NODE) return;
+                if (node.matches?.('link[rel="stylesheet"]')) injectCss(node);
+                if (node.matches?.('script') && isFontAwesomeAsset(node)) node.addEventListener('load', renderIcons, { once: true });
+            });
+        });
+    }).observe(document.documentElement, { childList: true, subtree: true });
 
-        if (needsRender) renderIcons();
+    new MutationObserver((mutations) => {
+        if (mutations.some((mutation) => [...mutation.addedNodes].some((node) => {
+            return node.nodeType === Node.ELEMENT_NODE
+                && (node.matches?.('i[class*="fa-"]') || node.querySelector?.('i[class*="fa-"]'));
+        }))) {
+            renderIcons();
+        }
     }).observe(shell, { childList: true, subtree: true });
-
-    window.wikipressShadowRoot = shadowRoot;
 })();
