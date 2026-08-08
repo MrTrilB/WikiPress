@@ -15,6 +15,7 @@ use TrilBDev\WikiPress\Includes\Functions\Helpers\PermissionHelper;
 use TrilBDev\WikiPress\Includes\Functions\Helpers\RequestHelper;
 use TrilBDev\WikiPress\Includes\Functions\Helpers\SanitizationHelper;
 use TrilBDev\WikiPress\Includes\Functions\Helpers\UrlHelper;
+use TrilBDev\WikiPress\Includes\Settings\Settings;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -40,7 +41,7 @@ final class RoleManager extends Manager {
      */
 	public function register_menu(): void {
 
-		add_users_page( __( 'Roles Manager', 'wikipress' ), __( 'Roles Manager', 'wikipress' ), 'manage_options', self::PAGE, [ $this, 'render' ] );
+		add_users_page( __( 'Roles Manager', 'wikipress' ), __( 'Roles Manager', 'wikipress' ), Settings::get_key( 'role_manager_capability', 'manage_options' ), self::PAGE, [ $this, 'render' ] );
 
 	}
     /**
@@ -299,7 +300,7 @@ final class RoleManager extends Manager {
      */
 	private function authorize_action( string $action ): void {
 
-		if ( ! PermissionHelper::can( 'manage_options' ) ) {
+		if ( ! PermissionHelper::can( Settings::get_key( 'role_manager_capability', 'manage_options' ) ) ) {
 
 			wp_die( esc_html__( 'You are not allowed to manage roles.', 'wikipress' ), 403 );
 

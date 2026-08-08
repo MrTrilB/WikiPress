@@ -13,12 +13,13 @@ use TrilBDev\WikiPress\Includes\Plugins\AdminPageProviderInterface;
 use TrilBDev\WikiPress\Includes\Plugins\I18nProviderInterface;
 use TrilBDev\WikiPress\Includes\Plugins\PluginInterface;
 use TrilBDev\WikiPress\Includes\Plugins\SettingsProviderInterface;
+use TrilBDev\WikiPress\Includes\Plugins\SettingsPageProviderInterface;
 use TrilBDev\WikiPress\Includes\Plugins\UserRolesManager\Assets\Assets;
 use TrilBDev\WikiPress\Includes\Plugins\UserRolesManager\Includes\Includes;
 use TrilBDev\WikiPress\Includes\Plugins\UserRolesManager\Includes\I18n;
 use TrilBDev\WikiPress\Includes\Plugins\UserRolesManager\Includes\Admin\RoleManager;
 
-class UserRolesManager implements PluginInterface, SettingsProviderInterface, AssetsProviderInterface, AdminPageProviderInterface, I18nProviderInterface {
+class UserRolesManager implements PluginInterface, SettingsProviderInterface, SettingsPageProviderInterface, AssetsProviderInterface, AdminPageProviderInterface, I18nProviderInterface {
     /**
      * Returns the slug of the plugin.
      * @since 1.0.0
@@ -105,6 +106,23 @@ class UserRolesManager implements PluginInterface, SettingsProviderInterface, As
      */
     public function register_settings(): void {
         Includes::get_instance()->settings()->register();
+    }
+    /**
+     * Get the settings page for the plugin.
+     *
+     * @return array<string, mixed> The settings page configuration.
+     */
+    public function get_settings_page(): array {
+        return Includes::get_instance()->settings()->get_settings_page();
+    }
+    /**
+     * Sanitize and persist plugin settings.
+     *
+     * @param mixed $input Submitted settings.
+     * @return array<string, mixed> Sanitized settings.
+     */
+    public function sanitize_settings( $input ): array {
+        return Includes::get_instance()->settings()->sanitize( $input );
     }
     /**
      * Registers the assets for the plugin.

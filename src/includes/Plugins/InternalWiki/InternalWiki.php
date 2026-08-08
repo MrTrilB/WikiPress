@@ -12,11 +12,12 @@ use TrilBDev\WikiPress\Includes\Plugins\AssetsProviderInterface;
 use TrilBDev\WikiPress\Includes\Plugins\I18nProviderInterface;
 use TrilBDev\WikiPress\Includes\Plugins\PluginInterface;
 use TrilBDev\WikiPress\Includes\Plugins\SettingsProviderInterface;
+use TrilBDev\WikiPress\Includes\Plugins\SettingsPageProviderInterface;
 use TrilBDev\WikiPress\Includes\Plugins\InternalWiki\Assets\Assets;
 use TrilBDev\WikiPress\Includes\Plugins\InternalWiki\Includes\Includes;
 use TrilBDev\WikiPress\Includes\Plugins\InternalWiki\Includes\I18n;
 
-class InternalWiki implements PluginInterface, SettingsProviderInterface, AssetsProviderInterface, I18nProviderInterface {
+class InternalWiki implements PluginInterface, SettingsProviderInterface, SettingsPageProviderInterface, AssetsProviderInterface, I18nProviderInterface {
     /**
      * Get the plugin slug.
      *
@@ -104,6 +105,23 @@ class InternalWiki implements PluginInterface, SettingsProviderInterface, Assets
      */
     public function register_settings(): void {
         Includes::get_instance()->settings()->register();
+    }
+    /**
+     * Get the settings page for the plugin.
+     *
+     * @return array<string, mixed> The settings page configuration.
+     */
+    public function get_settings_page(): array {
+        return Includes::get_instance()->settings()->get_settings_page();
+    }
+    /**
+     * Sanitize and persist plugin settings.
+     *
+     * @param mixed $input Submitted settings.
+     * @return array<string, mixed> Sanitized settings.
+     */
+    public function sanitize_settings( $input ): array {
+        return Includes::get_instance()->settings()->sanitize( $input );
     }
     /**
      * Get the settings page for the plugin.

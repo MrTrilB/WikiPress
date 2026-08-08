@@ -43,6 +43,7 @@ final class Settings {
 			'slug' => self::GROUP,
 			'label' => __( 'Elementor', 'wikipress' ),
 			'title' => __( 'Elementor integration', 'wikipress' ),
+			'layout' => 'box',
 			'fields' => [
 				[ 'key' => 'elementor_enabled', 'label' => __( 'Enable WikiPress Elementor widgets', 'wikipress' ), 'description' => __( 'Enable the WikiPress widgets available in Elementor.', 'wikipress' ), 'tooltip' => __( 'Disable this to remove WikiPress widgets from the Elementor editor.', 'wikipress' ), 'default' => true ],
 				[ 'key' => 'elementor_widget_wiki_breadcrumbs', 'label' => __( 'Wiki Breadcrumbs', 'wikipress' ), 'description' => __( 'Show the current wiki location and hierarchy.', 'wikipress' ), 'tooltip' => __( 'Adds breadcrumb navigation to Elementor layouts.', 'wikipress' ), 'default' => true ],

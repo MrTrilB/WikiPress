@@ -37,6 +37,7 @@ final class Settings {
             'slug' => self::GROUP,
             'label' => __( 'Gutenberg', 'wikipress' ),
             'title' => __( 'Gutenberg integration', 'wikipress' ),
+            'layout' => 'box',
             'fields' => [
                 [ 'key' => 'gutenburg_enabled', 'label' => __( 'Enable WikiPress Gutenberg blocks', 'wikipress' ), 'description' => __( 'Enable the WikiPress blocks available in the block editor.', 'wikipress' ), 'tooltip' => __( 'Disable this to remove WikiPress blocks from the Gutenberg editor.', 'wikipress' ), 'default' => true ],
                 [ 'key' => 'gutenburg_block_wiki_breadcrumbs', 'label' => __( 'Wiki Breadcrumbs', 'wikipress' ), 'description' => __( 'Show the current wiki location and hierarchy.', 'wikipress' ), 'tooltip' => __( 'Adds breadcrumb navigation to block-based layouts.', 'wikipress' ), 'default' => true ],

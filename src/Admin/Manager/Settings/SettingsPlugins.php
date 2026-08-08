@@ -176,7 +176,7 @@ final class SettingsPlugins {
         $values = Settings::get_group( SanitizationHelper::key( $settings_page['slug'] ), [] ) ?? [];
         ?>
         <div class="modal fade wikipress-plugin-settings-modal" id="<?php echo esc_attr( $modal_id ); ?>" tabindex="-1" aria-labelledby="<?php echo esc_attr( $modal_id . '-label' ); ?>" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-scrollable modal-lg">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h2 class="modal-title fs-5" id="<?php echo esc_attr( $modal_id . '-label' ); ?>"><?php echo esc_html( $plugin->get_name() ); ?></h2>
@@ -217,6 +217,13 @@ final class SettingsPlugins {
      * @param string $prefix The prefix for the field IDs.
      */
     private function render_plugin_settings_fields( array $settings_page, array $values, string $prefix ): void {
+        $layout = SanitizationHelper::key( $settings_page['layout'] ?? 'box', 'box' );
+        $layout = in_array( $layout, [ 'table', 'box' ], true ) ? $layout : 'box';
+
+        if ( 'table' === $layout ) {
+            echo '<div class="table-responsive"><table class="table align-middle"><tbody>';
+        }
+
         foreach ( $settings_page['fields'] as $field ) {
             $key = SanitizationHelper::key( $field['key'] ?? '' );
             if ( '' === $key ) {
@@ -228,12 +235,17 @@ final class SettingsPlugins {
             $type = SanitizationHelper::key( $field['type'] ?? 'checkbox', 'checkbox' );
             $id = SanitizationHelper::key( $prefix . '-' . $key );
             $name = 'settings[' . $key . ']';
-            echo '<div class="mb-3">' . FormFieldHelper::label( $id, (string) ( $field['label'] ?? $key ), [
+            $label = FormFieldHelper::label( $id, (string) ( $field['label'] ?? $key ), [
                 'description' => (string) ( $field['description'] ?? '' ),
                 'tooltip' => (string) ( $field['tooltip'] ?? '' ),
                 'tooltip_type' => SanitizationHelper::key( $field['tooltip_type'] ?? 'question', 'question' ),
                 'tooltip_icon' => (string) ( $field['tooltip_icon'] ?? '' ),
             ] );
+            if ( 'table' === $layout ) {
+                echo '<tr><th scope="row" class="w-50">' . $label . '</th><td>';
+            } else {
+                echo '<div class="mb-3">' . $label;
+            }
             if ( 'select' === $type ) {
                 echo FormFieldHelper::select( $name, (array) ( $field['options'] ?? [] ), $value, [ 'id' => $id ] );
             } elseif ( 'text' === $type ) {
@@ -241,7 +253,11 @@ final class SettingsPlugins {
             } else {
                 echo FormFieldHelper::checkbox( $name, '1', '', [ 'id' => $id, 'checked' => ! empty( $value ) ] );
             }
-            echo '</div>';
+            echo 'table' === $layout ? '</td></tr>' : '</div>';
+        }
+
+        if ( 'table' === $layout ) {
+            echo '</tbody></table></div>';
         }
     }
     /**

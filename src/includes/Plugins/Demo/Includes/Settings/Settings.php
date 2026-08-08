@@ -27,6 +27,7 @@ final class Settings {
             'slug' => 'demo',
             'label' => __( 'Demo', 'wikipress' ),
             'title' => __( 'Demo plugin settings', 'wikipress' ),
+            'layout' => 'table',
             'fields' => [
                 [
                     'key' => 'demo_setting_1',

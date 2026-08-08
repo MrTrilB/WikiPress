@@ -96,7 +96,10 @@ interface SettingsPageProviderInterface {
     /**
      * Returns the plugin settings tab and field definitions.
      *
-     * @return array<string, mixed>
+    * The returned array may include `layout` with a value of `table` or
+    * `box` to control the presentation of the plugin settings modal.
+    *
+    * @return array<string, mixed>
      */
     public function get_settings_page(): array;
 

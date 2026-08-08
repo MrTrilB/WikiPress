@@ -36,6 +36,7 @@ final class Settings {
             'slug' => 'fontawesome',
             'label' => __( 'Font Awesome', 'wikipress' ),
             'title' => __( 'Font Awesome integration', 'wikipress' ),
+            'layout' => 'table',
             'fields' => [
                 [ 'key' => 'fontawesome_source', 'label' => __( 'Icon source', 'wikipress' ), 'description' => __( 'Choose how WikiPress loads Font Awesome icons.', 'wikipress' ), 'tooltip' => __( 'Use the base package for the bundled icons or a Kit when you need a custom Font Awesome configuration.', 'wikipress' ), 'tooltip_type' => 'info', 'type' => 'select', 'options' => [ 'base' => __( 'Base package', 'wikipress' ), 'kit' => __( 'Font Awesome Kit', 'wikipress' ) ], 'default' => 'base' ],
                 [ 'key' => 'fontawesome_kit_id', 'label' => __( 'Kit ID', 'wikipress' ), 'description' => __( 'Enter the ID of your Font Awesome Kit.', 'wikipress' ), 'tooltip' => __( 'This value is used only when Icon source is set to Font Awesome Kit.', 'wikipress' ), 'type' => 'text', 'default' => '' ],

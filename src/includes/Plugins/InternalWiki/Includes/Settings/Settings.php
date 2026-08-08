@@ -66,6 +66,41 @@ final class Settings {
         ] )->run();
     }
 
+    public function get_settings_page(): array {
+        return [
+            'slug' => 'internal_wiki',
+            'label' => __( 'Internal Wiki', 'internal-wiki-plugin' ),
+            'title' => __( 'Internal Wiki settings', 'internal-wiki-plugin' ),
+            'layout' => 'table',
+            'fields' => [
+                [
+                    'key' => 'default_access_type',
+                    'label' => __( 'Default access type', 'internal-wiki-plugin' ),
+                    'description' => __( 'Choose the default access rule for new Wiki pages.', 'internal-wiki-plugin' ),
+                    'type' => 'select',
+                    'options' => [
+                        'logged_in_user' => __( 'Logged-in users', 'internal-wiki-plugin' ),
+                        'roles' => __( 'Specific roles', 'internal-wiki-plugin' ),
+                        'permissions' => __( 'Specific permissions', 'internal-wiki-plugin' ),
+                    ],
+                    'default' => 'logged_in_user',
+                ],
+            ],
+        ];
+    }
+
+    public function sanitize( $input ): array {
+        $input = is_array( $input ) ? $input : [];
+        $access_type = SanitizationHelper::key( $input['default_access_type'] ?? 'logged_in_user', 'logged_in_user' );
+        $settings = [
+            'default_access_type' => in_array( $access_type, [ 'logged_in_user', 'roles', 'permissions' ], true ) ? $access_type : 'logged_in_user',
+            'default_roles' => (array) ( BaseSettings::get( 'default_roles', [] ) ?? [] ),
+            'default_permissions' => (array) ( BaseSettings::get( 'default_permissions', [] ) ?? [] ),
+        ];
+        BaseSettings::set_group( 'internal_wiki', $settings );
+        return $settings;
+    }
+
     public function render_fields( string $fields, ?\WP_Post $post = null ): string {
         $enabled = $post ? (bool) get_post_meta( $post->ID, self::META_ENABLED, true ) : false;
         $access_type = $post ? (string) get_post_meta( $post->ID, self::META_ACCESS_TYPE, true ) : BaseSettings::get_key( 'default_access_type', 'logged_in_user' );
