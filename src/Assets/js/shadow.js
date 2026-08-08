@@ -101,7 +101,7 @@
     if (renderingFontAwesome || !window.FontAwesome?.dom?.i2svg) return;
 
     renderingFontAwesome = true;
-    Promise.resolve(window.FontAwesome.dom.i2svg({ node: shadowRoot }))
+    Promise.resolve(window.FontAwesome.dom.i2svg({ node: shell }))
       .catch(() => {})
       .finally(() => {
         renderingFontAwesome = false;
@@ -129,9 +129,6 @@
   injectFontAwesomeKitCss();
   copyFontAwesomeRuntimeCss();
   queueFontAwesomeRender();
-
-  document.addEventListener('DOMContentLoaded', queueFontAwesomeRender, { once: true });
-  window.addEventListener('load', queueFontAwesomeRender, { once: true });
 
   new MutationObserver((mutations) => {
     if (mutations.some((mutation) => Array.from(mutation.addedNodes).some((node) => {
