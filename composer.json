@@ -29,7 +29,6 @@
         }
     ],
     "require": {
-        "fortawesome/wordpress-fontawesome": "^5.2",
-        "tinymce/tinymce": "^8.8"
+        "fortawesome/wordpress-fontawesome": "^5.2"
     }
 }

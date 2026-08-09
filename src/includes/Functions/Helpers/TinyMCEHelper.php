@@ -1,36 +1,51 @@
 <?php
-
+/**
+ * TinyMCEHelper class for WikiPress plugin.
+ *
+ * @package TrilBDev\WikiPress
+ * @subpackage Includes\Functions\Helpers
+ * @since 1.0.0
+ */
 namespace TrilBDev\WikiPress\Includes\Functions\Helpers;
 
-class TinyMCEHelper {
-    private static bool $script_initialized = false;
+final class TinyMCEHelper {
+    /**
+     * Render a TinyMCE editor.
+     *
+     * @param string $id            The ID of the editor.
+     * @param string $name          The name attribute for the textarea.
+     * @param string $label         The label for the editor.
+     * @param string $value         The initial content of the editor.
+     * @param int    $rows          The number of rows for the textarea.
+     * @param bool   $media_buttons Whether to show media buttons.
+     */
+    public static function render( string $id, string $name, string $label, string $value = '', int $rows = 8, bool $media_buttons = false ): void {
+        $editor_id = sanitize_key( $id );
+        $editor_settings = [
+            'textarea_name' => $name,
+            'textarea_rows' => max( 1, $rows ),
+            'media_buttons' => $media_buttons,
+            'teeny' => false,
+            'quicktags' => false,
+            'wpautop' => true,
+            'tinymce' => [
+                'toolbar1' => 'undo redo | formatselect | bold italic underline | bullist numlist | link table | code',
+                'toolbar2' => '',
+                'statusbar' => true,
+                'branding' => false,
+            ],
+        ];
 
-    public static function render( string $id, string $name, string $label, string $value = '', int $rows = 8 ): void {
-        wp_enqueue_script( 'wikipress-tinymce', WIKIPRESS_URL . 'vendor/tinymce/tinymce/tinymce.min.js', [], WIKIPRESS_VERSION, true );
-        $config = wp_json_encode( [
-            'selector' => '#' . $id,
-            'menubar' => false,
-            'branding' => false,
-            'height' => max( 180, $rows * 32 ),
-            'plugins' => 'lists link code table',
-            'toolbar' => 'undo redo | blocks | bold italic underline | bullist numlist | link table | code',
-            'statusbar' => true,
-        ] );
-        $textarea_label = esc_html( $label );
-        if ( ! self::$script_initialized ) {
-            wp_add_inline_script( 'wikipress-tinymce', "window.addEventListener('load',function(){if(window.tinymce){var root=window.wikipressShadowRoot||document;root.querySelectorAll('[data-wikipress-tinymce]').forEach(function(editor){var options=" . $config . ";options.target=editor;delete options.selector;tinymce.init(options);});}});" );
-            self::$script_initialized = true;
+        echo '<div class="wikipress-wp-editor">';
+        printf( '<label class="form-label" for="%1$s">%2$s</label>', esc_attr( $editor_id ), esc_html( $label ) );
+        if ( function_exists( 'wp_enqueue_editor' ) ) {
+            wp_enqueue_editor();
         }
-        printf( '<div class="form-floating"><textarea class="form-control" id="%1$s" name="%2$s" data-wikipress-tinymce placeholder="%3$s" rows="%4$d" style="height:auto">%5$s</textarea><label for="%1$s">%3$s</label></div>', esc_attr( $id ), esc_attr( $name ), $textarea_label, $rows, esc_textarea( $value ) );
-    }
-
-    public static function add_tinymce_plugin( $plugin_array ) {
-        $plugin_array['wikipress'] = WIKIPRESS_URL . 'src/Assets/js/admin.tinymce.js';
-        return $plugin_array;
-    }
-
-    public static function add_tinymce_button( $buttons ) {
-        array_push( $buttons, 'wikipress' );
-        return $buttons;
+        if ( function_exists( 'wp_editor' ) ) {
+            wp_editor( $value, $editor_id, $editor_settings );
+        } else {
+            printf( '<textarea class="form-control" id="%1$s" name="%2$s" rows="%3$d">%4$s</textarea>', esc_attr( $editor_id ), esc_attr( $name ), max( 1, $rows ), esc_textarea( $value ) );
+        }
+        echo '</div>';
     }
 }
