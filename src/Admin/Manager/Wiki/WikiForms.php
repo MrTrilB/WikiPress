@@ -41,34 +41,13 @@ class WikiForms {
                             </div>
                         </fieldset>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-floating mb-3">
-                            <input class="form-control" id="wikipress-new-category-name" name="wikipress_wiki[new_category]" type="text" placeholder="<?php esc_attr_e( 'New category', 'wikipress' ); ?>">
-                            <label for="wikipress-new-category-name">
-                                <?php esc_html_e( 'New Category', 'wikipress' ); ?>
-                        </label>
-                    </div>
-                    <div class="form-floating">
-                        <select class="form-select" id="wikipress-new-category-parent" name="wikipress_wiki[new_category_parent]">
-                            <option value="0">
-                                <?php esc_html_e( 'No parent', 'wikipress' ); ?>
-                            </option>
-                            <?php self::render_category_options( $categories ); ?>
-                        </select>
-                        <label for="wikipress-new-category-parent">
-                            <?php esc_html_e( 'Parent Category', 'wikipress' ); ?>
-                        </label>
-                    </div>
-                    <div class="form-text">
-                        <?php esc_html_e( 'Optionally create a category and place it in the selected branch.', 'wikipress' ); ?>
-                    </div>
                     <div class="col-12">
-                        <div class="form-floating">
+                        
                             <?php echo FormFieldHelper::bootstrap_select( 'wikipress_wiki[tags][]', [ 'data' => array_map( static fn( $tag ) => [ 'value' => (string) $tag->term_id, 'label' => $tag->name ], $tags ), 'open_options' => true, 'placeholder' => __( 'Search or select tags','wikipress' ),'live_search_placeholder' => __( 'Search or create tags', 'wikipress' ),'attributes' => ['id' => 'wikipress-wiki-tags'] ]); ?>
                             <label for="wikipress-wiki-tags">
                                 <?php esc_html_e( 'Wiki Tags', 'wikipress' ); ?>
                             </label>
-                        </div>
+                       
                         <div class="form-text">
                             <?php esc_html_e( 'Search existing tags or create a new tag from the picker.', 'wikipress' ); ?>
                         </div>
