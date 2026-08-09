@@ -37,20 +37,13 @@ final class FunctionsWiki {
 				$input['categories'][] = $category_result['term_id'];
 			}
 		}
-		$new_tag = SanitizationHelper::text( $input['new_tag'] ?? '' );
-		if ( '' !== $new_tag ) {
-			$tag_result = wp_insert_term( $new_tag, Taxonomy::TAG );
-			if ( ! is_wp_error( $tag_result ) ) {
-				$input['tags'][] = $tag_result['term_id'];
-			}
-		}
 		$payload = [
 			'title' => SanitizationHelper::text( $input['name'] ?? '' ),
 			'slug' => SanitizationHelper::slug( $input['slug'] ?? '' ),
 			'excerpt' => wp_kses_post( (string) ( $input['excerpt'] ?? '' ) ),
 			'content' => wp_kses_post( (string) ( $input['description'] ?? '' ) ),
 			'categories' => TaxonomyHelper::ids( $input['categories'] ?? [] ),
-			'tags' => TaxonomyHelper::ids( $input['tags'] ?? [] ),
+			'tags' => TaxonomyHelper::resolve_ids( $input['tags'] ?? [], Taxonomy::TAG, true ),
 			'status' => 'publish',
 			'navigation' => SanitizationHelper::one_of( SanitizationHelper::key( $input['navigation'] ?? 'horizontal', 'horizontal' ), [ 'horizontal', 'vertical' ], 'horizontal' ),
 			'thumbnail_id' => SanitizationHelper::integer( $input['thumbnail_id'] ?? 0 ),

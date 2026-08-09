@@ -464,89 +464,51 @@ final class FormFieldHelper {
     }
 
     /**
-     * Render a select option.
+     * Render a Bootstrap Select multi-select.
      *
-     * @param string $value    The value attribute for the option.
-     * @param string $label    The label text for the option.
-     * @param bool   $selected Whether the option is selected.
-     * @param bool   $disabled Whether the option is disabled.
-     * @return string The HTML markup for the select option.
+     * @param string $name    The name attribute for the select.
+     * @param array  $options Select options and Bootstrap Select settings.
+     * @return string The rendered select element.
      */
-    public static function bootstrap_search( string $name, array $options = [] ): string {
-
-        $id = (string) ( $options['id'] ?? sanitize_title( $name ) . '-search' );
-        $hidden_name = (string) ( $options['hidden_name'] ?? $name );
-        $multi_select = ! empty( $options['multi_select'] );
-
-        if ( $multi_select && ! str_ends_with( $hidden_name, '[]' ) ) {
-
-            $hidden_name .= '[]';
-
+    public static function bootstrap_select( string $name, array $options = [] ): string {
+        if ( ! str_ends_with( $name, '[]' ) ) {
+            $name .= '[]';
         }
 
-        $config = [
-            'threshold' => max( 0, (int) ( $options['threshold'] ?? 2 ) ),
-            'maximumItems' => max( 0, (int) ( $options['maximum_items'] ?? 5 ) ),
-            'highlightTyped' => ! isset( $options['highlight_typed'] ) || (bool) $options['highlight_typed'],
-            'inputLabel' => (string) ( $options['input_label'] ?? 'label' ),
-            'dropdownLabel' => (string) ( $options['dropdown_label'] ?? 'label' ),
-            'value' => (string) ( $options['value'] ?? 'value' ),
-            'showValue' => ! empty( $options['show_value'] ),
-            'showValueBeforeLabel' => ! empty( $options['show_value_before_label'] ),
-            'remoteData' => $options['remote_data'] ?? null,
-            'remoteDataHttpMethod' => strtoupper( (string) ( $options['remote_data_http_method'] ?? 'GET' ) ),
-            'data' => array_values( $options['data'] ?? [] ),
-            'multiSelect' => $multi_select,
-            'dropdownClass' => (string) ( $options['dropdown_class'] ?? '' ),
-            'selectedItems' => array_values( $options['selected_items'] ?? [] ),
+        $options['class'] = self::classes( [ 'selectpicker', 'wikipress-bootstrap-select', $options['class'] ?? '' ] );
+        $options['multiple'] = true;
+
+        $settings = [
+            'live_search' => [ 'live-search', true ],
+            'show_selected_tags' => [ 'show-selected-tags', true ],
+            'open_options' => [ 'open-options', false ],
+            'selection_indicator' => [ 'selection-indicator', 'checkbox' ],
+            'live_search_placeholder' => [ 'live-search-placeholder', __( 'Search or create', 'wikipress' ) ],
+            'open_options_text' => [ 'open-options-text', __( 'Create "{0}"', 'wikipress' ) ],
+            'selected_text_format' => [ 'selected-text-format', 'count' ],
+            'selected_items_style' => [ 'selected-items-style', 'tags' ],
+            'selected_tag_remove_label' => [ 'selected-tag-remove-label', __( 'Remove', 'wikipress' ) ],
+            'placeholder' => [ 'placeholder', __( 'Select options', 'wikipress' ) ],
+            'width' => [ 'width', '100%' ],
+            'size' => [ 'size', null ],
+            'actions_box' => [ 'actions-box', null ],
+            'max_options' => [ 'max-options', null ],
+            'live_search_normalize' => [ 'live-search-normalize', null ],
+            'live_search_style' => [ 'live-search-style', null ],
         ];
 
-        $attributes = array_merge( $options['attributes'] ?? [], $options );
-        unset( $attributes['attributes'], $attributes['id'], $attributes['class'], $attributes['type'], $attributes['value'], $attributes['data'], $attributes['selected_items'], $attributes['remote_data'], $attributes['remote_data_http_method'], $attributes['multi_select'], $attributes['hidden_name'], $attributes['input_label'], $attributes['dropdown_label'], $attributes['maximum_items'], $attributes['highlight_typed'], $attributes['show_value'], $attributes['show_value_before_label'], $attributes['threshold'], $attributes['dropdown_class'], $attributes['validation'] );
-        $attributes['id'] = $id;
-        $attributes['type'] = 'text';
-        $attributes['class'] = self::classes( [ 'form-control', $options['class'] ?? '', self::validation_class( $options ) ] );
-        $attributes['autocomplete'] = 'off';
-        $attributes['data-bootstrap-search'] = wp_json_encode( $config );
-        $html = '<input ' . self::attributes_to_string( $attributes ) . ' />';
-        $selected = $config['selectedItems'];
-        $first_selected = $selected[0] ?? '';
-        $hidden_value = $multi_select ? '' : (string) ( is_array( $first_selected ) ? ( $first_selected[ $config['value'] ] ?? '' ) : $first_selected );
-        $hidden_attributes = [ 'type' => 'hidden', 'name' => $hidden_name, 'value' => $hidden_value, 'data-bootstrap-search-value' => $id ];
-        $html .= '<input ' . self::attributes_to_string( $hidden_attributes ) . ' />';
+        foreach ( $settings as $option_key => [ $attribute, $default ] ) {
+            $value = $options[ $option_key ] ?? $default;
+            if ( null !== $value ) {
+                $options[ 'data-' . $attribute ] = $value;
+            }
+        }
 
-        return $html . self::feedback( $options );
+        $select_options = $options['data'] ?? [];
+        $selected = $options['selected'] ?? [];
+        unset( $options['live_search_placeholder'], $options['open_options_text'], $options['selected_text_format'], $options['selected_items_style'], $options['selected_tag_remove_label'], $options['placeholder'], $options['width'], $options['size'], $options['actions_box'], $options['max_options'], $options['live_search_normalize'], $options['live_search_style'], $options['live_search'], $options['show_selected_tags'], $options['open_options'], $options['selection_indicator'], $options['data'], $options['selected'] );
 
-    }
-    /**
-     * Render a select option list.
-     *
-     * @param array $options  The options for the select.
-     * @param array $selected The selected value(s) for the select.
-     * @return string The HTML markup for the select option list.
-     */
-    public static function bootstrap_search_multiselect( string $name, array $options = [] ): string {
-
-        $options['multi_select'] = true;
-
-        return self::bootstrap_search( $name, $options );
-
-    }
-    /**
-     * Render a select option.
-     *
-     * @param string $value    The value attribute for the option.
-     * @param string $label    The label text for the option.
-     * @param bool   $selected Whether the option is selected.
-     * @param bool   $disabled Whether the option is disabled.
-     * @return string The HTML markup for the select option.
-     */
-    public static function bootstrap_search_ajax( string $name, string $remote_url, array $options = [] ): string {
-
-        $options['remote_data'] = $remote_url;
-
-        return self::bootstrap_search( $name, $options );
-
+        return self::select( $name, $select_options, $selected, $options );
     }
     /**
      * Render a select option.

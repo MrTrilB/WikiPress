@@ -12,9 +12,9 @@ const entries = {
     './src/Assets/js/admin.ui.js',
     './src/Assets/scss/admin.ui.scss',
   ],
-  bootstrapsearch: [
-    './src/Assets/js/bootstrapsearch.js',
-    './src/Assets/js/bootstrapsearch-init.js',
+  'bootstrap-select': [
+    './src/Assets/js/bootstrap-select.js',
+    './src/Assets/scss/bootstrap-select.scss',
   ],
 };
 
@@ -44,7 +44,6 @@ const userRolesManagerEntries = {
 };
 
 const jsDirectory = path.resolve(__dirname, 'src/Assets/js');
-const scssDirectory = path.resolve(__dirname, 'src/Assets/scss');
 fs.readdirSync(jsDirectory)
   .filter((file) => /^admin\.[^.]+\.js$/.test(file) && file !== 'admin.ui.js')
   .forEach((file) => {

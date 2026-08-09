@@ -53,6 +53,51 @@ final class TaxonomyHelper {
         return array_values( array_unique( $ids ) );
     }
 
+    /**
+     * Resolve term IDs and optionally create terms submitted by name.
+     *
+     * @param mixed  $terms    Term IDs or names.
+     * @param string $taxonomy Taxonomy name.
+     * @param bool   $create   Whether missing names should be created.
+     * @return array<int, int> Resolved term IDs.
+     */
+    public static function resolve_ids( $terms, string $taxonomy, bool $create = false ): array {
+        if ( ! is_array( $terms ) ) {
+            $terms = [ $terms ];
+        }
+
+        $ids = [];
+        foreach ( $terms as $term ) {
+            if ( is_numeric( $term ) && absint( $term ) > 0 ) {
+                $ids[] = absint( $term );
+                continue;
+            }
+
+            $name = SanitizationHelper::text( $term );
+            if ( '' === $name ) {
+                continue;
+            }
+
+            $existing = term_exists( $name, $taxonomy );
+            if ( is_array( $existing ) && ! empty( $existing['term_id'] ) ) {
+                $ids[] = absint( $existing['term_id'] );
+                continue;
+            }
+            if ( is_int( $existing ) && $existing > 0 ) {
+                $ids[] = $existing;
+                continue;
+            }
+            if ( $create ) {
+                $created = wp_insert_term( $name, $taxonomy );
+                if ( ! is_wp_error( $created ) && ! empty( $created['term_id'] ) ) {
+                    $ids[] = absint( $created['term_id'] );
+                }
+            }
+        }
+
+        return array_values( array_unique( array_filter( $ids ) ) );
+    }
+
     public static function names( $terms ): array {
         if ( ! is_array( $terms ) ) {
             $terms = SanitizationHelper::terms( $terms );

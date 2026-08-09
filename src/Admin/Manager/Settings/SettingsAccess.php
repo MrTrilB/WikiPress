@@ -49,7 +49,7 @@ final class SettingsAccess {
 			if ( empty( $selected ) ) {
 				$selected[] = $options[0];
 			}
-			echo '<tr><th scope="row">' . FormFieldHelper::label( $id, $field['label'], $field ) . '</th><td>' . FormFieldHelper::bootstrap_search_multiselect( $name, [ 'id' => $id, 'data' => $options, 'input_label' => 'label', 'dropdown_label' => 'label', 'value' => 'value', 'selected_items' => $selected, 'maximum_items' => 0 ] ) . '</td></tr>';
+			echo '<tr><th scope="row">' . FormFieldHelper::label( $id, $field['label'], $field ) . '</th><td>' . FormFieldHelper::bootstrap_select( $name, [ 'id' => $id, 'data' => $options, 'selected' => array_column( $selected, 'value' ) ] ) . '</td></tr>';
 		}
 	}
 }

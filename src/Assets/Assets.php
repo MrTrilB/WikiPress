@@ -74,7 +74,19 @@ final class Assets {
     public function default_assets( array $assets, string $context ): array {
         $defaults = [
             'styles'  => [
-                [ 'handle' => 'wikipress-bootstrap', 'src' => WIKIPRESS_URL . 'src/Assets/dist/css/bootstrap.css', 'version' => '5.3.8' ],
+                [
+                    'handle' => 'wikipress-bootstrap',
+                    'src' => WIKIPRESS_URL . 'src/Assets/dist/css/bootstrap.css',
+                    'version' => '5.3.8'
+                ],
+                [
+                    'handle' => 'wikipress-bootstrap-select',
+                    'src' => WIKIPRESS_URL . 'src/Assets/dist/css/bootstrap-select.css',
+                    'version' => '1.2.1',
+                    'deps' => [
+                        'wikipress-bootstrap'
+                        ]
+                ],
             ],
             'scripts' => [
                 [
@@ -84,9 +96,9 @@ final class Assets {
                     'in_footer' => true
                 ],
                 [
-                    'handle' => 'wikipress-bootstrapsearch',
-                    'src' => WIKIPRESS_URL . 'src/Assets/dist/js/bootstrapsearch.js',
-                    'version' => '1.0.0',
+                    'handle' => 'wikipress-bootstrap-select',
+                    'src' => WIKIPRESS_URL . 'src/Assets/dist/js/bootstrap-select.js',
+                    'version' => '1.2.1',
                     'deps' => [ 'wikipress-bootstrap' ],
                     'in_footer' => true
                 ],
