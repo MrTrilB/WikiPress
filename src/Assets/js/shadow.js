@@ -38,7 +38,6 @@
         if ([...shadowRoot.querySelectorAll('script[data-wikipress-shadow-asset]')].some((script) => script.src === element.src)) return;
 
         const script = document.createElement('script');
-        script.type = 'application/x-wikipress-shadow-asset';
         script.src = element.src;
         script.dataset.wikipressShadowAsset = 'true';
         shadowRoot.appendChild(script);
