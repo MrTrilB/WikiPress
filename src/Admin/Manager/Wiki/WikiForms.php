@@ -6,6 +6,7 @@ use TrilBDev\WikiPress\Includes\Core\PostType;
 use TrilBDev\WikiPress\Includes\Core\Taxonomy;
 use TrilBDev\WikiPress\Includes\Functions\Helpers\QueryHelper;
 use TrilBDev\WikiPress\Includes\Functions\Helpers\TaxonomyHelper;
+use TrilBDev\WikiPress\Includes\Functions\Helpers\TinyMCEHelper;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -19,12 +20,13 @@ class WikiForms {
             <input type="hidden" name="wikipress_action" value="create_wiki">
             <div class="card-body"><div class="row g-4">
                 <div class="col-12"><h2 class="h5 mb-1"><?php esc_html_e( 'Wiki Details', 'wikipress' ); ?></h2><p class="text-secondary mb-0"><?php esc_html_e( 'Set the identity, content, and navigation style for this Wiki.', 'wikipress' ); ?></p></div>
-                <div class="col-md-6"><label class="form-label" for="wikipress-wiki-name"><?php esc_html_e( 'Wiki Name', 'wikipress' ); ?></label><input class="form-control" id="wikipress-wiki-name" name="wikipress_wiki[name]" type="text" required></div>
-                <div class="col-md-6"><label class="form-label" for="wikipress-wiki-slug"><?php esc_html_e( 'Wiki Slug', 'wikipress' ); ?></label><input class="form-control" id="wikipress-wiki-slug" name="wikipress_wiki[slug]" type="text"></div>
-                <div class="col-md-6"><label class="form-label" for="wikipress-wiki-categories"><?php esc_html_e( 'Wiki Categories', 'wikipress' ); ?></label><select class="form-select" id="wikipress-wiki-categories" name="wikipress_wiki[categories][]" multiple><?php foreach ( $categories as $category ) : ?><option value="<?php echo esc_attr( $category->term_id ); ?>"><?php echo esc_html( $category->name ); ?></option><?php endforeach; ?></select></div>
-                <div class="col-md-6"><label class="form-label" for="wikipress-wiki-tags"><?php esc_html_e( 'Wiki Tags', 'wikipress' ); ?></label><select class="form-select" id="wikipress-wiki-tags" name="wikipress_wiki[tags][]" multiple><?php foreach ( $tags as $tag ) : ?><option value="<?php echo esc_attr( $tag->term_id ); ?>"><?php echo esc_html( $tag->name ); ?></option><?php endforeach; ?></select></div>
-                <div class="col-12"><label class="form-label" for="wikipress-wiki-excerpt"><?php esc_html_e( 'Wiki Excerpt', 'wikipress' ); ?></label><?php wp_editor( '', 'wikipress-wiki-excerpt', [ 'textarea_name' => 'wikipress_wiki[excerpt]', 'textarea_rows' => 6, 'media_buttons' => false, 'teeny' => false ] ); ?></div>
-                <div class="col-12"><label class="form-label" for="wikipress-wiki-description"><?php esc_html_e( 'Wiki Description', 'wikipress' ); ?></label><?php wp_editor( '', 'wikipress-wiki-description', [ 'textarea_name' => 'wikipress_wiki[description]', 'textarea_rows' => 10, 'media_buttons' => true, 'teeny' => false ] ); ?></div>
+                <?php self::floating_text_field( 'name', __( 'Wiki Name', 'wikipress' ), '', true ); ?>
+                <?php self::floating_text_field( 'slug', __( 'Wiki Slug', 'wikipress' ) ); ?>
+                <div class="col-md-6"><fieldset class="border rounded p-3"><legend class="float-none w-auto px-2 fs-6 mb-0"><?php esc_html_e( 'Wiki Categories', 'wikipress' ); ?></legend><div class="vstack gap-2" data-wikipress-category-tree><?php self::render_category_tree( $categories ); ?></div></fieldset></div>
+                <div class="col-md-6"><div class="form-floating mb-3"><input class="form-control" id="wikipress-new-category-name" name="wikipress_wiki[new_category]" type="text" placeholder="<?php esc_attr_e( 'New category', 'wikipress' ); ?>"><label for="wikipress-new-category-name"><?php esc_html_e( 'New Category', 'wikipress' ); ?></label></div><div class="form-floating"><select class="form-select" id="wikipress-new-category-parent" name="wikipress_wiki[new_category_parent]"><option value="0"><?php esc_html_e( 'No parent', 'wikipress' ); ?></option><?php self::render_category_options( $categories ); ?></select><label for="wikipress-new-category-parent"><?php esc_html_e( 'Parent Category', 'wikipress' ); ?></label></div><div class="form-text"><?php esc_html_e( 'Optionally create a category and place it in the selected branch.', 'wikipress' ); ?></div></div>
+                <div class="col-12"><div class="form-floating"><input class="form-control" id="wikipress-wiki-tags" data-bootstrap-search='<?php echo esc_attr( wp_json_encode( [ 'value' => 'value', 'dropdownLabel' => 'label', 'multiSelect' => true, 'data' => array_map( static fn( $tag ) => [ 'value' => (string) $tag->term_id, 'label' => $tag->name ], $tags ) ] ) ); ?>' placeholder="<?php esc_attr_e( 'Search or select tags', 'wikipress' ); ?>" type="text"><label for="wikipress-wiki-tags"><?php esc_html_e( 'Wiki Tags', 'wikipress' ); ?></label></div><input type="hidden" name="wikipress_wiki[tags][]" data-bootstrap-search-value="wikipress-wiki-tags"><div class="form-floating mt-2"><input class="form-control" id="wikipress-wiki-new-tag" name="wikipress_wiki[new_tag]" type="text" placeholder="<?php esc_attr_e( 'New tag name', 'wikipress' ); ?>"><label for="wikipress-wiki-new-tag"><?php esc_html_e( 'Create New Tag', 'wikipress' ); ?></label></div><div class="form-text"><?php esc_html_e( 'The new tag is created and attached when you create the Wiki.', 'wikipress' ); ?></div></div>
+                <div class="col-12"><?php TinyMCEHelper::render( 'wikipress-wiki-excerpt', 'wikipress_wiki[excerpt]', __( 'Wiki Excerpt', 'wikipress' ), '', 6 ); ?></div>
+                <div class="col-12"><?php TinyMCEHelper::render( 'wikipress-wiki-description', 'wikipress_wiki[description]', __( 'Wiki Description', 'wikipress' ), '', 10 ); ?></div>
                 <div class="col-md-6"><?php self::render_media_field( 'thumbnail_id', __( 'Wiki Header Image', 'wikipress' ), __( 'Select the featured image displayed for this Wiki.', 'wikipress' ) ); ?></div>
                 <div class="col-md-6"><?php self::render_media_field( 'logo_id', __( 'Wiki Logo', 'wikipress' ), __( 'Select an optional logo for this Wiki.', 'wikipress' ) ); ?></div>
                 <div class="col-12"><fieldset><legend class="form-label"><?php esc_html_e( 'Wiki Navigation Style', 'wikipress' ); ?></legend><div class="d-flex flex-wrap gap-3"><label class="form-check"><input class="form-check-input" type="radio" name="wikipress_wiki[navigation]" value="horizontal" checked> <?php esc_html_e( 'Horizontal - Along the top', 'wikipress' ); ?></label><label class="form-check"><input class="form-check-input" type="radio" name="wikipress_wiki[navigation]" value="vertical"> <?php esc_html_e( 'Vertical - Sidebar', 'wikipress' ); ?></label></div></fieldset></div>
@@ -33,6 +35,32 @@ class WikiForms {
             <div class="card-footer d-flex justify-content-end gap-2"><a class="btn btn-outline-secondary" href="<?php echo esc_url( admin_url( 'admin.php?page=wikipress-manage' ) ); ?>"><?php esc_html_e( 'Cancel', 'wikipress' ); ?></a><button class="btn btn-primary" type="submit"><?php esc_html_e( 'Create Wiki', 'wikipress' ); ?></button></div>
         </form>
         <?php
+    }
+
+    private static function floating_text_field( string $key, string $label, string $value = '', bool $required = false ): void {
+        $id = 'wikipress-wiki-' . $key;
+        printf( '<div class="col-md-6"><div class="form-floating"><input class="form-control" id="%1$s" name="wikipress_wiki[%2$s]" type="text" value="%3$s" placeholder="%4$s"%5$s><label for="%1$s">%4$s</label></div></div>', esc_attr( $id ), esc_attr( $key ), esc_attr( $value ), esc_attr( $label ), $required ? ' required' : '' );
+    }
+
+    private static function render_category_tree( array $categories, int $parent = 0, int $level = 0 ): void {
+        foreach ( $categories as $category ) {
+            if ( (int) $category->parent !== $parent ) {
+                continue;
+            }
+            $id = 'wikipress-category-' . (int) $category->term_id;
+            printf( '<div class="form-check" style="padding-left:%drem"><input class="form-check-input" id="%1$s" name="wikipress_wiki[categories][]" type="checkbox" value="%2$d"><label class="form-check-label" for="%1$s">%3$s</label></div>', 1.5 + ( $level * 1.25 ), (int) $category->term_id, esc_html( $category->name ) );
+            self::render_category_tree( $categories, (int) $category->term_id, $level + 1 );
+        }
+    }
+
+    private static function render_category_options( array $categories, int $parent = 0, int $level = 0 ): void {
+        foreach ( $categories as $category ) {
+            if ( (int) $category->parent !== $parent ) {
+                continue;
+            }
+            printf( '<option value="%1$d">%2$s%3$s</option>', (int) $category->term_id, str_repeat( '-- ', $level ), esc_html( $category->name ) );
+            self::render_category_options( $categories, (int) $category->term_id, $level + 1 );
+        }
     }
 
     private static function render_media_field( string $key, string $label, string $description ): void {

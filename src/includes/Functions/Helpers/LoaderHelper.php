@@ -29,13 +29,13 @@ class LoaderHelper extends WPLoader {
      */
     public function register_component( object|string|array $component, array $hooks ): self {
         foreach ( $hooks as $definition ) {
-            $type = $definition['type'] ?? 'action';
-            $hook = $definition['hook'] ?? '';
-            $callback = $definition['callback'] ?? '';
-            $priority = (int) ( $definition['priority'] ?? 10 );
-            $accepted_args = (int) ( $definition['accepted_args'] ?? 1 );
+            $type = SanitizationHelper::one_of( SanitizationHelper::key( $definition['type'] ?? 'action', 'action' ), [ 'action', 'filter' ], 'action' );
+            $hook = SanitizationHelper::text( $definition['hook'] ?? '' );
+            $callback = SanitizationHelper::text( $definition['callback'] ?? '' );
+            $priority = SanitizationHelper::integer_range( $definition['priority'] ?? 10, 0, PHP_INT_MAX, 10 );
+            $accepted_args = SanitizationHelper::integer_range( $definition['accepted_args'] ?? 1, 0, PHP_INT_MAX, 1 );
 
-            if ( ! is_string( $hook ) || '' === $hook || ! is_string( $callback ) || '' === $callback ) {
+            if ( '' === $hook || '' === $callback ) {
                 throw new \InvalidArgumentException( 'Hook definitions require a hook and callback string.' );
             }
             if ( 'filter' === $type ) {

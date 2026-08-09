@@ -25,6 +25,25 @@ final class FunctionsWiki {
 
 		$input = wp_unslash( $_POST['wikipress_wiki'] ?? [] );
 		$input = is_array( $input ) ? $input : [];
+		$input['categories'] = is_array( $input['categories'] ?? null ) ? $input['categories'] : [];
+		$input['tags'] = is_array( $input['tags'] ?? null ) ? $input['tags'] : [];
+		if ( '' === SanitizationHelper::text( $input['name'] ?? '' ) ) {
+			return '<div class="notice notice-error"><p>' . esc_html__( 'Wiki Name is required.', 'wikipress' ) . '</p></div>';
+		}
+		$new_category = SanitizationHelper::text( $input['new_category'] ?? '' );
+		if ( '' !== $new_category ) {
+			$category_result = wp_insert_term( $new_category, Taxonomy::CATEGORY, [ 'parent' => SanitizationHelper::integer( $input['new_category_parent'] ?? 0 ) ] );
+			if ( ! is_wp_error( $category_result ) ) {
+				$input['categories'][] = $category_result['term_id'];
+			}
+		}
+		$new_tag = SanitizationHelper::text( $input['new_tag'] ?? '' );
+		if ( '' !== $new_tag ) {
+			$tag_result = wp_insert_term( $new_tag, Taxonomy::TAG );
+			if ( ! is_wp_error( $tag_result ) ) {
+				$input['tags'][] = $tag_result['term_id'];
+			}
+		}
 		$payload = [
 			'title' => SanitizationHelper::text( $input['name'] ?? '' ),
 			'slug' => SanitizationHelper::slug( $input['slug'] ?? '' ),

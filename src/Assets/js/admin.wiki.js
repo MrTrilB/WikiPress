@@ -55,7 +55,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const data = new FormData();
     data.append('action', action);
     data.append('nonce', window.wikipressWikiManager?.nonce || '');
-    Object.entries(values).forEach(([key, value]) => data.append(key, value));
+    Object.entries(values).forEach(([key, value]) => {
+      data.append(key, value);
+    });
     const response = await fetch(window.wikipressWikiManager?.ajaxUrl || '', { method: 'POST', body: data });
     const json = await response.json();
     if (!json.success) throw new Error(json.data?.message || 'Request failed');
@@ -79,7 +81,6 @@ document.addEventListener('DOMContentLoaded', () => {
         await request('wikipress_delete_wiki_page', { page_id: deletePage.dataset.wikipressDeletePage });
         window.location.reload();
       } else if (deleteTerm && window.confirm('Remove this term from the Wiki?')) {
-        const form = deleteTerm.closest('[data-wikipress-taxonomy]');
         await request('wikipress_delete_wiki_term', { wiki_id: deleteTerm.closest('.modal')?.id.match(/(\d+)$/)?.[1] || '', term_id: deleteTerm.dataset.wikipressDeleteTerm, taxonomy: deleteTerm.dataset.wikipressTaxonomy });
         window.location.reload();
       } else if (addTerm) {
