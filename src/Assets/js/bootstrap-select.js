@@ -15,7 +15,7 @@ const getOptionData = (field) => Array.from(field.options).map((option) => ({
 const initialize = (scope = root) => {
   if (!scope.querySelectorAll) return;
 
-  scope.querySelectorAll('.wikipress-bootstrap-select').forEach((field) => {
+  scope.querySelectorAll('.selectpicker').forEach((field) => {
     Selectpicker.getOrCreateInstance(field, {
       source: { data: getOptionData(field) },
     });
@@ -33,7 +33,7 @@ if (root !== document) {
     mutations.forEach((mutation) => {
       mutation.addedNodes.forEach((node) => {
         if (node.nodeType !== Node.ELEMENT_NODE) return;
-        if (node.matches?.('.wikipress-bootstrap-select')) {
+        if (node.matches?.('.selectpicker')) {
           Selectpicker.getOrCreateInstance(node, {
             source: { data: getOptionData(node) },
           });
