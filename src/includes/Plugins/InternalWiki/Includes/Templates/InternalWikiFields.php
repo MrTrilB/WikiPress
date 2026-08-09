@@ -43,7 +43,7 @@ final class InternalWikiFields {
             . '</div>'
             . '<div class="col-md-4" data-internal-wiki-permissions>'
             . FormFieldHelper::label( 'wikipress-internal-permissions-search', __( 'Permissions', 'internal-wiki-plugin' ) )
-            . FormFieldHelper::bootstrap_select( 'internal_wiki_permissions[]', [ 'id' => 'wikipress-internal-permissions-search', 'data' => $permission_items, 'selected' => array_column( $selected_permission_items, 'value' ) ] )
+            . FormFieldHelper::bootstrap_multiselect( 'internal_wiki_permissions[]', [ 'id' => 'wikipress-internal-permissions-search', 'data' => $permission_items, 'selected' => array_column( $selected_permission_items, 'value' ) ] )
             . '</div>'
             . '</div>';
     }

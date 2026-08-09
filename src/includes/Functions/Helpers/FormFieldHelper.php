@@ -97,6 +97,12 @@ final class FormFieldHelper {
      */
     public static function select( string $name, array $options = [], $selected = [], array $attributes = [] ): string {
 
+        return self::render_select( $name, $options, $selected, $attributes );
+
+    }
+
+    private static function render_select( string $name, array $options = [], $selected = [], array $attributes = [] ): string {
+
         $selected = array_map( 'strval', (array) $selected );
         $class = $attributes['class'] ?? '';
         $validation = $attributes['validation'] ?? [];
@@ -118,7 +124,7 @@ final class FormFieldHelper {
 
             $value = is_array( $option ) ? (string) ( $option['value'] ?? $key ) : (string) $key;
             $label = is_array( $option ) ? (string) ( $option['label'] ?? $value ) : (string) $option;
-            $html .= self::option( $value, $label, in_array( $value, $selected, true ), is_array( $option ) && ! empty( $option['disabled'] ) );
+            $html .= self::option( $value, $label, in_array( $value, $selected, true ), is_array( $option ) && ! empty( $option['disabled'] ), is_array( $option ) ? $option : [] );
 
         }
 
@@ -464,19 +470,41 @@ final class FormFieldHelper {
     }
 
     /**
-     * Render a Bootstrap Select multi-select.
+     * Render a Bootstrap Select single-select.
      *
      * @param string $name    The name attribute for the select.
      * @param array  $options Select options and Bootstrap Select settings.
      * @return string The rendered select element.
      */
     public static function bootstrap_select( string $name, array $options = [] ): string {
+
+        $options['class'] = self::classes( [ 'selectpicker', 'wikipress-bootstrap-select', $options['class'] ?? '' ] );
+
+        return self::render_bootstrap_select( $name, $options );
+
+    }
+
+    /**
+     * Render a Bootstrap Select multi-select.
+     *
+     * @param string $name    The name attribute for the select.
+     * @param array  $options Select options and Bootstrap Select settings.
+     * @return string The rendered select element.
+     */
+    public static function bootstrap_multiselect( string $name, array $options = [] ): string {
+
         if ( ! str_ends_with( $name, '[]' ) ) {
             $name .= '[]';
         }
 
         $options['class'] = self::classes( [ 'selectpicker', 'wikipress-bootstrap-select', $options['class'] ?? '' ] );
         $options['multiple'] = true;
+
+        return self::render_bootstrap_select( $name, $options );
+
+    }
+
+    private static function render_bootstrap_select( string $name, array $options ): string {
 
         $settings = [
             'live_search' => [ 'live-search', true ],
@@ -508,7 +536,7 @@ final class FormFieldHelper {
         $selected = $options['selected'] ?? [];
         unset( $options['live_search_placeholder'], $options['open_options_text'], $options['selected_text_format'], $options['selected_items_style'], $options['selected_tag_remove_label'], $options['placeholder'], $options['width'], $options['size'], $options['actions_box'], $options['max_options'], $options['live_search_normalize'], $options['live_search_style'], $options['live_search'], $options['show_selected_tags'], $options['open_options'], $options['selection_indicator'], $options['data'], $options['selected'] );
 
-        return self::select( $name, $select_options, $selected, $options );
+        return self::render_select( $name, $select_options, $selected, $options );
     }
     /**
      * Render a select option.
@@ -776,7 +804,7 @@ final class FormFieldHelper {
 
             $value = is_array( $option ) ? (string) ( $option['value'] ?? $key ) : (string) $key;
             $label = is_array( $option ) ? (string) ( $option['label'] ?? $value ) : (string) $option;
-            $html .= self::option( $value, $label, in_array( $value, $selected, true ), is_array( $option ) && ! empty( $option['disabled'] ) );
+            $html .= self::option( $value, $label, in_array( $value, $selected, true ), is_array( $option ) && ! empty( $option['disabled'] ), is_array( $option ) ? $option : [] );
 
         }
 
@@ -792,9 +820,25 @@ final class FormFieldHelper {
      * @param bool   $disabled Whether the option is disabled.
      * @return string The HTML markup for the select option.
      */
-    private static function option( string $value, string $label, bool $selected, bool $disabled ): string {
+    private static function option( string $value, string $label, bool $selected, bool $disabled, array $options = [] ): string {
 
-        return '<option value="' . esc_attr( $value ) . '"' . ( $selected ? ' selected' : '' ) . ( $disabled ? ' disabled' : '' ) . '>' . esc_html( $label ) . '</option>';
+        $attributes = [];
+        foreach ( $options as $key => $option_value ) {
+            if ( in_array( $key, [ 'value', 'label', 'selected', 'disabled', 'options' ], true ) || null === $option_value || false === $option_value ) {
+                continue;
+            }
+            $attributes[ str_starts_with( $key, 'data-' ) ? $key : 'data-' . $key ] = $option_value;
+        }
+
+        $attributes['value'] = $value;
+        if ( $selected ) {
+            $attributes['selected'] = true;
+        }
+        if ( $disabled ) {
+            $attributes['disabled'] = true;
+        }
+
+        return '<option ' . self::attributes_to_string( $attributes ) . '>' . esc_html( $label ) . '</option>';
         
     }
 }

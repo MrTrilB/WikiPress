@@ -43,7 +43,7 @@ class WikiForms {
                     </div>
                     <div class="col-12">
                         
-                            <?php echo FormFieldHelper::bootstrap_select( 'wikipress_wiki[tags][]', [ 'data' => array_map( static fn( $tag ) => [ 'value' => (string) $tag->term_id, 'label' => $tag->name ], $tags ), 'open_options' => true, 'placeholder' => __( 'Search or select tags','wikipress' ),'live_search_placeholder' => __( 'Search or create tags', 'wikipress' ),'attributes' => ['id' => 'wikipress-wiki-tags'] ]); ?>
+                            <?php echo FormFieldHelper::bootstrap_multiselect( 'wikipress_wiki[tags][]', [ 'data' => array_map( static fn( $tag ) => [ 'value' => (string) $tag->term_id, 'label' => $tag->name ], $tags ), 'open_options' => true, 'placeholder' => __( 'Search or select tags','wikipress' ),'live_search_placeholder' => __( 'Search or create tags', 'wikipress' ),'attributes' => ['id' => 'wikipress-wiki-tags'] ]); ?>
                             <label for="wikipress-wiki-tags">
                                 <?php esc_html_e( 'Wiki Tags', 'wikipress' ); ?>
                             </label>
