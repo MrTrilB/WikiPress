@@ -21,56 +21,57 @@ class WikiForms {
             <input type="hidden" name="wikipress_action" value="create_wiki">
             <div class="card-body">
                 <div class="row g-4">
-                <div class="col-12">
-                    <h2 class="h5 mb-1">
-                        <?php esc_html_e( 'Wiki Details', 'wikipress' ); ?>
-                    </h2>
-                    <p class="text-secondary mb-0">
-                        <?php esc_html_e( 'Set the identity, content, and navigation style for this Wiki.', 'wikipress' ); ?>
-                    </p>
-                </div>
-                <?php self::floating_text_field( 'name', __( 'Wiki Name', 'wikipress' ), '', true ); ?>
-                <?php self::floating_text_field( 'slug', __( 'Wiki Slug', 'wikipress' ) ); ?>
-                <div class="col-md-6">
-                    <fieldset class="border rounded p-3">
-                        <legend class="float-none w-auto px-2 fs-6 mb-0">
-                            <?php esc_html_e( 'Wiki Categories', 'wikipress' ); ?>
-                        </legend>
-                        <div class="vstack gap-2" data-wikipress-category-tree>
-                            <?php self::render_category_tree( $categories ); ?>
-                        </div>
-                    </fieldset>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-floating mb-3">
-                        <input class="form-control" id="wikipress-new-category-name" name="wikipress_wiki[new_category]" type="text" placeholder="<?php esc_attr_e( 'New category', 'wikipress' ); ?>">
-                        <label for="wikipress-new-category-name">
-                            <?php esc_html_e( 'New Category', 'wikipress' ); ?>
-                    </label>
-                </div>
-                <div class="form-floating">
-                    <select class="form-select" id="wikipress-new-category-parent" name="wikipress_wiki[new_category_parent]">
-                        <option value="0">
-                            <?php esc_html_e( 'No parent', 'wikipress' ); ?>
-                        </option>
-                        <?php self::render_category_options( $categories ); ?>
-                    </select>
-                    <label for="wikipress-new-category-parent">
-                        <?php esc_html_e( 'Parent Category', 'wikipress' ); ?>
-                    </label>
-                </div>
-                <div class="form-text">
-                    <?php esc_html_e( 'Optionally create a category and place it in the selected branch.', 'wikipress' ); ?>
-                </div>
-                <div class="col-12">
+                    <div class="col-12">
+                        <h2 class="h5 mb-1">
+                            <?php esc_html_e( 'Wiki Details', 'wikipress' ); ?>
+                        </h2>
+                        <p class="text-secondary mb-0">
+                            <?php esc_html_e( 'Set the identity, content, and navigation style for this Wiki.', 'wikipress' ); ?>
+                        </p>
+                    </div>
+                    <?php self::floating_text_field( 'name', __( 'Wiki Name', 'wikipress' ), '', true ); ?>
+                    <?php self::floating_text_field( 'slug', __( 'Wiki Slug', 'wikipress' ) ); ?>
+                    <div class="col-md-6">
+                        <fieldset class="border rounded p-3">
+                            <legend class="float-none w-auto px-2 fs-6 mb-0">
+                                <?php esc_html_e( 'Wiki Categories', 'wikipress' ); ?>
+                            </legend>
+                            <div class="vstack gap-2" data-wikipress-category-tree>
+                                <?php self::render_category_tree( $categories ); ?>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input class="form-control" id="wikipress-new-category-name" name="wikipress_wiki[new_category]" type="text" placeholder="<?php esc_attr_e( 'New category', 'wikipress' ); ?>">
+                            <label for="wikipress-new-category-name">
+                                <?php esc_html_e( 'New Category', 'wikipress' ); ?>
+                        </label>
+                    </div>
                     <div class="form-floating">
-                        <?php echo FormFieldHelper::bootstrap_select( 'wikipress_wiki[tags][]', [ 'data' => array_map( static fn( $tag ) => [ 'value' => (string) $tag->term_id, 'label' => $tag->name ], $tags ), 'open_options' => true, 'placeholder' => __( 'Search or select tags','wikipress' ),'live_search_placeholder' => __( 'Search or create tags', 'wikipress' ),'attributes' => ['id' => 'wikipress-wiki-tags'] ]); ?>
-                        <label for="wikipress-wiki-tags">
-                            <?php esc_html_e( 'Wiki Tags', 'wikipress' ); ?>
+                        <select class="form-select" id="wikipress-new-category-parent" name="wikipress_wiki[new_category_parent]">
+                            <option value="0">
+                                <?php esc_html_e( 'No parent', 'wikipress' ); ?>
+                            </option>
+                            <?php self::render_category_options( $categories ); ?>
+                        </select>
+                        <label for="wikipress-new-category-parent">
+                            <?php esc_html_e( 'Parent Category', 'wikipress' ); ?>
                         </label>
                     </div>
                     <div class="form-text">
-                        <?php esc_html_e( 'Search existing tags or create a new tag from the picker.', 'wikipress' ); ?>
+                        <?php esc_html_e( 'Optionally create a category and place it in the selected branch.', 'wikipress' ); ?>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-floating">
+                            <?php echo FormFieldHelper::bootstrap_select( 'wikipress_wiki[tags][]', [ 'data' => array_map( static fn( $tag ) => [ 'value' => (string) $tag->term_id, 'label' => $tag->name ], $tags ), 'open_options' => true, 'placeholder' => __( 'Search or select tags','wikipress' ),'live_search_placeholder' => __( 'Search or create tags', 'wikipress' ),'attributes' => ['id' => 'wikipress-wiki-tags'] ]); ?>
+                            <label for="wikipress-wiki-tags">
+                                <?php esc_html_e( 'Wiki Tags', 'wikipress' ); ?>
+                            </label>
+                        </div>
+                        <div class="form-text">
+                            <?php esc_html_e( 'Search existing tags or create a new tag from the picker.', 'wikipress' ); ?>
+                        </div>
                     </div>
                 </div>
                 <div class="col-12">
