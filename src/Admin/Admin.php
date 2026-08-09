@@ -11,13 +11,14 @@ namespace TrilBDev\WikiPress\Admin;
 
 use TrilBDev\WikiPress\Includes\Settings\Settings;
 use TrilBDev\WikiPress\Includes\Functions\Admin\FunctionsPlugins;
+use TrilBDev\WikiPress\Includes\Functions\Admin\FunctionsWiki;
 use TrilBDev\WikiPress\Includes\Functions\Helpers\AjaxHelper;
 use TrilBDev\WikiPress\Includes\Functions\Helpers\LoaderHelper;
 use TrilBDev\WikiPress\Assets\Assets;
 use TrilBDev\WikiPress\Admin\Manager\Tools\ToolsManager;
 use TrilBDev\WikiPress\Admin\Manager\Dashboard\DashboardManager;
 use TrilBDev\WikiPress\Admin\Manager\Settings\SettingsManager;
-use TrilBDev\WikiPress\Admin\Manager\Content\ContentManager;
+use TrilBDev\WikiPress\Admin\Manager\Wiki\WikiManager;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -31,11 +32,11 @@ final class Admin {
      */
     private DashboardManager $dashboard_manager;
     /**
-     * ContentManager instance for managing content-related admin pages.
+     * WikiManager instance for managing content-related admin pages.
      *
-     * @var ContentManager
+     * @var WikiManager
      */
-    private ContentManager $content_manager;
+    private WikiManager $wiki_manager;
     /**
      * SettingsManager instance for managing settings-related admin pages.
      *
@@ -60,20 +61,29 @@ final class Admin {
      * @var FunctionsPlugins
      */
     private FunctionsPlugins $plugin_functions;
+    private FunctionsWiki $wiki_functions;
 
     public function __construct( Assets $assets ) {
         $this->dashboard_manager = new DashboardManager();
-        $this->content_manager = new ContentManager();
+        $this->wiki_functions = new FunctionsWiki();
+        $this->wiki_manager = new WikiManager( $this->wiki_functions );
         $this->settings_manager = new SettingsManager();
         $this->tools_manager = new ToolsManager();
         $this->plugin_functions = new FunctionsPlugins();
         $this->loader = new LoaderHelper();
         $this->dashboard_manager->register_assets( $assets );
-        $this->content_manager->register_assets( $assets );
+        $this->wiki_manager->register_assets( $assets );
         $this->settings_manager->register_assets( $assets );
         $this->tools_manager->register_assets( $assets );
         $this->loader->register_component( $this, [
             [ 'type' => 'action', 'hook' => 'wp_ajax_wikipress_load_settings_tab', 'callback' => 'load_settings_tab' ],
+        ] );
+        $this->loader->register_component( $this->wiki_functions, [
+            [ 'type' => 'action', 'hook' => 'wp_ajax_wikipress_save_wiki_settings', 'callback' => 'save_wiki_settings' ],
+            [ 'type' => 'action', 'hook' => 'wp_ajax_wikipress_delete_wiki', 'callback' => 'delete_wiki' ],
+            [ 'type' => 'action', 'hook' => 'wp_ajax_wikipress_delete_wiki_page', 'callback' => 'delete_wiki_page' ],
+            [ 'type' => 'action', 'hook' => 'wp_ajax_wikipress_save_wiki_term', 'callback' => 'save_wiki_term' ],
+            [ 'type' => 'action', 'hook' => 'wp_ajax_wikipress_delete_wiki_term', 'callback' => 'delete_wiki_term' ],
         ] );
         $this->loader->register_component( $this->plugin_functions, [
             [ 'type' => 'action', 'hook' => 'wp_ajax_wikipress_toggle_plugin', 'callback' => 'toggle_plugin' ],
@@ -105,10 +115,10 @@ final class Admin {
      * Render the manage wikis page.
      *
      * This method is responsible for rendering the manage wikis page of the WikiPress plugin.
-     * It delegates the rendering to the ContentManager instance.
+     * It delegates the rendering to the WikiManager instance.
      */
     public function render_wikis(): void {
-        $this->content_manager->render();
+        $this->wiki_manager->render();
     }
     /**
      * Render the settings page.
@@ -145,6 +155,7 @@ final class Admin {
         $html = (string) ob_get_clean();
         AjaxHelper::success( [ 'html' => $html, 'tab' => $tab, 'layout_section' => $layout_section ] );
     }
+
     /**
      * Get the capability for a given key, with a fallback.
      *

@@ -20,7 +20,10 @@ final class Sidebar {
 				'label' => __( 'Manage Wiki', 'wikipress' ),
 				'icon' => 'fa-solid fa-file-lines',
 				'items' => [
-					'wikipress-manage' => [ 'label' => __( 'Manage Wiki', 'wikipress' ), 'icon' => 'fa-solid fa-book-open' ],
+					'wikipress-manage' => [ 'label' => __( 'Manage Wiki', 'wikipress' ), 'icon' => 'fa-solid fa-book-open-lines' ],
+					'wikipress-manage&wiki=categories' => [ 'label' => __( 'Categories', 'wikipress' ), 'icon' => 'fa-book-open-lines-category' ],
+					'wikipress-manage&wiki=tags' => [ 'label' => __( 'Tags', 'wikipress' ), 'icon' => 'fa-kit fa-solid-book-open-lines-tag' ],
+					'wikipress-manage&wiki=new' => [ 'label' => __( 'New Wiki', 'wikipress' ), 'icon' => 'fa-kit fa-solid-book-open-lines-circle-plus' ],
 				],
 			],
 			'settings' => [

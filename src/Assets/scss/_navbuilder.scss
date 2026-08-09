@@ -1,0 +1,14 @@
+.wikipress-admin {
+	[data-wikipress-menu-builder] {
+		background: var(--bs-tertiary-bg);
+		border-color: var(--bs-border-color) !important;
+	}
+
+	[data-wikipress-nav-items] {
+		min-height: 2.75rem;
+	}
+
+	[data-wikipress-nav-item] {
+		cursor: grab;
+	}
+}

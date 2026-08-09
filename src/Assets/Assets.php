@@ -58,7 +58,11 @@ final class Assets {
      * @return void
      */
     public function register_page( string $page, array $assets ): void {
-        $this->pages[ sanitize_key( $page ) ] = $assets;
+        $page = sanitize_key( $page );
+        $this->pages[ $page ] = [
+            'styles' => array_merge( $this->pages[ $page ]['styles'] ?? [], $assets['styles'] ?? [] ),
+            'scripts' => array_merge( $this->pages[ $page ]['scripts'] ?? [], $assets['scripts'] ?? [] ),
+        ];
     }
     /**
      * Returns the default assets for the plugin.
@@ -209,6 +213,12 @@ final class Assets {
                     wp_localize_script( $handle, 'wikipressSettingsTabs', $settings_config );
                 }
             }
+        }
+        if ( 'wikipress-manage' === sanitize_key( $_GET['page'] ?? '' ) && wp_script_is( 'wikipress-admin-wiki', 'enqueued' ) ) {
+            wp_localize_script( 'wikipress-admin-wiki', 'wikipressWikiManager', [
+                'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+                'nonce' => wp_create_nonce( 'wikipress_manage_wiki' ),
+            ] );
         }
     }
 }
