@@ -507,6 +507,8 @@ final class FormFieldHelper {
     private static function render_bootstrap_select( string $name, array $options ): string {
 
         $settings = [
+            'icons_base' => [ 'icons-base', 'fa-solid' ],
+            'tick_icon' => [ 'tick-icon', 'fa-check' ],
             'live_search' => [ 'live-search', true ],
             'show_selected_tags' => [ 'show-selected-tags', true ],
             'open_options' => [ 'open-options', false ],
@@ -738,6 +740,11 @@ final class FormFieldHelper {
 
                 continue;
 
+            }
+
+            if ( true === $value && str_starts_with( $key, 'data-' ) ) {
+                $output[] = esc_attr( $key ) . '="true"';
+                continue;
             }
 
             $output[] = true === $value ? esc_attr( $key ) : esc_attr( $key ) . '="' . esc_attr( (string) $value ) . '"';
