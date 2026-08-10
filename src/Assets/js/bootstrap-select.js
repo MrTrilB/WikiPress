@@ -1,4 +1,4 @@
-import Selectpicker from '@crestapps/bootstrap-select';
+import Selectpicker from '../../../node_modules/@crestapps/bootstrap-select/dist/js/bootstrap-select.min.js';
 
 const root = window.wikipressShadowRoot || document;
 
