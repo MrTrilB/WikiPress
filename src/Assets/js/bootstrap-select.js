@@ -12,13 +12,27 @@ const getOptionData = (field) => Array.from(field.options).map((option) => ({
   icon: option.dataset.icon,
 }));
 
+const initializeField = (field) => {
+  const instance = Selectpicker.getOrCreateInstance(field, {
+    source: { data: getOptionData(field) },
+  });
+
+  if (field.getRootNode?.() instanceof ShadowRoot && !instance.__wikipressShadowClickHandler) {
+    instance.__wikipressShadowClickHandler = (event) => {
+      event.preventDefault();
+      instance.toggle(event);
+    };
+    instance.button.addEventListener('click', instance.__wikipressShadowClickHandler);
+  }
+
+  return instance;
+};
+
 const initialize = (scope = root) => {
   if (!scope.querySelectorAll) return;
 
   scope.querySelectorAll('.selectpicker').forEach((field) => {
-    Selectpicker.getOrCreateInstance(field, {
-      source: { data: getOptionData(field) },
-    });
+    initializeField(field);
   });
 };
 
@@ -34,9 +48,7 @@ if (root !== document) {
       mutation.addedNodes.forEach((node) => {
         if (node.nodeType !== Node.ELEMENT_NODE) return;
         if (node.matches?.('.selectpicker')) {
-          Selectpicker.getOrCreateInstance(node, {
-            source: { data: getOptionData(node) },
-          });
+          initializeField(node);
         }
         initialize(node);
       });
