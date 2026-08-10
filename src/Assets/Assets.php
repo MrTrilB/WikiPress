@@ -8,8 +8,6 @@
  */
 namespace TrilBDev\WikiPress\Assets;
 
-use TrilBDev\WikiPress\Includes\Plugins\FontAwesome\Includes\Settings\Settings as FontAwesomeSettings;
-
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
@@ -163,43 +161,6 @@ final class Assets {
             'scripts' => array_merge( $base['scripts'] ?? [], $registered['scripts'] ?? [] ),
         ] );
 
-        $this->enqueue_fontawesome_vendor_assets();
-    }
-
-    /**
-     * Request Font Awesome through the official vendor handle.
-     *
-     * The vendor remains responsible for registering the resource URL and
-     * selecting CDN, Kit, Web Font, or SVG technology.
-     *
-     * @return void
-     */
-    private function enqueue_fontawesome_vendor_assets(): void {
-        if ( 'kit' === FontAwesomeSettings::source() && '' !== FontAwesomeSettings::kit_id() ) {
-            foreach ( [ 'font-awesome-official', 'font-awesome-official-v4shim' ] as $handle ) {
-                wp_dequeue_style( $handle );
-                wp_dequeue_script( $handle );
-            }
-
-            wp_add_inline_script(
-                'wikipress-shadow',
-                'window.wikipressFontAwesomeKit = ' . wp_json_encode([
-                    'url' => 'https://kit.fontawesome.com/' . rawurlencode( FontAwesomeSettings::kit_id() ) . '.js',
-                ]) . ';',
-                'before'
-            );
-            return;
-        }
-
-        foreach ( [ 'font-awesome-official', 'font-awesome-official-v4shim' ] as $handle ) {
-            if ( wp_style_is( $handle, 'registered' ) || wp_style_is( $handle, 'enqueued' ) ) {
-                wp_enqueue_style( $handle );
-            }
-
-            if ( wp_script_is( $handle, 'registered' ) || wp_script_is( $handle, 'enqueued' ) ) {
-                wp_enqueue_script( $handle );
-            }
-        }
     }
     /**
      * Enqueues the registered assets for a given context.

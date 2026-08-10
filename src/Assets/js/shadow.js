@@ -15,15 +15,16 @@
         return id.replace(/-(css|js)$/, '').replace(/^wp-(style|script)-/, '');
     };
 
-    const isFontAwesomeAsset = (element) => {
-        const source = `${element.id || ''} ${element.href || ''} ${element.src || ''} ${element.textContent || ''}`.toLowerCase();
-        return source.includes('fontawesome') || source.includes('font-awesome') || source.includes('kit.fontawesome.com');
+    const isFontAwesomeVendorAsset = (element) => {
+        const handle = getHandle(element);
+        return handle === 'font-awesome-kit' || handle === 'font-awesome-cdn';
     };
 
     const getAssetPromise = (element) => element.__wikipressShadowPromise || Promise.resolve();
 
     const injectFontAwesomeKit = () => {
-        const url = window.wikipressFontAwesomeKit?.url;
+        const kitId = window.wikipressFontAwesomeSettings?.kit_id;
+        const url = kitId ? `https://kit.fontawesome.com/${encodeURIComponent(kitId)}.js` : '';
         if (!url || [...shadowRoot.querySelectorAll('script[data-wikipress-fontawesome-kit]')].some((script) => script.src === url)) return Promise.resolve();
 
         const script = document.createElement('script');
@@ -40,7 +41,7 @@
 
     const injectCss = (element) => {
         const handle = getHandle(element);
-        if (!element.href || (!handle.startsWith('wikipress-') && !isFontAwesomeAsset(element))) return Promise.resolve();
+        if (!element.href || (!handle.startsWith('wikipress-') && !isSelectedFontAwesomeVendor(element))) return Promise.resolve();
         const existing = [...shadowRoot.querySelectorAll('link[rel="stylesheet"]')].find((link) => link.href === element.href);
         if (existing) return getAssetPromise(existing);
 
@@ -58,7 +59,7 @@
 
     const injectScriptMirror = (element) => {
         const handle = getHandle(element);
-        if (!element.src || !handle.startsWith('wikipress-') || isFontAwesomeAsset(element)) return Promise.resolve();
+        if (!element.src || (!handle.startsWith('wikipress-') && !isSelectedFontAwesomeVendor(element))) return Promise.resolve();
         const existing = [...shadowRoot.querySelectorAll('script[data-wikipress-shadow-asset]')].find((script) => script.src === element.src);
         if (existing) return getAssetPromise(existing);
 
@@ -79,20 +80,26 @@
         return handle === 'wikipress-bootstrap' || handle === 'wikipress-bootstrap-select';
     };
 
-    const loadInitialAssets = async () => {
-        await injectFontAwesomeKit();
+    const isSelectedFontAwesomeVendor = (element) => {
+        const source = window.wikipressFontAwesomeSettings?.source;
+        const kitId = window.wikipressFontAwesomeSettings?.kit_id;
+        if (kitId) return false;
+        return getHandle(element) === ('kit' === source ? 'font-awesome-kit' : 'font-awesome-cdn');
+    };
 
+    const loadInitialAssets = async () => {
         const styles = [...document.querySelectorAll('link[rel="stylesheet"]')];
         const scripts = [...document.querySelectorAll('script[src]')];
         const priorityStyles = styles.filter(isPriorityAsset);
         const priorityScripts = scripts.filter(isPriorityAsset);
         const otherStyles = styles.filter((element) => !isPriorityAsset(element));
-        const otherScripts = scripts.filter((element) => !isPriorityAsset(element));
+        const otherScripts = scripts.filter((element) => !isPriorityAsset(element) && (!isFontAwesomeVendorAsset(element) || isSelectedFontAwesomeVendor(element)));
 
         await Promise.all(priorityStyles.map(injectCss));
         for (const script of priorityScripts) {
             await injectScriptMirror(script);
         }
+        await injectFontAwesomeKit();
 
         otherStyles.forEach(injectCss);
         for (const script of otherScripts) {
@@ -152,7 +159,7 @@
                 if (node.matches?.('link[rel="stylesheet"]')) injectCss(node);
                 if (node.matches?.('script[src]')) {
                     initialAssetsReady.then(() => injectScriptMirror(node));
-                    if (isFontAwesomeAsset(node)) node.addEventListener('load', renderIcons, { once: true });
+                    if (isFontAwesomeVendorAsset(node)) node.addEventListener('load', renderIcons, { once: true });
                 }
             });
         });

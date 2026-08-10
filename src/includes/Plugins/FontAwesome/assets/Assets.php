@@ -3,6 +3,7 @@
 namespace TrilBDev\WikiPress\Includes\Plugins\FontAwesome\Assets;
 
 use TrilBDev\WikiPress\Includes\Functions\Helpers\LoaderHelper;
+use TrilBDev\WikiPress\Includes\Plugins\FontAwesome\Includes\Settings\Settings as FontAwesomeSettings;
 
 final class Assets {
     private LoaderHelper $loader;
@@ -13,8 +14,53 @@ final class Assets {
 
     public function register(): void {
         $this->loader->register_component( $this, [
-            [ 'type' => 'action', 'hook' => 'admin_enqueue_scripts', 'callback' => 'enqueue_icon_picker' ],
+            [ 'type' => 'action', 'hook' => 'admin_enqueue_scripts', 'callback' => 'enqueue_admin_assets' ],
         ] )->run();
+    }
+
+    public function enqueue_admin_assets( string $hook_suffix = '' ): void {
+        $this->enqueue_fontawesome_vendor_assets( $hook_suffix );
+        $this->enqueue_icon_picker();
+    }
+
+    private function enqueue_fontawesome_vendor_assets( string $hook_suffix ): void {
+        $page = sanitize_key( $_GET['page'] ?? '' );
+        if ( false === strpos( $hook_suffix, 'wikipress' ) && 0 !== strpos( $page, 'wikipress' ) ) {
+            return;
+        }
+
+        $source = FontAwesomeSettings::source();
+        $kit_id = FontAwesomeSettings::kit_id();
+        $use_kit = '' !== $kit_id;
+
+        if ( $use_kit ) {
+            foreach ( [ 'font-awesome-kit', 'font-awesome-cdn' ] as $handle ) {
+                wp_dequeue_style( $handle );
+                wp_dequeue_script( $handle );
+            }
+        }
+
+        wp_add_inline_script(
+            'wikipress-shadow',
+            'window.wikipressFontAwesomeSettings = ' . wp_json_encode( [
+                'source' => $source,
+                'kit_id' => $kit_id,
+            ] ) . ';',
+            'before'
+        );
+
+        if ( $use_kit ) {
+            return;
+        }
+
+        $handle = 'kit' === $source ? 'font-awesome-kit' : 'font-awesome-cdn';
+        if ( wp_style_is( $handle, 'registered' ) || wp_style_is( $handle, 'enqueued' ) ) {
+                wp_enqueue_style( $handle );
+        }
+
+        if ( wp_script_is( $handle, 'registered' ) || wp_script_is( $handle, 'enqueued' ) ) {
+            wp_enqueue_script( $handle );
+        }
     }
 
     public function enqueue_icon_picker(): void {
