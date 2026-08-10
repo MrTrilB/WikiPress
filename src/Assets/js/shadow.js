@@ -22,6 +22,22 @@
 
     const getAssetPromise = (element) => element.__wikipressShadowPromise || Promise.resolve();
 
+    const injectFontAwesomeKit = () => {
+        const url = window.wikipressFontAwesomeKit?.url;
+        if (!url || [...shadowRoot.querySelectorAll('script[data-wikipress-fontawesome-kit]')].some((script) => script.src === url)) return Promise.resolve();
+
+        const script = document.createElement('script');
+        script.src = url;
+        script.async = false;
+        script.dataset.wikipressFontawesomeKit = 'true';
+        script.__wikipressShadowPromise = new Promise((resolve) => {
+            script.addEventListener('load', resolve, { once: true });
+            script.addEventListener('error', resolve, { once: true });
+        });
+        shadowRoot.appendChild(script);
+        return script.__wikipressShadowPromise;
+    };
+
     const injectCss = (element) => {
         const handle = getHandle(element);
         if (!element.href || (!handle.startsWith('wikipress-') && !isFontAwesomeAsset(element))) return Promise.resolve();
@@ -64,6 +80,8 @@
     };
 
     const loadInitialAssets = async () => {
+        await injectFontAwesomeKit();
+
         const styles = [...document.querySelectorAll('link[rel="stylesheet"]')];
         const scripts = [...document.querySelectorAll('script[src]')];
         const priorityStyles = styles.filter(isPriorityAsset);

@@ -8,6 +8,8 @@
  */
 namespace TrilBDev\WikiPress\Assets;
 
+use TrilBDev\WikiPress\Includes\Plugins\FontAwesome\Includes\Settings\Settings as FontAwesomeSettings;
+
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
@@ -173,6 +175,22 @@ final class Assets {
      * @return void
      */
     private function enqueue_fontawesome_vendor_assets(): void {
+        if ( 'kit' === FontAwesomeSettings::source() && '' !== FontAwesomeSettings::kit_id() ) {
+            foreach ( [ 'font-awesome-official', 'font-awesome-official-v4shim' ] as $handle ) {
+                wp_dequeue_style( $handle );
+                wp_dequeue_script( $handle );
+            }
+
+            wp_add_inline_script(
+                'wikipress-shadow',
+                'window.wikipressFontAwesomeKit = ' . wp_json_encode([
+                    'url' => 'https://kit.fontawesome.com/' . rawurlencode( FontAwesomeSettings::kit_id() ) . '.js',
+                ]) . ';',
+                'before'
+            );
+            return;
+        }
+
         foreach ( [ 'font-awesome-official', 'font-awesome-official-v4shim' ] as $handle ) {
             if ( wp_style_is( $handle, 'registered' ) || wp_style_is( $handle, 'enqueued' ) ) {
                 wp_enqueue_style( $handle );
