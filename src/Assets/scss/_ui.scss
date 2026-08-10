@@ -11,6 +11,13 @@
 	display: flex;
 	flex-direction: column;
 
+	&.wrap {
+		box-sizing: border-box;
+		max-width: none;
+		margin: 0;
+		width: auto;
+	}
+
 	.wikipress-header {
 		background: var(--wikipress-header);
 		box-shadow: 0 0.25rem 1rem rgba(16, 42, 67, 0.16);
