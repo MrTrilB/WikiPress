@@ -47,7 +47,23 @@ class WikiForms {
                             <label for="wikipress-wiki-tags">
                                 <?php esc_html_e( 'Wiki Tags', 'wikipress' ); ?>
                             </label>
-                       
+                       <select
+                            class="selectpicker"
+                            multiple
+                            data-icon-base="fa-solid"
+                            data-tick-icon="fa-check"
+                            data-live-search="true"
+                            data-show-selected-tags="true"
+                            data-open-options="true"
+                            data-live-search-placeholder="Search or create tags"
+                            placeholder="Search or create tags">
+                            <option selected data-icon="fa-seedling">Orchard Core</option>
+                            <option selected data-icon="fa-cubes">Bootstrap 5</option>
+                            <option data-icon="fa-code">Vue</option>
+                            <option data-icon="fa-tags">Taxonomy</option>
+                            <option data-icon="fa-circle-plus">Open option</option>
+                            <option data-icon="fa-wand-magic-sparkles">Editor UX</option>
+                        </select>
                         <div class="form-text">
                             <?php esc_html_e( 'Search existing tags or create a new tag from the picker.', 'wikipress' ); ?>
                         </div>
