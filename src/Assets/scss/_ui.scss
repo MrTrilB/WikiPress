@@ -74,7 +74,9 @@
 	}
 
 	.wikipress-shell {
-		max-width: 1500px;
+		width: 100%;
+		max-width: none;
+		margin-inline: 0;
 		position: relative;
 	}
 
