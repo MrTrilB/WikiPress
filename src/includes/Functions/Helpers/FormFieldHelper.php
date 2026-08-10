@@ -106,12 +106,6 @@ final class FormFieldHelper {
             'teeny' => false,
             'quicktags' => false,
             'wpautop' => true,
-            'tinymce' => [
-                'toolbar1' => 'undo redo | formatselect | bold italic underline | bullist numlist | link table | code',
-                'toolbar2' => '',
-                'statusbar' => true,
-                'branding' => false,
-            ],
         ];
 
         echo '<div class="wikipress-wp-editor">';
@@ -120,7 +114,40 @@ final class FormFieldHelper {
             wp_enqueue_editor();
         }
         if ( function_exists( 'wp_editor' ) ) {
+            $format_tinymce = static function ( array $settings, string $current_editor_id ) use ( $editor_id ): array {
+                if ( $current_editor_id !== $editor_id ) {
+                    return $settings;
+                }
+
+                return array_merge(
+                    $settings,
+                    [
+                        'remove_linebreaks' => false,
+                        'gecko_spellcheck' => false,
+                        'keep_styles' => true,
+                        'accessibility_focus' => true,
+                        'tabfocus_elements' => 'major-publishing-actions',
+                        'media_strict' => false,
+                        'paste_remove_styles' => false,
+                        'paste_remove_spans' => false,
+                        'paste_strip_class_attributes' => 'none',
+                        'paste_text_use_dialog' => true,
+                        'wpeditimage_disable_captions' => true,
+                        'plugins' => 'tabfocus,paste,media,fullscreen,wordpress,wpeditimage,wpgallery,wplink,wpdialogs,wpfullscreen',
+                        'wpautop' => true,
+                        'apply_source_formatting' => false,
+                        'block_formats' => 'Paragraph=p; Heading 3=h3; Heading 4=h4',
+                        'toolbar1' => 'bold,italic,strikethrough,bullist,numlist,blockquote,hr,alignleft,aligncenter,alignright,link,unlink,wp_more,spellchecker,wp_fullscreen,wp_adv',
+                        'toolbar2' => 'formatselect,underline,alignjustify,forecolor,pastetext,removeformat,charmap,outdent,indent,undo,redo,wp_help',
+                        'toolbar3' => '',
+                        'toolbar4' => '',
+                    ]
+                );
+            };
+
+            add_filter( 'tiny_mce_before_init', $format_tinymce, 10, 2 );
             wp_editor( $value, $editor_id, $editor_settings );
+            remove_filter( 'tiny_mce_before_init', $format_tinymce, 10 );
         } else {
             printf( '<textarea class="form-control" id="%1$s" name="%2$s" rows="%3$d">%4$s</textarea>', esc_attr( $editor_id ), esc_attr( $name ), max( 1, $rows ), esc_textarea( $value ) );
         }
