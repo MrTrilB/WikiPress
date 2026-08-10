@@ -1,6 +1,6 @@
 (() => {
     const host = document.querySelector('.wikipress-admin');
-    if (!host || !host.attachShadow || host.shadowRoot) return;
+    if (!host || !host.attachShadow || host.shadowRoot || host.querySelector('.wikipress-wp-editor')) return;
 
     const shadowRoot = host.attachShadow({ mode: 'open' });
     const shell = document.createElement('div');
