@@ -82,7 +82,7 @@ final class Assets {
                 [
                     'handle' => 'wikipress-bootstrap-select',
                     'src' => WIKIPRESS_URL . 'src/Assets/dist/css/bootstrap-select.css',
-                    'version' => '1.2.1',
+                    'version' => '1.2.2',
                     'deps' => [
                         'wikipress-bootstrap'
                         ]
@@ -98,7 +98,7 @@ final class Assets {
                 [
                     'handle' => 'wikipress-bootstrap-select',
                     'src' => WIKIPRESS_URL . 'src/Assets/dist/js/bootstrap-select.js',
-                    'version' => '1.2.1',
+                    'version' => '1.2.2',
                     'deps' => [ 'wikipress-bootstrap' ],
                     'in_footer' => true
                 ],
