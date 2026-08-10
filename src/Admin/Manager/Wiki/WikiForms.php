@@ -36,16 +36,14 @@ class WikiForms {
                             <legend class="float-none w-auto px-2 fs-6 mb-0">
                                 <?php esc_html_e( 'Wiki Categories', 'wikipress' ); ?>
                             </legend>
-                            <div class="vstack gap-2" data-wikipress-category-tree>
-                                <?php self::render_category_tree( $categories ); ?>
-                            </div>
+                            <?php echo FormFieldHelper::bootstrap_multiselect( 'wikipress_wiki[categories][]', [ 'data' => self::category_options( $categories ), 'live_search' => true, 'placeholder' => __( 'Select categories', 'wikipress' ), 'live_search_placeholder' => __( 'Search categories', 'wikipress' ), 'attributes' => [ 'id' => 'wikipress-wiki-categories', 'data-wikipress-category-select' => 'true', 'data-wikipress-taxonomy-endpoint' => rest_url( 'wp/v2/' . Taxonomy::CATEGORY ), 'data-wikipress-rest-nonce' => wp_create_nonce( 'wp_rest' ) ] ] ); ?>
                         </fieldset>
                     </div>
                     <div class="col-12">
                         <label for="wikipress-wiki-tags">
                             <?php esc_html_e( 'Wiki Tags', 'wikipress' ); ?>
                         </label>
-                        <?php echo FormFieldHelper::bootstrap_multiselect( 'wikipress_wiki[tags][]', [ 'data' => array_map( static fn( $tag ) => [ 'value' => (string) $tag->term_id, 'label' => $tag->name ], $tags ), 'open_options' => true, 'placeholder' => __( 'Search or select tags','wikipress' ),'live_search_placeholder' => __( 'Search or create tags', 'wikipress' ),'attributes' => ['id' => 'wikipress-wiki-tags'] ]); ?>
+                        <?php echo FormFieldHelper::bootstrap_multiselect( 'wikipress_wiki[tags][]', [ 'data' => array_map( static fn( $tag ) => [ 'value' => (string) $tag->term_id, 'label' => $tag->name ], $tags ), 'open_options' => true, 'placeholder' => __( 'Search or select tags','wikipress' ),'live_search_placeholder' => __( 'Search or create tags', 'wikipress' ), 'attributes' => [ 'id' => 'wikipress-wiki-tags', 'data-wikipress-taxonomy-endpoint' => rest_url( 'wp/v2/' . Taxonomy::TAG ), 'data-wikipress-taxonomy-create' => 'true', 'data-wikipress-rest-nonce' => wp_create_nonce( 'wp_rest' ) ] ]); ?>
                         <div class="form-text">
                             <?php esc_html_e( 'Search existing tags or create a new tag from the picker.', 'wikipress' ); ?>
                         </div>
@@ -92,25 +90,22 @@ class WikiForms {
         printf( '<div class="col-md-6"><div class="form-floating"><input class="form-control" id="%1$s" name="wikipress_wiki[%2$s]" type="text" value="%3$s" placeholder="%4$s"%5$s><label for="%1$s">%4$s</label></div></div>', esc_attr( $id ), esc_attr( $key ), esc_attr( $value ), esc_attr( $label ), $required ? ' required' : '' );
     }
 
-    private static function render_category_tree( array $categories, int $parent = 0, int $level = 0 ): void {
-        foreach ( $categories as $category ) {
-            if ( (int) $category->parent !== $parent ) {
-                continue;
-            }
-            $id = 'wikipress-category-' . (int) $category->term_id;
-            printf( '<div class="form-check" style="padding-left:%drem"><input class="form-check-input" id="%1$s" name="wikipress_wiki[categories][]" type="checkbox" value="%2$d"><label class="form-check-label" for="%1$s">%3$s</label></div>', 1.5 + ( $level * 1.25 ), (int) $category->term_id, esc_html( $category->name ) );
-            self::render_category_tree( $categories, (int) $category->term_id, $level + 1 );
-        }
-    }
+    private static function category_options( array $categories, int $parent = 0, int $level = 0 ): array {
+        $options = [];
 
-    private static function render_category_options( array $categories, int $parent = 0, int $level = 0 ): void {
         foreach ( $categories as $category ) {
             if ( (int) $category->parent !== $parent ) {
                 continue;
             }
-            printf( '<option value="%1$d">%2$s%3$s</option>', (int) $category->term_id, str_repeat( '-- ', $level ), esc_html( $category->name ) );
-            self::render_category_options( $categories, (int) $category->term_id, $level + 1 );
+
+            $options[] = [
+                'value' => (string) $category->term_id,
+                'label' => ( $level > 0 ? str_repeat( '-- ', $level ) : '' ) . $category->name,
+            ];
+            $options = array_merge( $options, self::category_options( $categories, (int) $category->term_id, $level + 1 ) );
         }
+
+        return $options;
     }
 
     private static function render_media_field( string $key, string $label, string $description ): void {

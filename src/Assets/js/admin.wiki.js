@@ -1,5 +1,61 @@
+const getTaxonomyOptions = async (field, search = '') => {
+  const endpoint = field.dataset.wikipressTaxonomyEndpoint;
+  if (!endpoint) return [];
+
+  const url = new URL(endpoint, window.location.href);
+  url.searchParams.set('per_page', '100');
+  url.searchParams.set('orderby', 'name');
+  url.searchParams.set('order', 'asc');
+  if (search) url.searchParams.set('search', search);
+
+  const response = await fetch(url.toString(), { headers: { Accept: 'application/json' } });
+  if (!response.ok) throw new Error(`Taxonomy request failed: ${response.status}`);
+
+  const terms = await response.json();
+  return Array.isArray(terms) ? terms.map((term) => ({ value: String(term.id), text: term.name })) : [];
+};
+
+const getTaxonomySource = (field) => ({
+  data: (callback) => callback(Array.from(field.options).map((option) => ({
+    value: option.value,
+    text: option.textContent,
+    selected: option.selected,
+    disabled: option.disabled,
+    hidden: option.hidden,
+    title: option.title,
+    icon: option.dataset.icon,
+  }))),
+  search: (callback, ...parameters) => {
+    getTaxonomyOptions(field, parameters[1]).then(callback).catch(() => callback([]));
+  },
+  ...(field.dataset.wikipressTaxonomyCreate === 'true' ? {
+    create: async (callback, searchValue) => {
+      const response = await fetch(field.dataset.wikipressTaxonomyEndpoint, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          'X-WP-Nonce': field.dataset.wikipressRestNonce || '',
+        },
+        body: JSON.stringify({ name: searchValue }),
+      });
+      if (!response.ok) return;
+
+      const term = await response.json();
+      callback({ text: term.name, value: String(term.id) });
+    },
+  } : {}),
+});
+
+const initializeTaxonomyPickers = (root) => {
+  root.querySelectorAll('[data-wikipress-taxonomy-endpoint]').forEach((field) => {
+    window.wikipressBootstrapSelect?.initialize(field, { source: getTaxonomySource(field) });
+  });
+};
+
 document.addEventListener('DOMContentLoaded', () => {
   const root = window.wikipressShadowRoot || document;
+  initializeTaxonomyPickers(root);
   root.querySelectorAll('.wikipress-inline-form').forEach((form) => {
     form.addEventListener('submit', () => {
       const submit = form.querySelector('[type="submit"]');

@@ -12,9 +12,10 @@ const getOptionData = (field) => Array.from(field.options).map((option) => ({
   icon: option.dataset.icon,
 }));
 
-const initializeField = (field) => {
+const initializeField = (field, options = {}) => {
   const instance = Selectpicker.getOrCreateInstance(field, {
     source: { data: getOptionData(field) },
+    ...options,
   });
 
   if (field.getRootNode?.() instanceof ShadowRoot && !instance.__wikipressShadowClickHandler) {
@@ -26,6 +27,10 @@ const initializeField = (field) => {
   }
 
   return instance;
+};
+
+window.wikipressBootstrapSelect = {
+  initialize: initializeField,
 };
 
 const initialize = (scope = root) => {
