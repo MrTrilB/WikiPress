@@ -83,7 +83,7 @@ class WikiForms {
                     </fieldset>
                 </div>
                 <?php if ( $fields ) : ?><div class="col-12"><h2 class="h5"><?php esc_html_e( 'Wiki Plugin Fields', 'wikipress' ); ?></h2><?php echo $fields; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div><?php endif; ?>
-            </div></div>
+            </div>
             <div class="card-footer d-flex justify-content-end gap-2"><a class="btn btn-outline-secondary" href="<?php echo esc_url( admin_url( 'admin.php?page=wikipress-manage' ) ); ?>"><?php esc_html_e( 'Cancel', 'wikipress' ); ?></a><button class="btn btn-primary" type="submit"><?php esc_html_e( 'Create Wiki', 'wikipress' ); ?></button></div>
         </form>
         <?php
