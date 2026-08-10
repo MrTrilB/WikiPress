@@ -8,6 +8,8 @@
 	min-height: 100vh;
 	background: var(--wikipress-paper);
 	color: var(--wikipress-ink);
+	display: flex;
+	flex-direction: column;
 
 	.wikipress-header {
 		background: var(--wikipress-header);
@@ -74,6 +76,7 @@
 	}
 
 	.wikipress-admin-main {
+		flex: 1 0 auto;
 		min-height: calc(100vh - 10rem);
 	}
 
