@@ -107,6 +107,7 @@ final class Settings {
                     'type' => 'multiselect',
                     'dropup_auto' => false,
                     'show_tick' => true,
+                    'selection_indicator' => 'checkbox',
                     'options' => self::plugin_options(),
                     'default' => self::DEFAULT_PLUGINS,
                 ],
