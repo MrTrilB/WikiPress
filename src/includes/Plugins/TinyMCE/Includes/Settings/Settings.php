@@ -106,6 +106,7 @@ final class Settings {
                     'tooltip' => __( 'Only selected local plugin files are requested when an editor starts.', 'wikipress' ),
                     'type' => 'multiselect',
                     'dropup_auto' => false,
+                    'show_ticks' => true,
                     'options' => self::plugin_options(),
                     'default' => self::DEFAULT_PLUGINS,
                 ],
