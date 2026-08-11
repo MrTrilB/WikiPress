@@ -82,16 +82,6 @@ final class Settings {
             'layout' => 'table',
             'fields' => [
                 [
-                    'key' => 'tinymce_plugins',
-                    'label' => __( 'Enabled TinyMCE plugins', 'wikipress' ),
-                    'description' => __( 'Choose which bundled TinyMCE plugins are available to the editor.', 'wikipress' ),
-                    'tooltip' => __( 'Only selected local plugin files are requested when an editor starts.', 'wikipress' ),
-                    'type' => 'multiselect',
-                    'dropup_auto' => false,
-                    'options' => self::plugin_options(),
-                    'default' => self::DEFAULT_PLUGINS,
-                ],
-                [
                     'key' => 'tinymce_content_skin',
                     'label' => __( 'Default content skin', 'wikipress' ),
                     'description' => __( 'Choose the stylesheet used inside the editor content area.', 'wikipress' ),
@@ -108,6 +98,16 @@ final class Settings {
                     'type' => 'select',
                     'options' => self::skin_options( self::UI_SKINS ),
                     'default' => 'oxide',
+                ],
+                [
+                    'key' => 'tinymce_plugins',
+                    'label' => __( 'Enabled TinyMCE plugins', 'wikipress' ),
+                    'description' => __( 'Choose which bundled TinyMCE plugins are available to the editor.', 'wikipress' ),
+                    'tooltip' => __( 'Only selected local plugin files are requested when an editor starts.', 'wikipress' ),
+                    'type' => 'multiselect',
+                    'dropup_auto' => false,
+                    'options' => self::plugin_options(),
+                    'default' => self::DEFAULT_PLUGINS,
                 ],
             ],
         ];
