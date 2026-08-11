@@ -1,7 +1,7 @@
 <?php
 /**
  * Language internationalization (i18n) for the Demo plugin.
- * @package TrilBDev
+ * @package WikiPress
  * @subpackage Admin\Wiki\Plugins\Demo\Includes
  * @since 1.0.0
  * 
@@ -14,7 +14,7 @@ class I18n {
      */
     public static function load_textdomain(): void {
         load_plugin_textdomain(
-            'wiki-demo-plugin',
+            'wikipress',
             false,
             dirname( plugin_basename( WIKIPRESS_FILE ) ) . '/src/includes/Plugins/Demo/Language/'
         );

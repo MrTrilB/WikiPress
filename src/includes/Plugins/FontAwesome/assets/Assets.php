@@ -86,11 +86,11 @@ final class Assets {
             'ajax_url' => admin_url( 'admin-ajax.php' ),
             'nonce' => wp_create_nonce( 'wikipress_fontawesome_picker' ),
             'strings' => [
-                'search_placeholder' => __( 'Search icons...', 'wikipress-fontawesome' ),
-                'no_icons_found' => __( 'No icons found', 'wikipress-fontawesome' ),
-                'loading' => __( 'Loading...', 'wikipress-fontawesome' ),
-                'select_icon' => __( 'Select Icon', 'wikipress-fontawesome' ),
-                'close' => __( 'Close', 'wikipress-fontawesome' ),
+                'search_placeholder' => __( 'Search icons...', 'wikipress' ),
+                'no_icons_found' => __( 'No icons found', 'wikipress' ),
+                'loading' => __( 'Loading...', 'wikipress' ),
+                'select_icon' => __( 'Select Icon', 'wikipress' ),
+                'close' => __( 'Close', 'wikipress' ),
             ],
         ] );
     }

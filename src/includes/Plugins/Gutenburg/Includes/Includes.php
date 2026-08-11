@@ -2,7 +2,7 @@
 /**
  * TrilB.Dev Plugin - Demo Wiki Plugin Includes
  *
- * @package TrilBDev
+ * @package WikiPress
  * @subpackage Admin\Wiki\Plugins\Demo\Includes
  * @since 1.0.0
  */

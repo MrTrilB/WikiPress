@@ -2,7 +2,7 @@
 /**
  * Docs Table of Contents widget template.
  *
- * @package TrilBDev
+ * @package WikiPress
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -21,8 +21,8 @@ if ( empty( $context ) || ! is_array( $context ) ) {
 
 $items           = isset( $context['items'] ) && is_array( $context['items'] ) ? $context['items'] : [];
 $has_items       = ! empty( $context['has_items'] ) && ! empty( $items );
-$heading         = isset( $context['heading'] ) ? (string) $context['heading'] : __( 'Table of Contents', 'trilbdev' );
-$wrapper_classes = isset( $context['wrapper_classes'] ) && is_array( $context['wrapper_classes'] ) ? $context['wrapper_classes'] : [ 'trilbdev-docs-toc' ];
+    $heading         = isset( $context['heading'] ) ? (string) $context['heading'] : __( 'Table of Contents', 'wikipress' );
+    $wrapper_classes = isset( $context['wrapper_classes'] ) && is_array( $context['wrapper_classes'] ) ? $context['wrapper_classes'] : [ 'wikipress-docs-toc' ];
 
 if ( ! $has_items ) {
     return;

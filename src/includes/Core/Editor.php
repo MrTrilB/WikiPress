@@ -3,6 +3,7 @@
 namespace TrilBDev\WikiPress\Includes\Core;
 
 use TrilBDev\WikiPress\Includes\Functions\Helpers\SanitizationHelper;
+use TrilBDev\WikiPress\Includes\Functions\Helpers\FormFieldHelper;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -42,7 +43,7 @@ final class Editor {
         <form method="post" class="card shadow-sm">
             <?php wp_nonce_field( 'wikipress_save_wiki_page', 'wikipress_save_wiki_page_nonce' ); ?>
             <input type="hidden" name="wikipress_action" value="save_wiki_page">
-            <div class="card-body"><div class="mb-3"><label class="form-label" for="wikipress-page-title"><?php esc_html_e( 'Page Title', 'wikipress' ); ?></label><input class="form-control" id="wikipress-page-title" name="wikipress_page[title]" value="<?php echo esc_attr( $page ? $page->post_title : '' ); ?>" required></div><?php wp_editor( $page ? $page->post_content : '', 'wikipress-page-content', [ 'textarea_name' => 'wikipress_page[content]', 'textarea_rows' => 14, 'media_buttons' => true ] ); ?></div>
+            <div class="card-body"><div class="mb-3"><label class="form-label" for="wikipress-page-title"><?php esc_html_e( 'Page Title', 'wikipress' ); ?></label><input class="form-control" id="wikipress-page-title" name="wikipress_page[title]" value="<?php echo esc_attr( $page ? $page->post_title : '' ); ?>" required></div><?php FormFieldHelper::tinymce( 'wikipress-page-content', 'wikipress_page[content]', __( 'Page Content', 'wikipress' ), $page ? $page->post_content : '', 14, true ); ?></div>
             <div class="card-footer d-flex justify-content-end gap-2"><a class="btn btn-outline-secondary" href="<?php echo esc_url( admin_url( 'admin.php?page=wikipress-manage' ) ); ?>"><?php esc_html_e( 'Cancel', 'wikipress' ); ?></a><button class="btn btn-primary" type="submit"><?php echo esc_html( $page ? __( 'Save Page', 'wikipress' ) : __( 'Create Page', 'wikipress' ) ); ?></button></div>
         </form>
         <?php

@@ -1,7 +1,7 @@
 <?php
 /**
  * Settings for the User Roles Manager plugin.
- * @package TrilBDev
+ * @package WikiPress
  * @subpackage Admin\Wiki\Plugins\UserRolesManager\Includes
  * @since 1.0.0
  */

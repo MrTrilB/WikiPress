@@ -15,10 +15,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class WikiRelated extends Widgets {
 
-    public const SLUG = 'trilbdev_wiki_related';
+    public const SLUG = 'wikipress_wiki_related';
 
     protected function get_default_title(): string {
-        return __( 'Wiki Related', 'trilbdev' );
+        return __( 'Wiki Related', 'wikipress' );
     }
 
     protected function get_default_icon(): string {
@@ -26,7 +26,7 @@ class WikiRelated extends Widgets {
     }
 
     protected function get_default_category(): string {
-        return 'trilbdev-wiki';
+        return 'wikipress-wiki';
     }
 
     /**
@@ -37,12 +37,12 @@ class WikiRelated extends Widgets {
     }
 
     protected function register_controls(): void {
-        $this->start_controls_section( 'content_section', [ 'label' => __( 'Content', 'trilbdev' ) ] );
+        $this->start_controls_section( 'content_section', [ 'label' => __( 'Content', 'wikipress' ) ] );
 
         $this->add_control(
             'limit',
             [
-                'label'   => __( 'Limit', 'trilbdev' ),
+                'label'   => __( 'Limit', 'wikipress' ),
                 'type'    => Controls_Manager::NUMBER,
                 'default' => 5,
                 'min'     => 1,
@@ -72,7 +72,7 @@ class WikiRelated extends Widgets {
          * @param array<string, mixed> $settings Widget settings.
          * @param self                 $widget   Widget instance.
          */
-        $context = \apply_filters( 'trilbdev/elementor/widgets/wiki_related/context', $context, $settings, $this );
+        $context = \apply_filters( 'wikipress/elementor/widgets/wiki_related/context', $context, $settings, $this );
 
         Templates::render(
             'widgets/wiki/related',
@@ -120,7 +120,7 @@ class WikiRelated extends Widgets {
             'post__not_in'   => [ $post_id ],
             'posts_per_page' => $limit,
             'tax_query'      => $tax_query,
-            'meta_key'       => '_trilbdev_docs_views',
+            'meta_key'       => '_wikipress_docs_views',
             'orderby'        => [ 'meta_value_num' => 'DESC', 'date' => 'DESC' ],
         ] );
 
@@ -133,7 +133,7 @@ class WikiRelated extends Widgets {
         while ( $query->have_posts() ) {
             $query->the_post();
 
-            $views = (int) \get_post_meta( PostHelper::id(), '_trilbdev_docs_views', true );
+            $views = (int) \get_post_meta( PostHelper::id(), '_wikipress_docs_views', true );
 
             $posts[] = [
                 'id'        => PostHelper::id(),
@@ -148,8 +148,8 @@ class WikiRelated extends Widgets {
         return [
             'has_posts'       => ! empty( $posts ),
             'posts'           => $posts,
-            'heading'         => __( 'Related Wiki Posts', 'trilbdev' ),
-            'wrapper_classes' => [ 'trilbdev-related-wiki' ],
+            'heading'         => __( 'Related Wiki Posts', 'wikipress' ),
+            'wrapper_classes' => [ 'wikipress-related-wiki' ],
         ];
     }
 
@@ -159,9 +159,9 @@ class WikiRelated extends Widgets {
      * @param array<string, mixed> $settings Widget settings.
      */
     private function resolve_limit( array $settings ): int {
-        $options       = \get_option( 'trilbdev_wiki_settings', [] );
+        $options       = \get_option( 'wikipress_wiki_settings', [] );
         if ( empty( $options ) ) {
-            $options = \get_option( 'trilbdev_docs_settings', [] );
+            $options = \get_option( 'wikipress_docs_settings', [] );
         }
         $option_limit  = 0;
 

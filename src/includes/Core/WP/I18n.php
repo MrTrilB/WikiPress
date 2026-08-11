@@ -26,6 +26,10 @@ namespace TrilBDev\WikiPress\Includes\Core\WP;
  * @author     MrTrilB <mrtrilb@trilb.dev>
  */
 final class I18n {
+	/**
+	 * Default Local Translation of WikiPress
+	 * 
+	 */
 	public const DEFAULT_LOCALE = 'en_GB';
 
 	/** @var string */
@@ -52,20 +56,30 @@ final class I18n {
 		$this->languages_path = trim( $languages_path ?? $default_path, '/' );
 		$this->default_locale = str_replace( '-', '_', $default_locale );
 	}
-
+	/**
+	 * Get the text domain.
+	 *
+	 * @return string
+	 */
 	public function get_domain(): string {
 		return $this->domain;
 	}
-
+	/**
+	 * Get the languages path.
+	 *
+	 * @return string
+	 */
 	public function get_languages_path(): string {
 		return $this->languages_path;
 	}
-
+	/**
+	 * Get the default locale.
+	 *
+	 * @return string
+	 */
 	public function get_default_locale(): string {
 		return $this->default_locale;
 	}
-
-
 	/**
 	 * Load the plugin text domain for translation.
 	 *
@@ -76,7 +90,4 @@ final class I18n {
 		return load_plugin_textdomain( $this->domain, false, $this->languages_path );
 
 	}
-
-
-
 }

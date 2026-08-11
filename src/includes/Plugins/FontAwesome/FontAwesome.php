@@ -3,7 +3,7 @@
  * Font Awesome plugin integration for WikiPress.
  *
  * @package FontAwesome
- * @textdomain fontawesome
+ * @textdomain wikipress
  * @domainpath Languages
  * @author WikiPress Team
  */
@@ -80,7 +80,7 @@ final class FontAwesome implements PluginInterface, SettingsProviderInterface, S
      * @return string The plugin description.
      */
     public function get_description(): string {
-        return 'Provides Font Awesome loading, icon picking, and styling APIs for WikiPress.';
+        return __( 'Provides Font Awesome loading, icon picking, and styling APIs for WikiPress.', 'wikipress' );
     }
     /**
      * Get the plugin URI.

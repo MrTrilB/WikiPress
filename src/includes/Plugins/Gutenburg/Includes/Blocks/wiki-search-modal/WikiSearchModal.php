@@ -2,7 +2,7 @@
 /**
  * Renderer for the Wiki Search Modal block.
  *
- * @package TrilBDev\WikiPress
+ * @package WikiPress
  */
 namespace TrilBDev\WikiPress\Includes\Plugins\Gutenburg\Includes\Blocks;
 

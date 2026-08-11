@@ -65,7 +65,7 @@ abstract class Widgets extends Widget_Base {
 
         foreach ( $classes as $class ) {
             $slug = (string) constant( $class . '::SLUG' );
-            $setting_slug = str_replace( 'trilbdev_', '', $slug );
+            $setting_slug = str_replace( 'wikipress_', '', $slug );
             if ( Settings::widget_enabled( $setting_slug ) ) {
                 $manager->register( new $class() );
             }

@@ -65,7 +65,7 @@ class Demo implements PluginInterface, SettingsProviderInterface, SettingsPagePr
      * @return string The plugin description.
      */
     public function get_description(): string {
-        return 'A demonstration WikiPress extension plugin.';
+        return __( 'A demonstration WikiPress extension plugin.', 'wikipress' );
     }
     /**
      * Get the plugin URI.

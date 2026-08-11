@@ -257,12 +257,16 @@ final class SettingsPlugins {
             }
             if ( 'table' === $layout && 'select' === $type ) {
                 echo FormFieldHelper::select( $name, (array) ( $field['options'] ?? [] ), $value, [ 'id' => $id ] );
+            } elseif ( 'table' === $layout && 'multiselect' === $type ) {
+                echo FormFieldHelper::bootstrap_multiselect( $name, [ 'id' => $id, 'data' => (array) ( $field['options'] ?? [] ), 'selected' => (array) $value ] );
             } elseif ( 'table' === $layout && 'text' === $type ) {
                 echo FormFieldHelper::input( $name, is_scalar( $value ) ? (string) $value : '', [ 'id' => $id, 'type' => 'text' ] );
             } elseif ( 'table' === $layout ) {
                 echo FormFieldHelper::checkbox( $name, '1', '', [ 'id' => $id, 'checked' => ! empty( $value ) ] );
             } elseif ( 'select' === $type ) {
                 echo FormFieldHelper::select( $name, (array) ( $field['options'] ?? [] ), $value, [ 'id' => $id ] );
+            } elseif ( 'multiselect' === $type ) {
+                echo FormFieldHelper::bootstrap_multiselect( $name, [ 'id' => $id, 'data' => (array) ( $field['options'] ?? [] ), 'selected' => (array) $value ] );
             } elseif ( 'text' === $type ) {
                 echo FormFieldHelper::input( $name, is_scalar( $value ) ? (string) $value : '', [ 'id' => $id, 'type' => 'text' ] );
             }

@@ -22,9 +22,9 @@ final class Shortcodes {
             ShortcodeHelper::define(
                 'wikipress_demo',
                 [ self::class, 'render_demo' ],
-                [ 'message' => 'WikiPress Demo' ],
+                [ 'message' => __( 'WikiPress Demo', 'wikipress' ) ],
                 [
-                    'description' => 'Render a message from the WikiPress Demo plugin.',
+                    'description' => __( 'Render a message from the WikiPress Demo plugin.', 'wikipress' ),
                     'category' => 'demo',
                 ]
             ),

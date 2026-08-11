@@ -2,7 +2,7 @@
 /**
  * Docs Reading Time widget template.
  *
- * @package TrilBDev
+ * @package WikiPress
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -23,7 +23,7 @@ if ( empty( $context['has_content'] ) ) {
     return;
 }
 
-$wrapper_classes = isset( $context['wrapper_classes'] ) && is_array( $context['wrapper_classes'] ) ? $context['wrapper_classes'] : [ 'trilbdev-docs-reading-time' ];
+$wrapper_classes = isset( $context['wrapper_classes'] ) && is_array( $context['wrapper_classes'] ) ? $context['wrapper_classes'] : [ 'wikipress-docs-reading-time' ];
 $display_text    = isset( $context['display_text'] ) ? (string) $context['display_text'] : '';
 
 if ( '' === $display_text ) {

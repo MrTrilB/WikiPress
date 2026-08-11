@@ -3,7 +3,7 @@
         'name' => 'trilbdev/wikipress',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'a64eb50b4367214dca46153171f7dbb9d175e40b',
+        'reference' => '3b059be890d0e8a396065ba41e62bd915e546a37',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -31,7 +31,7 @@
         'trilbdev/wikipress' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'a64eb50b4367214dca46153171f7dbb9d175e40b',
+            'reference' => '3b059be890d0e8a396065ba41e62bd915e546a37',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

@@ -2,7 +2,7 @@
 /**
  * Register WikiPress Gutenberg blocks.
  *
- * @package TrilBDev\WikiPress
+ * @package WikiPress
  */
 namespace TrilBDev\WikiPress\Includes\Plugins\Gutenburg\Includes;
 

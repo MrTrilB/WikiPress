@@ -2,7 +2,7 @@
 /**
  * Settings for the WikiPress Elementor integration.
  *
- * @package TrilBDev\WikiPress
+ * @package WikiPress
  * @subpackage Includes\Plugins\Elementor\Includes\Settings
  * @since 1.0.0
  */

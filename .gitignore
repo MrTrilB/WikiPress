@@ -6,9 +6,11 @@ package-lock.json
 # Explicitly include widget entry bundles even if a global ignore excludes `Public`
 !src/Public
 !*build
+!*icons*
 !*bin
 !*dist
 !*public
+
 #!src/Public/js/widgets/entries/*.js
 #!src/Public/scss/entries/
 #!src/Public/scss/entries/*.scss

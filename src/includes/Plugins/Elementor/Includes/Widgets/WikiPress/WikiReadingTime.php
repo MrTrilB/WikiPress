@@ -13,10 +13,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class WikiReadingTime extends Widgets {
 
-    public const SLUG = 'trilbdev_wiki_reading_time';
+    public const SLUG = 'wikipress_wiki_reading_time';
 
     protected function get_default_title(): string {
-        return __( 'Wiki Reading Time', 'trilbdev' );
+        return __( 'Wiki Reading Time', 'wikipress' );
     }
 
     protected function get_default_icon(): string {
@@ -24,7 +24,7 @@ class WikiReadingTime extends Widgets {
     }
 
     protected function get_default_category(): string {
-        return 'trilbdev-wiki';
+        return 'wikipress-wiki';
     }
 
     /**
@@ -35,12 +35,12 @@ class WikiReadingTime extends Widgets {
     }
 
     protected function register_controls(): void {
-        $this->start_controls_section( 'content_section', [ 'label' => __( 'Content', 'trilbdev' ) ] );
+        $this->start_controls_section( 'content_section', [ 'label' => __( 'Content', 'wikipress' ) ] );
 
         $this->add_control(
             'wpm',
             [
-                'label'   => __( 'Words Per Minute', 'trilbdev' ),
+                'label'   => __( 'Words Per Minute', 'wikipress' ),
                 'type'    => Controls_Manager::NUMBER,
                 'default' => 200,
                 'min'     => 60,
@@ -66,7 +66,7 @@ class WikiReadingTime extends Widgets {
          * @param array<string, mixed> $settings Widget settings.
          * @param self                 $widget   Widget instance.
          */
-        $context = \apply_filters( 'trilbdev/elementor/widgets/wiki_reading_time/context', $context, $settings, $this );
+        $context = \apply_filters( 'wikipress/elementor/widgets/wiki_reading_time/context', $context, $settings, $this );
 
         Templates::render(
             'widgets/wiki/reading-time',
@@ -109,7 +109,7 @@ class WikiReadingTime extends Widgets {
 
         $minutes = max( 1, (int) ceil( $words / $wpm ) );
 
-        $display_text = sprintf( __( '~%d min read', 'trilbdev' ), $minutes );
+        $display_text = sprintf( __( '~%d min read', 'wikipress' ), $minutes );
 
         return [
             'has_content'    => true,
@@ -117,7 +117,7 @@ class WikiReadingTime extends Widgets {
             'words'          => $words,
             'wpm'            => $wpm,
             'display_text'   => $display_text,
-            'wrapper_classes'=> [ 'trilbdev-wiki-reading-time' ],
+            'wrapper_classes'=> [ 'wikipress-wiki-reading-time' ],
         ];
     }
 

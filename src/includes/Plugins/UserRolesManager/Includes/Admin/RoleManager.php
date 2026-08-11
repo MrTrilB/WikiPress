@@ -2,7 +2,7 @@
 /**
  * TrilB.Dev Plugin - User Roles Manager Admin Role Manager
  *
- * @package TrilBDev
+ * @package WikiPress
  * @subpackage Admin\Wiki\Plugins\UserRolesManager\Includes\Admin
  * @since 1.0.0
  */
@@ -188,7 +188,7 @@ final class RoleManager extends Manager {
 	private function render_identity_step(): void {
 		?>
 		<div class="wikipress-role-step" data-role-step="identity">
-			<div class="row g-3"><div class="col-md-6"><?php echo FormFieldHelper::label( 'wikipress-add-role-name', __( 'Role Display Name', 'wikipress' ) ); ?><?php echo FormFieldHelper::input( 'role_display_name', '', [ 'id' => 'wikipress-add-role-name', 'required' => true ] ); ?></div><div class="col-md-6"><?php echo FormFieldHelper::label( 'wikipress-add-role-slug', __( 'Role Slug', 'wikipress' ) ); ?><?php echo FormFieldHelper::input( 'role_slug', '', [ 'id' => 'wikipress-add-role-slug', 'pattern' => '[a-z_]+', 'title' => 'Use lowercase letters and underscores only.', 'required' => true ] ); ?></div></div>
+			<div class="row g-3"><div class="col-md-6"><?php echo FormFieldHelper::label( 'wikipress-add-role-name', __( 'Role Display Name', 'wikipress' ) ); ?><?php echo FormFieldHelper::input( 'role_display_name', '', [ 'id' => 'wikipress-add-role-name', 'required' => true ] ); ?></div><div class="col-md-6"><?php echo FormFieldHelper::label( 'wikipress-add-role-slug', __( 'Role Slug', 'wikipress' ) ); ?><?php echo FormFieldHelper::input( 'role_slug', '', [ 'id' => 'wikipress-add-role-slug', 'pattern' => '[a-z_]+', 'title' => __( 'Use lowercase letters and underscores only.', 'wikipress' ), 'required' => true ] ); ?></div></div>
 		</div>
 		<?php
 	}

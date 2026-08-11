@@ -2,7 +2,7 @@
 /**
  * TrilB.Dev Plugin - Internal Wiki Wiki Plugin Includes
  *
- * @package TrilBDev
+ * @package WikiPress
  * @subpackage Admin\Wiki\Plugins\InternalWiki\Includes
  * @since 1.0.0
  */

@@ -191,6 +191,9 @@ final class Assets {
         }
         foreach ( $assets['scripts'] ?? [] as $script ) {
             wp_enqueue_script( $script['handle'], $script['src'], $script['deps'] ?? [], $script['version'] ?? WIKIPRESS_VERSION, $script['in_footer'] ?? true );
+            if ( isset( $script['localize']['object_name'], $script['localize']['data'] ) ) {
+                wp_localize_script( $script['handle'], $script['localize']['object_name'], $script['localize']['data'] );
+            }
         }
         if ( 'wikipress-settings' === sanitize_key( $_GET['page'] ?? '' ) ) {
             $settings_config = [

@@ -14,10 +14,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class WikiTOC extends Widgets {
 
-    public const SLUG = 'trilbdev_wiki_toc';
+    public const SLUG = 'wikipress_wiki_toc';
 
     protected function get_default_title(): string {
-        return __( 'Wiki TOC', 'trilbdev' );
+        return __( 'Wiki TOC', 'wikipress' );
     }
 
     protected function get_default_icon(): string {
@@ -25,7 +25,7 @@ class WikiTOC extends Widgets {
     }
 
     protected function get_default_category(): string {
-        return 'trilbdev-wiki';
+        return 'wikipress-wiki';
     }
 
     /**
@@ -36,12 +36,12 @@ class WikiTOC extends Widgets {
     }
 
     protected function register_controls(): void {
-        $this->start_controls_section( 'content_section', [ 'label' => __( 'Content', 'trilbdev' ) ] );
+        $this->start_controls_section( 'content_section', [ 'label' => __( 'Content', 'wikipress' ) ] );
 
         $this->add_control(
             'min',
             [
-                'label'   => __( 'Minimum Heading Level', 'trilbdev' ),
+                'label'   => __( 'Minimum Heading Level', 'wikipress' ),
                 'type'    => Controls_Manager::NUMBER,
                 'default' => 2,
                 'min'     => 2,
@@ -52,7 +52,7 @@ class WikiTOC extends Widgets {
         $this->add_control(
             'max',
             [
-                'label'   => __( 'Maximum Heading Level', 'trilbdev' ),
+                'label'   => __( 'Maximum Heading Level', 'wikipress' ),
                 'type'    => Controls_Manager::NUMBER,
                 'default' => 4,
                 'min'     => 2,
@@ -82,7 +82,7 @@ class WikiTOC extends Widgets {
          * @param array<string, mixed> $settings Widget settings.
          * @param self                 $widget   Widget instance.
          */
-        $context = \apply_filters( 'trilbdev/elementor/widgets/wiki_toc/context', $context, $settings, $this );
+        $context = \apply_filters( 'wikipress/elementor/widgets/wiki_toc/context', $context, $settings, $this );
 
         Templates::render(
             'widgets/wiki/toc',
@@ -116,8 +116,8 @@ class WikiTOC extends Widgets {
                 'items'           => $headings,
                 'min_level'       => $levels['min'],
                 'max_level'       => $levels['max'],
-                'heading'         => __( 'Table of Contents', 'trilbdev' ),
-                'wrapper_classes' => [ 'trilbdev-wiki-toc' ],
+                'heading'         => __( 'Table of Contents', 'wikipress' ),
+                'wrapper_classes' => [ 'wikipress-wiki-toc' ],
             ];
     }
 
@@ -129,9 +129,9 @@ class WikiTOC extends Widgets {
      * @return array{min:int,max:int}
      */
     private function resolve_levels( array $settings ): array {
-        $options = \get_option( 'trilbdev_wiki_settings', [] );
+        $options = \get_option( 'wikipress_wiki_settings', [] );
         if ( empty( $options ) ) {
-            $options = \get_option( 'trilbdev_docs_settings', [] );
+            $options = \get_option( 'wikipress_docs_settings', [] );
         }
 
         $min = $this->sanitize_level( $settings['min'] ?? ( $options['toc_min_level'] ?? 2 ) );
@@ -203,7 +203,7 @@ class WikiTOC extends Widgets {
      * Persist selected heading levels to options for consistency with shortcode behaviour.
      */
     private function persist_levels( int $min, int $max ): void {
-        $options = \get_option( 'trilbdev_wiki_settings', [] );
+        $options = \get_option( 'wikipress_wiki_settings', [] );
 
         if ( ! is_array( $options ) ) {
             $options = [];
@@ -214,7 +214,7 @@ class WikiTOC extends Widgets {
             'toc_max_level' => $max,
         ] );
 
-        \update_option( 'trilbdev_wiki_settings', $updated, false );
+        \update_option( 'wikipress_wiki_settings', $updated, false );
     }
 
     /**

@@ -1,19 +1,28 @@
 <?php
 /**
- * TrilB.Dev Plugin - User Roles Manager Wiki Plugin Assets
+ * User Roles Manager Wiki Plugin Assets
  *
  * @package WikiPress
- * @subpackage Admin\Wiki\Plugins\UserRolesManager\Assets
+ * @subpackage Plugins\UserRolesManager\Assets
  * @since 1.0.0
  */
 
 namespace TrilBDev\WikiPress\Includes\Plugins\UserRolesManager\Assets;
 
 use TrilBDev\WikiPress\Includes\Functions\Helpers\LoaderHelper;
+use TrilBDev\WikiPress\Includes\Functions\Helpers\RequestHelper;
 
 final class Assets {
+    /**
+     * The loader helper instance for managing asset registration.
+     * @var LoaderHelper
+     */
     private LoaderHelper $loader;
-
+    /**
+     * Constructor for the User Roles Manager plugin assets.
+     *
+     * @param LoaderHelper|null $loader Optional loader helper instance. If not provided, a new instance will be created.
+     */
     public function __construct( ?LoaderHelper $loader = null ) {
         $this->loader = $loader ?? new LoaderHelper();
     }
@@ -23,33 +32,39 @@ final class Assets {
      */
     public function register(): void {
         $this->loader->register_component( $this, [
-            [ 'type' => 'filter', 'hook' => 'wikipress_frontend_assets', 'callback' => 'register_frontend_assets' ],
-            [ 'type' => 'action', 'hook' => 'admin_enqueue_scripts', 'callback' => 'enqueue_admin_assets' ],
+            [
+                'type' => 'filter',
+                'hook' => 'wikipress_admin_assets',
+                'callback' => 'register_admin_assets',
+                'accepted_args' => 2
+            ],
         ] )->run();
     }
+    /**
+     * Register the admin assets for the User Roles Manager plugin.
+     *
+     * @param array $assets The existing assets to be filtered.
+     * @param string $context The context in which the assets are being registered.
+     * @return array The modified assets array with the User Roles Manager assets added.
+     */
+    public function register_admin_assets( array $assets, string $context = '' ): array {
+        if ( 'wikipress-roles-manager' !== RequestHelper::get_key( 'page' ) ) {
+            return $assets;
+        }
 
-    public function register_frontend_assets( array $assets ): array {
-
-        $assets['scripts'][] = [
-
+        $base_url = WIKIPRESS_URL . 'src/includes/Plugins/UserRolesManager/Assets/dist/';
+        $assets['styles'][] = [
             'handle' => 'wikipress-user-roles-manager',
-            'src' => WIKIPRESS_URL . 'src/includes/Plugins/UserRolesManager/Assets/dist/js/userrolesmanager.js',
+            'src' => $base_url . 'css/user-roles-manager.css',
+            'deps' => [ 'wikipress-bootstrap' ],
+        ];
+        $assets['scripts'][] = [
+            'handle' => 'wikipress-user-roles-manager',
+            'src' => $base_url . 'js/user-roles-manager.js',
+            'deps' => [ 'wikipress-bootstrap' ],
             'in_footer' => true,
-
         ];
 
         return $assets;
-    }
-
-    public function enqueue_admin_assets( string $hook_suffix ): void {
-        if ( 'users_page_wikipress-roles-manager' !== $hook_suffix ) {
-            return;
-        }
-
-        wp_enqueue_style( 'wikipress-bootstrap', WIKIPRESS_URL . 'src/Assets/dist/css/bootstrap.css', [], '5.3.8' );
-        wp_enqueue_style( 'wikipress-admin-page', WIKIPRESS_URL . 'src/Assets/dist/css/admin.page.css', [ 'wikipress-bootstrap' ], WIKIPRESS_VERSION );
-        wp_enqueue_style( 'wikipress-user-roles-manager', WIKIPRESS_URL . 'src/includes/Plugins/UserRolesManager/Assets/dist/css/user-roles-manager.css', [ 'wikipress-bootstrap' ], WIKIPRESS_VERSION );
-        wp_enqueue_script( 'wikipress-bootstrap', WIKIPRESS_URL . 'src/Assets/dist/js/bootstrap.js', [], '5.3.8', true );
-        wp_enqueue_script( 'wikipress-user-roles-manager', WIKIPRESS_URL . 'src/includes/Plugins/UserRolesManager/Assets/dist/js/user-roles-manager.js', [ 'wikipress-bootstrap' ], WIKIPRESS_VERSION, true );
     }
 }

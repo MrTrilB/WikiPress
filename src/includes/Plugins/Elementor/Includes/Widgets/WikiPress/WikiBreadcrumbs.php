@@ -13,10 +13,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class WikiBreadcrumbs extends Widgets {
 
-    public const SLUG = 'trilbdev_wiki_breadcrumbs';
+    public const SLUG = 'wikipress_wiki_breadcrumbs';
 
     protected function get_default_title(): string {
-        return __( 'Wiki Breadcrumbs', 'trilbdev' );
+        return __( 'Wiki Breadcrumbs', 'wikipress' );
     }
 
     protected function get_default_icon(): string {
@@ -24,7 +24,7 @@ class WikiBreadcrumbs extends Widgets {
     }
 
     protected function get_default_category(): string {
-        return 'trilbdev-wiki';
+        return 'wikipress-wiki';
     }
 
     /**
@@ -35,12 +35,12 @@ class WikiBreadcrumbs extends Widgets {
     }
 
     protected function register_controls(): void {
-        $this->start_controls_section( 'content_section', [ 'label' => __( 'Content', 'trilbdev' ) ] );
+        $this->start_controls_section( 'content_section', [ 'label' => __( 'Content', 'wikipress' ) ] );
 
         $this->add_control(
             'delimiter',
             [
-                'label'       => __( 'Delimiter', 'trilbdev' ),
+                'label'       => __( 'Delimiter', 'wikipress' ),
                 'type'        => Controls_Manager::TEXT,
                 'default'     => ' / ',
                 'label_block' => true,
@@ -69,7 +69,7 @@ class WikiBreadcrumbs extends Widgets {
          * @param array<string, mixed> $settings Widget settings.
          * @param self                 $widget   Widget instance.
          */
-        $context = \apply_filters( 'trilbdev/elementor/widgets/wiki_breadcrumbs/context', $context, $settings, $this );
+        $context = \apply_filters( 'wikipress/elementor/widgets/wiki_breadcrumbs/context', $context, $settings, $this );
 
         Templates::render(
             'widgets/wiki/breadcrumbs',
@@ -94,8 +94,8 @@ class WikiBreadcrumbs extends Widgets {
         return [
             'crumbs'            => $crumbs,
             'delimiter'         => $this->resolve_delimiter( $settings ),
-            'wrapper_classes'   => [ 'trilbdev-wiki-breadcrumbs' ],
-            'nav_aria_label'    => __( 'Breadcrumbs', 'trilbdev' ),
+            'wrapper_classes'   => [ 'wikipress-wiki-breadcrumbs' ],
+            'nav_aria_label'    => __( 'Breadcrumbs', 'wikipress' ),
             'has_crumbs'        => ! empty( $crumbs ),
         ];
     }
@@ -108,9 +108,9 @@ class WikiBreadcrumbs extends Widgets {
     private function resolve_delimiter( array $settings ): string {
         $option_delimiter = '';
 
-        $options = \get_option( 'trilbdev_wiki_settings', [] );
+        $options = \get_option( 'wikipress_wiki_settings', [] );
         if ( empty( $options ) ) {
-            $options = \get_option( 'trilbdev_docs_settings', [] );
+            $options = \get_option( 'wikipress_docs_settings', [] );
         }
         if ( is_array( $options ) && isset( $options['breadcrumb_delim'] ) ) {
             $option_delimiter = (string) $options['breadcrumb_delim'];
@@ -137,11 +137,11 @@ class WikiBreadcrumbs extends Widgets {
 
         $crumbs = [];
 
-        $crumbs[] = $this->create_crumb( \esc_html__( 'Home', 'trilbdev' ), \home_url( '/' ) );
+        $crumbs[] = $this->create_crumb( \esc_html__( 'Home', 'wikipress' ), \home_url( '/' ) );
 
         $archive_link = \get_post_type_archive_link( 'wiki' );
         if ( $archive_link ) {
-            $crumbs[] = $this->create_crumb( \esc_html__( 'Wiki', 'trilbdev' ), $archive_link );
+            $crumbs[] = $this->create_crumb( \esc_html__( 'Wiki', 'wikipress' ), $archive_link );
         }
 
         $terms = \wp_get_post_terms( $post_id, 'doc_categories', [ 'orderby' => 'parent', 'order' => 'ASC' ] );

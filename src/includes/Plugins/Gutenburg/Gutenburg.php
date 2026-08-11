@@ -65,7 +65,7 @@ class Gutenburg implements PluginInterface, SettingsProviderInterface, SettingsP
      * @return string The plugin description.
      */
     public function get_description(): string {
-        return 'Gutenberg blocks for WikiPress content.';
+        return __( 'Gutenberg blocks for WikiPress content.', 'wikipress' );
     }
     /**
      * Get the plugin URI.

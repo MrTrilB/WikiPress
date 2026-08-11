@@ -1,0 +1,209 @@
+# Translation catalog for UserRolesManager.
+# Copyright (C) 2026 WikiPress contributors
+# This file is distributed under the same license as the WikiPress package.
+msgid ""
+msgstr ""
+"Project-Id-Version: WikiPress 1.0.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Domain: wikipress\n"
+#: src/includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:67
+msgid "%d permission"
+msgid_plural "%d permissions"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:58
+msgid "Add New"
+msgstr ""
+
+#: src/includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:145
+msgid "Add New Role"
+msgstr ""
+
+#: src/includes/Plugins/UserRolesManager/UserRolesManager.php:69
+msgid "Allows you to manage user roles and capabilities in your WordPress site."
+msgstr ""
+
+#: src/includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:221
+msgid "Back"
+msgstr ""
+
+#: src/includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:221
+msgid "Cancel"
+msgstr ""
+
+#: src/includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:203
+msgid "Capabilities"
+msgstr ""
+
+#: src/includes/Plugins/UserRolesManager/Includes/Settings/Settings.php:31
+msgid "Choose the capability required to manage roles."
+msgstr ""
+
+#: src/includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:181
+msgid "Close"
+msgstr ""
+
+#: src/includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:234
+msgid "Create Users"
+msgstr ""
+
+#: src/includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:236
+msgid "Create Wikis"
+msgstr ""
+
+#: src/includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:221
+msgid "Delete"
+msgstr ""
+
+#: src/includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:235
+msgid "Delete Posts"
+msgstr ""
+
+#: src/includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:221
+msgid "Delete this role?"
+msgstr ""
+
+#: src/includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:234
+msgid "Delete Users"
+msgstr ""
+
+#: src/includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:68
+msgid "Edit"
+msgstr ""
+
+#: src/includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:235
+msgid "Edit Pages"
+msgstr ""
+
+#: src/includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:235
+msgid "Edit Posts"
+msgstr ""
+
+#: src/includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:159
+msgid "Edit Role"
+msgstr ""
+
+#: src/includes/Plugins/UserRolesManager/Includes/Settings/Settings.php:35
+msgid "Edit users"
+msgstr ""
+
+#: src/includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:234
+msgid "Edit Users"
+msgstr ""
+
+#: src/includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:234
+msgid "List Users"
+msgstr ""
+
+#: src/includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:234
+msgid "Manage Categories"
+msgstr ""
+
+#: src/includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:233
+msgid "Manage Network"
+msgstr ""
+
+#: src/includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:233
+msgid "Manage Network Plugins"
+msgstr ""
+
+#: src/includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:233
+msgid "Manage Network Themes"
+msgstr ""
+
+#: src/includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:233
+msgid "Manage Network Users"
+msgstr ""
+
+#: src/includes/Plugins/UserRolesManager/Includes/Settings/Settings.php:34
+msgid "Manage options"
+msgstr ""
+
+#: src/includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:234
+msgid "Manage Options"
+msgstr ""
+
+#: src/includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:233
+msgid "Manage Sites"
+msgstr ""
+
+#: src/includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:236
+msgid "Manage WikiPress Plugins"
+msgstr ""
+
+#: src/includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:221
+msgid "Next"
+msgstr ""
+
+#: src/includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:234
+msgid "Promote Users"
+msgstr ""
+
+#: src/includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:235
+msgid "Publish Pages"
+msgstr ""
+
+#: src/includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:235
+msgid "Publish Posts"
+msgstr ""
+
+#: src/includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:235
+msgid "Read"
+msgstr ""
+
+#: src/includes/Plugins/UserRolesManager/Includes/Settings/Settings.php:30
+msgid "Required capability"
+msgstr ""
+
+#: src/includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:163
+#: src/includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:191
+msgid "Role Display Name"
+msgstr ""
+
+#: src/includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:164
+#: src/includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:191
+msgid "Role Slug"
+msgstr ""
+
+#: src/includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:44
+#: src/includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:55
+msgid "Roles Manager"
+msgstr ""
+
+#: src/includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:221
+msgid "Save"
+msgstr ""
+
+#: src/includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:310
+msgid "Security check failed."
+msgstr ""
+
+#: src/includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:235
+msgid "Upload Files"
+msgstr ""
+
+#: src/includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:191
+msgid "Use lowercase letters and underscores only."
+msgstr ""
+
+#: src/includes/Plugins/UserRolesManager/Includes/Settings/Settings.php:24
+msgid "User Roles Manager"
+msgstr ""
+
+#: src/includes/Plugins/UserRolesManager/Includes/Settings/Settings.php:25
+msgid "User Roles Manager settings"
+msgstr ""
+
+#: src/includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:236
+msgid "View Analytics"
+msgstr ""
+
+#: src/includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:236
+msgid "Write Wiki Pages"
+msgstr ""
+
+#: src/includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:305
+msgid "You are not allowed to manage roles."
+msgstr ""

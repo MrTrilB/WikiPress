@@ -2,7 +2,7 @@
 /**
  * Docs List widget template.
  *
- * @package TrilBDev
+ * @package WikiPress
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -22,8 +22,8 @@ if ( empty( $context ) || ! is_array( $context ) ) {
 $posts            = isset( $context['posts'] ) && is_array( $context['posts'] ) ? $context['posts'] : [];
 $has_posts        = ! empty( $context['has_posts'] ) && ! empty( $posts );
 $pagination       = isset( $context['pagination'] ) ? (string) $context['pagination'] : '';
-$no_results       = isset( $context['no_results_message'] ) ? (string) $context['no_results_message'] : __( 'No docs found.', 'trilbdev' );
-$wrapper_classes  = isset( $context['wrapper_classes'] ) && is_array( $context['wrapper_classes'] ) ? $context['wrapper_classes'] : [ 'trilbdev-docs-list-widget' ];
+$no_results       = isset( $context['no_results_message'] ) ? (string) $context['no_results_message'] : __( 'No docs found.', 'wikipress' );
+$wrapper_classes  = isset( $context['wrapper_classes'] ) && is_array( $context['wrapper_classes'] ) ? $context['wrapper_classes'] : [ 'wikipress-docs-list-widget' ];
 
 $wrapper_class_attr = esc_attr( implode( ' ', array_filter( array_map( 'sanitize_html_class', $wrapper_classes ) ) ) );
 ?>

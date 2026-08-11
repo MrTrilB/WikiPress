@@ -1,7 +1,7 @@
 <?php
 /**
  * Settings for the Internal Wiki plugin.
- * @package TrilBDev
+ * @package WikiPress
  * @subpackage Admin\Wiki\Plugins\InternalWiki\Includes
  * @since 1.0.0
  */
@@ -69,19 +69,19 @@ final class Settings {
     public function get_settings_page(): array {
         return [
             'slug' => 'internal_wiki',
-            'label' => __( 'Internal Wiki', 'internal-wiki-plugin' ),
-            'title' => __( 'Internal Wiki settings', 'internal-wiki-plugin' ),
+            'label' => __( 'Internal Wiki', 'wikipress' ),
+            'title' => __( 'Internal Wiki settings', 'wikipress' ),
             'layout' => 'table',
             'fields' => [
                 [
                     'key' => 'default_access_type',
-                    'label' => __( 'Default access type', 'internal-wiki-plugin' ),
-                    'description' => __( 'Choose the default access rule for new Wiki pages.', 'internal-wiki-plugin' ),
+                    'label' => __( 'Default access type', 'wikipress' ),
+                    'description' => __( 'Choose the default access rule for new Wiki pages.', 'wikipress' ),
                     'type' => 'select',
                     'options' => [
-                        'logged_in_user' => __( 'Logged-in users', 'internal-wiki-plugin' ),
-                        'roles' => __( 'Specific roles', 'internal-wiki-plugin' ),
-                        'permissions' => __( 'Specific permissions', 'internal-wiki-plugin' ),
+                        'logged_in_user' => __( 'Logged-in users', 'wikipress' ),
+                        'roles' => __( 'Specific roles', 'wikipress' ),
+                        'permissions' => __( 'Specific permissions', 'wikipress' ),
                     ],
                     'default' => 'logged_in_user',
                 ],
@@ -107,9 +107,9 @@ final class Settings {
         $roles = $post ? (array) get_post_meta( $post->ID, self::META_ROLES, true ) : (array) BaseSettings::get( 'default_roles', [] );
         $permissions = $post ? (array) get_post_meta( $post->ID, self::META_PERMISSIONS, true ) : (array) BaseSettings::get( 'default_permissions', [] );
         $access_types = [
-            'logged_in_user' => __( 'Logged in user', 'internal-wiki-plugin' ),
-            'roles' => __( 'Roles', 'internal-wiki-plugin' ),
-            'permissions' => __( 'Permissions', 'internal-wiki-plugin' ),
+            'logged_in_user' => __( 'Logged in user', 'wikipress' ),
+            'roles' => __( 'Roles', 'wikipress' ),
+            'permissions' => __( 'Permissions', 'wikipress' ),
         ];
         $role_options = [];
         foreach ( wp_roles()->roles as $role_key => $role ) {
@@ -157,7 +157,7 @@ final class Settings {
 
         $wiki_id = absint( get_post_meta( get_queried_object_id(), '_wikipress_wiki_id', true ) );
         if ( $wiki_id > 0 && ! $this->can_access( $wiki_id ) ) {
-            wp_die( esc_html__( 'You do not have permission to access this Wiki.', 'internal-wiki-plugin' ), 403 );
+            wp_die( esc_html__( 'You do not have permission to access this Wiki.', 'wikipress' ), 403 );
         }
     }
 

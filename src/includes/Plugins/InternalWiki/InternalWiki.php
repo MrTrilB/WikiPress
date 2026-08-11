@@ -64,7 +64,7 @@ class InternalWiki implements PluginInterface, SettingsProviderInterface, Settin
      * @return string The plugin description.
      */
     public function get_description(): string {
-        return 'A plugin that provides an internal wiki system for your WordPress site.';
+        return __( 'A plugin that provides an internal wiki system for your WordPress site.', 'wikipress' );
     }
     /**
      * Get the plugin URI.

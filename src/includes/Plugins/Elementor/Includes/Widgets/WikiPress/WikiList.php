@@ -15,10 +15,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class WikiList extends Widgets {
 
-    public const SLUG = 'trilbdev_wiki_list';
+    public const SLUG = 'wikipress_wiki_list';
 
     protected function get_default_title(): string {
-        return __( 'Wiki List', 'trilbdev' );
+        return __( 'Wiki List', 'wikipress' );
     }
 
     protected function get_default_icon(): string {
@@ -26,7 +26,7 @@ class WikiList extends Widgets {
     }
 
     protected function get_default_category(): string {
-        return 'trilbdev-wiki';
+        return 'wikipress-wiki';
     }
 
     /**
@@ -37,12 +37,12 @@ class WikiList extends Widgets {
     }
 
     protected function register_controls(): void {
-        $this->start_controls_section( 'content_section', [ 'label' => __( 'Content', 'trilbdev' ) ] );
+        $this->start_controls_section( 'content_section', [ 'label' => __( 'Content', 'wikipress' ) ] );
 
         $this->add_control(
             'category',
             [
-                'label'       => __( 'Categories (slugs, comma-separated)', 'trilbdev' ),
+                'label'       => __( 'Categories (slugs, comma-separated)', 'wikipress' ),
                 'type'        => Controls_Manager::TEXT,
                 'default'     => '',
                 'label_block' => true,
@@ -52,7 +52,7 @@ class WikiList extends Widgets {
         $this->add_control(
             'tag',
             [
-                'label'       => __( 'Tags (slugs, comma-separated)', 'trilbdev' ),
+                'label'       => __( 'Tags (slugs, comma-separated)', 'wikipress' ),
                 'type'        => Controls_Manager::TEXT,
                 'default'     => '',
                 'label_block' => true,
@@ -62,7 +62,7 @@ class WikiList extends Widgets {
         $this->add_control(
             'per_page',
             [
-                'label'   => __( 'Per Page', 'trilbdev' ),
+                'label'   => __( 'Per Page', 'wikipress' ),
                 'type'    => Controls_Manager::NUMBER,
                 'default' => 10,
                 'min'     => 1,
@@ -73,12 +73,12 @@ class WikiList extends Widgets {
         $this->add_control(
             'orderby',
             [
-                'label'   => __( 'Order By', 'trilbdev' ),
+                'label'   => __( 'Order By', 'wikipress' ),
                 'type'    => Controls_Manager::SELECT,
                 'default' => 'date',
                 'options' => [
-                    'date'  => __( 'Date', 'trilbdev' ),
-                    'title' => __( 'Title', 'trilbdev' ),
+                    'date'  => __( 'Date', 'wikipress' ),
+                    'title' => __( 'Title', 'wikipress' ),
                 ],
             ]
         );
@@ -86,7 +86,7 @@ class WikiList extends Widgets {
         $this->add_control(
             'order',
             [
-                'label'   => __( 'Order', 'trilbdev' ),
+                'label'   => __( 'Order', 'wikipress' ),
                 'type'    => Controls_Manager::SELECT,
                 'default' => 'DESC',
                 'options' => [
@@ -158,8 +158,8 @@ class WikiList extends Widgets {
             'posts'               => $posts,
             'has_posts'           => $has_posts,
             'pagination'          => $pagination,
-            'no_results_message'  => __( 'No wiki posts found.', 'trilbdev' ),
-            'wrapper_classes'     => [ 'trilbdev-wiki-list-widget' ],
+            'no_results_message'  => __( 'No wiki posts found.', 'wikipress' ),
+            'wrapper_classes'     => [ 'wikipress-wiki-list-widget' ],
             'query_args'          => $query_args,
         ];
     }
@@ -215,9 +215,9 @@ class WikiList extends Widgets {
         ];
 
         if ( 'views' === $orderby ) {
-            $args['meta_key']                     = '_trilbdev_docs_views';
+            $args['meta_key']                     = '_wikipress_docs_views';
             $args['orderby']                      = 'meta_value_num';
-            $args['trilbdev_docs_orderby_views']  = true;
+            $args['wikipress_docs_orderby_views']  = true;
         }
 
         return $args;

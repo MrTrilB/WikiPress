@@ -1,7 +1,7 @@
 <?php
 /**
  * Language internationalization (i18n) for the Demo plugin.
- * @package TrilBDev
+ * @package WikiPress
  * @subpackage Admin\Wiki\Plugins\Demo\Includes
  * @since 1.0.0
  * 

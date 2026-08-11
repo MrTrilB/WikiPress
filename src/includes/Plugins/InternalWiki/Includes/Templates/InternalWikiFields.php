@@ -2,7 +2,7 @@
 /**
  * Render the Internal Wiki fields.
  *
- * @package TrilBDev
+ * @package WikiPress
  * @subpackage Includes\Plugins\InternalWiki\Includes\Templates
  */
 namespace TrilBDev\WikiPress\Includes\Plugins\InternalWiki\Includes\Templates;
@@ -31,18 +31,18 @@ final class InternalWikiFields {
 
         return '<div class="wikipress-internal-wiki-fields row g-3" data-internal-wiki-fields>'
             . '<div class="col-12">'
-            . FormFieldHelper::switch( 'internal_wiki_enabled', '1', __( 'Make this Wiki Internal', 'internal-wiki-plugin' ), [ 'id' => 'wikipress-internal-enabled', 'checked' => $enabled, 'attributes' => [ 'data-internal-wiki-toggle' => true ] ] )
+            . FormFieldHelper::switch( 'internal_wiki_enabled', '1', __( 'Make this Wiki Internal', 'wikipress' ), [ 'id' => 'wikipress-internal-enabled', 'checked' => $enabled, 'attributes' => [ 'data-internal-wiki-toggle' => true ] ] )
             . '</div>'
             . '<div class="col-md-4" data-internal-wiki-options>'
-            . FormFieldHelper::label( 'wikipress-internal-access-type', __( 'Limit access by', 'internal-wiki-plugin' ) )
+            . FormFieldHelper::label( 'wikipress-internal-access-type', __( 'Limit access by', 'wikipress' ) )
             . FormFieldHelper::select( 'internal_wiki_access_type', $access_types, $access_type, [ 'id' => 'wikipress-internal-access-type', 'attributes' => [ 'data-internal-wiki-access-type' => true ] ] )
             . '</div>'
             . '<div class="col-md-4" data-internal-wiki-roles>'
-            . FormFieldHelper::label( 'wikipress-internal-roles', __( 'Roles', 'internal-wiki-plugin' ) )
+            . FormFieldHelper::label( 'wikipress-internal-roles', __( 'Roles', 'wikipress' ) )
             . FormFieldHelper::select( 'internal_wiki_role[]', $role_options, $roles, [ 'id' => 'wikipress-internal-roles', 'multiple' => true, 'attributes' => [ 'data-internal-wiki-roles-select' => true ] ] )
             . '</div>'
             . '<div class="col-md-4" data-internal-wiki-permissions>'
-            . FormFieldHelper::label( 'wikipress-internal-permissions-search', __( 'Permissions', 'internal-wiki-plugin' ) )
+            . FormFieldHelper::label( 'wikipress-internal-permissions-search', __( 'Permissions', 'wikipress' ) )
             . FormFieldHelper::bootstrap_multiselect( 'internal_wiki_permissions[]', [ 'id' => 'wikipress-internal-permissions-search', 'data' => $permission_items, 'selected' => array_column( $selected_permission_items, 'value' ) ] )
             . '</div>'
             . '</div>';

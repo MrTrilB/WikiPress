@@ -2,7 +2,7 @@
 /**
  * Docs Breadcrumbs widget template.
  *
- * @package TrilBDev
+ * @package WikiPress
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -21,8 +21,8 @@ if ( empty( $context ) || ! is_array( $context ) ) {
 
 $crumbs          = isset( $context['crumbs'] ) && is_array( $context['crumbs'] ) ? $context['crumbs'] : [];
 $delimiter       = isset( $context['delimiter'] ) ? (string) $context['delimiter'] : ' / ';
-$wrapper_classes = isset( $context['wrapper_classes'] ) && is_array( $context['wrapper_classes'] ) ? $context['wrapper_classes'] : [ 'trilbdev-docs-breadcrumbs' ];
-$aria_label      = isset( $context['nav_aria_label'] ) ? (string) $context['nav_aria_label'] : __( 'Breadcrumbs', 'trilbdev' );
+$wrapper_classes = isset( $context['wrapper_classes'] ) && is_array( $context['wrapper_classes'] ) ? $context['wrapper_classes'] : [ 'wikipress-docs-breadcrumbs' ];
+$aria_label      = isset( $context['nav_aria_label'] ) ? (string) $context['nav_aria_label'] : __( 'Breadcrumbs', 'wikipress' );
 
 if ( empty( $crumbs ) ) {
     return;
@@ -43,7 +43,7 @@ $aria_label_attr    = esc_attr( $aria_label );
 $crumb_count = count( $crumbs );
 ?>
 <nav class="<?php echo $wrapper_class_attr; ?>" aria-label="<?php echo $aria_label_attr; ?>">
-    <ol class="trilbdev-breadcrumb-list">
+    <ol class="wikipress-breadcrumb-list">
         <?php foreach ( $crumbs as $index => $crumb ) :
             if ( ! is_array( $crumb ) || empty( $crumb['label'] ) ) {
                 continue;

@@ -66,7 +66,7 @@ class UserRolesManager implements PluginInterface, SettingsProviderInterface, Se
      * @return string The plugin description.
      */
     public function get_description(): string {
-        return 'Allows you to manage user roles and capabilities in your WordPress site.';
+        return __( 'Allows you to manage user roles and capabilities in your WordPress site.', 'wikipress' );
     }
     /**
      * Returns the URI of the plugin.

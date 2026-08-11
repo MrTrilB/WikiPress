@@ -1,9 +1,9 @@
 <?php
 /**
- * TrilB.Dev Plugin - Demo Wiki Plugin Includes
+ * Demo Wiki Plugin Includes
  *
- * @package TrilBDev
- * @subpackage Admin\Wiki\Plugins\Demo\Includes
+ * @package WikiPress
+ * @subpackage Plugins\Demo\Includes
  * @since 1.0.0
  */
 

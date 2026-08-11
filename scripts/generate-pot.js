@@ -3,24 +3,32 @@ const path = require('path');
 
 const root = path.resolve(__dirname, '..');
 const pluginRoot = path.join(root, 'src', 'includes', 'Plugins');
+const pluginCatalogNames = {
+  Demo: 'Demo-en_GB.pot',
+  Elementor: 'Elementor-en_GB.pot',
+  FontAwesome: 'Fontawesome-en_GB.pot',
+  Gutenburg: 'Gutenburg-en_GB.pot',
+  InternalWiki: 'InternalWiki-en_GB.pot',
+  TinyMCE: 'TinyMCE-en_GB.pot',
+  UserRolesManager: 'UserRolesManager-en_GB.pot',
+};
 const catalogs = [
-  { output: path.join(root, 'src', 'languages', 'wikipress.pot'), source: path.join(root, 'src'), name: 'WikiPress', domain: 'wikipress' },
+  { output: path.join(root, 'src', 'languages', 'wikipress-en_GB.pot'), source: path.join(root, 'src'), name: 'WikiPress', domain: 'wikipress' },
   ...fs.readdirSync(pluginRoot, { withFileTypes: true })
     .filter((entry) => entry.isDirectory())
     .map((entry) => {
       const languageDirectory = path.join(pluginRoot, entry.name, 'Language');
-      const existingCatalog = fs.readdirSync(languageDirectory, { withFileTypes: true })
-        .find((file) => file.isFile() && file.name.toLowerCase().endsWith('.pot'));
       const domains = {
-        Demo: 'wiki-demo-plugin',
-        Elementor: 'wikipress-elementor',
-        FontAwesome: 'wikipress-fontawesome',
+        Demo: 'wikipress',
+        Elementor: 'wikipress',
+        FontAwesome: 'wikipress',
         Gutenburg: 'wikipress',
-        InternalWiki: 'internal-wiki-plugin',
+        InternalWiki: 'wikipress',
         UserRolesManager: 'wikipress',
+        TinyMCE: 'wikipress',
       };
       return {
-        output: path.join(languageDirectory, entry.name === 'FontAwesome' ? 'Fontawesome.pot' : (existingCatalog ? existingCatalog.name : `${entry.name}.pot`)),
+        output: path.join(languageDirectory, pluginCatalogNames[entry.name] || `${entry.name}-en_GB.pot`),
         source: path.join(pluginRoot, entry.name),
         name: entry.name,
         domain: domains[entry.name] || 'wikipress',
@@ -52,7 +60,7 @@ function addEntry(entries, sourceFile, line, singular, plural = null, context = 
   entries.get(key).references.push(`${sourceFile}:${line}`);
 }
 
-function extract(file, sourceRoot, entries) {
+function extract(file, entries) {
   const content = fs.readFileSync(file, 'utf8');
   const relative = path.relative(root, file).replaceAll('\\', '/');
   const lines = content.split(/\r?\n/);
@@ -64,9 +72,21 @@ function extract(file, sourceRoot, entries) {
   const plural = /_n\s*\(\s*(['"])((?:\\.|(?!\1)[\s\S])*?)\1\s*,\s*(['"])((?:\\.|(?!\3)[\s\S])*?)\3\s*,/g;
   lines.forEach((lineText, index) => {
     let match;
-    while ((match = contextual.exec(lineText))) add(index + 1, match[2], null, match[4]);
-    while ((match = plural.exec(lineText))) add(index + 1, match[2], match[4]);
-    while ((match = simple.exec(lineText))) add(index + 1, match[2]);
+    while (true) {
+      match = contextual.exec(lineText);
+      if (!match) break;
+      add(index + 1, match[2], null, match[4]);
+    }
+    while (true) {
+      match = plural.exec(lineText);
+      if (!match) break;
+      add(index + 1, match[2], match[4]);
+    }
+    while (true) {
+      match = simple.exec(lineText);
+      if (!match) break;
+      add(index + 1, match[2]);
+    }
     contextual.lastIndex = 0;
     plural.lastIndex = 0;
     simple.lastIndex = 0;
@@ -83,7 +103,9 @@ function writeCatalog(catalog) {
     if (catalog.name === 'WikiPress' && file.includes(`${path.sep}src${path.sep}includes${path.sep}Plugins${path.sep}`)) return false;
     return true;
   });
-  sourceFiles.forEach((file) => extract(file, catalog.source, entries));
+  sourceFiles.forEach((file) => {
+    extract(file, entries);
+  });
   const sorted = [...entries.values()].sort((a, b) => a.singular.localeCompare(b.singular));
   const header = [
     `# Translation catalog for ${catalog.name}.`,
@@ -110,6 +132,13 @@ function writeCatalog(catalog) {
     }
     return lines.join('\n');
   }).join('\n\n');
+  if (catalog.name !== 'WikiPress') {
+    fs.readdirSync(path.dirname(catalog.output), { withFileTypes: true })
+      .filter((file) => file.isFile() && file.name.toLowerCase().endsWith('.pot') && file.name !== path.basename(catalog.output))
+      .forEach((file) => {
+        fs.unlinkSync(path.join(path.dirname(catalog.output), file.name));
+      });
+  }
   fs.writeFileSync(catalog.output, `${header.join('\n')}${body}\n`, 'utf8');
   console.log(`${path.relative(root, catalog.output)}: ${sorted.length} entries`);
 }

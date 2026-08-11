@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class WikiSearchModal extends Widgets {
 
-    public const SLUG = 'trilbdev_wiki_search_modal';
+    public const SLUG = 'wikipress_wiki_search_modal';
 
     protected function get_default_title(): string {
         return __( 'Wiki Search Modal', 'wikipress' );
@@ -22,7 +22,7 @@ class WikiSearchModal extends Widgets {
     }
 
     protected function get_default_category(): string {
-        return 'trilbdev-wiki';
+        return 'wikipress-wiki';
     }
 
     /**
@@ -47,7 +47,7 @@ class WikiSearchModal extends Widgets {
          * @param array<string, mixed> $settings Widget settings.
          * @param self                 $widget   Widget instance.
          */
-        $context = \apply_filters( 'trilbdev/elementor/widgets/wiki_search_modal/context', $context, $settings, $this );
+        $context = \apply_filters( 'wikipress/elementor/widgets/wiki_search_modal/context', $context, $settings, $this );
 
         Templates::render(
             'widgets/wiki/search-modal',
@@ -68,7 +68,7 @@ class WikiSearchModal extends Widgets {
         $action_url = \home_url( '/' );
 
         return [
-            'wrapper_classes'     => [ 'trilbdev-wiki-searchmodal' ],
+            'wrapper_classes'     => [ 'wikipress-wiki-searchmodal' ],
             'action_url'          => $action_url,
             'open_button_label'   => __( 'Search Wiki', 'wikipress' ),
             'search_placeholder'  => __( 'Search wiki...', 'wikipress' ),

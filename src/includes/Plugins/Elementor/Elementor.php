@@ -108,7 +108,7 @@ final class Elementor implements PluginInterface, SettingsProviderInterface, Set
      * @return string The description of the plugin.
      */
     public function get_description(): string {
-        return 'Provides Elementor integration for WikiPress.';
+        return __( 'Provides Elementor integration for WikiPress.', 'wikipress' );
     }
     /**
      * Get the URI of the Elementor plugin.
@@ -193,7 +193,7 @@ final class Elementor implements PluginInterface, SettingsProviderInterface, Set
         $elements_manager->add_category(
             'trilbdev-wiki',
             [
-                'title' => __( 'WikiPress', 'wikipress-elementor' ),
+                'title' => __( 'WikiPress', 'wikipress' ),
                 'icon'  => 'eicon-book',
             ]
         );
