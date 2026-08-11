@@ -11,14 +11,40 @@ const updateAccessFields = (root) => {
 };
 
 const initializeInternalWikiFields = (root = document) => {
-  root.querySelectorAll('[data-internal-wiki-fields]').forEach((fields) => {
-    const accessType = fields.querySelector('[data-internal-wiki-access-type]');
+  const fields = root.matches?.('[data-internal-wiki-fields]')
+    ? [root]
+    : root.querySelectorAll('[data-internal-wiki-fields]');
+
+  fields.forEach((fieldContainer) => {
+    const accessType = fieldContainer.querySelector('[data-internal-wiki-access-type]');
     if (!accessType || accessType.dataset.internalWikiInitialized === 'true') return;
 
     accessType.dataset.internalWikiInitialized = 'true';
-    accessType.addEventListener('change', () => updateAccessFields(fields));
-    updateAccessFields(fields);
+    accessType.addEventListener('change', () => updateAccessFields(fieldContainer));
+    updateAccessFields(fieldContainer);
   });
 };
 
-document.addEventListener('DOMContentLoaded', () => initializeInternalWikiFields());
+const initializeInternalWikiController = () => {
+  const root = window.wikipressShadowRoot || document;
+  initializeInternalWikiFields(root);
+
+  if (root === document) {
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        mutation.addedNodes.forEach((node) => {
+          if (node.nodeType !== Node.ELEMENT_NODE) return;
+          initializeInternalWikiFields(node);
+        });
+      });
+    });
+
+    observer.observe(document.body, { childList: true, subtree: true });
+  }
+};
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initializeInternalWikiController, { once: true });
+} else {
+  initializeInternalWikiController();
+}
