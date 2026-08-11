@@ -45,8 +45,8 @@ final class Assets {
         }
 
         $assets['scripts'][] = [
-            'handle' => 'wikipress-internal-wiki',
-            'src' => WIKIPRESS_URL . 'src/includes/Plugins/InternalWiki/Assets/dist/js/internalwiki.js',
+            'handle' => 'wikipress-internal-wiki-admin',
+            'src' => WIKIPRESS_URL . 'src/Assets/dist/js/admin.internal-wiki.js',
             'deps' => [ 'wikipress-bootstrap-select' ],
             'in_footer' => true,
         ];

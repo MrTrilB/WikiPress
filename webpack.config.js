@@ -16,6 +16,7 @@ const entries = {
     './src/Assets/js/bootstrap-select.js',
     './src/Assets/scss/bootstrap-select.scss',
   ],
+  'admin.internal-wiki': './src/Includes/Plugins/InternalWiki/Assets/js/admin.internal-wiki.js',
 };
 
 const fontAwesomeEntries = {

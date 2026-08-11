@@ -37,11 +37,11 @@ final class InternalWikiFields {
             . FormFieldHelper::label( 'wikipress-internal-access-type', __( 'Limit access by', 'wikipress' ) )
             . FormFieldHelper::select( 'internal_wiki_access_type', $access_types, $access_type, [ 'id' => 'wikipress-internal-access-type', 'attributes' => [ 'data-internal-wiki-access-type' => true ] ] )
             . '</div>'
-            . '<div class="col-md-4" data-internal-wiki-roles>'
+            . '<div class="col-md-4' . ( 'roles' === $access_type ? '' : ' d-none' ) . '" data-internal-wiki-roles>'
             . FormFieldHelper::label( 'wikipress-internal-roles', __( 'Roles', 'wikipress' ) )
-            . FormFieldHelper::select( 'internal_wiki_role[]', $role_options, $roles, [ 'id' => 'wikipress-internal-roles', 'multiple' => true, 'attributes' => [ 'data-internal-wiki-roles-select' => true ] ] )
+            . FormFieldHelper::bootstrap_multiselect( 'internal_wiki_role[]', [ 'id' => 'wikipress-internal-roles', 'data' => $role_options, 'selected' => $roles, 'attributes' => [ 'data-internal-wiki-roles-select' => true ] ] )
             . '</div>'
-            . '<div class="col-md-4" data-internal-wiki-permissions>'
+            . '<div class="col-md-4' . ( 'permissions' === $access_type ? '' : ' d-none' ) . '" data-internal-wiki-permissions>'
             . FormFieldHelper::label( 'wikipress-internal-permissions-search', __( 'Permissions', 'wikipress' ) )
             . FormFieldHelper::bootstrap_multiselect( 'internal_wiki_permissions[]', [ 'id' => 'wikipress-internal-permissions-search', 'data' => $permission_items, 'selected' => array_column( $selected_permission_items, 'value' ) ] )
             . '</div>'
