@@ -27,7 +27,7 @@ const initializeField = (field, options = {}) => {
 
   const instance = Selectpicker.getOrCreateInstance(field, {
     source: { data: getOptionData(field) },
-    container: document.body,
+    container: modal || document.body,
     ...options,
   });
 

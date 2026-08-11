@@ -1,8 +1,4 @@
 
-.bs-container {
-	z-index: 1060;
-}
-
 .wikipress-admin {
 
 	.wikipress-plugin-card {
@@ -21,6 +17,9 @@
 		.modal-dialog { max-height: calc(100vh - 3.5rem); }
 		.modal-content { max-height: calc(100vh - 3.5rem); }
 		.modal-body { overflow-y: auto; }
+		.bs-container {
+			z-index: 1060;
+		}
 
 		.wikipress-plugin-settings-fields-box {
 			display: grid;
