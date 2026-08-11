@@ -54,10 +54,10 @@ class WikiForms {
                     </div>
                 </div>
                 <div class="col-12">
-                    <?php FormFieldHelper::tinymce( 'wikipress-wiki-excerpt', 'wikipress_wiki[excerpt]', __( 'Wiki Excerpt', 'wikipress' ), '', 6 ); ?>
+                    <?php //FormFieldHelper::tinymce( 'wikipress-wiki-excerpt', 'wikipress_wiki[excerpt]', __( 'Wiki Excerpt', 'wikipress' ), '', 6 ); ?>
                 </div>
                 <div class="col-12">
-                    <?php FormFieldHelper::tinymce( 'wikipress-wiki-description', 'wikipress_wiki[description]', __( 'Wiki Description', 'wikipress' ), '', 10 ); ?>
+                    <?php //FormFieldHelper::tinymce( 'wikipress-wiki-description', 'wikipress_wiki[description]', __( 'Wiki Description', 'wikipress' ), '', 10 ); ?>
                 </div>
                 <div class="col-md-6">
                     <?php self::render_media_field( 'thumbnail_id', __( 'Wiki Header Image', 'wikipress' ), __( 'Select the featured image displayed for this Wiki.', 'wikipress' ) ); ?>
