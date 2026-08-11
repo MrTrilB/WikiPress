@@ -258,7 +258,7 @@ final class SettingsPlugins {
             if ( 'table' === $layout && 'select' === $type ) {
                 echo FormFieldHelper::select( $name, (array) ( $field['options'] ?? [] ), $value, [ 'id' => $id ] );
             } elseif ( 'table' === $layout && 'multiselect' === $type ) {
-                echo FormFieldHelper::bootstrap_multiselect( $name, [ 'id' => $id, 'data' => (array) ( $field['options'] ?? [] ), 'selected' => (array) $value, 'dropup_auto' => $field['dropup_auto'] ?? true ] );
+                echo FormFieldHelper::bootstrap_multiselect( $name, [ 'id' => $id, 'data' => (array) ( $field['options'] ?? [] ), 'selected' => (array) $value, 'dropup_auto' => $field['dropup_auto'] ?? true, 'show_tick' => $field['show_tick'] ?? null ] );
             } elseif ( 'table' === $layout && 'text' === $type ) {
                 echo FormFieldHelper::input( $name, is_scalar( $value ) ? (string) $value : '', [ 'id' => $id, 'type' => 'text' ] );
             } elseif ( 'table' === $layout ) {
@@ -266,7 +266,7 @@ final class SettingsPlugins {
             } elseif ( 'select' === $type ) {
                 echo FormFieldHelper::select( $name, (array) ( $field['options'] ?? [] ), $value, [ 'id' => $id ] );
             } elseif ( 'multiselect' === $type ) {
-                echo FormFieldHelper::bootstrap_multiselect( $name, [ 'id' => $id, 'data' => (array) ( $field['options'] ?? [] ), 'selected' => (array) $value, 'dropup_auto' => $field['dropup_auto'] ?? true ] );
+                echo FormFieldHelper::bootstrap_multiselect( $name, [ 'id' => $id, 'data' => (array) ( $field['options'] ?? [] ), 'selected' => (array) $value, 'dropup_auto' => $field['dropup_auto'] ?? true, 'show_tick' => $field['show_tick'] ?? null ] );
             } elseif ( 'text' === $type ) {
                 echo FormFieldHelper::input( $name, is_scalar( $value ) ? (string) $value : '', [ 'id' => $id, 'type' => 'text' ] );
             }
