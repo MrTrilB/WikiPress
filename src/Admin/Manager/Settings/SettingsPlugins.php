@@ -221,7 +221,7 @@ final class SettingsPlugins {
         $layout = in_array( $layout, [ 'table', 'box' ], true ) ? $layout : 'box';
 
         if ( 'table' === $layout ) {
-            echo '<div class="table-responsive wikipress-plugin-settings-fields wikipress-plugin-settings-fields-table"><table class="table align-middle"><tbody>';
+            echo '<div class="wikipress-plugin-settings-fields wikipress-plugin-settings-fields-table"><table class="table align-middle"><tbody>';
         } else {
             echo '<div class="wikipress-plugin-settings-fields wikipress-plugin-settings-fields-box">';
         }
