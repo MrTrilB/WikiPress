@@ -46,7 +46,7 @@ class WikiForms {
                             <legend class="float-none w-auto px-2 fs-6 mb-0">
                                 <?php esc_html_e( 'Wiki Tags', 'wikipress' ); ?>
                             </legend>
-                            <?php echo FormFieldHelper::bootstrap_multiselect( 'wikipress_wiki[tags][]', [ 'data' => array_map( static fn( $tag ) => [ 'value' => (string) $tag->term_id, 'label' => $tag->name ], $tags ), 'class' => 'show-tick', 'icons_base' => 'fa-solid', 'tick_icon' => 'fa-check', 'open_options' => true, 'placeholder' => __( 'Search or select tags','wikipress' ),'live_search_placeholder' => __( 'Search or create tags', 'wikipress' ), 'attributes' => [ 'id' => 'wikipress-wiki-tags', 'data-wikipress-taxonomy-endpoint' => rest_url( 'wp/v2/' . Taxonomy::TAG ), 'data-wikipress-taxonomy-create' => 'true', 'data-wikipress-rest-nonce' => wp_create_nonce( 'wp_rest' ) ] ]); ?>
+                            <?php FormFieldHelper::bootstrap_multiselect( 'wikipress_wiki[tags][]', [ 'data' => array_map( static fn( $tag ) => [ 'value' => (string) $tag->term_id, 'label' => $tag->name ], $tags ), 'class' => 'show-tick', 'icons_base' => 'fa-solid', 'tick_icon' => 'fa-check', 'open_options' => true, 'placeholder' => __( 'Search or select tags','wikipress' ),'live_search_placeholder' => __( 'Search or create tags', 'wikipress' ), 'attributes' => [ 'id' => 'wikipress-wiki-tags', 'data-wikipress-taxonomy-endpoint' => rest_url( 'wp/v2/' . Taxonomy::TAG ), 'data-wikipress-taxonomy-create' => 'true', 'data-wikipress-rest-nonce' => wp_create_nonce( 'wp_rest' ) ] ]); ?>
                             <div class="form-text">
                                 <?php esc_html_e( 'Search existing tags or create a new tag from the picker.', 'wikipress' ); ?>
                             </div>
@@ -54,7 +54,7 @@ class WikiForms {
                     </div>
                 </div>
                 <div class="col-12">
-                    <?php //FormFieldHelper::tinymce( 'wikipress-wiki-excerpt', 'wikipress_wiki[excerpt]', __( 'Wiki Excerpt', 'wikipress' ), '', 6 ); ?>
+                    <?php FormFieldHelper::tinymce( 'wikipress-wiki-excerpt', 'wikipress_wiki[excerpt]', __( 'Wiki Excerpt', 'wikipress' ), '', 6 ); ?>
                 </div>
                 <div class="col-12">
                     <?php //FormFieldHelper::tinymce( 'wikipress-wiki-description', 'wikipress_wiki[description]', __( 'Wiki Description', 'wikipress' ), '', 10 ); ?>

@@ -108,7 +108,6 @@ final class FormFieldHelper {
             'wpautop' => true,
         ];
 
-        echo '<div class="wikipress-wp-editor">';
         printf( '<label class="form-label" for="%1$s">%2$s</label>', esc_attr( $editor_id ), esc_html( $label ) );
         if ( function_exists( 'wp_enqueue_editor' ) ) {
             wp_enqueue_editor();
@@ -151,7 +150,6 @@ final class FormFieldHelper {
         } else {
             printf( '<textarea class="form-control" id="%1$s" name="%2$s" rows="%3$d">%4$s</textarea>', esc_attr( $editor_id ), esc_attr( $name ), max( 1, $rows ), esc_textarea( $value ) );
         }
-        echo '</div>';
     }
 
     /**
