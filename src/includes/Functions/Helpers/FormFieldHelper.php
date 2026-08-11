@@ -555,7 +555,7 @@ final class FormFieldHelper {
         foreach ( $settings as $option_key => [ $attribute, $default ] ) {
             $value = $options[ $option_key ] ?? $default;
             if ( null !== $value ) {
-                $options[ 'data-' . $attribute ] = $value;
+                $options[ 'data-' . $attribute ] = is_bool( $value ) ? ( $value ? 'true' : 'false' ) : $value;
             }
         }
 
