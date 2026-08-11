@@ -559,6 +559,10 @@ final class FormFieldHelper {
             }
         }
 
+        if ( true === ( $options['show_tick'] ?? false ) ) {
+            $options['class'] = self::bootstrap_select_classes( (string) ( $options['class'] ?? '' ) . ' show-tick' );
+        }
+
         $select_options = $options['data'] ?? [];
         $selected = $options['selected'] ?? [];
         unset( $options['icons_base'], $options['tick_icon'], $options['live_search_placeholder'], $options['open_options_text'], $options['selected_text_format'], $options['selected_items_style'], $options['selected_tag_remove_label'], $options['placeholder'], $options['width'], $options['size'], $options['actions_box'], $options['max_options'], $options['live_search_normalize'], $options['live_search_style'], $options['live_search'], $options['show_selected_tags'], $options['open_options'], $options['dropup_auto'], $options['show_tick'], $options['data'], $options['selected'] );
