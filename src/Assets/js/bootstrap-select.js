@@ -13,10 +13,25 @@ const getOptionData = (field) => Array.from(field.options).map((option) => ({
 }));
 
 const initializeField = (field, options = {}) => {
+  const modal = field.closest?.('.modal');
+  if (modal && !modal.classList.contains('show')) {
+    if (!field.__wikipressModalSelectHandler) {
+      field.__wikipressModalSelectHandler = () => {
+        field.__wikipressModalSelectHandler = null;
+        initializeField(field, options);
+      };
+      modal.addEventListener('shown.bs.modal', field.__wikipressModalSelectHandler, { once: true });
+    }
+    return null;
+  }
+
   const instance = Selectpicker.getOrCreateInstance(field, {
     source: { data: getOptionData(field) },
+    container: document.body,
     ...options,
   });
+
+  instance.refresh();
 
   if (field.getRootNode?.() instanceof ShadowRoot && !instance.__wikipressShadowClickHandler) {
     instance.__wikipressShadowClickHandler = (event) => {

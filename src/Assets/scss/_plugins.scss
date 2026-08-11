@@ -1,5 +1,10 @@
 
+.bs-container {
+	z-index: 1060;
+}
+
 .wikipress-admin {
+
 	.wikipress-plugin-card {
 		.card-header { background: #fff; border-color: var(--wikipress-line); }
 		.card-body { display: flex; flex-direction: column; }
