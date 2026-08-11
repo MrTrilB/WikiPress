@@ -87,6 +87,7 @@ final class Settings {
                     'description' => __( 'Choose which bundled TinyMCE plugins are available to the editor.', 'wikipress' ),
                     'tooltip' => __( 'Only selected local plugin files are requested when an editor starts.', 'wikipress' ),
                     'type' => 'multiselect',
+                    'dropup_auto' => false,
                     'options' => self::plugin_options(),
                     'default' => self::DEFAULT_PLUGINS,
                 ],

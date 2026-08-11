@@ -2,16 +2,6 @@ import Selectpicker from '../../../node_modules/@crestapps/bootstrap-select/dist
 
 const root = window.wikipressShadowRoot || document;
 
-const getOptionData = (field) => Array.from(field.options).map((option) => ({
-  value: option.value,
-  text: option.textContent,
-  selected: option.selected,
-  disabled: option.disabled,
-  hidden: option.hidden,
-  title: option.title,
-  icon: option.dataset.icon,
-}));
-
 const initializeField = (field, options = {}) => {
   const modal = field.closest?.('.modal');
   if (modal && !modal.classList.contains('show')) {
@@ -25,13 +15,7 @@ const initializeField = (field, options = {}) => {
     return null;
   }
 
-  const instance = Selectpicker.getOrCreateInstance(field, {
-    source: { data: getOptionData(field) },
-    container: modal || document.body,
-    ...options,
-  });
-
-  instance.refresh();
+  const instance = Selectpicker.getOrCreateInstance(field, options);
 
   if (field.getRootNode?.() instanceof ShadowRoot && !instance.__wikipressShadowClickHandler) {
     instance.__wikipressShadowClickHandler = (event) => {

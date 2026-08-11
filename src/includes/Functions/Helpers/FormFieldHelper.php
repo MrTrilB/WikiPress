@@ -536,6 +536,7 @@ final class FormFieldHelper {
             'live_search' => [ 'live-search', true ],
             'show_selected_tags' => [ 'show-selected-tags', true ],
             'open_options' => [ 'open-options', false ],
+            'dropup_auto' => [ 'dropup-auto', true ],
             'show_tick' => [ 'show-tick', null ],
             'live_search_placeholder' => [ 'live-search-placeholder', __( 'Search or create', 'wikipress' ) ],
             'open_options_text' => [ 'open-options-text', __( 'Create "{0}"', 'wikipress' ) ],
@@ -560,7 +561,7 @@ final class FormFieldHelper {
 
         $select_options = $options['data'] ?? [];
         $selected = $options['selected'] ?? [];
-        unset( $options['icons_base'], $options['tick_icon'], $options['live_search_placeholder'], $options['open_options_text'], $options['selected_text_format'], $options['selected_items_style'], $options['selected_tag_remove_label'], $options['placeholder'], $options['width'], $options['size'], $options['actions_box'], $options['max_options'], $options['live_search_normalize'], $options['live_search_style'], $options['live_search'], $options['show_selected_tags'], $options['open_options'], $options['show_tick'], $options['data'], $options['selected'] );
+        unset( $options['icons_base'], $options['tick_icon'], $options['live_search_placeholder'], $options['open_options_text'], $options['selected_text_format'], $options['selected_items_style'], $options['selected_tag_remove_label'], $options['placeholder'], $options['width'], $options['size'], $options['actions_box'], $options['max_options'], $options['live_search_normalize'], $options['live_search_style'], $options['live_search'], $options['show_selected_tags'], $options['open_options'], $options['dropup_auto'], $options['show_tick'], $options['data'], $options['selected'] );
 
         return self::render_select( $name, $select_options, $selected, $options, true );
     }
