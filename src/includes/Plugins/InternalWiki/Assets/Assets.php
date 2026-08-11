@@ -24,8 +24,17 @@ final class Assets {
      */
     public function register(): void {
         $this->loader->register_component( $this, [
-            [ 'type' => 'filter', 'hook' => 'wikipress_frontend_assets', 'callback' => 'register_frontend_assets' ],
-            [ 'type' => 'filter', 'hook' => 'wikipress_admin_assets', 'callback' => 'register_admin_assets', 'accepted_args' => 2 ],
+            [ 
+                'type' => 'filter',
+                'hook' => 'wikipress_frontend_assets',
+                'callback' => 'register_frontend_assets'
+            ],
+            [ 
+                'type' => 'action',
+                'hook' => 'admin_enqueue_scripts',
+                'callback' => 'enqueue_admin_assets',
+                'priority' => 20
+            ],
         ] )->run();
     }
 
@@ -39,18 +48,17 @@ final class Assets {
         return $assets;
     }
 
-    public function register_admin_assets( array $assets, string $context = '' ): array {
+    public function enqueue_admin_assets(): void {
         if ( 'wikipress-manage' !== RequestHelper::get_key( 'page' ) ) {
-            return $assets;
+            return;
         }
 
-        $assets['scripts'][] = [
-            'handle' => 'wikipress-internal-wiki-admin',
-            'src' => WIKIPRESS_URL . 'src/Assets/dist/js/admin.internal-wiki.js',
-            'deps' => [ 'wikipress-bootstrap-select' ],
-            'in_footer' => true,
-        ];
-
-        return $assets;
+        wp_enqueue_script(
+            'wikipress-internal-wiki-admin',
+            WIKIPRESS_URL . 'src/Includes/Plugins/InternalWiki/Assets/dist/js/admin.internal-wiki.js',
+            [ 'wikipress-bootstrap-select' ],
+            WIKIPRESS_VERSION,
+            true
+        );
     }
 }
