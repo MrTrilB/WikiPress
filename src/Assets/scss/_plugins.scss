@@ -17,8 +17,15 @@
 		.modal-dialog { max-height: calc(100vh - 3.5rem); }
 		.modal-content { max-height: calc(100vh - 3.5rem); }
 		.modal-body { overflow-y: auto; }
-		.bs-container {
-			z-index: 1060;
+		.bootstrap-select {
+			&.show {
+				position: relative;
+				z-index: 1061 !important;
+
+				.dropdown-menu {
+					z-index: 1062 !important;
+				}
+			}
 		}
 
 		.wikipress-plugin-settings-fields-box {
