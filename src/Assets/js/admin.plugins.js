@@ -19,7 +19,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const closePluginModal = (modal) => {
         const instance = bootstrap.Modal.getOrCreateInstance(modal);
-        instance.hide();
+        return new Promise((resolve) => {
+            const finish = () => {
+                if (!root.querySelector('.modal.show')) {
+                    root.querySelectorAll('.modal-backdrop').forEach((backdrop) => backdrop.remove());
+                    document.body.classList.remove('modal-open');
+                    document.body.style.removeProperty('overflow');
+                    document.body.style.removeProperty('padding-right');
+                }
+                resolve();
+            };
+
+            modal.addEventListener('hidden.bs.modal', finish, { once: true });
+            instance.hide();
+        });
     };
 
     const showPluginNotice = (message, type = 'success') => {
@@ -103,12 +116,14 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!response.success) {
                 throw new Error(response.data?.message || 'Unable to save plugin settings');
             }
-            closePluginModal(modal);
-            showPluginNotice(response.data?.message || 'Plugin settings saved successfully.');
+            return closePluginModal(modal).then(() => {
+                showPluginNotice(response.data?.message || 'Plugin settings saved successfully.');
+            });
         })
         .catch((error) => {
-            closePluginModal(modal);
-            showPluginNotice(error.message || 'Unable to save plugin settings.', 'danger');
+            closePluginModal(modal).then(() => {
+                showPluginNotice(error.message || 'Unable to save plugin settings.', 'danger');
+            });
         })
         .finally(() => {
             button.disabled = false;
