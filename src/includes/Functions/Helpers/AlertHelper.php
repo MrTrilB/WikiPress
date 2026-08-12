@@ -84,7 +84,7 @@ class AlertHelper {
                 $icon = 'info-circle';
         }?>
 
-        <div class="alert alert-<?php echo esc_attr( $alert ); ?> alert-dismissible fade show" role="alert">
+        <div class="alert alert-<?php echo esc_attr( $alert ); ?> d-flex align-items-center alert-dismissible fade show" role="alert">
 
             <i class="flex-shrink-0 me-2 fa-solid fa-<?php echo esc_attr( $icon ); ?>" aria-hidden="true"></i> <?php echo esc_html( $message ); ?>
 
