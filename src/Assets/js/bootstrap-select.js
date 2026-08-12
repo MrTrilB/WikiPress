@@ -16,6 +16,16 @@ const initializeField = (field, options = {}) => {
   }
 
   const instance = Selectpicker.getOrCreateInstance(field, options);
+
+  if (instance.button && !instance.__wikipressClickHandler) {
+    instance.__wikipressClickHandler = (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      instance.toggle(event);
+    };
+    instance.button.addEventListener('click', instance.__wikipressClickHandler);
+  }
+
   return instance;
 };
 

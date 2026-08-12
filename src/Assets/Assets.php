@@ -1,8 +1,8 @@
 <?php
 /**
- * TrilB.Dev Plugin - WikiPress Assets
+ * WikiPress Assets
  *
- * @package TrilBDev
+ * @package WikiPress
  * @subpackage Assets
  * @since 1.0.0
  */
