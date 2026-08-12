@@ -89,6 +89,26 @@
 		border-radius: 50%;
 	}
 
+	.form-switch {
+		padding-left: 2.5em;
+
+		.form-check-input {
+			--bs-form-switch-bg: var(--bs-form-check-bg-image);
+			background-image: var(--bs-form-switch-bg);
+			background-position: left center;
+			background-repeat: no-repeat;
+			background-size: contain;
+			border-radius: 2em;
+			height: 1em;
+			margin-left: -2.5em;
+			width: 2em;
+		}
+
+		.form-check-input:checked {
+			background-position: right center;
+		}
+	}
+
 	input[type='checkbox']::before,
 	input[type='checkbox']::after,
 	input[type='radio']::before,
