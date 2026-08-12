@@ -1,22 +1,20 @@
 const updateAccessFields = (root) => {
   const accessType = root.querySelector('[data-internal-wiki-access-type]');
-  const roles = root.querySelector('[data-internal-wiki-roles]');
-  const permissions = root.querySelector('[data-internal-wiki-permissions]');
+  const roles = root.querySelector('[data-internal-wiki-roles], [data-internal-wiki-roles-select]');
+  const permissions = root.querySelector('[data-internal-wiki-permissions], [data-internal-wiki-permissions-select]');
 
   if (!accessType || !roles || !permissions) return;
 
+  const rolesContainer = roles.closest('tr, [data-internal-wiki-roles]') || roles;
+  const permissionsContainer = permissions.closest('tr, [data-internal-wiki-permissions]') || permissions;
   const selectedType = accessType.value;
-  roles.classList.toggle('d-none', selectedType !== 'roles');
-  permissions.classList.toggle('d-none', selectedType !== 'permissions');
+  rolesContainer.classList.toggle('d-none', selectedType !== 'roles');
+  permissionsContainer.classList.toggle('d-none', selectedType !== 'permissions');
 };
 
 const initializeInternalWikiFields = (root = document) => {
-  const fields = root.matches?.('[data-internal-wiki-fields]')
-    ? [root]
-    : root.querySelectorAll('[data-internal-wiki-fields]');
-
-  fields.forEach((fieldContainer) => {
-    const accessType = fieldContainer.querySelector('[data-internal-wiki-access-type]');
+  root.querySelectorAll('[data-internal-wiki-access-type]').forEach((accessType) => {
+    const fieldContainer = accessType.closest('[data-internal-wiki-fields], form') || root;
     if (!accessType || accessType.dataset.internalWikiInitialized === 'true') return;
 
     accessType.dataset.internalWikiInitialized = 'true';
@@ -26,7 +24,7 @@ const initializeInternalWikiFields = (root = document) => {
 };
 
 const initializeInternalWikiController = () => {
-  const root = window.wikipressShadowRoot || document;
+  const root = document;
   initializeInternalWikiFields(root);
 
   if (root === document) {

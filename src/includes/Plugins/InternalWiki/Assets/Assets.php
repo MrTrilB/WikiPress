@@ -69,7 +69,7 @@ final class Assets {
      * @return void
      */
     public function enqueue_admin_assets(): void {
-        if ( 'wikipress-manage' !== RequestHelper::get_key( 'page' ) ) {
+        if ( ! in_array( RequestHelper::get_key( 'page' ), [ 'wikipress-manage', 'wikipress-settings' ], true ) ) {
             return;
         }
 

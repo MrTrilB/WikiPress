@@ -45,6 +45,7 @@ The same optional interfaces are available to a WordPress-installed extension:
 
 - settings and generated settings tabs
 - database table registration
+- shortcode registration through `ShortcodeProviderInterface`
 - asset registration
 - admin page registration
 - REST route registration
@@ -71,6 +72,27 @@ final class MyWikiPressExtension implements PluginInterface, RestRouteProviderIn
 
 Import `Response` from `TrilBDev\\WikiPress\\API` when returning WikiPress-style response envelopes.
 
+Example shortcode provider:
+
+```php
+use TrilBDev\WikiPress\Includes\Functions\Helpers\ShortcodeHelper;
+use TrilBDev\WikiPress\Includes\Plugins\ShortcodeProviderInterface;
+
+final class MyWikiPressExtension implements PluginInterface, ShortcodeProviderInterface {
+    public function get_shortcodes(): array {
+        return [
+            ShortcodeHelper::define(
+                'my_status',
+                static fn( array $attributes, ?string $content, string $tag ): string => esc_html( $attributes['label'] ),
+                [ 'label' => 'Ready' ]
+            ),
+        ];
+    }
+}
+```
+
+Shortcode callbacks must return their rendered output. Use `ShortcodeHelper::register()` or `register_many()` when registration needs to happen outside the provider lifecycle.
+
 ## Lifecycle Considerations
 
 WikiPress calls the registration action after internal plugin discovery. If auto-activation is enabled, a plugin registered during that action is initialized immediately. The manager checks `is_active()` before invoking provider methods and `init()`.
@@ -80,6 +102,10 @@ Do not assume WikiPress is available before the registration action. If the acti
 ## Settings Integration
 
 Implement `SettingsProviderInterface` to register defaults and `SettingsPageProviderInterface` to expose a generated tab. Read values through `TrilBDev\\WikiPress\\Includes\\Settings\\Settings` and sanitize all submitted values before storing them. See [SETTINGS.md](SETTINGS.md).
+
+External extensions own their translation catalogs and language files. Implement `I18nProviderInterface::load_textdomain()` and load the extension's text domain from its own language directory. The WikiPress root `i18n:pot` and `i18n:mo` scripts cover WikiPress core and internal plugins; external plugins should run their own equivalent workflow.
+
+External providers can register page-specific assets through the shared `Assets` service or contribute to the `wikipress_base_assets`, `wikipress_admin_assets`, and `wikipress_frontend_assets` filters. Keep source assets in the external plugin and enqueue only the pages that need them.
 
 ## Recommended Integration Checklist
 

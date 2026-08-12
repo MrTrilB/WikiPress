@@ -63,6 +63,8 @@ Page payload:
 }
 ```
 
+Wiki payloads may also include `permalink`, a tokenized pattern override for the Wiki's pages. Patterns use the tokens documented in [HELPERS.md](HELPERS.md). The normalized override is returned as `permalink` and is stored per Wiki; omit or submit an empty value to use the global setting.
+
 ## Response Shape
 
 Successful responses use `Response::success()`:
@@ -104,6 +106,16 @@ $wiki = API::get_wiki(42);
 ```
 
 Available methods include `list_wikis()`, `get_wiki()`, `create_wiki()`, `update_wiki()`, `delete_wiki()`, and the corresponding page methods.
+
+`format_wiki()` and `format_post()` are public formatting methods used when an extension needs the same response shape as the REST API.
+
+## Extension Hooks
+
+- `wikipress_wiki_payload` filters the sanitized Wiki payload before creation or update. It receives the payload and the existing `WP_Post` when updating, or `null` when creating.
+- `wikipress_wiki_saved` fires after a Wiki is created or updated and receives the Wiki ID and final payload.
+- `wikipress_wiki_access_allowed` filters whether a Wiki is readable. The filter is also applied when returning related Wiki pages.
+
+Collection totals are taken from the underlying WordPress query before access filtering; the returned `items` array may therefore contain fewer entries than `total` when access rules are active.
 
 ## Adding Routes
 

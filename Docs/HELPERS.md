@@ -89,9 +89,44 @@ Build URLs consistently:
 
 Always escape the returned URL at output time with `esc_url()`.
 
+## PermalinkHelper
+
+`PermalinkHelper` builds tokenized Wiki page URLs and resolves them through WordPress rewrite rules. Supported tokens are `%root%`, `%root_category%`, `%root_tags%`, `%wiki%`, `%wiki_category%`, `%wiki_tag%`, and `%wiki_page%`.
+
+- `token_definitions()` returns the translated token descriptions.
+- `default_pattern()` returns the default token pattern.
+- `sanitize_pattern($pattern)` keeps supported tokens and sanitized literal segments.
+- `pattern_for_wiki($wiki_id = 0)` resolves the per-Wiki override or global `permalink` setting.
+- `page_url($page)` returns the full URL for a `WP_Post` Wiki page.
+- `expand($pattern, $page, $wiki = null)` expands a pattern into a relative path.
+- `rewrite_rule()` registers the `wikipress_path` query variable and request resolver.
+- `resolve_request($vars)` maps a tokenized path to a published Wiki page.
+- `filter_page_permalink($link, $post)` replaces the normal link for Wiki page posts.
+
+Wiki permalink overrides are stored in `_wikipress_permalink`. Use `sanitize_pattern()` before persisting custom patterns.
+
+## AjaxHelper
+
+Use `AjaxHelper` for common AJAX authorization and JSON responses:
+
+- `is_ajax_request()`, `request_method()`, and `is_method($method)` inspect the request.
+- `has_valid_nonce($action, $field = 'nonce', $request = null)` verifies a WordPress nonce.
+- `can($capability, $object_id = 0)` delegates capability checks to `PermissionHelper`.
+- `authorized($action, $capability = '', $object_id = 0, $field = 'nonce')` combines nonce and capability checks.
+- `success($data = null, $status_code = 200)` and `error($data = null, $status_code = 400)` send JSON responses.
+- `unauthorized($message, $status_code = 403)` sends a standard authorization error.
+
+## AlertHelper
+
+Use `AlertHelper` for shared Bootstrap admin notices. `admin_error()`, `admin_success()`, `admin_warning()`, and `admin_info()` render notices immediately. `render_admin_notice()` accepts `info`, `success`, `warning`, or `error`; `get_admin_notice()` returns the escaped HTML string for AJAX responses or deferred insertion.
+
+## LoggerHelper
+
+`LoggerHelper::write_log($value)` writes to the PHP debug log, and `write_console($value)` emits a browser console message. Logging is enabled when `WP_DEBUG` is enabled or the WikiPress `debug_logging` setting is true; console output also respects `console_logging`.
+
 ## FormFieldHelper
 
-`FormFieldHelper` renders Bootstrap-compatible controls and handles attributes, validation feedback, and escaping. Common methods include `input()`, `text_input()`, `textarea()`, `select()`, `checkbox()`, `radio()`, and `switch()`.
+`FormFieldHelper` renders Bootstrap-compatible controls and handles attributes, validation feedback, and escaping. Common methods include `input()`, `text_input()`, `textarea()`, `select()`, `checkbox()`, `radio()`, `switch()`, `label()`, `button()`, `button_group()`, and dropdown button helpers.
 
 ```php
 echo FormFieldHelper::text_input(
@@ -100,6 +135,29 @@ echo FormFieldHelper::text_input(
     [ 'class' => 'form-control-lg', 'required' => true ]
 );
 ```
+
+`bootstrap_select()` and `bootstrap_multiselect()` render controls using the shared Bootstrap Select integration. They accept `data` options, `selected` values, `attributes`, and presentation options such as `live_search`, `dropup_auto`, `show_tick`, `selection_indicator`, `placeholder`, `width`, and `actions_box`. `bootstrap_multiselect()` automatically adds `[]` to the field name and enables `multiple`.
+
+`attributes_to_string()` converts an attribute array into escaped HTML attributes and is useful when composing extension-owned markup. Prefer the helper controls over hand-built form HTML.
+
+## ShortcodeHelper
+
+Define and register extension shortcodes through the shared registry:
+
+```php
+use TrilBDev\WikiPress\Includes\Functions\Helpers\ShortcodeHelper;
+
+$definition = ShortcodeHelper::define(
+    'my_status',
+    static fn( array $attributes, ?string $content, string $tag ): string => esc_html( $attributes['label'] ),
+    [ 'label' => 'Ready' ],
+    [ 'description' => 'Displays a status label.', 'category' => 'my-plugin' ]
+);
+
+ShortcodeHelper::register( $definition );
+```
+
+Use `register_many($definitions, $replace = false)` for a group. Definitions support `tag`, `callback`, `attributes`, `description`, `category`, `enclosing`, and `tinymce`. Shortcode callbacks must return their output.
 
 ## LoaderHelper
 
@@ -116,8 +174,8 @@ Invalid hook definitions throw `InvalidArgumentException`; use `action` or `filt
 
 ## Other Helpers
 
-- `AjaxHelper` centralizes AJAX nonce and response handling.
-- `AlertHelper` renders standard admin alerts.
-- `LoggerHelper` writes diagnostic messages.
+- `ShortcodeHelper` and `Core\Shortcodes` provide a shared shortcode registry.
+- `Response` and `Validators` provide consistent REST envelopes and payload validation.
+- `Settings`, `SettingsManager`, and `PermissionHelper` cover shared persistence and authorization contracts.
 
 Prefer these helpers over duplicating sanitization, URL construction, capability checks, query setup, or form markup in feature classes.

@@ -19,6 +19,8 @@ Settings::delete('show_toc');
 
 Available typed readers are `get()`, `get_string()`, `get_key()`, `get_slug()`, `get_int()`, and `get_bool()`. Group methods are `get_group()`, `set_group()`, and `get_all()`. `has()` checks whether a stored key exists.
 
+The core group constants are `Settings::GENERAL`, `Settings::LAYOUT`, `Settings::ACCESS`, and `Settings::TOOLS`. Typed readers sanitize scalar values and return the supplied fallback when a value is missing or invalid.
+
 ## Core Groups
 
 Core defaults currently include:
@@ -81,6 +83,33 @@ public function sanitize_settings($input): array {
 ```
 
 The actual field types supported by the admin settings renderer should be checked against the current settings page implementation before adding new types. Every submitted value must be normalized and validated before persistence.
+
+### Generated Settings Fields
+
+Generated plugin settings pages support `checkbox`, `select`, `multiselect`, and `text` fields. A page may use `layout => 'table'` or `layout => 'box'`. Field definitions can include:
+
+- `key`, `label`, `description`, and `default` for the field contract.
+- `options` for `select` and `multiselect` controls.
+- `attributes` for escaped control attributes supplied by the owning plugin.
+- `wrapper_class` for classes on the generated row or card.
+- `tooltip`, `tooltip_type`, and `tooltip_icon` for accessible field help.
+- `dropup_auto`, `show_tick`, and `selection_indicator` for Bootstrap Select multiselect presentation.
+- `visible_when => [ 'field' => 'other_key', 'equals' => 'value' ]` for declarative conditional visibility. The plugin owns the JavaScript that interprets its conditions; core only renders the metadata.
+
+Dynamic options, conditional rules, and validation belong to the provider. Core must not inspect a plugin slug to implement feature behavior.
+
+For example, an access-control extension can define a role field as:
+
+```php
+[
+    'key' => 'default_roles',
+    'label' => __( 'Default roles', 'my-plugin' ),
+    'type' => 'multiselect',
+    'options' => $role_options,
+    'attributes' => [ 'data-my-plugin-roles' => true ],
+    'visible_when' => [ 'field' => 'default_access_type', 'equals' => 'roles' ],
+]
+```
 
 ## Migration and Persistence
 

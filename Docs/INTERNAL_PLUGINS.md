@@ -32,6 +32,7 @@ namespace TrilBDev\WikiPress\Includes\Plugins\MyPlugin;
 use TrilBDev\WikiPress\Includes\Plugins\PluginInterface;
 
 final class MyPlugin implements PluginInterface {
+    
     public function get_slug(): string { return 'my-plugin'; }
     public function get_name(): string { return 'My Plugin'; }
     public function get_version(): string { return '1.0.0'; }
@@ -57,13 +58,16 @@ Implement these interfaces only when the extension needs the capability:
 - `SettingsProviderInterface::register_settings()`
 - `SettingsPageProviderInterface::get_settings_page()` and `sanitize_settings()`
 - `DatabaseProviderInterface::register_tables()`
+- `ShortcodeProviderInterface::get_shortcodes()`
 - `AssetsProviderInterface::register_assets()`
 - `AdminPageProviderInterface::register_admin_pages()`
 - `RestRouteProviderInterface::register_rest_routes()`
 - `FrontendProviderInterface::register_frontend()`
 - `I18nProviderInterface::load_textdomain()`
 
-The loader invokes provider methods in this order for an active plugin: settings, database tables, assets, admin pages, REST routes, frontend behavior, translations, then `init()`.
+The loader invokes provider methods in this order for an active plugin: settings, database tables, shortcodes, assets, admin pages, REST routes, frontend behavior, translations, then `init()`.
+
+Shortcode providers should return definitions created with `ShortcodeHelper::define()` from `get_shortcodes()`. The loader registers them with the shared shortcode registry.
 
 ## Composition and Includes
 
@@ -76,6 +80,8 @@ $this->loader->register_component($this, [
     [ 'type' => 'action', 'hook' => 'init', 'callback' => 'register_feature' ],
 ])->run();
 ```
+
+`Includes/Shortcodes.php` is loaded automatically when present, alongside `Includes/Includes.php` and `Includes/I18n.php`.
 
 ## Assets
 
@@ -92,3 +98,17 @@ npm run build
 WikiPress discovers top-level PHP files and structurally valid plugin subdirectories during `Plugins::init()`. Auto-activation is controlled by the `wiki_plugin_auto_activate` setting. A plugin can also return `false` from `is_active()` to remain registered but uninitialized.
 
 For debugging, use `LoggerHelper`; the loader logs invalid plugin classes and thrown initialization errors.
+
+## Discovery and Registry APIs
+
+`Plugins::get_instance()` returns the manager singleton. `get_loaded_plugins()` returns discovered class names and `get_registered_plugins()` returns registered instances. Use `register_plugin_instance()` inside the `wikipress_register_plugin` callback, or `Plugins::register_plugin()` as the static convenience method. Duplicate slugs are ignored.
+
+`is_plugin_enabled()` reads the persisted enabled state, defaulting to enabled when no state exists. `set_plugin_enabled()` persists a registered plugin's state. A plugin initializes only when auto-activation is enabled, its persisted state is enabled, and `is_active()` returns true.
+
+## Shared Assets
+
+Use `Assets::register_page( $page, $assets )` for page-specific styles and scripts. Asset descriptors support `handle`, `src`, `deps`, `version`, `in_footer`, and `media` where applicable. The shared asset service exposes `wikipress_base_assets`, `wikipress_admin_assets`, and `wikipress_frontend_assets` filters for generic extension of the asset bundle.
+
+## Localization
+
+Run `npm run i18n:pot` to scan WikiPress core and every internal plugin, writing the core catalog under `src/languages` and plugin catalogs under each plugin's `Language` directory. Run `npm run i18n:mo` to compile `.mo` files, using a matching `.po` file when present and otherwise the `.pot` template. Keep plugin strings in the owning plugin's text domain and language directory.

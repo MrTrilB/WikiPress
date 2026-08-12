@@ -67,6 +67,16 @@ final class Settings {
     }
 
     public function get_settings_page(): array {
+        $role_options = [];
+        foreach ( wp_roles()->roles as $role_key => $role ) {
+            $role_options[ $role_key ] = translate_user_role( $role['name'] );
+        }
+
+        $permission_options = array_map(
+            static fn( string $permission ): array => [ 'value' => $permission, 'label' => $permission ],
+            $this->permissions()
+        );
+
         return [
             'slug' => 'internal_wiki',
             'label' => __( 'Internal Wiki', 'wikipress' ),
@@ -84,6 +94,29 @@ final class Settings {
                         'permissions' => __( 'Specific permissions', 'wikipress' ),
                     ],
                     'default' => 'logged_in_user',
+                    'attributes' => [ 'data-internal-wiki-access-type' => true ],
+                ],
+                [
+                    'key' => 'default_roles',
+                    'label' => __( 'Default roles', 'wikipress' ),
+                    'description' => __( 'Choose which roles can access new Wiki pages when specific roles are selected.', 'wikipress' ),
+                    'type' => 'multiselect',
+                    'options' => $role_options,
+                    'default' => [],
+                    'attributes' => [ 'data-internal-wiki-roles-select' => true ],
+                    'wrapper_class' => 'wikipress-internal-wiki-roles',
+                    'visible_when' => [ 'field' => 'default_access_type', 'equals' => 'roles' ],
+                ],
+                [
+                    'key' => 'default_permissions',
+                    'label' => __( 'Default permissions', 'wikipress' ),
+                    'description' => __( 'Choose which permissions can access new Wiki pages when specific permissions are selected.', 'wikipress' ),
+                    'type' => 'multiselect',
+                    'options' => $permission_options,
+                    'default' => [],
+                    'attributes' => [ 'data-internal-wiki-permissions-select' => true ],
+                    'wrapper_class' => 'wikipress-internal-wiki-permissions',
+                    'visible_when' => [ 'field' => 'default_access_type', 'equals' => 'permissions' ],
                 ],
             ],
         ];
@@ -94,8 +127,8 @@ final class Settings {
         $access_type = SanitizationHelper::key( $input['default_access_type'] ?? 'logged_in_user', 'logged_in_user' );
         $settings = [
             'default_access_type' => in_array( $access_type, [ 'logged_in_user', 'roles', 'permissions' ], true ) ? $access_type : 'logged_in_user',
-            'default_roles' => (array) ( BaseSettings::get( 'default_roles', [] ) ?? [] ),
-            'default_permissions' => (array) ( BaseSettings::get( 'default_permissions', [] ) ?? [] ),
+            'default_roles' => $this->valid_roles( $input['default_roles'] ?? [] ),
+            'default_permissions' => $this->valid_permissions( $input['default_permissions'] ?? [] ),
         ];
         BaseSettings::set_group( 'internal_wiki', $settings );
         return $settings;

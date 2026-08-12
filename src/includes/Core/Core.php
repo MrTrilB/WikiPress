@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * Core component for WikiPress.
+ *
+ * @package WikiPress\Includes\Core
+ */
 namespace TrilBDev\WikiPress\Includes\Core;
 
 use TrilBDev\WikiPress\Includes\Core\WP\WPLoader;
@@ -16,9 +20,21 @@ if ( ! defined( 'ABSPATH' ) ) {
  * single lifecycle boundary for WikiPress and extension plugins.
  */
 final class Core {
+    /**
+     * @var PostType Post type registrar.
+     */
     private PostType $post_types;
+    /**
+     * @var Taxonomy Taxonomy registrar.
+     */
     private Taxonomy $taxonomies;
+    /**
+     * @var Shortcodes Shortcode registrar.
+     */
     private Shortcodes $shortcodes;
+    /**
+     * @var bool Whether core registration has run.
+     */
     private bool $registered = false;
 
     /**
