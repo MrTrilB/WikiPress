@@ -75,7 +75,7 @@ final class Assets {
 
         wp_enqueue_script(
             'wikipress-internal-wiki-admin',
-            WIKIPRESS_URL . 'src/Includes/Plugins/InternalWiki/Assets/dist/js/admin.internal-wiki.js',
+            WIKIPRESS_URL . 'src/Assets/dist/js/admin.internal-wiki.js',
             [ 'wikipress-bootstrap-select' ],
             WIKIPRESS_VERSION,
             true

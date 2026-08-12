@@ -52,28 +52,65 @@ final class Settings {
      * @return array The settings array.
      */
     public function register(): void {
-        BaseSettings::register_group( 'internal_wiki', [
+        BaseSettings::register_group( 
+            'internal_wiki', 
+            [
             'default_access_type' => 'logged_in_user',
             'default_roles' => [],
             'default_permissions' => [],
         ] );
-        $this->loader->register_component( $this, [
-            [ 'type' => 'filter', 'hook' => 'wikipress_wiki_form_fields', 'callback' => 'render_fields', 'accepted_args' => 2 ],
-            [ 'type' => 'filter', 'hook' => 'wikipress_wiki_payload', 'callback' => 'sanitize_payload', 'accepted_args' => 2 ],
-            [ 'type' => 'filter', 'hook' => 'wikipress_wiki_access_allowed', 'callback' => 'filter_access', 'accepted_args' => 2 ],
-            [ 'type' => 'action', 'hook' => 'wikipress_wiki_saved', 'callback' => 'save_access', 'accepted_args' => 2 ],
-            [ 'type' => 'action', 'hook' => 'template_redirect', 'callback' => 'enforce_access' ],
+
+        $this->loader->register_component( $this, 
+        [
+
+            [ 
+                'type' => 'filter', 
+                'hook' => 'wikipress_wiki_form_fields', 
+                'callback' => 'render_fields', 
+                'accepted_args' => 2 
+            ],
+            [ 
+                'type' => 'filter', 
+                'hook' => 'wikipress_wiki_payload', 
+                'callback' => 'sanitize_payload', 
+                'accepted_args' => 2 
+            ],
+            [ 
+                'type' => 'filter', 
+                'hook' => 'wikipress_wiki_access_allowed', 
+                'callback' => 'filter_access', 
+                'accepted_args' => 2 
+            ],
+            [ 
+                'type' => 'action', 
+                'hook' => 'wikipress_wiki_saved', 
+                'callback' => 'save_access', 
+                'accepted_args' => 2 
+            ],
+            [ 
+                'type' => 'action', 
+                'hook' => 'template_redirect', 
+                'callback' => 'enforce_access' 
+            ],
         ] )->run();
     }
 
     public function get_settings_page(): array {
+
         $role_options = [];
+
         foreach ( wp_roles()->roles as $role_key => $role ) {
+
             $role_options[ $role_key ] = translate_user_role( $role['name'] );
+
         }
 
         $permission_options = array_map(
-            static fn( string $permission ): array => [ 'value' => $permission, 'label' => $permission ],
+
+            static fn( string $permission ): array => [ 
+                'value' => $permission, 
+                'label' => $permission 
+            ],
             $this->permissions()
         );
 
@@ -105,6 +142,7 @@ final class Settings {
                     'default' => [],
                     'attributes' => [ 'data-internal-wiki-roles-select' => true ],
                     'wrapper_class' => 'wikipress-internal-wiki-roles',
+                    'wrapper_attributes' => [ 'data-internal-wiki-roles' => true ],
                     'visible_when' => [ 'field' => 'default_access_type', 'equals' => 'roles' ],
                 ],
                 [
@@ -116,6 +154,7 @@ final class Settings {
                     'default' => [],
                     'attributes' => [ 'data-internal-wiki-permissions-select' => true ],
                     'wrapper_class' => 'wikipress-internal-wiki-permissions',
+                    'wrapper_attributes' => [ 'data-internal-wiki-permissions' => true ],
                     'visible_when' => [ 'field' => 'default_access_type', 'equals' => 'permissions' ],
                 ],
             ],
@@ -124,9 +163,19 @@ final class Settings {
 
     public function sanitize( $input ): array {
         $input = is_array( $input ) ? $input : [];
-        $access_type = SanitizationHelper::key( $input['default_access_type'] ?? 'logged_in_user', 'logged_in_user' );
+        $access_type = SanitizationHelper::key( 
+            $input['default_access_type'] ?? 'logged_in_user', 
+            'logged_in_user' 
+        );
         $settings = [
-            'default_access_type' => in_array( $access_type, [ 'logged_in_user', 'roles', 'permissions' ], true ) ? $access_type : 'logged_in_user',
+            'default_access_type' => in_array( 
+                $access_type, 
+                [ 
+                    'logged_in_user', 
+                    'roles', 
+                    'permissions' 
+                ], 
+                true ) ? $access_type : 'logged_in_user',
             'default_roles' => $this->valid_roles( $input['default_roles'] ?? [] ),
             'default_permissions' => $this->valid_permissions( $input['default_permissions'] ?? [] ),
         ];
@@ -177,10 +226,43 @@ final class Settings {
     }
 
     public function save_access( int $post_id, array $payload ): void {
-        update_post_meta( $post_id, self::META_ENABLED, ! empty( $payload['internal_wiki_enabled'] ) );
-        update_post_meta( $post_id, self::META_ACCESS_TYPE, SanitizationHelper::key( $payload['internal_wiki_access_type'] ?? 'logged_in_user', 'logged_in_user' ) );
-        update_post_meta( $post_id, self::META_ROLES, $this->valid_roles( $payload['internal_wiki_roles'] ?? [] ) );
-        update_post_meta( $post_id, self::META_PERMISSIONS, $this->valid_permissions( $payload['internal_wiki_permissions'] ?? [] ) );
+        update_post_meta( 
+            $post_id, 
+            self::META_ENABLED, 
+            ! empty( 
+                $payload[
+                    'internal_wiki_enabled'
+                ] 
+            ) 
+        );
+        update_post_meta( 
+            $post_id, 
+            self::META_ACCESS_TYPE, 
+            SanitizationHelper::key( 
+                $payload[
+                    'internal_wiki_access_type'
+                ] ?? 'logged_in_user', 
+                'logged_in_user' 
+            ) 
+        );
+        update_post_meta( 
+            $post_id, 
+            self::META_ROLES, 
+            $this->valid_roles( 
+                $payload[
+                    'internal_wiki_roles'
+                ] ?? [] 
+            ) 
+        );
+        update_post_meta( 
+            $post_id, 
+            self::META_PERMISSIONS, 
+            $this->valid_permissions( 
+                $payload[
+                    'internal_wiki_permissions'
+                ] ?? [] 
+            ) 
+        );
     }
 
     public function enforce_access(): void {

@@ -195,7 +195,7 @@ final class SettingsPlugins {
                                 <dd class="col-sm-9 mb-0"><?php echo esc_html( $plugin->get_license() ); ?></dd>
                             </dl>
                         </section>
-                        <form class="wikipress-plugin-settings-form" data-plugin-settings-form data-plugin-slug="<?php echo esc_attr( $plugin->get_slug() ); ?>">
+                        <form class="wikipress-plugin-settings-form" data-plugin-settings-form data-plugin-slug="<?php echo esc_attr( $plugin->get_slug() ); ?>" data-internal-wiki-fields>
                             <h3 class="h6 mb-3"><?php echo esc_html( $settings_page['title'] ?? $settings_page['label'] ); ?></h3>
                             <?php $this->render_plugin_settings_fields( $settings_page, $values, $modal_id ); ?>
                         </form>
@@ -240,6 +240,9 @@ final class SettingsPlugins {
             $wrapper_attributes = [];
             if ( ! empty( $field['wrapper_class'] ) ) {
                 $wrapper_attributes['class'] = (string) $field['wrapper_class'];
+            }
+            if ( ! empty( $field['wrapper_attributes'] ) && is_array( $field['wrapper_attributes'] ) ) {
+                $wrapper_attributes = array_merge( $wrapper_attributes, $field['wrapper_attributes'] );
             }
             if ( ! empty( $field['visible_when'] ) && is_array( $field['visible_when'] ) ) {
                 $wrapper_attributes['data-wikipress-visible-when'] = wp_json_encode( $field['visible_when'] );
