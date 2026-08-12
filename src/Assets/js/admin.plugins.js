@@ -35,25 +35,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    const showPluginNotice = (message, type = 'success') => {
+    const showPluginNotice = (alertMarkup) => {
         const container = root.querySelector('#wikipress-settings-panel .wikipress-settings-tab-content');
-        if (!container) return;
+        if (!container || !alertMarkup) return;
 
-        container.querySelectorAll('[data-wikipress-plugin-notice]').forEach((notice) => notice.remove());
-
-        const notice = document.createElement('div');
-        notice.className = `alert alert-${type} alert-dismissible fade show mb-4`;
-        notice.setAttribute('role', 'alert');
-        notice.dataset.wikipressPluginNotice = 'true';
-        notice.append(document.createTextNode(message));
-
-        const close = document.createElement('button');
-        close.type = 'button';
-        close.className = 'btn-close';
-        close.setAttribute('data-bs-dismiss', 'alert');
-        close.setAttribute('aria-label', 'Close');
-        notice.append(close);
-        container.prepend(notice);
+        container.querySelectorAll('[data-wikipress-alert]').forEach((notice) => notice.remove());
+        container.insertAdjacentHTML('afterbegin', alertMarkup);
     };
 
     //
@@ -114,15 +101,17 @@ document.addEventListener('DOMContentLoaded', () => {
         .then((response) => response.json())
         .then((response) => {
             if (!response.success) {
-                throw new Error(response.data?.message || 'Unable to save plugin settings');
+                const error = new Error(response.data?.message || 'Unable to save plugin settings');
+                error.alert = response.data?.alert;
+                throw error;
             }
             return closePluginModal(modal).then(() => {
-                showPluginNotice(response.data?.message || 'Plugin settings saved successfully.');
+                showPluginNotice(response.data?.alert);
             });
         })
         .catch((error) => {
             closePluginModal(modal).then(() => {
-                showPluginNotice(error.message || 'Unable to save plugin settings.', 'danger');
+                showPluginNotice(error.alert);
             });
         })
         .finally(() => {

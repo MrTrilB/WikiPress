@@ -58,6 +58,17 @@ class AlertHelper {
      * @return void
      */
     public static function render_admin_notice( string $message, string $type = 'info' ): void {
+        echo self::get_admin_notice( $message, $type );
+    }
+
+    /**
+     * Returns an admin notice rendered with the shared alert markup.
+     *
+     * @param string $message The message to display.
+     * @param string $type    The type of notice ('info', 'success', 'warning', 'error').
+     * @return string The rendered admin notice.
+     */
+    public static function get_admin_notice( string $message, string $type = 'info' ): string {
         $allowed_types = [ 'info', 'success', 'warning', 'error' ];
 
         if ( ! in_array( $type, $allowed_types, true ) ) {
@@ -82,9 +93,12 @@ class AlertHelper {
             default:
                 $alert = 'info';
                 $icon = 'info-circle';
-        }?>
+        }
 
-        <div class="alert alert-<?php echo esc_attr( $alert ); ?> d-flex align-items-center alert-dismissible fade show" role="alert">
+        ob_start();
+        ?>
+
+        <div class="alert alert-<?php echo esc_attr( $alert ); ?> d-flex align-items-center alert-dismissible fade show" role="alert" data-wikipress-alert>
 
             <i class="flex-shrink-0 me-2 fa-solid fa-<?php echo esc_attr( $icon ); ?>" aria-hidden="true"></i> <?php echo esc_html( $message ); ?>
 
@@ -93,5 +107,6 @@ class AlertHelper {
         </div>
 
         <?php
+        return (string) ob_get_clean();
     }
 }

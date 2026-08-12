@@ -9,6 +9,7 @@
 namespace TrilBDev\WikiPress\Includes\Functions\Admin;
 
 use TrilBDev\WikiPress\Includes\Functions\Helpers\AjaxHelper;
+use TrilBDev\WikiPress\Includes\Functions\Helpers\AlertHelper;
 use TrilBDev\WikiPress\Includes\Plugins\PluginInterface;
 use TrilBDev\WikiPress\Includes\Plugins\Plugins;
 use TrilBDev\WikiPress\Includes\Plugins\SettingsPageProviderInterface;
@@ -50,13 +51,15 @@ final class FunctionsPlugins {
      */
     public function save_plugin_settings(): void {
         if ( ! AjaxHelper::authorized( 'wikipress_plugin_settings', 'manage_options' ) ) {
-            AjaxHelper::unauthorized( __( 'You are not authorized to save WikiPress plugin settings.', 'wikipress' ) );
+            $message = __( 'You are not authorized to save WikiPress plugin settings.', 'wikipress' );
+            AjaxHelper::error( [ 'message' => $message, 'alert' => AlertHelper::get_admin_notice( $message, 'error' ) ], 403 );
         }
 
         $slug = sanitize_key( wp_unslash( $_POST['slug'] ?? '' ) );
         $plugin = Plugins::get_instance()->get_registered_plugins()[ $slug ] ?? null;
         if ( ! $plugin instanceof PluginInterface || ! $plugin instanceof SettingsPageProviderInterface ) {
-            AjaxHelper::error( [ 'message' => __( 'The requested WikiPress plugin settings were not found.', 'wikipress' ) ], 404 );
+            $message = __( 'The requested WikiPress plugin settings were not found.', 'wikipress' );
+            AjaxHelper::error( [ 'message' => $message, 'alert' => AlertHelper::get_admin_notice( $message, 'error' ) ], 404 );
         }
 
         $input = isset( $_POST['settings'] ) && is_array( $_POST['settings'] ) ? wp_unslash( $_POST['settings'] ) : [];
@@ -67,6 +70,7 @@ final class FunctionsPlugins {
                 'slug' => $slug,
                 'settings' => $settings,
                 'message' => __( 'Plugin settings saved successfully.', 'wikipress' ),
+                'alert' => AlertHelper::get_admin_notice( __( 'Plugin settings saved successfully.', 'wikipress' ), 'success' ),
             ]
         );
     }
