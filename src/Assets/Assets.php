@@ -31,24 +31,6 @@ final class Assets {
      */
     public function register(): void {
         add_filter( 'wikipress_base_assets', [ $this, 'default_assets' ], 10, 2 );
-        add_action( 'admin_enqueue_scripts', [ $this, 'dequeue_wp_forms' ], PHP_INT_MAX );
-        add_action( 'admin_print_styles', [ $this, 'dequeue_wp_forms' ], 0 );
-    }
-
-    /**
-     * Remove the WordPress admin forms stylesheet from WikiPress screens.
-     *
-     * @param string $hook_suffix The current admin page hook suffix.
-     * @return void
-     */
-    public function dequeue_wp_forms( string $hook_suffix = '' ): void {
-        $page = sanitize_key( $_GET['page'] ?? '' );
-
-        if ( false === strpos( $hook_suffix, 'wikipress' ) && 0 !== strpos( $page, 'wikipress' ) ) {
-            return;
-        }
-
-        wp_dequeue_style( 'forms' );
     }
     /**
      * Registers assets for a specific page.
@@ -75,9 +57,15 @@ final class Assets {
         $defaults = [
             'styles'  => [
                 [
+                    'handle' => 'wikipress-wp-override',
+                    'src' => WIKIPRESS_URL . 'src/Assets/dist/css/wpoverride.css',
+                    'deps' => [ 'forms' ],
+                ],
+                [
                     'handle' => 'wikipress-bootstrap',
                     'src' => WIKIPRESS_URL . 'src/Assets/dist/css/bootstrap.css',
-                    'version' => '5.3.8'
+                    'version' => '5.3.8',
+                    'deps' => [ 'wikipress-wp-override' ],
                 ],
                 [
                     'handle' => 'wikipress-bootstrap-select',
@@ -111,14 +99,9 @@ final class Assets {
                 'src' => WIKIPRESS_URL . 'src/Assets/dist/css/admin.ui.css',
             ];
             $defaults['scripts'][] = [
-                'handle' => 'wikipress-shadow',
-                'src' => WIKIPRESS_URL . 'src/Assets/dist/js/shadow.js',
-                'in_footer' => true,
-            ];
-            $defaults['scripts'][] = [
                 'handle' => 'wikipress-admin-ui',
                 'src' => WIKIPRESS_URL . 'src/Assets/dist/js/admin.ui.js',
-                'deps' => [ 'wikipress-bootstrap', 'wikipress-shadow' ],
+                'deps' => [ 'wikipress-bootstrap' ],
                 'in_footer' => true,
             ];
         }

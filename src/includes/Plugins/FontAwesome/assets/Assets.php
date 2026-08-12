@@ -41,7 +41,7 @@ final class Assets {
         }
 
         wp_add_inline_script(
-            'wikipress-shadow',
+            'wikipress-admin-ui',
             'window.wikipressFontAwesomeSettings = ' . wp_json_encode( [
                 'source' => $source,
                 'kit_id' => $kit_id,

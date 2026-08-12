@@ -200,7 +200,7 @@ final class SettingsManager extends Manager {
         $settings_assets['scripts'][] = [
             'handle' => 'wikipress-admin-plugins',
             'src' => WIKIPRESS_URL . 'src/Assets/dist/js/admin.plugins.js',
-            'deps' => [ 'wikipress-bootstrap', 'wikipress-shadow' ],
+            'deps' => [ 'wikipress-bootstrap' ],
             'in_footer' => true,
         ];
         $assets->register_page( 'wikipress-settings', $settings_assets );

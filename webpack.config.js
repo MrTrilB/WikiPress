@@ -12,6 +12,7 @@ const entries = {
     './src/Assets/js/admin.ui.js',
     './src/Assets/scss/admin.ui.scss',
   ],
+  'wpoverride': './src/Assets/scss/wpoverride.scss',
   'bootstrap-select': [
     './src/Assets/js/bootstrap-select.js',
     './src/Assets/scss/bootstrap-select.scss',
