@@ -62,7 +62,13 @@ final class FunctionsPlugins {
         $input = isset( $_POST['settings'] ) && is_array( $_POST['settings'] ) ? wp_unslash( $_POST['settings'] ) : [];
         $settings = $plugin->sanitize_settings( $input );
 
-        AjaxHelper::success( [ 'slug' => $slug, 'settings' => $settings ] );
+        AjaxHelper::success(
+            [
+                'slug' => $slug,
+                'settings' => $settings,
+                'message' => __( 'Plugin settings saved successfully.', 'wikipress' ),
+            ]
+        );
     }
 
     /**

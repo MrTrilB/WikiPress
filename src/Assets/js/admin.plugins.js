@@ -22,6 +22,27 @@ document.addEventListener('DOMContentLoaded', () => {
         instance.hide();
     };
 
+    const showPluginNotice = (message, type = 'success') => {
+        const container = root.querySelector('#wikipress-settings-panel .wikipress-settings-tab-content');
+        if (!container) return;
+
+        container.querySelectorAll('[data-wikipress-plugin-notice]').forEach((notice) => notice.remove());
+
+        const notice = document.createElement('div');
+        notice.className = `alert alert-${type} alert-dismissible fade show mb-4`;
+        notice.setAttribute('role', 'alert');
+        notice.dataset.wikipressPluginNotice = 'true';
+        notice.append(document.createTextNode(message));
+
+        const close = document.createElement('button');
+        close.type = 'button';
+        close.className = 'btn-close';
+        close.setAttribute('data-bs-dismiss', 'alert');
+        close.setAttribute('aria-label', 'Close');
+        notice.append(close);
+        container.prepend(notice);
+    };
+
     //
     // --- PLUGIN TOGGLE ---
     //
@@ -79,11 +100,15 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .then((response) => response.json())
         .then((response) => {
-            if (!response.success) throw new Error('Unable to save plugin settings');
+            if (!response.success) {
+                throw new Error(response.data?.message || 'Unable to save plugin settings');
+            }
             closePluginModal(modal);
+            showPluginNotice(response.data?.message || 'Plugin settings saved successfully.');
         })
-        .catch(() => {
-            modal.querySelector('.modal-body')?.classList.add('is-invalid');
+        .catch((error) => {
+            closePluginModal(modal);
+            showPluginNotice(error.message || 'Unable to save plugin settings.', 'danger');
         })
         .finally(() => {
             button.disabled = false;
