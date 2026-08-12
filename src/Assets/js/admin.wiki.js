@@ -54,7 +54,7 @@ const initializeTaxonomyPickers = (root) => {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-  const root = window.wikipressShadowRoot || document;
+  const root = document;
   initializeTaxonomyPickers(root);
   root.querySelectorAll('.wikipress-inline-form').forEach((form) => {
     form.addEventListener('submit', () => {

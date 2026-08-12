@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const root = window.wikipressShadowRoot || document;
+  const root = document;
   const panel = root.querySelector('#wikipress-settings-panel');
   const config = window.wikipressSettingsTabs;
   if (!panel || !config) return;

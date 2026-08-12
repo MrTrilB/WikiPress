@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-	const root = window.wikipressShadowRoot || document;
+	const root = document;
 
 	root.querySelectorAll('[data-wikipress-menu-builder]').forEach((builder) => {
 		builder.addEventListener('click', (event) => {

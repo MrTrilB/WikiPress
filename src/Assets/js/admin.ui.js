@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const root = window.wikipressShadowRoot || document;
+  const root = document;
 
   const toggleCollapse = (button) => {
     const target = root.querySelector(button.dataset.bsTarget);
