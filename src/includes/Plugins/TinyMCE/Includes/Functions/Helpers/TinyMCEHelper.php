@@ -11,6 +11,17 @@ namespace TrilBDev\WikiPress\Includes\Plugins\TinyMCE\Includes\Functions\Helpers
 use TrilBDev\WikiPress\Includes\Plugins\TinyMCE\Includes\Settings\Settings;
 
 final class TinyMCEHelper {
+    /**
+     * Render a TinyMCE editor.
+     *
+     * @param string $id The ID of the editor.
+     * @param string $name The name of the editor.
+     * @param string $label The label for the editor.
+     * @param string $value The initial content of the editor.
+     * @param int $rows The number of rows for the textarea.
+     * @param bool $media_buttons Whether to show media buttons.
+     * @param array $options Additional TinyMCE options.
+     */
     public static function render( string $id, string $name, string $label, string $value = '', int $rows = 8, bool $media_buttons = false, array $options = [] ): void {
         $editor_id = sanitize_key( $id );
         $rows = max( 1, $rows );
@@ -63,6 +74,7 @@ final class TinyMCEHelper {
             'menubar' => false,
             'branding' => false,
             'promotion' => false,
+            'license_key' => 'gpl',
             'plugins' => implode( ' ', $plugins ),
             'toolbar' => implode( ' ', $toolbar ),
             'base_url' => WIKIPRESS_URL . 'src/includes/Plugins/TinyMCE/Assets/tinymce',

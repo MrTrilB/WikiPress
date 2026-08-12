@@ -16,7 +16,8 @@
   "dependencies": {
     "@crestapps/bootstrap-select": "^1.2.1",
     "@popperjs/core": "^2.11.8",
-    "bootstrap": "^5.3.8"
+    "bootstrap": "^5.3.8",
+    "tinymce": "^8.8.2"
   },
   "devDependencies": {
     "autoprefixer": "^10.5.4",
