@@ -23,30 +23,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    const openPluginModal = (trigger) => {
-        const selector = trigger.dataset.bsTarget;
-        const scope = trigger.getRootNode?.() || root;
-        const modal = scope.querySelector(selector) || root.querySelector(selector);
-        if (!modal) return;
-
-        cleanupModalArtifacts();
-
-        const previousInstance = bootstrap.Modal.getInstance(modal);
-        if (previousInstance) {
-            previousInstance.dispose();
-        }
-
-        const instance = bootstrap.Modal.getOrCreateInstance(modal);
-        instance.show();
-    };
-
     const closePluginModal = (modal) => {
         if (!modal) {
             cleanupModalArtifacts();
             return Promise.resolve();
         }
 
-        const instance = bootstrap.Modal.getInstance(modal) || bootstrap.Modal.getOrCreateInstance(modal);
+        const instance = bootstrap.Modal.getInstance(modal) || new bootstrap.Modal(modal);
         return new Promise((resolve) => {
             const finish = () => {
                 cleanupModalArtifacts();
