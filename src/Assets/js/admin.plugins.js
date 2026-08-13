@@ -13,11 +13,23 @@ document.addEventListener('DOMContentLoaded', () => {
         const modal = scope.querySelector(selector) || root.querySelector(selector);
         if (!modal) return;
 
+        const existingBackdrop = root.querySelector('.modal-backdrop');
+        if (existingBackdrop && !root.querySelector('.modal.show')) {
+            existingBackdrop.remove();
+            document.body.classList.remove('modal-open');
+            document.body.style.removeProperty('overflow');
+            document.body.style.removeProperty('padding-right');
+        }
+
         const instance = bootstrap.Modal.getOrCreateInstance(modal);
         instance.show();
     };
 
     const closePluginModal = (modal) => {
+        if (!modal) {
+            return Promise.resolve();
+        }
+
         const instance = bootstrap.Modal.getOrCreateInstance(modal);
         return new Promise((resolve) => {
             const finish = () => {
@@ -27,6 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     document.body.style.removeProperty('overflow');
                     document.body.style.removeProperty('padding-right');
                 }
+                instance.dispose();
                 resolve();
             };
 
