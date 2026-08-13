@@ -7,18 +7,33 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- MODAL HANDLING (Bootstrap-native) ---
     //
 
+    const cleanupModalArtifacts = () => {
+        document.body.classList.remove('modal-open');
+        document.body.style.removeProperty('overflow');
+        document.body.style.removeProperty('padding-right');
+
+        root.querySelectorAll('.modal-backdrop').forEach((backdrop) => backdrop.remove());
+
+        root.querySelectorAll('.modal.show').forEach((shownModal) => {
+            shownModal.classList.remove('show');
+            shownModal.style.removeProperty('display');
+            shownModal.removeAttribute('aria-modal');
+            shownModal.removeAttribute('role');
+            shownModal.setAttribute('aria-hidden', 'true');
+        });
+    };
+
     const openPluginModal = (trigger) => {
         const selector = trigger.dataset.bsTarget;
         const scope = trigger.getRootNode?.() || root;
         const modal = scope.querySelector(selector) || root.querySelector(selector);
         if (!modal) return;
 
-        const existingBackdrop = root.querySelector('.modal-backdrop');
-        if (existingBackdrop && !root.querySelector('.modal.show')) {
-            existingBackdrop.remove();
-            document.body.classList.remove('modal-open');
-            document.body.style.removeProperty('overflow');
-            document.body.style.removeProperty('padding-right');
+        cleanupModalArtifacts();
+
+        const previousInstance = bootstrap.Modal.getInstance(modal);
+        if (previousInstance) {
+            previousInstance.dispose();
         }
 
         const instance = bootstrap.Modal.getOrCreateInstance(modal);
@@ -27,24 +42,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const closePluginModal = (modal) => {
         if (!modal) {
+            cleanupModalArtifacts();
             return Promise.resolve();
         }
 
-        const instance = bootstrap.Modal.getOrCreateInstance(modal);
+        const instance = bootstrap.Modal.getInstance(modal) || bootstrap.Modal.getOrCreateInstance(modal);
         return new Promise((resolve) => {
             const finish = () => {
-                if (!root.querySelector('.modal.show')) {
-                    root.querySelectorAll('.modal-backdrop').forEach((backdrop) => backdrop.remove());
-                    document.body.classList.remove('modal-open');
-                    document.body.style.removeProperty('overflow');
-                    document.body.style.removeProperty('padding-right');
-                }
+                cleanupModalArtifacts();
                 instance.dispose();
                 resolve();
             };
 
             modal.addEventListener('hidden.bs.modal', finish, { once: true });
             instance.hide();
+
+            setTimeout(() => {
+                if (!modal.classList.contains('show')) {
+                    finish();
+                }
+            }, 300);
         });
     };
 
