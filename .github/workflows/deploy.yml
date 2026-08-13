@@ -3,7 +3,7 @@ name: Sync WikiPress & Deploy
 on:
   push:
     branches:
-      - main
+      - Master
 
 jobs:
   deploy:
@@ -13,7 +13,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          ref: main
+          ref: Master
 
       - name: Configure Git
         shell: bash
@@ -27,7 +27,7 @@ jobs:
 
       - name: Create New Deploy branch
         shell: bash
-        run: git checkout -b Deploy main
+        run: git checkout -b Deploy Master
 
       - name: Install production dependencies
         shell: bash
@@ -50,9 +50,9 @@ jobs:
         shell: bash
         run: git push origin Deploy
 
-      - name: Checkout main branch
+      - name: Checkout Master branch
         shell: bash
-        run: git checkout main
+        run: git checkout Master
 
       - name: Fetch Deploy branch
         shell: bash
@@ -70,6 +70,7 @@ jobs:
           rm -rf dev-stubs || true
           rm -rf node_modules || true
           rm -rf Test || true
+          rm -rf scripts || true
           
       - name: Remove Root Non Production Files
         shell: bash
