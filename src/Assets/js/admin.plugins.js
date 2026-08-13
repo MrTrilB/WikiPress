@@ -127,6 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             return closePluginModal(modal).then(() => {
                 showPluginNotice(response.data?.alert);
+                window.location.reload();
             });
         })
         .catch((error) => {
