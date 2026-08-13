@@ -63,6 +63,30 @@ document.addEventListener('DOMContentLoaded', () => {
         container.insertAdjacentHTML('afterbegin', alertMarkup);
     };
 
+    const setButtonSaving = (button) => {
+        if (!button) {
+            return;
+        }
+
+        if (!button.dataset.originalHtml) {
+            button.dataset.originalHtml = button.innerHTML;
+        }
+
+        button.disabled = true;
+        button.setAttribute('aria-busy', 'true');
+        button.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>' + (button.dataset.savingText || 'Saving...');
+    };
+
+    const resetSavingButton = (button) => {
+        if (!button || !button.dataset.originalHtml) {
+            return;
+        }
+
+        button.disabled = false;
+        button.removeAttribute('aria-busy');
+        button.innerHTML = button.dataset.originalHtml;
+    };
+
     //
     // --- PLUGIN TOGGLE ---
     //
@@ -105,7 +129,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const form = modal?.querySelector('[data-plugin-settings-form]');
         if (!modal || !form) return;
 
-        button.disabled = true;
+        setButtonSaving(button);
 
         const body = new URLSearchParams(new FormData(form));
         body.set('action', 'wikipress_save_plugin_settings');
@@ -128,12 +152,13 @@ document.addEventListener('DOMContentLoaded', () => {
             window.location.reload();
         })
         .catch((error) => {
+            resetSavingButton(button);
             closePluginModal(modal).then(() => {
                 showPluginNotice(error.alert);
             });
         })
         .finally(() => {
-            button.disabled = false;
+            resetSavingButton(button);
         });
     };
 
