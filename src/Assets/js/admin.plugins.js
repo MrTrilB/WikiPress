@@ -23,6 +23,16 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
+    const openPluginModal = (trigger) => {
+        const selector = trigger.dataset.bsTarget;
+        const scope = trigger.getRootNode?.() || root;
+        const modal = scope.querySelector(selector) || root.querySelector(selector);
+        if (!modal) return;
+
+        const instance = bootstrap.Modal.getInstance(modal) || new bootstrap.Modal(modal);
+        instance.show();
+    };
+
     const closePluginModal = (modal) => {
         if (!modal) {
             cleanupModalArtifacts();
