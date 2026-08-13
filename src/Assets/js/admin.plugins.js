@@ -125,10 +125,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 error.alert = response.data?.alert;
                 throw error;
             }
-            return closePluginModal(modal).then(() => {
-                showPluginNotice(response.data?.alert);
-                window.location.reload();
-            });
+            window.location.reload();
         })
         .catch((error) => {
             closePluginModal(modal).then(() => {
