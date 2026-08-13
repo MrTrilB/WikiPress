@@ -23,26 +23,23 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    const openPluginModal = (trigger) => {
-        const selector = trigger.dataset.bsTarget;
-        const scope = trigger.getRootNode?.() || root;
-        const modal = scope.querySelector(selector) || root.querySelector(selector);
-        if (!modal) return;
-
-        const instance = bootstrap.Modal.getInstance(modal) || new bootstrap.Modal(modal);
-        instance.show();
-    };
-
     const closePluginModal = (modal) => {
         if (!modal) {
-            cleanupModalArtifacts();
             return Promise.resolve();
         }
 
         const instance = bootstrap.Modal.getInstance(modal) || new bootstrap.Modal(modal);
         return new Promise((resolve) => {
             const finish = () => {
-                cleanupModalArtifacts();
+                root.querySelectorAll('.modal-backdrop').forEach((backdrop) => backdrop.remove());
+                document.body.classList.remove('modal-open');
+                document.body.style.removeProperty('overflow');
+                document.body.style.removeProperty('padding-right');
+                modal.classList.remove('show');
+                modal.style.removeProperty('display');
+                modal.removeAttribute('aria-modal');
+                modal.removeAttribute('role');
+                modal.setAttribute('aria-hidden', 'true');
                 instance.dispose();
                 resolve();
             };
@@ -150,10 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Open modal
         const trigger = event.target.closest?.('[data-bs-toggle="modal"][data-bs-target]');
         if (trigger) {
-            event.preventDefault();
-            event.stopPropagation();
-            openPluginModal(trigger);
-            return;
+            return; // Let Bootstrap handle native modal opening
         }
 
         // Close modal
