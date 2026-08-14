@@ -142,7 +142,7 @@ final class SettingsManager extends Manager {
             'third-party' => [ 'description' => __( 'View third-party plugins installed on this site.', 'wikipress' ), 'tooltip' => __( 'Third-party plugin settings are managed through WordPress or the plugin author’s own settings page.', 'wikipress' ) ],
         ];
         if ( isset( $tab_context[ $tab ] ) ) {
-            echo '<p class="text-secondary mb-4">' . esc_html( $tab_context[ $tab ]['description'] ) . ' ' . FormFieldHelper::label( 'wikipress-settings-context', __( 'Settings information', 'wikipress' ), [ 'tooltip' => $tab_context[ $tab ]['tooltip'], 'tooltip_type' => 'info', 'tooltip_icon' => 'fa-circle-info', 'class' => 'visually-hidden' ] ) ) . '</p>';
+            echo '<p class="text-secondary mb-4">' . esc_html( $tab_context[ $tab ]['description'] ) . ' ' . FormFieldHelper::label( 'wikipress-settings-context', __( 'Settings information', 'wikipress' ), [ 'tooltip' => $tab_context[ $tab ]['tooltip'], 'tooltip_type' => 'info', 'tooltip_icon' => 'fa-circle-info', 'class' => 'visually-hidden' ] ) . '</p>';
         }
         if ( in_array( $tab, [ 'plugins', 'third-party' ], true ) ) {
             $this->plugins_page->render( $tab );
