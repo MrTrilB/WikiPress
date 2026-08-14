@@ -103,13 +103,12 @@ final class Shortcodes {
 			throw new \InvalidArgumentException( 'A shortcode tag is required.' );
 		}
 		if ( ! isset( $definition['callback'] ) || ! is_callable( $definition['callback'] ) ) {
-			throw new \InvalidArgumentException( sprintf( 'Shortcode callback for "%s" must be callable.', $tag ) );
-		}
+            throw new \InvalidArgumentException( sprintf( 'Shortcode callback for "%s" must be callable.', wp_strip_all_tags( $tag ) ) );
+        }
 
-		$attributes = $definition['attributes'] ?? $definition['defaults'] ?? [];
-		if ( ! is_array( $attributes ) ) {
-			throw new \InvalidArgumentException( sprintf( 'Shortcode attributes for "%s" must be an array.', $tag ) );
-		}
+        $attributes = $definition['attributes'] ?? $definition['defaults'] ?? [];
+        if ( ! is_array( $attributes ) ) {
+            throw new \InvalidArgumentException( sprintf( 'Shortcode attributes for "%s" must be an array.', wp_strip_all_tags( $tag ) ) );
 
 		return array_merge(
 			[

@@ -23,13 +23,11 @@ if ( empty( $context['has_content'] ) ) {
     return;
 }
 
-$wrapper_classes = isset( $context['wrapper_classes'] ) && is_array( $context['wrapper_classes'] ) ? $context['wrapper_classes'] : [ 'wikipress-docs-reading-time' ];
-$display_text    = isset( $context['display_text'] ) ? (string) $context['display_text'] : '';
+$wikipress_wrapper_classes = isset( $context['wrapper_classes'] ) && is_array( $context['wrapper_classes'] ) ? $context['wrapper_classes'] : [ 'wikipress-docs-reading-time' ];
+$wikipress_display_text   = isset( $context['display_text'] ) ? (string) $context['display_text'] : '';
 
-if ( '' === $display_text ) {
+if ( '' === $wikipress_display_text ) {
     return;
 }
-
-$wrapper_class_attr = esc_attr( implode( ' ', array_filter( array_map( 'sanitize_html_class', $wrapper_classes ) ) ) );
 ?>
-<div class="<?php echo $wrapper_class_attr; ?>"><?php echo esc_html( $display_text ); ?></div>
+<div class="<?php echo esc_attr( implode( ' ', array_filter( array_map( 'sanitize_html_class', $wikipress_wrapper_classes ) ) ) ); ?>"><?php echo esc_html( $wikipress_display_text ); ?></div>

@@ -249,6 +249,7 @@ final class SettingsPlugins {
                 $wrapper_attributes['data-wikipress-visible-when'] = wp_json_encode( $field['visible_when'] );
             }
             $wrapper_attributes = FormFieldHelper::attributes_to_string( $wrapper_attributes );
+            $wrapper_attributes = wp_kses_post( $wrapper_attributes );
             $label = wp_kses_post( FormFieldHelper::label( $id, (string) ( $field['label'] ?? $key ), [
                 'tooltip' => (string) ( $field['tooltip'] ?? '' ),
                 'tooltip_type' => SanitizationHelper::key( $field['tooltip_type'] ?? 'question', 'question' ),

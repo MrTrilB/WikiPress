@@ -19,36 +19,35 @@ if ( empty( $context ) || ! is_array( $context ) ) {
     return;
 }
 
-$items           = isset( $context['items'] ) && is_array( $context['items'] ) ? $context['items'] : [];
-$has_items       = ! empty( $context['has_items'] ) && ! empty( $items );
-    $heading         = isset( $context['heading'] ) ? (string) $context['heading'] : __( 'Table of Contents', 'wikipress' );
-    $wrapper_classes = isset( $context['wrapper_classes'] ) && is_array( $context['wrapper_classes'] ) ? $context['wrapper_classes'] : [ 'wikipress-docs-toc' ];
+$wikipress_items          = isset( $context['items'] ) && is_array( $context['items'] ) ? $context['items'] : [];
+$wikipress_has_items      = ! empty( $context['has_items'] ) && ! empty( $wikipress_items );
+$wikipress_heading        = isset( $context['heading'] ) ? (string) $context['heading'] : __( 'Table of Contents', 'wikipress' );
+$wikipress_wrapper_classes = isset( $context['wrapper_classes'] ) && is_array( $context['wrapper_classes'] ) ? $context['wrapper_classes'] : [ 'wikipress-docs-toc' ];
 
-if ( ! $has_items ) {
+if ( ! $wikipress_has_items ) {
     return;
 }
 
-$wrapper_class_attr = esc_attr( implode( ' ', array_filter( array_map( 'sanitize_html_class', $wrapper_classes ) ) ) );
 ?>
-<div class="<?php echo $wrapper_class_attr; ?>">
-    <strong class="docs-toc__heading"><?php echo esc_html( $heading ); ?></strong>
+<div class="<?php echo esc_attr( implode( ' ', array_filter( array_map( 'sanitize_html_class', $wikipress_wrapper_classes ) ) ) ); ?>">
+    <strong class="docs-toc__heading"><?php echo esc_html( $wikipress_heading ); ?></strong>
     <ul class="docs-toc__list">
-        <?php foreach ( $items as $item ) :
-            if ( ! is_array( $item ) || empty( $item['title'] ) ) {
+        <?php foreach ( $wikipress_items as $wikipress_item ) :
+            if ( ! is_array( $wikipress_item ) || empty( $wikipress_item['title'] ) ) {
                 continue;
             }
 
-            $level = isset( $item['level'] ) ? (int) $item['level'] : 0;
-            $title = (string) $item['title'];
-            $id    = isset( $item['id'] ) ? (string) $item['id'] : '';
+            $wikipress_level = isset( $wikipress_item['level'] ) ? (int) $wikipress_item['level'] : 0;
+            $wikipress_title = (string) $wikipress_item['title'];
+            $wikipress_id    = isset( $wikipress_item['id'] ) ? (string) $wikipress_item['id'] : '';
 
-            $classes = [ 'docs-toc__item' ];
-            if ( $level >= 2 && $level <= 6 ) {
-                $classes[] = 'level-' . $level;
+            $wikipress_classes = [ 'docs-toc__item' ];
+            if ( $wikipress_level >= 2 && $wikipress_level <= 6 ) {
+                $wikipress_classes[] = 'level-' . $wikipress_level;
             }
             ?>
-            <li class="<?php echo esc_attr( implode( ' ', $classes ) ); ?>">
-                <a class="docs-toc__link" href="<?php echo esc_url( '#' . $id ); ?>"><?php echo esc_html( $title ); ?></a>
+            <li class="<?php echo esc_attr( implode( ' ', $wikipress_classes ) ); ?>">
+                <a class="docs-toc__link" href="<?php echo esc_url( '#' . $wikipress_id ); ?>"><?php echo esc_html( $wikipress_title ); ?></a>
             </li>
         <?php endforeach; ?>
     </ul>
