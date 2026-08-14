@@ -149,13 +149,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 error.alert = response.data?.alert;
                 throw error;
             }
-            window.location.reload();
+            return closePluginModal(modal).then(() => {
+                window.location.reload();
+            });
         })
         .catch((error) => {
             resetSavingButton(button);
-            closePluginModal(modal).then(() => {
-                showPluginNotice(error.alert);
-            });
+            showPluginNotice(error.alert);
         })
         .finally(() => {
             resetSavingButton(button);
