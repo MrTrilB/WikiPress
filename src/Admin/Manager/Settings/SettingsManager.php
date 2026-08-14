@@ -171,7 +171,7 @@ final class SettingsManager extends Manager {
             'type' => 'submit',
             'name' => 'submit',
             'class' => 'btn-primary',
-        ] ) );
+        ] );
         echo '</div></form>';
         echo '</div>';
     }

@@ -39,7 +39,7 @@ final class SettingsGeneral {
 			$id = 'wikipress-' . $key;
 			$name = 'wikipress_general[' . $key . ']';
 			$value = 'permalink' === $key ? PermalinkHelper::sanitize_pattern( $values[ $key ] ?? '' ) : SanitizationHelper::text( $values[ $key ] ?? $field['default'] ?? '' );
-			echo '<tr><th scope="row">' . FormFieldHelper::label( $id, $field['label'], $field ) ) . '</th><td>';
+			echo '<tr><th scope="row">' . FormFieldHelper::label( $id, $field['label'], $field ) . '</th><td>';
 			if ( 'textarea' === ( $field['type'] ?? '' ) ) {
 				echo FormFieldHelper::textarea( $name, $value, [ 'id' => $id, 'rows' => 3 ] );
 			} elseif ( 'checkbox' === ( $field['type'] ?? '' ) ) {

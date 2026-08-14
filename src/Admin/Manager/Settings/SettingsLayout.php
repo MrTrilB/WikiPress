@@ -69,15 +69,15 @@ final class SettingsLayout {
 			$id = 'wikipress-layout-' . $section . '-' . $key;
 			$name = 'wikipress_layout[' . $key . ']';
 			$type = $field['type'] ?? 'checkbox';
-			echo '<tr><th scope="row">' . FormFieldHelper::label( $id, $field['label'], $field ) ) . '</th><td>';
+			echo '<tr><th scope="row">' . FormFieldHelper::label( $id, $field['label'], $field ) . '</th><td>';
 			if ( 'select' === $type ) {
-				echo FormFieldHelper::select( $name, $field['options'], $values[ $key ] ?? $field['default'], [ 'id' => $id ] ) );
+				echo FormFieldHelper::select( $name, $field['options'], $values[ $key ] ?? $field['default'], [ 'id' => $id ] );
 			} elseif ( 'number' === $type ) {
-				echo FormFieldHelper::input( $name, (string) ( $values[ $key ] ?? $field['default'] ), [ 'id' => $id, 'type' => 'number', 'min' => $field['min'], 'max' => $field['max'] ] ) );
+				echo FormFieldHelper::input( $name, (string) ( $values[ $key ] ?? $field['default'] ), [ 'id' => $id, 'type' => 'number', 'min' => $field['min'], 'max' => $field['max'] ] );
 			} elseif ( 'text' === $type ) {
-				echo FormFieldHelper::input( $name, SanitizationHelper::text( $values[ $key ] ?? $field['default'] ), [ 'id' => $id, 'type' => 'text' ] ) );
+				echo FormFieldHelper::input( $name, SanitizationHelper::text( $values[ $key ] ?? $field['default'] ), [ 'id' => $id, 'type' => 'text' ] );
 			} else {
-				echo FormFieldHelper::checkbox( $name, '1', $field['label'], [ 'id' => $id, 'checked' => ! empty( $values[ $key ] ?? $field['default'] ) ] ) );
+				echo FormFieldHelper::checkbox( $name, '1', $field['label'], [ 'id' => $id, 'checked' => ! empty( $values[ $key ] ?? $field['default'] ) ] );
 			}
 			echo '</td></tr>';
 		}
