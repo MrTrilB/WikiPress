@@ -34,11 +34,12 @@ final class WikiManager extends Manager {
 	}
 
 	public function render(): void {
-		if ( 'new' === sanitize_key( $_GET['wiki'] ?? '' ) ) {
+		$wiki_action = sanitize_key( wp_unslash( $_GET['wiki'] ?? '' ) );
+		if ( 'new' === $wiki_action ) {
 			$this->render_new_wiki();
 			return;
 		}
-		if ( in_array( sanitize_key( $_GET['wiki'] ?? '' ), [ 'page-new', 'page-edit' ], true ) ) {
+		if ( in_array( $wiki_action, [ 'page-new', 'page-edit' ], true ) ) {
 			$this->render_page_editor();
 			return;
 		}
@@ -78,7 +79,7 @@ final class WikiManager extends Manager {
 		$notice = $this->wiki_functions->save_wiki();
 		$this->header( __( 'Create a New Wiki', 'wikipress' ) );
 		if ( $notice ) {
-			echo $notice;
+			echo wp_kses_post( $notice );
 		}
 		$categories = TaxonomyHelper::terms( Taxonomy::CATEGORY );
 		$tags = TaxonomyHelper::terms( Taxonomy::TAG );
@@ -88,8 +89,8 @@ final class WikiManager extends Manager {
 	}
 
 	private function render_page_editor(): void {
-		$wiki_id = absint( $_GET['wiki_id'] ?? 0 );
-		$page_id = absint( $_GET['page_id'] ?? 0 );
+		$wiki_id = absint( wp_unslash( $_GET['wiki_id'] ?? 0 ) );
+		$page_id = absint( wp_unslash( $_GET['page_id'] ?? 0 ) );
 		$page = $page_id ? get_post( $page_id ) : null;
 		if ( $page && ( ! PostHelper::is_wiki_page( $page ) || (int) get_post_meta( $page_id, '_wikipress_wiki_id', true ) !== $wiki_id ) ) {
 			$page = null;
@@ -148,7 +149,9 @@ final class WikiManager extends Manager {
 				</div>
 				<div class="card-footer d-flex flex-wrap gap-2">
 					<button type="button" class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#<?php echo esc_attr( $settings_id ); ?>"><?php esc_html_e( 'Settings', 'wikipress' ); ?></button>
+					<?php /* translators: %s is the title of the Wiki. */ ?>
 					<button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#<?php echo esc_attr( $manage_id ); ?>"><?php printf( esc_html__( 'Manage %s', 'wikipress' ), esc_html( get_the_title( $wiki ) ) ); ?></button>
+					<?php /* translators: %s is the title of the Wiki. */ ?>
 					<button type="button" class="btn btn-outline-danger btn-sm ms-auto" data-wikipress-delete-wiki="<?php echo esc_attr( $wiki->ID ); ?>"><?php printf( esc_html__( 'Delete %s', 'wikipress' ), esc_html( get_the_title( $wiki ) ) ); ?></button>
 				</div>
 			</article>

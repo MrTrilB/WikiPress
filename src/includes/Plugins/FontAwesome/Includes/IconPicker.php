@@ -537,7 +537,7 @@ class IconPicker {
         ob_start();
         ?>
         <div class="wikipress-fa-picker-container" id="<?php echo esc_attr( $args['id'] ); ?>">
-                 <?php echo FormFieldHelper::input( $input_name, $selected_icon, [ 'type' => 'hidden', 'id' => $args['input_id'], 'class' => 'wikipress-fa-picker-input' ] ); ?>
+                 <?php echo wp_kses_post( FormFieldHelper::input( $input_name, $selected_icon, [ 'type' => 'hidden', 'id' => $args['input_id'], 'class' => 'wikipress-fa-picker-input' ] ) ); ?>
 
                 <button type="button"
                     class="btn btn-secondary wikipress-fa-picker-button"
@@ -562,9 +562,9 @@ class IconPicker {
                     </div>
 
                     <div class="wikipress-fa-picker-search">
-                        <?php echo FormFieldHelper::input( 'wikipress_fa_search', '', [ 'type' => 'search', 'class' => 'wikipress-fa-picker-search-input', 'placeholder' => __( 'Search icons...', 'wikipress' ) ] ); ?>
-                        <?php echo FormFieldHelper::select( 'wikipress_fa_pack', [ 'classic' => __( 'Classic', 'wikipress' ), 'duotone' => __( 'Duotone', 'wikipress' ), 'sharp' => __( 'Sharp', 'wikipress' ), 'sharp-duotone' => __( 'Sharp Duotone', 'wikipress' ), 'brands' => __( 'Brands', 'wikipress' ) ], 'classic', [ 'class' => 'wikipress-fa-picker-pack-filter' ] ); ?>
-                        <?php echo FormFieldHelper::select( 'wikipress_fa_style', [ 'solid' => __( 'Solid', 'wikipress' ), 'regular' => __( 'Regular', 'wikipress' ), 'light' => __( 'Light', 'wikipress' ), 'thin' => __( 'Thin', 'wikipress' ) ], 'solid', [ 'class' => 'wikipress-fa-picker-style-filter' ] ); ?>
+                        <?php echo wp_kses_post( FormFieldHelper::input( 'wikipress_fa_search', '', [ 'type' => 'search', 'class' => 'wikipress-fa-picker-search-input', 'placeholder' => __( 'Search icons...', 'wikipress' ) ] ) ); ?>
+                        <?php echo wp_kses_post( FormFieldHelper::select( 'wikipress_fa_pack', [ 'classic' => __( 'Classic', 'wikipress' ), 'duotone' => __( 'Duotone', 'wikipress' ), 'sharp' => __( 'Sharp', 'wikipress' ), 'sharp-duotone' => __( 'Sharp Duotone', 'wikipress' ), 'brands' => __( 'Brands', 'wikipress' ) ], 'classic', [ 'class' => 'wikipress-fa-picker-pack-filter' ] ) ); ?>
+                        <?php echo wp_kses_post( FormFieldHelper::select( 'wikipress_fa_style', [ 'solid' => __( 'Solid', 'wikipress' ), 'regular' => __( 'Regular', 'wikipress' ), 'light' => __( 'Light', 'wikipress' ), 'thin' => __( 'Thin', 'wikipress' ) ], 'solid', [ 'class' => 'wikipress-fa-picker-style-filter' ] ) ); ?>
                     </div>
 
                     <div class="wikipress-fa-picker-results">

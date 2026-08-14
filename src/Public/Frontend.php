@@ -34,7 +34,8 @@ final class Frontend {
 
         if ( Settings::get_bool( 'show_reading_time', false ) ) {
             $minutes = ContentHelper::reading_time( $content, Settings::get_int( 'reading_time_wpm', 200 ) );
-            $parts[] = '<p class="wikipress-reading-time">' . sprintf( esc_html__( '%d min read', 'wikipress' ), $minutes ) . '</p>';
+            /* translators: %d is the estimated reading time in minutes. */
+            $parts[] = '<p class="wikipress-reading-time">' . esc_html( sprintf( esc_html__( '%d min read', 'wikipress' ), $minutes ) ) . '</p>';
         }
 
         if ( Settings::get_bool( 'show_last_updated', true ) || Settings::get_bool( 'show_author', false ) ) {
@@ -81,11 +82,12 @@ final class Frontend {
     private function render_page_meta(): string {
         $items = [];
         if ( Settings::get_bool( 'show_last_updated', true ) ) {
-                /* translators: %s is the date the Wiki page was last updated. */
-                $items[] = sprintf( esc_html__( 'Updated %s', 'wikipress' ), esc_html( get_the_modified_date() ) );
-            }
-            if ( Settings::get_bool( 'show_author', false ) ) {
-                /* translators: %s is the author name. */
+            /* translators: %s is the date the Wiki page was last updated. */
+            $items[] = sprintf( esc_html__( 'Updated %s', 'wikipress' ), esc_html( get_the_modified_date() ) );
+        }
+        if ( Settings::get_bool( 'show_author', false ) ) {
+            /* translators: %s is the author name. */
+            $items[] = sprintf( esc_html__( 'by %s', 'wikipress' ), esc_html( get_the_author() ) );
         }
 
         return '<p class="wikipress-page-meta">' . implode( ' &middot; ', $items ) . '</p>';

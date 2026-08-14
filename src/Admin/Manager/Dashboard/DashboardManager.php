@@ -141,8 +141,8 @@ final class DashboardManager extends Manager {
                 <div class="col-12 col-sm-6 col-xl-3">
                     <a class="wikipress-resource-card h-100" href="<?php echo esc_url( $resource[3] ); ?>" target="_blank" rel="noopener noreferrer">
                         <span class="dashicons <?php echo esc_attr( $resource[2] ); ?>" aria-hidden="true"></span>
-                        <span class="fw-semibold"><?php echo esc_html__( $resource[0], 'wikipress' ); ?></span>
-                        <span class="small text-secondary"><?php echo esc_html__( $resource[1], 'wikipress' ); ?></span>
+                        <span class="fw-semibold"><?php echo esc_html( $resource[0] ); ?></span>
+                        <span class="small text-secondary"><?php echo esc_html( $resource[1] ); ?></span>
                     </a>
                 </div>
             <?php endforeach; ?>

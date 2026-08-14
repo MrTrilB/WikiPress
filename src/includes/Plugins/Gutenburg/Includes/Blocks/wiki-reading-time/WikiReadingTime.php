@@ -21,6 +21,7 @@ final class WikiReadingTime {
 
         $words = str_word_count( wp_strip_all_tags( (string) $post->post_content ) );
         $minutes = max( 1, (int) ceil( $words / 200 ) );
+        /* translators: %d is the estimated reading time in minutes. */
         return '<p class="wikipress-reading-time">' . esc_html( sprintf( _n( '%d minute read', '%d minute read', $minutes, 'wikipress' ), $minutes ) ) . '</p>';
     }
 }

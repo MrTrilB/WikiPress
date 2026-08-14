@@ -158,10 +158,10 @@ final class RoleManager extends Manager {
 		$id = 'wikipress-edit-role-' . $slug;
 		$this->render_modal_start( $id, __( 'Edit Role', 'wikipress' ), 'wikipress_update_role' );
 		?>
-		<?php echo FormFieldHelper::input( 'old_role_slug', $slug, [ 'type' => 'hidden' ] ); ?>
+		<?php echo wp_kses_post( FormFieldHelper::input( 'old_role_slug', $slug, [ 'type' => 'hidden' ] ) ); ?>
 		<div class="row g-3 mb-4">
-			<div class="col-md-6"><?php echo FormFieldHelper::label( $id . '-name', __( 'Role Display Name', 'wikipress' ) ); ?><?php echo FormFieldHelper::input( 'role_display_name', $role['name'], [ 'id' => $id . '-name', 'required' => true ] ); ?></div>
-			<div class="col-md-6"><?php echo FormFieldHelper::label( $id . '-slug', __( 'Role Slug', 'wikipress' ) ); ?><?php echo FormFieldHelper::input( 'role_slug', $slug, [ 'id' => $id . '-slug', 'pattern' => '[a-z_]+', 'required' => true, 'disabled' => 'administrator' === $slug ] ); ?></div>
+			<div class="col-md-6"><?php echo wp_kses_post( FormFieldHelper::label( $id . '-name', __( 'Role Display Name', 'wikipress' ) ) ); ?><?php echo wp_kses_post( FormFieldHelper::input( 'role_display_name', $role['name'], [ 'id' => $id . '-name', 'required' => true ] ) ); ?></div>
+			<div class="col-md-6"><?php echo wp_kses_post( FormFieldHelper::label( $id . '-slug', __( 'Role Slug', 'wikipress' ) ) ); ?><?php echo wp_kses_post( FormFieldHelper::input( 'role_slug', $slug, [ 'id' => $id . '-slug', 'pattern' => '[a-z_]+', 'required' => true, 'disabled' => 'administrator' === $slug ] ) ); ?></div>
 		</div>
 		<?php $this->render_capability_step( $groups, $role['capabilities'] ); ?>
 		<?php $this->render_modal_end( false, 'administrator' !== $slug, $slug ); ?>
@@ -179,7 +179,7 @@ final class RoleManager extends Manager {
 		<div class="modal fade" id="<?php echo esc_attr( $id ); ?>" tabindex="-1" aria-labelledby="<?php echo esc_attr( $id ); ?>-title" aria-hidden="true">
 			<div class="modal-dialog modal-xl modal-dialog-scrollable"><div class="modal-content"><form method="post" action="<?php echo esc_url( UrlHelper::admin_action( $action ) ); ?>" class="wikipress-role-form">
 				<div class="modal-header"><h2 class="modal-title h5" id="<?php echo esc_attr( $id ); ?>-title"><?php echo esc_html( $title ); ?></h2><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<?php esc_attr_e( 'Close', 'wikipress' ); ?>"></button></div>
-				<div class="modal-body"><?php echo FormFieldHelper::input( 'action', $action, [ 'type' => 'hidden' ] ); ?><?php wp_nonce_field( $action ); ?>
+				<div class="modal-body"><?php echo wp_kses_post( FormFieldHelper::input( 'action', $action, [ 'type' => 'hidden' ] ) ); ?><?php wp_nonce_field( $action ); ?>
 		<?php
 	}
     /**
@@ -188,7 +188,7 @@ final class RoleManager extends Manager {
 	private function render_identity_step(): void {
 		?>
 		<div class="wikipress-role-step" data-role-step="identity">
-			<div class="row g-3"><div class="col-md-6"><?php echo FormFieldHelper::label( 'wikipress-add-role-name', __( 'Role Display Name', 'wikipress' ) ); ?><?php echo FormFieldHelper::input( 'role_display_name', '', [ 'id' => 'wikipress-add-role-name', 'required' => true ] ); ?></div><div class="col-md-6"><?php echo FormFieldHelper::label( 'wikipress-add-role-slug', __( 'Role Slug', 'wikipress' ) ); ?><?php echo FormFieldHelper::input( 'role_slug', '', [ 'id' => 'wikipress-add-role-slug', 'pattern' => '[a-z_]+', 'title' => __( 'Use lowercase letters and underscores only.', 'wikipress' ), 'required' => true ] ); ?></div></div>
+			<div class="row g-3"><div class="col-md-6"><?php echo wp_kses_post( FormFieldHelper::label( 'wikipress-add-role-name', __( 'Role Display Name', 'wikipress' ) ) ); ?><?php echo wp_kses_post( FormFieldHelper::input( 'role_display_name', '', [ 'id' => 'wikipress-add-role-name', 'required' => true ] ) ); ?></div><div class="col-md-6"><?php echo wp_kses_post( FormFieldHelper::label( 'wikipress-add-role-slug', __( 'Role Slug', 'wikipress' ) ) ); ?><?php echo wp_kses_post( FormFieldHelper::input( 'role_slug', '', [ 'id' => 'wikipress-add-role-slug', 'pattern' => '[a-z_]+', 'title' => __( 'Use lowercase letters and underscores only.', 'wikipress' ), 'required' => true ] ) ); ?></div></div>
 		</div>
 		<?php
 	}
@@ -203,7 +203,7 @@ final class RoleManager extends Manager {
 		<div class="wikipress-role-step" data-role-step="capabilities"><h3 class="h6 mb-3"><?php esc_html_e( 'Capabilities', 'wikipress' ); ?></h3><div class="accordion" id="wikipress-capability-groups-<?php echo esc_attr( wp_rand() ); ?>">
 			<?php $index = 0; foreach ( $groups as $label => $capabilities ) : $index++; $collapse_id = 'wikipress-capability-group-' . wp_rand(); ?>
 				<div class="accordion-item"><h4 class="accordion-header"><button class="accordion-button <?php echo 1 === $index ? '' : 'collapsed'; ?>" type="button" data-bs-toggle="collapse" data-bs-target="#<?php echo esc_attr( $collapse_id ); ?>"><?php echo esc_html( $label ); ?></button></h4><div id="<?php echo esc_attr( $collapse_id ); ?>" class="accordion-collapse collapse <?php echo 1 === $index ? 'show' : ''; ?>"><div class="accordion-body"><div class="row g-2">
-				<?php foreach ( $capabilities as $capability => $description ) : ?><div class="col-12 col-sm-6 col-lg-4 col-xl-2"><div class="card h-100 p-2 wikipress-capability-card"><?php echo FormFieldHelper::checkbox( 'capabilities[]', $capability, $description ?: $capability, [ 'class' => 'mt-1', 'checked' => ! empty( $selected[ $capability ] ), 'wrapper_class' => 'd-flex align-items-start gap-2 mb-0' ] ); ?></div></div><?php endforeach; ?>
+				<?php foreach ( $capabilities as $capability => $description ) : ?><div class="col-12 col-sm-6 col-lg-4 col-xl-2"><div class="card h-100 p-2 wikipress-capability-card"><?php echo wp_kses_post( FormFieldHelper::checkbox( 'capabilities[]', $capability, $description ?: $capability, [ 'class' => 'mt-1', 'checked' => ! empty( $selected[ $capability ] ), 'wrapper_class' => 'd-flex align-items-start gap-2 mb-0' ] ) ); ?></div></div><?php endforeach; ?>
 				</div></div></div></div>
 			<?php endforeach; ?>
 		</div></div>

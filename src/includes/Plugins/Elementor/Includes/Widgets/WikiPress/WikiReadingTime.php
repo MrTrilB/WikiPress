@@ -109,6 +109,7 @@ class WikiReadingTime extends Widgets {
 
         $minutes = max( 1, (int) ceil( $words / $wpm ) );
 
+        /* translators: %d is the estimated reading time in minutes. */
         $display_text = sprintf( __( '~%d min read', 'wikipress' ), $minutes );
 
         return [

@@ -107,8 +107,8 @@ final class SettingsManager extends Manager {
      * @return void
      */
     public function render(): void {
-        $tab = SanitizationHelper::key( $_GET['tab'] ?? 'general', 'general' );
-        $layout_section = SanitizationHelper::key( $_GET['layout_section'] ?? 'general', 'general' );
+        $tab = SanitizationHelper::key( wp_unslash( $_GET['tab'] ?? 'general' ), 'general' );
+        $layout_section = SanitizationHelper::key( wp_unslash( $_GET['layout_section'] ?? 'general' ), 'general' );
         $tab = $this->normalize_tab( $tab );
         $tab_context = [
             'general' => [ 'description' => __( 'Configure WikiPress names, URL slugs, and permalink settings.', 'wikipress' ), 'tooltip' => __( 'These settings affect how WikiPress content is identified and linked throughout the site.', 'wikipress' ) ],
@@ -142,7 +142,7 @@ final class SettingsManager extends Manager {
             'third-party' => [ 'description' => __( 'View third-party plugins installed on this site.', 'wikipress' ), 'tooltip' => __( 'Third-party plugin settings are managed through WordPress or the plugin author’s own settings page.', 'wikipress' ) ],
         ];
         if ( isset( $tab_context[ $tab ] ) ) {
-            echo '<p class="text-secondary mb-4">' . esc_html( $tab_context[ $tab ]['description'] ) . ' ' . FormFieldHelper::label( 'wikipress-settings-context', __( 'Settings information', 'wikipress' ), [ 'tooltip' => $tab_context[ $tab ]['tooltip'], 'tooltip_type' => 'info', 'tooltip_icon' => 'fa-circle-info', 'class' => 'visually-hidden' ] ) . '</p>';
+            echo '<p class="text-secondary mb-4">' . esc_html( $tab_context[ $tab ]['description'] ) . ' ' . wp_kses_post( FormFieldHelper::label( 'wikipress-settings-context', __( 'Settings information', 'wikipress' ), [ 'tooltip' => $tab_context[ $tab ]['tooltip'], 'tooltip_type' => 'info', 'tooltip_icon' => 'fa-circle-info', 'class' => 'visually-hidden' ] ) ) . '</p>';
         }
         if ( in_array( $tab, [ 'plugins', 'third-party' ], true ) ) {
             $this->plugins_page->render( $tab );
@@ -167,11 +167,11 @@ final class SettingsManager extends Manager {
         if ( 'layout' !== $tab ) {
             echo '</tbody></table>';
         }
-        echo FormFieldHelper::button( __( 'Save Changes', 'wikipress' ), [
+        echo wp_kses_post( FormFieldHelper::button( __( 'Save Changes', 'wikipress' ), [
             'type' => 'submit',
             'name' => 'submit',
             'class' => 'btn-primary',
-        ] );
+        ] ) );
         echo '</div></form>';
         echo '</div>';
     }

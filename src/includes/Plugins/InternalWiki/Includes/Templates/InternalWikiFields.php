@@ -31,7 +31,7 @@ final class InternalWikiFields {
 
         return '<div class="wikipress-internal-wiki-fields row g-3" data-internal-wiki-fields>'
             . '<div class="col-12">'
-            . FormFieldHelper::switch( 
+            . wp_kses_post( FormFieldHelper::switch( 
                 'internal_wiki_enabled', 
                 '1', 
                 __( 
@@ -45,17 +45,17 @@ final class InternalWikiFields {
                         'data-internal-wiki-toggle' => true 
                     ] 
                 ] 
-            )
+            ) )
             . '</div>'
             . '<div class="col-md-4" data-internal-wiki-options>'
-            . FormFieldHelper::label( 
+            . wp_kses_post( FormFieldHelper::label( 
                 'wikipress-internal-access-type', 
                 __( 
                     'Limit access by', 
                     'wikipress' 
                 ) 
-            )
-            . FormFieldHelper::select( 
+            ) )
+            . wp_kses_post( FormFieldHelper::select( 
                 'internal_wiki_access_type', 
                 $access_types, 
                 $access_type, 
@@ -65,19 +65,19 @@ final class InternalWikiFields {
                         'data-internal-wiki-access-type' => true 
                     ] 
                 ] 
-            )
+            ) )
             . '</div>'
             . '<div class="col-md-4' . ( 
                 'roles' === $access_type ? '' : ' d-none' 
                 ) . '" data-internal-wiki-roles>'
-            . FormFieldHelper::label( 
+            . wp_kses_post( FormFieldHelper::label( 
                 'wikipress-internal-roles', 
                 __( 
                     'Roles', 
                     'wikipress' 
                 ) 
-            )
-            . FormFieldHelper::bootstrap_multiselect( 
+            ) )
+            . wp_kses_post( FormFieldHelper::bootstrap_multiselect( 
                 'internal_wiki_role[]', 
                 [ 
                     'id' => 'wikipress-internal-roles', 
@@ -87,19 +87,19 @@ final class InternalWikiFields {
                         'data-internal-wiki-roles-select' => true 
                     ] 
                 ] 
-            )
+            ) )
             . '</div>'
             . '<div class="col-md-4' . ( 
                 'permissions' === $access_type ? '' : ' d-none' 
                 ) . '" data-internal-wiki-permissions>'
-            . FormFieldHelper::label( 
+            . wp_kses_post( FormFieldHelper::label( 
                 'wikipress-internal-permissions-search', 
                 __( 
                     'Permissions', 
                     'wikipress' 
                 ) 
-            )
-            . FormFieldHelper::bootstrap_multiselect( 
+            ) )
+            . wp_kses_post( FormFieldHelper::bootstrap_multiselect( 
                 'internal_wiki_permissions[]', 
                 [ 
                     'id' => 'wikipress-internal-permissions-search', 
@@ -109,7 +109,7 @@ final class InternalWikiFields {
                         'value' 
                     ) 
                 ] 
-            )
+            ) )
             . '</div>'
             . '</div>';
     }
