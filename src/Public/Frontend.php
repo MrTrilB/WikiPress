@@ -81,10 +81,11 @@ final class Frontend {
     private function render_page_meta(): string {
         $items = [];
         if ( Settings::get_bool( 'show_last_updated', true ) ) {
-            $items[] = sprintf( esc_html__( 'Updated %s', 'wikipress' ), esc_html( get_the_modified_date() ) );
-        }
-        if ( Settings::get_bool( 'show_author', false ) ) {
-            $items[] = sprintf( esc_html__( 'By %s', 'wikipress' ), esc_html( get_the_author() ) );
+                /* translators: %s is the date the Wiki page was last updated. */
+                $items[] = sprintf( esc_html__( 'Updated %s', 'wikipress' ), esc_html( get_the_modified_date() ) );
+            }
+            if ( Settings::get_bool( 'show_author', false ) ) {
+                /* translators: %s is the author name. */
         }
 
         return '<p class="wikipress-page-meta">' . implode( ' &middot; ', $items ) . '</p>';

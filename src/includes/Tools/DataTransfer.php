@@ -54,7 +54,8 @@ final class DataTransfer {
         }
         foreach ( [ 'wikis', 'pages', 'categories', 'tags' ] as $key ) {
             if ( isset( $data[ $key ] ) && ! is_array( $data[ $key ] ) ) {
-                $errors[] = sprintf( __( 'The %s export section must be an array.', 'wikipress' ), $key );
+                /* translators: %s is the name of the export section. */
+                $errors[] = sprintf( esc_html__( 'The %s export section must be an array.', 'wikipress' ), $key );
             }
         }
 

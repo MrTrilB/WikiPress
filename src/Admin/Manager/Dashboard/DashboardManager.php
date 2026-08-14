@@ -116,7 +116,7 @@ final class DashboardManager extends Manager {
                         <a class="list-group-item list-group-item-action px-4 py-3" href="<?php echo esc_url( admin_url( 'admin.php?page=wikipress-manage' ) ); ?>">
                             <span class="d-flex flex-column flex-md-row justify-content-between gap-1">
                                 <span class="fw-semibold text-body"><?php echo esc_html( get_the_title( $post ) ); ?></span>
-                                <span class="small text-secondary"><?php echo esc_html( sprintf( __( 'Updated %s', 'wikipress' ), get_the_modified_date( '', $post ) ) ); ?></span>
+                                <span class="small text-secondary"><?php /* translators: %s is the date the Wiki page was last modified. */ echo esc_html( sprintf( esc_html__( 'Updated %s', 'wikipress' ), get_the_modified_date( '', $post ) ) ); ?></span>
                             </span>
                         </a>
                     <?php endforeach; ?>
@@ -130,10 +130,10 @@ final class DashboardManager extends Manager {
 
     private function render_resources(): void {
         $resources = [
-            [ 'Documentation', 'Read the WikiPress guides and product notes.', 'dashicons-media-document', 'https://trilb.dev/collection/web-extension/wordpress/wikipress' ],
-            [ 'Community', 'Connect with other people building their knowledge base.', 'dashicons-groups', 'https://trilb.dev/community/' ],
-            [ 'Ask for Help', 'Get support when you need a hand with your setup.', 'dashicons-sos', 'https://trilb.dev/contact/' ],
-            [ 'Tell us what you think', 'Share ideas that can make WikiPress better.', 'dashicons-format-chat', 'https://trilb.dev/contact/' ],
+            [ __( 'Documentation', 'wikipress' ), __( 'Read the WikiPress guides and product notes.', 'wikipress' ), 'dashicons-media-document', 'https://trilb.dev/collection/web-extension/wordpress/wikipress' ],
+            [ __( 'Community', 'wikipress' ), __( 'Connect with other people building their knowledge base.', 'wikipress' ), 'dashicons-groups', 'https://trilb.dev/community/' ],
+            [ __( 'Ask for Help', 'wikipress' ), __( 'Get support when you need a hand with your setup.', 'wikipress' ), 'dashicons-sos', 'https://trilb.dev/contact/' ],
+            [ __( 'Tell us what you think', 'wikipress' ), __( 'Share ideas that can make WikiPress better.', 'wikipress' ), 'dashicons-format-chat', 'https://trilb.dev/contact/' ],
         ];
         ?>
         <div class="row g-3">

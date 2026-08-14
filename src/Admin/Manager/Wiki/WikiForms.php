@@ -35,7 +35,7 @@ class WikiForms {
                             <legend class="float-none w-auto px-2 fs-6 mb-0">
                                 <?php esc_html_e( 'Wiki Categories', 'wikipress' ); ?>
                             </legend>
-                            <?php echo FormFieldHelper::bootstrap_multiselect( 'wikipress_wiki[categories][]', [ 'data' => self::category_options( $categories ), 'class' => 'show-tick', 'icons_base' => 'fa-solid', 'tick_icon' => 'fa-check', 'live_search' => true, 'open_options' => true, 'placeholder' => __( 'Select or create categories', 'wikipress' ), 'live_search_placeholder' => __( 'Search or create categories', 'wikipress' ), 'attributes' => [ 'id' => 'wikipress-wiki-categories', 'data-wikipress-category-select' => 'true', 'data-wikipress-taxonomy-endpoint' => rest_url( 'wp/v2/' . Taxonomy::CATEGORY ), 'data-wikipress-taxonomy-create' => 'true', 'data-wikipress-rest-nonce' => wp_create_nonce( 'wp_rest' ) ] ] ); ?>
+                            <?php echo wp_kses_post( FormFieldHelper::bootstrap_multiselect( 'wikipress_wiki[categories][]', [ 'data' => self::category_options( $categories ), 'class' => 'show-tick', 'icons_base' => 'fa-solid', 'tick_icon' => 'fa-check', 'live_search' => true, 'open_options' => true, 'placeholder' => __( 'Select or create categories', 'wikipress' ), 'live_search_placeholder' => __( 'Search or create categories', 'wikipress' ), 'attributes' => [ 'id' => 'wikipress-wiki-categories', 'data-wikipress-category-select' => 'true', 'data-wikipress-taxonomy-endpoint' => rest_url( 'wp/v2/' . Taxonomy::CATEGORY ), 'data-wikipress-taxonomy-create' => 'true', 'data-wikipress-rest-nonce' => wp_create_nonce( 'wp_rest' ) ] ] ) ); ?>
                             <div class="form-text">
                                 <?php esc_html_e( 'Search existing categories or create a new category from the picker.', 'wikipress' ); ?>
                             </div>
@@ -46,7 +46,7 @@ class WikiForms {
                             <legend class="float-none w-auto px-2 fs-6 mb-0">
                                 <?php esc_html_e( 'Wiki Tags', 'wikipress' ); ?>
                             </legend>
-                            <?php echo FormFieldHelper::bootstrap_multiselect( 'wikipress_wiki[tags][]', [ 'data' => array_map( static fn( $tag ) => [ 'value' => (string) $tag->term_id, 'label' => $tag->name ], $tags ), 'class' => 'show-tick', 'icons_base' => 'fa-solid', 'tick_icon' => 'fa-check', 'open_options' => true, 'placeholder' => __( 'Search or select tags','wikipress' ),'live_search_placeholder' => __( 'Search or create tags', 'wikipress' ), 'attributes' => [ 'id' => 'wikipress-wiki-tags', 'data-wikipress-taxonomy-endpoint' => rest_url( 'wp/v2/' . Taxonomy::TAG ), 'data-wikipress-taxonomy-create' => 'true', 'data-wikipress-rest-nonce' => wp_create_nonce( 'wp_rest' ) ] ]); ?>
+                            <?php echo wp_kses_post( FormFieldHelper::bootstrap_multiselect( 'wikipress_wiki[tags][]', [ 'data' => array_map( static fn( $tag ) => [ 'value' => (string) $tag->term_id, 'label' => $tag->name ], $tags ), 'class' => 'show-tick', 'icons_base' => 'fa-solid', 'tick_icon' => 'fa-check', 'open_options' => true, 'placeholder' => __( 'Search or select tags', 'wikipress' ), 'live_search_placeholder' => __( 'Search or create tags', 'wikipress' ), 'attributes' => [ 'id' => 'wikipress-wiki-tags', 'data-wikipress-taxonomy-endpoint' => rest_url( 'wp/v2/' . Taxonomy::TAG ), 'data-wikipress-taxonomy-create' => 'true', 'data-wikipress-rest-nonce' => wp_create_nonce( 'wp_rest' ) ] ] ) ); ?>
                             <div class="form-text">
                                 <?php esc_html_e( 'Search existing tags or create a new tag from the picker.', 'wikipress' ); ?>
                             </div>
@@ -135,8 +135,9 @@ class WikiForms {
                 ],
                 // Add more fields as needed
             ],
-            'submit_label' => __( $wikiId ? 'Update Wiki' : 'Create Wiki', 'wikipress' ),
         ];
+
+        $form['submit_label'] = $wikiId ? __( 'Update Wiki', 'wikipress' ) : __( 'Create Wiki', 'wikipress' );
 
         return $form;
     }
@@ -148,7 +149,7 @@ class WikiForms {
         <div class="modal fade" id="<?php echo esc_attr( $settings_id ); ?>" tabindex="-1" aria-labelledby="<?php echo esc_attr( $settings_id ); ?>-title" aria-hidden="true">
             <div class="modal-dialog modal-xl modal-dialog-scrollable">
                 <div class="modal-content">
-                    <div class="modal-header"><h2 class="modal-title h5" id="<?php echo esc_attr( $settings_id ); ?>-title"><?php printf( esc_html__( '%s Settings', 'wikipress' ), esc_html( get_the_title( $wiki ) ) ); ?></h2><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<?php esc_attr_e( 'Close', 'wikipress' ); ?>"></button></div>
+                    <div class="modal-header"><h2 class="modal-title h5" id="<?php echo esc_attr( $settings_id ); ?>-title"><?php /* translators: %s is the Wiki title. */ printf( esc_html__( '%s Settings', 'wikipress' ), esc_html( get_the_title( $wiki ) ) ); ?></h2><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<?php esc_attr_e( 'Close', 'wikipress' ); ?>"></button></div>
                     <div class="modal-body">
                         <div class="accordion" id="<?php echo esc_attr( $settings_id ); ?>-accordion">
                             <div class="accordion-item">
@@ -176,7 +177,7 @@ class WikiForms {
         </div>
         <div class="modal fade" id="<?php echo esc_attr( $manage_id ); ?>" tabindex="-1" aria-labelledby="<?php echo esc_attr( $manage_id ); ?>-title" aria-hidden="true">
             <div class="modal-dialog modal-xl modal-dialog-scrollable"><div class="modal-content">
-                <div class="modal-header"><h2 class="modal-title h5" id="<?php echo esc_attr( $manage_id ); ?>-title"><?php printf( esc_html__( 'Manage %s', 'wikipress' ), esc_html( get_the_title( $wiki ) ) ); ?></h2><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<?php esc_attr_e( 'Close', 'wikipress' ); ?>"></button></div>
+                <div class="modal-header"><h2 class="modal-title h5" id="<?php echo esc_attr( $manage_id ); ?>-title"><?php /* translators: %s is the wiki title. */ printf( esc_html__( 'Manage %s', 'wikipress' ), esc_html( get_the_title( $wiki ) ) ); ?></h2><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<?php esc_attr_e( 'Close', 'wikipress' ); ?>"></button></div>
                 <div class="modal-body">
                     <ul class="nav nav-tabs" role="tablist"><?php foreach ( [ 'pages' => __( 'Pages', 'wikipress' ), 'categories' => __( 'Categories', 'wikipress' ), 'tags' => __( 'Tags', 'wikipress' ), 'navigation' => __( 'Navigation', 'wikipress' ) ] as $tab => $label ) : ?><li class="nav-item" role="presentation"><button class="nav-link <?php echo 'pages' === $tab ? 'active' : ''; ?>" type="button" data-bs-toggle="tab" data-bs-target="#<?php echo esc_attr( $manage_id . '-' . $tab ); ?>" role="tab"><?php echo esc_html( $label ); ?></button></li><?php endforeach; ?></ul>
                     <div class="tab-content pt-3">

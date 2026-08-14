@@ -64,7 +64,7 @@ final class RoleManager extends Manager {
 						<div class="card-body d-flex flex-column">
 							<h2 class="h5 mb-2"><?php echo esc_html( translate_user_role( $role['name'] ) ); ?></h2>
 							<p class="text-secondary mb-1"><code><?php echo esc_html( $slug ); ?></code></p>
-							<p class="text-secondary mb-4"><?php echo esc_html( sprintf( _n( '%d permission', '%d permissions', count( $role['capabilities'] ), 'wikipress' ), count( $role['capabilities'] ) ) ); ?></p>
+							<p class="text-secondary mb-4"><?php /* translators: %d is the number of capabilities assigned to the role. */ echo esc_html( sprintf( _n( '%d permission', '%d permissions', count( $role['capabilities'] ), 'wikipress' ), count( $role['capabilities'] ) ) ); ?></p>
 							<button type="button" class="btn btn-outline-primary mt-auto" data-bs-toggle="modal" data-bs-target="#wikipress-edit-role-<?php echo esc_attr( $slug ); ?>"><?php esc_html_e( 'Edit', 'wikipress' ); ?></button>
 						</div>
 					</article>
@@ -85,7 +85,7 @@ final class RoleManager extends Manager {
 
 		$this->authorize_action( 'wikipress_create_role' );
 		$display_name = RequestHelper::text( $_POST, 'role_display_name' );
-		$slug = $this->valid_slug( $_POST['role_slug'] ?? '' );
+		$slug = $this->valid_slug( RequestHelper::key( $_POST, 'role_slug' ) );
 		if ( '' === $display_name || '' === $slug || wp_roles()->is_role( $slug ) ) {
 			$this->redirect( 'invalid' );
 		}
@@ -100,7 +100,7 @@ final class RoleManager extends Manager {
 		$this->authorize_action( 'wikipress_update_role' );
 		$old_slug = RequestHelper::key( $_POST, 'old_role_slug' );
 		$display_name = RequestHelper::text( $_POST, 'role_display_name' );
-		$new_slug = $this->valid_slug( $_POST['role_slug'] ?? '' );
+		$new_slug = $this->valid_slug( RequestHelper::key( $_POST, 'role_slug' ) );
 		$roles = wp_roles();
 		if ( '' === $old_slug || ! $roles->is_role( $old_slug ) || '' === $display_name || '' === $new_slug || ( $old_slug !== $new_slug && $roles->is_role( $new_slug ) ) || ( $old_slug !== $new_slug && $this->role_has_users( $old_slug ) ) || ( 'administrator' === $old_slug && 'administrator' !== $new_slug ) ) {
 			$this->redirect( 'invalid' );
@@ -306,7 +306,7 @@ final class RoleManager extends Manager {
 
 		}
 
-		if ( ! AjaxHelper::has_valid_nonce( $action, '_wpnonce' ) ) {
+		if ( ! check_admin_referer( $action, '_wpnonce', false ) ) {
 			wp_die( esc_html__( 'Security check failed.', 'wikipress' ), 403 );
 		}
 	}
