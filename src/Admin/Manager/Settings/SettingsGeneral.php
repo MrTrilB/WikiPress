@@ -51,13 +51,13 @@ final class SettingsGeneral {
 				echo '<div class="wikipress-permalink-tokens mt-2" aria-label="' . esc_attr__( 'Available permalink tokens', 'wikipress' ) . '">';
 				foreach ( PermalinkHelper::token_definitions() as $token => $description ) {
 					echo FormFieldHelper::button( $token, [
-					'class' => 'btn-sm btn-outline-secondary me-1 mb-1',
-					'type' => 'button',
-					'attributes' => [
-						'data-permalink-token' => $token,
-						'title' => $description,
-					],
-				] ) );
+						'class' => 'btn-sm btn-outline-secondary me-1 mb-1',
+						'type' => 'button',
+						'attributes' => [
+							'data-permalink-token' => $token,
+							'title' => $description,
+						],
+					] );
 				}
 				echo '</div><div class="form-text">' . esc_html__( 'Click a token to add it to the pattern. Tokens are inserted with a trailing slash and reappear when removed.', 'wikipress' ) . '</div>';
 			}

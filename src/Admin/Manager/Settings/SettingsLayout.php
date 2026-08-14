@@ -44,7 +44,7 @@ final class SettingsLayout {
 					'aria-selected' => $section === $slug ? 'true' : 'false',
 					'data-wikipress-layout-tab' => $slug,
 				],
-			] ) );
+			] );
 		}
 		echo '</div></nav><div class="tab-content" id="wikipress-layout-tab-content">';
 		foreach ( $sections as $slug => $label ) {
