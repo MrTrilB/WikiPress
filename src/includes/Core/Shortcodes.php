@@ -109,8 +109,9 @@ final class Shortcodes {
         $attributes = $definition['attributes'] ?? $definition['defaults'] ?? [];
         if ( ! is_array( $attributes ) ) {
             throw new \InvalidArgumentException( sprintf( 'Shortcode attributes for "%s" must be an array.', wp_strip_all_tags( $tag ) ) );
+        }
 
-		return array_merge(
+        return array_merge(
 			[
 				'tag' => $tag,
 				'callback' => $definition['callback'],
