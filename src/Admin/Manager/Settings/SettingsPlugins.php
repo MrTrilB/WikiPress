@@ -47,7 +47,7 @@ final class SettingsPlugins {
             $name = 'wikipress_' . SanitizationHelper::key( $page['slug'] ) . '[' . $key . ']';
             $value = $values[ $key ] ?? $default;
             $type = SanitizationHelper::key( $field['type'] ?? 'checkbox', 'checkbox' );
-            echo '<div class="mb-3">' . wp_kses_post( FormFieldHelper::label(
+            echo '<div class="mb-3">' . FormFieldHelper::label(
                 'wikipress-' . $key,
                 (string) ( $field['label'] ?? $key ),
                 [
@@ -58,11 +58,11 @@ final class SettingsPlugins {
                 ]
             ) );
             if ( 'select' === $type ) {
-                echo wp_kses_post( FormFieldHelper::select( $name, (array) ( $field['options'] ?? [] ), $value, [ 'id' => 'wikipress-' . $key ] ) );
+                echo FormFieldHelper::select( $name, (array) ( $field['options'] ?? [] ), $value, [ 'id' => 'wikipress-' . $key ] ) );
             } elseif ( 'text' === $type ) {
-                echo wp_kses_post( FormFieldHelper::input( $name, is_scalar( $value ) ? (string) $value : '', [ 'id' => 'wikipress-' . $key, 'type' => 'text' ] ) );
+                echo FormFieldHelper::input( $name, is_scalar( $value ) ? (string) $value : '', [ 'id' => 'wikipress-' . $key, 'type' => 'text' ] ) );
             } else {
-                echo wp_kses_post( FormFieldHelper::checkbox( $name, '1', '', [ 'id' => 'wikipress-' . $key, 'checked' => ! empty( $value ) ] ) );
+                echo FormFieldHelper::checkbox( $name, '1', '', [ 'id' => 'wikipress-' . $key, 'checked' => ! empty( $value ) ] ) );
             }
             echo '</div>';
         }
@@ -146,7 +146,7 @@ final class SettingsPlugins {
             <article class="card wikipress-plugin-card shadow-sm h-100 w-100">
                 <div class="card-header d-flex align-items-center gap-2">
                     <?php /* translators: %s is the plugin name. */ ?>
-                    <?php echo wp_kses_post( FormFieldHelper::switch( 'wikipress-plugin-status', '1', '', [ 'id' => 'wikipress-plugin-status-' . SanitizationHelper::key( $plugin->get_slug() ), 'checked' => $enabled, 'data-wikipress-plugin-toggle' => 'true', 'data-plugin-slug' => $plugin->get_slug(), 'aria-label' => sprintf( __( 'Enable %s', 'wikipress' ), $plugin->get_name() ) ] ) ); ?>
+                    <?php echo FormFieldHelper::switch( 'wikipress-plugin-status', '1', '', [ 'id' => 'wikipress-plugin-status-' . SanitizationHelper::key( $plugin->get_slug() ), 'checked' => $enabled, 'data-wikipress-plugin-toggle' => 'true', 'data-plugin-slug' => $plugin->get_slug(), 'aria-label' => sprintf( __( 'Enable %s', 'wikipress' ), $plugin->get_name() ) ] ) ); ?>
                     <span class="fw-semibold"><?php echo esc_html( $plugin->get_name() ); ?></span>
                 </div>
                 <div class="card-body d-flex flex-column">
@@ -156,7 +156,7 @@ final class SettingsPlugins {
                     <p class="card-text mb-2"><span class="text-secondary"><?php esc_html_e( 'Version:', 'wikipress' ); ?></span> <?php echo esc_html( $plugin->get_version() ); ?></p>
                     <p class="card-text mb-3"><span class="text-secondary"><?php esc_html_e( 'Docs:', 'wikipress' ); ?></span> <a href="<?php echo esc_url( $plugin->get_uri() ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'View documentation', 'wikipress' ); ?></a></p>
                     <?php if ( ! empty( $settings_page['fields'] ) ) : ?>
-                        <?php echo wp_kses_post( FormFieldHelper::button( __( 'Settings', 'wikipress' ), [ 'type' => 'button', 'class' => 'btn-primary mt-auto', 'data-bs-toggle' => 'modal', 'data-bs-target' => '#' . $modal_id ] ) ); ?>
+                        <?php echo FormFieldHelper::button( __( 'Settings', 'wikipress' ), [ 'type' => 'button', 'class' => 'btn-primary mt-auto', 'data-bs-toggle' => 'modal', 'data-bs-target' => '#' . $modal_id ] ) ); ?>
                     <?php endif; ?>
                 </div>
             </article>
@@ -249,8 +249,7 @@ final class SettingsPlugins {
                 $wrapper_attributes['data-wikipress-visible-when'] = wp_json_encode( $field['visible_when'] );
             }
             $wrapper_attributes = FormFieldHelper::attributes_to_string( $wrapper_attributes );
-            $wrapper_attributes = wp_kses_post( $wrapper_attributes );
-            $label = wp_kses_post( FormFieldHelper::label( $id, (string) ( $field['label'] ?? $key ), [
+            $label = FormFieldHelper::label( $id, (string) ( $field['label'] ?? $key ), [
                 'tooltip' => (string) ( $field['tooltip'] ?? '' ),
                 'tooltip_type' => SanitizationHelper::key( $field['tooltip_type'] ?? 'question', 'question' ),
                 'tooltip_icon' => (string) ( $field['tooltip_icon'] ?? '' ),
@@ -261,7 +260,7 @@ final class SettingsPlugins {
                 echo '<article class="wikipress-plugin-settings-field card h-100"' . ( $wrapper_attributes ? ' ' . $wrapper_attributes : '' ) . '><div class="card-body">';
                 echo '<div class="wikipress-plugin-settings-field-header d-flex align-items-start justify-content-between gap-3">' . wp_kses_post( $label );
                 if ( 'checkbox' === $type ) {
-                    echo wp_kses_post( FormFieldHelper::switch( $name, '1', '', [ 'id' => $id, 'checked' => ! empty( $value ), 'wrapper_class' => 'ms-auto flex-shrink-0' ] ) );
+                    echo FormFieldHelper::switch( $name, '1', '', [ 'id' => $id, 'checked' => ! empty( $value ), 'wrapper_class' => 'ms-auto flex-shrink-0' ] ) );
                 }
                 echo '</div>';
                 if ( ! empty( $field['description'] ) ) {
@@ -269,19 +268,19 @@ final class SettingsPlugins {
                 }
             }
             if ( 'table' === $layout && 'select' === $type ) {
-                echo wp_kses_post( FormFieldHelper::select( $name, (array) ( $field['options'] ?? [] ), $value, [ 'id' => $id, 'attributes' => $field['attributes'] ?? [] ] ) );
+                echo FormFieldHelper::select( $name, (array) ( $field['options'] ?? [] ), $value, [ 'id' => $id, 'attributes' => $field['attributes'] ?? [] ] ) );
             } elseif ( 'table' === $layout && 'multiselect' === $type ) {
-                echo wp_kses_post( FormFieldHelper::bootstrap_multiselect( $name, [ 'id' => $id, 'data' => (array) ( $field['options'] ?? [] ), 'selected' => (array) $value, 'dropup_auto' => $field['dropup_auto'] ?? true, 'show_tick' => $field['show_tick'] ?? null, 'selection_indicator' => $field['selection_indicator'] ?? null, 'attributes' => $field['attributes'] ?? [] ] ) );
+                echo FormFieldHelper::bootstrap_multiselect( $name, [ 'id' => $id, 'data' => (array) ( $field['options'] ?? [] ), 'selected' => (array) $value, 'dropup_auto' => $field['dropup_auto'] ?? true, 'show_tick' => $field['show_tick'] ?? null, 'selection_indicator' => $field['selection_indicator'] ?? null, 'attributes' => $field['attributes'] ?? [] ] ) );
             } elseif ( 'table' === $layout && 'text' === $type ) {
-                echo wp_kses_post( FormFieldHelper::input( $name, is_scalar( $value ) ? (string) $value : '', [ 'id' => $id, 'type' => 'text' ] ) );
+                echo FormFieldHelper::input( $name, is_scalar( $value ) ? (string) $value : '', [ 'id' => $id, 'type' => 'text' ] ) );
             } elseif ( 'table' === $layout ) {
-                echo wp_kses_post( FormFieldHelper::checkbox( $name, '1', '', [ 'id' => $id, 'checked' => ! empty( $value ) ] ) );
+                echo FormFieldHelper::checkbox( $name, '1', '', [ 'id' => $id, 'checked' => ! empty( $value ) ] ) );
             } elseif ( 'select' === $type ) {
-                echo wp_kses_post( FormFieldHelper::select( $name, (array) ( $field['options'] ?? [] ), $value, [ 'id' => $id, 'attributes' => $field['attributes'] ?? [] ] ) );
+                echo FormFieldHelper::select( $name, (array) ( $field['options'] ?? [] ), $value, [ 'id' => $id, 'attributes' => $field['attributes'] ?? [] ] ) );
             } elseif ( 'multiselect' === $type ) {
-                echo wp_kses_post( FormFieldHelper::bootstrap_multiselect( $name, [ 'id' => $id, 'data' => (array) ( $field['options'] ?? [] ), 'selected' => (array) $value, 'dropup_auto' => $field['dropup_auto'] ?? true, 'show_tick' => $field['show_tick'] ?? null, 'selection_indicator' => $field['selection_indicator'] ?? null, 'attributes' => $field['attributes'] ?? [] ] ) );
+                echo FormFieldHelper::bootstrap_multiselect( $name, [ 'id' => $id, 'data' => (array) ( $field['options'] ?? [] ), 'selected' => (array) $value, 'dropup_auto' => $field['dropup_auto'] ?? true, 'show_tick' => $field['show_tick'] ?? null, 'selection_indicator' => $field['selection_indicator'] ?? null, 'attributes' => $field['attributes'] ?? [] ] ) );
             } elseif ( 'text' === $type ) {
-                echo wp_kses_post( FormFieldHelper::input( $name, is_scalar( $value ) ? (string) $value : '', [ 'id' => $id, 'type' => 'text' ] ) );
+                echo FormFieldHelper::input( $name, is_scalar( $value ) ? (string) $value : '', [ 'id' => $id, 'type' => 'text' ] ) );
             }
             echo 'table' === $layout ? '</td></tr>' : '</div></article>';
         }
@@ -305,7 +304,7 @@ final class SettingsPlugins {
             <article class="card wikipress-plugin-card shadow-sm h-100 w-100">
                 <div class="card-header d-flex align-items-center gap-2">
                     <?php /* translators: %s is the plugin name. */ ?>
-                    <?php echo wp_kses_post( FormFieldHelper::switch( 'wikipress-third-party-status', '1', '', [ 'id' => 'wikipress-third-party-status-' . SanitizationHelper::key( $file ), 'checked' => $active, 'disabled' => true, 'aria-label' => sprintf( __( 'Enable %s', 'wikipress' ), $plugin['Name'] ?? $file ) ] ) ); ?>
+                    <?php echo FormFieldHelper::switch( 'wikipress-third-party-status', '1', '', [ 'id' => 'wikipress-third-party-status-' . SanitizationHelper::key( $file ), 'checked' => $active, 'disabled' => true, 'aria-label' => sprintf( __( 'Enable %s', 'wikipress' ), $plugin['Name'] ?? $file ) ] ) ); ?>
                     <span class="fw-semibold"><?php echo esc_html( $plugin['Name'] ?? $file ); ?></span>
                 </div>
                 <div class="card-body d-flex flex-column">

@@ -33,7 +33,7 @@ final class SettingsLayout {
 		echo '<nav aria-label="' . esc_attr__( 'Layout settings sections', 'wikipress' ) . '"><div class="nav nav-tabs" id="wikipress-layout-tab" role="tablist">';
 		foreach ( $sections as $slug => $label ) {
 			$target = 'wikipress-layout-' . $slug;
-			echo wp_kses_post( FormFieldHelper::button( $label, [
+			echo FormFieldHelper::button( $label, [
 				'class' => 'nav-link ' . ( $section === $slug ? 'active' : '' ),
 				'attributes' => [
 					'id' => $target . '-tab',
@@ -69,15 +69,15 @@ final class SettingsLayout {
 			$id = 'wikipress-layout-' . $section . '-' . $key;
 			$name = 'wikipress_layout[' . $key . ']';
 			$type = $field['type'] ?? 'checkbox';
-			echo '<tr><th scope="row">' . wp_kses_post( FormFieldHelper::label( $id, $field['label'], $field ) ) . '</th><td>';
+			echo '<tr><th scope="row">' . FormFieldHelper::label( $id, $field['label'], $field ) ) . '</th><td>';
 			if ( 'select' === $type ) {
-				echo wp_kses_post( FormFieldHelper::select( $name, $field['options'], $values[ $key ] ?? $field['default'], [ 'id' => $id ] ) );
+				echo FormFieldHelper::select( $name, $field['options'], $values[ $key ] ?? $field['default'], [ 'id' => $id ] ) );
 			} elseif ( 'number' === $type ) {
-				echo wp_kses_post( FormFieldHelper::input( $name, (string) ( $values[ $key ] ?? $field['default'] ), [ 'id' => $id, 'type' => 'number', 'min' => $field['min'], 'max' => $field['max'] ] ) );
+				echo FormFieldHelper::input( $name, (string) ( $values[ $key ] ?? $field['default'] ), [ 'id' => $id, 'type' => 'number', 'min' => $field['min'], 'max' => $field['max'] ] ) );
 			} elseif ( 'text' === $type ) {
-				echo wp_kses_post( FormFieldHelper::input( $name, SanitizationHelper::text( $values[ $key ] ?? $field['default'] ), [ 'id' => $id, 'type' => 'text' ] ) );
+				echo FormFieldHelper::input( $name, SanitizationHelper::text( $values[ $key ] ?? $field['default'] ), [ 'id' => $id, 'type' => 'text' ] ) );
 			} else {
-				echo wp_kses_post( FormFieldHelper::checkbox( $name, '1', $field['label'], [ 'id' => $id, 'checked' => ! empty( $values[ $key ] ?? $field['default'] ) ] ) );
+				echo FormFieldHelper::checkbox( $name, '1', $field['label'], [ 'id' => $id, 'checked' => ! empty( $values[ $key ] ?? $field['default'] ) ] ) );
 			}
 			echo '</td></tr>';
 		}

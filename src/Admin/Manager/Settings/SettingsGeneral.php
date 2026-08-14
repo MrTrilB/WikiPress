@@ -39,18 +39,18 @@ final class SettingsGeneral {
 			$id = 'wikipress-' . $key;
 			$name = 'wikipress_general[' . $key . ']';
 			$value = 'permalink' === $key ? PermalinkHelper::sanitize_pattern( $values[ $key ] ?? '' ) : SanitizationHelper::text( $values[ $key ] ?? $field['default'] ?? '' );
-			echo '<tr><th scope="row">' . wp_kses_post( FormFieldHelper::label( $id, $field['label'], $field ) ) . '</th><td>';
+			echo '<tr><th scope="row">' . FormFieldHelper::label( $id, $field['label'], $field ) ) . '</th><td>';
 			if ( 'textarea' === ( $field['type'] ?? '' ) ) {
-				echo wp_kses_post( FormFieldHelper::textarea( $name, $value, [ 'id' => $id, 'rows' => 3 ] ) );
+				echo FormFieldHelper::textarea( $name, $value, [ 'id' => $id, 'rows' => 3 ] );
 			} elseif ( 'checkbox' === ( $field['type'] ?? '' ) ) {
-				echo wp_kses_post( FormFieldHelper::checkbox( $name, '1', $field['label'], [ 'id' => $id, 'checked' => ! empty( $values[ $key ] ?? $field['default'] ) ] ) );
+				echo FormFieldHelper::checkbox( $name, '1', $field['label'], [ 'id' => $id, 'checked' => ! empty( $values[ $key ] ?? $field['default'] ) ] );
 			} else {
-				echo wp_kses_post( FormFieldHelper::text_input( $name, $value, [ 'id' => $id, 'data-permalink-field' => 'permalink' === $key ? 'permalink' : null ] ) );
+				echo FormFieldHelper::text_input( $name, $value, [ 'id' => $id, 'data-permalink-field' => 'permalink' === $key ? 'permalink' : null ] );
 			}
 			if ( 'permalink' === $key ) {
 				echo '<div class="wikipress-permalink-tokens mt-2" aria-label="' . esc_attr__( 'Available permalink tokens', 'wikipress' ) . '">';
 				foreach ( PermalinkHelper::token_definitions() as $token => $description ) {
-					echo wp_kses_post( FormFieldHelper::button( $token, [
+					echo FormFieldHelper::button( $token, [
 					'class' => 'btn-sm btn-outline-secondary me-1 mb-1',
 					'type' => 'button',
 					'attributes' => [

@@ -49,7 +49,7 @@ final class SettingsAccess {
 			if ( empty( $selected ) ) {
 				$selected[] = $options[0];
 			}
-			echo '<tr><th scope="row">' . wp_kses_post( FormFieldHelper::label( $id, $field['label'], $field ) ) . '</th><td>' . wp_kses_post( FormFieldHelper::bootstrap_multiselect( $name, [ 'id' => $id, 'data' => $options, 'selected' => array_column( $selected, 'value' ) ] ) ) . '</td></tr>';
+			echo '<tr><th scope="row">' . FormFieldHelper::label( $id, $field['label'], $field ) ) . '</th><td>' . FormFieldHelper::bootstrap_multiselect( $name, [ 'id' => $id, 'data' => $options, 'selected' => array_column( $selected, 'value' ) ] ) ) . '</td></tr>';
 		}
 	}
 }
