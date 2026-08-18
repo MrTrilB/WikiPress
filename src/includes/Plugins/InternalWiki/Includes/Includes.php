@@ -7,8 +7,8 @@
  * @since 1.0.0
  */
 
-namespace TrilBDev\WikiPress\Includes\Plugins\InternalWiki\Includes;
-use TrilBDev\WikiPress\Includes\Plugins\InternalWiki\Includes\Settings\Settings;
+namespace WikiPress\Includes\Plugins\InternalWiki\Includes;
+use WikiPress\Includes\Plugins\InternalWiki\Includes\Settings\Settings;
 
 final class Includes {
     /**

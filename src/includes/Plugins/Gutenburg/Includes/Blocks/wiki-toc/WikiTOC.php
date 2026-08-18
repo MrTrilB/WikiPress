@@ -4,10 +4,10 @@
  *
  * @package WikiPress
  */
-namespace TrilBDev\WikiPress\Includes\Plugins\Gutenburg\Includes\Blocks;
+namespace WikiPress\Includes\Plugins\Gutenburg\Includes\Blocks;
 
-use TrilBDev\WikiPress\Includes\Functions\Helpers\PostHelper;
-use TrilBDev\WikiPress\Includes\Functions\Helpers\ContentHelper;
+use WikiPress\Includes\Functions\Helpers\PostHelper;
+use WikiPress\Includes\Functions\Helpers\ContentHelper;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

@@ -2,14 +2,14 @@
 /**
  * REST API schema definitions for WikiPress.
  *
- * @package TrilBDev\WikiPress
+ * @package WikiPress
  * @subpackage API
  * @since 1.0.0
  */
-namespace TrilBDev\WikiPress\API;
+namespace WikiPress\API;
 
-use TrilBDev\WikiPress\Includes\Functions\Functions;
-use TrilBDev\WikiPress\Includes\Functions\Helpers\SanitizationHelper;
+use WikiPress\Includes\Functions\Functions;
+use WikiPress\Includes\Functions\Helpers\SanitizationHelper;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

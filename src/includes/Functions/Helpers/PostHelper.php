@@ -2,15 +2,15 @@
 /**
  * Post identity and WikiPress post-type helpers.
  *
- * @package TrilBDev\WikiPress
+ * @package WikiPress
  * @subpackage Includes\Functions\Helpers
  * @since 1.0.0
  */
 
-namespace TrilBDev\WikiPress\Includes\Functions\Helpers;
+namespace WikiPress\Includes\Functions\Helpers;
 
-use TrilBDev\WikiPress\Includes\Core\PostType;
-use TrilBDev\WikiPress\Includes\Functions\Helpers\QueryHelper;
+use WikiPress\Includes\Core\PostType;
+use WikiPress\Includes\Functions\Helpers\QueryHelper;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

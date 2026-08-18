@@ -6,8 +6,8 @@
  * @subpackage Admin\Manager\Wiki
  * @since 1.0.0
  */
-namespace TrilBDev\WikiPress\Admin\Manager\Wiki;
-use TrilBDev\WikiPress\Admin\Manager\Wiki\WikiManager;
+namespace WikiPress\Admin\Manager\Wiki;
+use WikiPress\Admin\Manager\Wiki\WikiManager;
 
 class CategoriesManager extends WikiManager {
     public function register_assets( Assets $assets ): void {

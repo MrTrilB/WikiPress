@@ -1,12 +1,12 @@
 <?php
 
-namespace TrilBDev\WikiPress\Includes\Plugins\Elementor\Includes\Widgets\WikiPress;
+namespace WikiPress\Includes\Plugins\Elementor\Includes\Widgets\WikiPress;
 
 use Elementor\Controls_Manager;
-use TrilBDev\WikiPress\Includes\Functions\Helpers\PostHelper;
-use TrilBDev\WikiPress\Includes\Functions\Helpers\QueryHelper;
-use TrilBDev\WikiPress\Includes\Plugins\Elementor\Includes\Templates\Templates;
-use TrilBDev\WikiPress\Includes\Plugins\Elementor\Includes\Widgets\Widgets;
+use WikiPress\Includes\Functions\Helpers\PostHelper;
+use WikiPress\Includes\Functions\Helpers\QueryHelper;
+use WikiPress\Includes\Plugins\Elementor\Includes\Templates\Templates;
+use WikiPress\Includes\Plugins\Elementor\Includes\Widgets\Widgets;
 use WP_Query;
 
 if ( ! defined( 'ABSPATH' ) ) {

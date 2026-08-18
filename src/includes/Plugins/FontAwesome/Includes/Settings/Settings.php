@@ -5,9 +5,9 @@
  * @package    Wikipress
  * @subpackage Wikipress/includes
  */
-namespace TrilBDev\WikiPress\Includes\Plugins\FontAwesome\Includes\Settings;
-use TrilBDev\WikiPress\Includes\Settings\Settings as BaseSettings;
-use TrilBDev\WikiPress\Includes\Functions\Helpers\SanitizationHelper;
+namespace WikiPress\Includes\Plugins\FontAwesome\Includes\Settings;
+use WikiPress\Includes\Settings\Settings as BaseSettings;
+use WikiPress\Includes\Functions\Helpers\SanitizationHelper;
 
 final class Settings {
     public function register(): void {

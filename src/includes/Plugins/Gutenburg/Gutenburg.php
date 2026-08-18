@@ -7,16 +7,16 @@
  * @since 1.0.0
  */
 
-namespace TrilBDev\WikiPress\Includes\Plugins\Gutenburg;
+namespace WikiPress\Includes\Plugins\Gutenburg;
 
-use TrilBDev\WikiPress\Includes\Plugins\AssetsProviderInterface;
-use TrilBDev\WikiPress\Includes\Plugins\I18nProviderInterface;
-use TrilBDev\WikiPress\Includes\Plugins\PluginInterface;
-use TrilBDev\WikiPress\Includes\Plugins\SettingsProviderInterface;
-use TrilBDev\WikiPress\Includes\Plugins\SettingsPageProviderInterface;
-use TrilBDev\WikiPress\Includes\Plugins\Gutenburg\Assets\Assets;
-use TrilBDev\WikiPress\Includes\Plugins\Gutenburg\Includes\Includes;
-use TrilBDev\WikiPress\Includes\Plugins\Gutenburg\Includes\I18n;
+use WikiPress\Includes\Plugins\AssetsProviderInterface;
+use WikiPress\Includes\Plugins\I18nProviderInterface;
+use WikiPress\Includes\Plugins\PluginInterface;
+use WikiPress\Includes\Plugins\SettingsProviderInterface;
+use WikiPress\Includes\Plugins\SettingsPageProviderInterface;
+use WikiPress\Includes\Plugins\Gutenburg\Assets\Assets;
+use WikiPress\Includes\Plugins\Gutenburg\Includes\Includes;
+use WikiPress\Includes\Plugins\Gutenburg\Includes\I18n;
 
 class Gutenburg implements PluginInterface, SettingsProviderInterface, SettingsPageProviderInterface, AssetsProviderInterface, I18nProviderInterface {
     /**

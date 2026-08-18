@@ -1,10 +1,10 @@
 <?php
 
-namespace TrilBDev\WikiPress\Admin\Manager\Dashboard;
+namespace WikiPress\Admin\Manager\Dashboard;
 
-use TrilBDev\WikiPress\Admin\Manager\Manager;
-use TrilBDev\WikiPress\Assets\Assets;
-use TrilBDev\WikiPress\Includes\Core\PostType;
+use WikiPress\Admin\Manager\Manager;
+use WikiPress\Assets\Assets;
+use WikiPress\Includes\Core\PostType;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

@@ -9,11 +9,11 @@
  * @since 1.0.0
  */
 
-namespace TrilBDev\WikiPress\Includes\Plugins;
+namespace WikiPress\Includes\Plugins;
 
-use TrilBDev\WikiPress\Includes\Functions\Helpers\LoggerHelper;
-use TrilBDev\WikiPress\Includes\Settings\Settings;
-use TrilBDev\WikiPress\Includes\Plugins\PluginInterface;
+use WikiPress\Includes\Functions\Helpers\LoggerHelper;
+use WikiPress\Includes\Settings\Settings;
+use WikiPress\Includes\Plugins\PluginInterface;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -351,7 +351,7 @@ class Plugins {
             }
 
             if ( $plugin instanceof ShortcodeProviderInterface ) {
-                \TrilBDev\WikiPress\Includes\Functions\Helpers\ShortcodeHelper::register_many( $plugin->get_shortcodes() );
+                \WikiPress\Includes\Functions\Helpers\ShortcodeHelper::register_many( $plugin->get_shortcodes() );
             }
 
             if ( $plugin instanceof AssetsProviderInterface ) {

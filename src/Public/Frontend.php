@@ -1,10 +1,10 @@
 <?php
 
-namespace TrilBDev\WikiPress\PublicArea;
+namespace WikiPress\PublicArea;
 
-use TrilBDev\WikiPress\Includes\Core\PostType;
-use TrilBDev\WikiPress\Includes\Functions\Helpers\ContentHelper;
-use TrilBDev\WikiPress\Includes\Settings\Settings;
+use WikiPress\Includes\Core\PostType;
+use WikiPress\Includes\Functions\Helpers\ContentHelper;
+use WikiPress\Includes\Settings\Settings;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

@@ -1,10 +1,10 @@
 <?php
 
-namespace TrilBDev\WikiPress\Includes;
+namespace WikiPress\Includes;
 
-use TrilBDev\WikiPress\Includes\Core\Core;
-use TrilBDev\WikiPress\Includes\Core\WP\WPLoader;
-use TrilBDev\WikiPress\Includes\Functions\Helpers\LoggerHelper;
+use WikiPress\Includes\Core\Core;
+use WikiPress\Includes\Core\WP\WPLoader;
+use WikiPress\Includes\Functions\Helpers\LoggerHelper;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

@@ -5,8 +5,8 @@
  * @subpackage Admin\Wiki\Plugins\UserRolesManager\Includes
  * @since 1.0.0
  */
-namespace TrilBDev\WikiPress\Includes\Plugins\UserRolesManager\Includes\Settings;
-use TrilBDev\WikiPress\Includes\Settings\Settings as BaseSettings;
+namespace WikiPress\Includes\Plugins\UserRolesManager\Includes\Settings;
+use WikiPress\Includes\Settings\Settings as BaseSettings;
 
 final class Settings {
     /**

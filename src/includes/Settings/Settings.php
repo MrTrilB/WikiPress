@@ -1,8 +1,8 @@
 <?php
 
-namespace TrilBDev\WikiPress\Includes\Settings;
+namespace WikiPress\Includes\Settings;
 
-use TrilBDev\WikiPress\Includes\Functions\Helpers\SanitizationHelper;
+use WikiPress\Includes\Functions\Helpers\SanitizationHelper;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

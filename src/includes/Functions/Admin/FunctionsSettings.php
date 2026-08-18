@@ -6,10 +6,10 @@
  * @subpackage Includes\Functions\Admin
  * @since 1.0.0
  */
-namespace TrilBDev\WikiPress\Includes\Functions\Admin;
+namespace WikiPress\Includes\Functions\Admin;
 
-use TrilBDev\WikiPress\Includes\Functions\Helpers\PermalinkHelper;
-use TrilBDev\WikiPress\Includes\Settings\Settings;
+use WikiPress\Includes\Functions\Helpers\PermalinkHelper;
+use WikiPress\Includes\Settings\Settings;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

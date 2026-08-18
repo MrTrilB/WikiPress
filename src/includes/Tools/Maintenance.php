@@ -2,14 +2,14 @@
 /**
  * Safe maintenance operations for WikiPress.
  *
- * @package TrilBDev\WikiPress
+ * @package WikiPress
  * @subpackage Includes\Tools
  * @since 1.0.0
  */
 
-namespace TrilBDev\WikiPress\Includes\Tools;
+namespace WikiPress\Includes\Tools;
 
-use TrilBDev\WikiPress\Includes\Functions\Helpers\SanitizationHelper;
+use WikiPress\Includes\Functions\Helpers\SanitizationHelper;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

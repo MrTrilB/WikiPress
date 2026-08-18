@@ -1,8 +1,8 @@
 <?php
 
-namespace TrilBDev\WikiPress\Includes\Core\WP;
+namespace WikiPress\Includes\Core\WP;
 
-use TrilBDev\WikiPress\Includes\Settings\SettingsManager;
+use WikiPress\Includes\Settings\SettingsManager;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -31,8 +31,8 @@ final class Activator {
     public static function activate( ?array $callbacks = null ): void {
         Database::install();
         SettingsManager::install();
-        ( new \TrilBDev\WikiPress\Includes\Core\PostType() )->register();
-        ( new \TrilBDev\WikiPress\Includes\Core\Taxonomy() )->register();
+        ( new \WikiPress\Includes\Core\PostType() )->register();
+        ( new \WikiPress\Includes\Core\Taxonomy() )->register();
 
         foreach ( $callbacks ?? self::$callbacks as $callback ) {
             call_user_func( $callback );

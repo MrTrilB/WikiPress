@@ -6,9 +6,9 @@
  * @subpackage Includes\Functions\Admin
  * @since 1.0.0
  */
-namespace TrilBDev\WikiPress\Includes\Functions\Admin;
+namespace WikiPress\Includes\Functions\Admin;
 
-use TrilBDev\WikiPress\Includes\Tools\DataTransfer;
+use WikiPress\Includes\Tools\DataTransfer;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

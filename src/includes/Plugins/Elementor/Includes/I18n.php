@@ -8,7 +8,7 @@
  * @since 1.0.0
  */
 
-namespace TrilBDev\WikiPress\Includes\Plugins\Elementor\Includes;
+namespace WikiPress\Includes\Plugins\Elementor\Includes;
 
 final class I18n {
     public static function load_textdomain(): void {

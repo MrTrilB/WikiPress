@@ -2,10 +2,10 @@
 /**
  * Collect and register WordPress actions and filters.
  *
- * @package TrilBDev\WikiPress\Includes\Core\WP
+ * @package WikiPress\Includes\Core\WP
  * @since 1.0.0
  */
-namespace TrilBDev\WikiPress\Includes\Core\WP;
+namespace WikiPress\Includes\Core\WP;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

@@ -4,10 +4,10 @@
  *
  * @package WikiPress\Includes\Core
  */
-namespace TrilBDev\WikiPress\Includes\Core;
+namespace WikiPress\Includes\Core;
 
-use TrilBDev\WikiPress\Includes\Core\WP\WPLoader;
-use TrilBDev\WikiPress\Includes\Pages\Shortcodes as PageShortcodes;
+use WikiPress\Includes\Core\WP\WPLoader;
+use WikiPress\Includes\Pages\Shortcodes as PageShortcodes;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

@@ -11,34 +11,34 @@ class ComposerStaticInite6f69f8956ab7824cf2c0b2e178a3cb9
     );
 
     public static $prefixLengthsPsr4 = array (
-        'T' =>
+        'W' =>
         array (
-            'TrilBDev\\WikiPress\\PublicArea\\' => 30,
-            'TrilBDev\\WikiPress\\Includes\\' => 28,
-            'TrilBDev\\WikiPress\\Assets\\' => 26,
-            'TrilBDev\\WikiPress\\Admin\\' => 25,
-            'TrilBDev\\WikiPress\\API\\' => 23,
+            'WikiPress\\PublicArea\\' => 21,
+            'WikiPress\\Includes\\' => 19,
+            'WikiPress\\Assets\\' => 17,
+            'WikiPress\\Admin\\' => 16,
+            'WikiPress\\API\\' => 14,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'TrilBDev\\WikiPress\\PublicArea\\' =>
+        'WikiPress\\PublicArea\\' =>
         array (
             0 => __DIR__ . '/../..' . '/src/Public',
         ),
-        'TrilBDev\\WikiPress\\Includes\\' =>
+        'WikiPress\\Includes\\' =>
         array (
             0 => __DIR__ . '/../..' . '/src/includes',
         ),
-        'TrilBDev\\WikiPress\\Assets\\' =>
+        'WikiPress\\Assets\\' =>
         array (
             0 => __DIR__ . '/../..' . '/src/Assets',
         ),
-        'TrilBDev\\WikiPress\\Admin\\' =>
+        'WikiPress\\Admin\\' =>
         array (
             0 => __DIR__ . '/../..' . '/src/Admin',
         ),
-        'TrilBDev\\WikiPress\\API\\' =>
+        'WikiPress\\API\\' =>
         array (
             0 => __DIR__ . '/../..' . '/src/API',
         ),
@@ -46,7 +46,7 @@ class ComposerStaticInite6f69f8956ab7824cf2c0b2e178a3cb9
 
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
-        'TrilBDev\\WikiPress\\WikiPress' => __DIR__ . '/../..' . '/src/WikiPress.php',
+        'WikiPress\\WikiPress' => __DIR__ . '/../..' . '/src/WikiPress.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

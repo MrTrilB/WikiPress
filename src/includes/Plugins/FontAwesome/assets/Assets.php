@@ -1,9 +1,9 @@
 <?php
 
-namespace TrilBDev\WikiPress\Includes\Plugins\FontAwesome\Assets;
+namespace WikiPress\Includes\Plugins\FontAwesome\Assets;
 
-use TrilBDev\WikiPress\Includes\Functions\Helpers\LoaderHelper;
-use TrilBDev\WikiPress\Includes\Plugins\FontAwesome\Includes\Settings\Settings as FontAwesomeSettings;
+use WikiPress\Includes\Functions\Helpers\LoaderHelper;
+use WikiPress\Includes\Plugins\FontAwesome\Includes\Settings\Settings as FontAwesomeSettings;
 
 final class Assets {
     private LoaderHelper $loader;

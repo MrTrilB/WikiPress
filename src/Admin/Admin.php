@@ -7,18 +7,18 @@
  * @since 1.0.0
  * 
  */
-namespace TrilBDev\WikiPress\Admin;
+namespace WikiPress\Admin;
 
-use TrilBDev\WikiPress\Includes\Settings\Settings;
-use TrilBDev\WikiPress\Includes\Functions\Admin\FunctionsPlugins;
-use TrilBDev\WikiPress\Includes\Functions\Admin\FunctionsWiki;
-use TrilBDev\WikiPress\Includes\Functions\Helpers\AjaxHelper;
-use TrilBDev\WikiPress\Includes\Functions\Helpers\LoaderHelper;
-use TrilBDev\WikiPress\Assets\Assets;
-use TrilBDev\WikiPress\Admin\Manager\Tools\ToolsManager;
-use TrilBDev\WikiPress\Admin\Manager\Dashboard\DashboardManager;
-use TrilBDev\WikiPress\Admin\Manager\Settings\SettingsManager;
-use TrilBDev\WikiPress\Admin\Manager\Wiki\WikiManager;
+use WikiPress\Includes\Settings\Settings;
+use WikiPress\Includes\Functions\Admin\FunctionsPlugins;
+use WikiPress\Includes\Functions\Admin\FunctionsWiki;
+use WikiPress\Includes\Functions\Helpers\AjaxHelper;
+use WikiPress\Includes\Functions\Helpers\LoaderHelper;
+use WikiPress\Assets\Assets;
+use WikiPress\Admin\Manager\Tools\ToolsManager;
+use WikiPress\Admin\Manager\Dashboard\DashboardManager;
+use WikiPress\Admin\Manager\Settings\SettingsManager;
+use WikiPress\Admin\Manager\Wiki\WikiManager;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

@@ -1,8 +1,8 @@
 <?php
 
-namespace TrilBDev\WikiPress\Includes\Plugins\Demo\Includes;
+namespace WikiPress\Includes\Plugins\Demo\Includes;
 
-use TrilBDev\WikiPress\Includes\Functions\Helpers\ShortcodeHelper;
+use WikiPress\Includes\Functions\Helpers\ShortcodeHelper;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

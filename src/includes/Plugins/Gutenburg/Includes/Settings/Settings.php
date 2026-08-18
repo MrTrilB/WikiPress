@@ -4,10 +4,10 @@
  *
  * @package WikiPress
  */
-namespace TrilBDev\WikiPress\Includes\Plugins\Gutenburg\Includes\Settings;
+namespace WikiPress\Includes\Plugins\Gutenburg\Includes\Settings;
 
-use TrilBDev\WikiPress\Includes\Settings\Settings as BaseSettings;
-use TrilBDev\WikiPress\Includes\Functions\Helpers\SanitizationHelper;
+use WikiPress\Includes\Settings\Settings as BaseSettings;
+use WikiPress\Includes\Functions\Helpers\SanitizationHelper;
 
 final class Settings {
     public const GROUP = 'gutenburg';

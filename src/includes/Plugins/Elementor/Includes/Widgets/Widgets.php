@@ -9,16 +9,16 @@
  * @subpackage Wikipress/includes
  * @since 1.0.0
  */
-namespace TrilBDev\WikiPress\Includes\Plugins\Elementor\Includes\Widgets;
+namespace WikiPress\Includes\Plugins\Elementor\Includes\Widgets;
 
 use Elementor\Widget_Base;
-use TrilBDev\WikiPress\Includes\Plugins\Elementor\Includes\Settings\Settings;
-use TrilBDev\WikiPress\Includes\Plugins\Elementor\Includes\Widgets\WikiPress\WikiBreadcrumbs;
-use TrilBDev\WikiPress\Includes\Plugins\Elementor\Includes\Widgets\WikiPress\WikiList;
-use TrilBDev\WikiPress\Includes\Plugins\Elementor\Includes\Widgets\WikiPress\WikiReadingTime;
-use TrilBDev\WikiPress\Includes\Plugins\Elementor\Includes\Widgets\WikiPress\WikiRelated;
-use TrilBDev\WikiPress\Includes\Plugins\Elementor\Includes\Widgets\WikiPress\WikiTOC;
-use TrilBDev\WikiPress\Includes\Plugins\Elementor\Includes\Widgets\WikiPress\WikiSearchModal;
+use WikiPress\Includes\Plugins\Elementor\Includes\Settings\Settings;
+use WikiPress\Includes\Plugins\Elementor\Includes\Widgets\WikiPress\WikiBreadcrumbs;
+use WikiPress\Includes\Plugins\Elementor\Includes\Widgets\WikiPress\WikiList;
+use WikiPress\Includes\Plugins\Elementor\Includes\Widgets\WikiPress\WikiReadingTime;
+use WikiPress\Includes\Plugins\Elementor\Includes\Widgets\WikiPress\WikiRelated;
+use WikiPress\Includes\Plugins\Elementor\Includes\Widgets\WikiPress\WikiTOC;
+use WikiPress\Includes\Plugins\Elementor\Includes\Widgets\WikiPress\WikiSearchModal;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

@@ -8,18 +8,18 @@
  * @author WikiPress Team
  */
 
-namespace TrilBDev\WikiPress\Includes\Plugins\FontAwesome;
+namespace WikiPress\Includes\Plugins\FontAwesome;
 
-use TrilBDev\WikiPress\Includes\Plugins\AssetsProviderInterface;
-use TrilBDev\WikiPress\Includes\Plugins\I18nProviderInterface;
-use TrilBDev\WikiPress\Includes\Plugins\PluginInterface;
-use TrilBDev\WikiPress\Includes\Plugins\SettingsProviderInterface;
-use TrilBDev\WikiPress\Includes\Plugins\SettingsPageProviderInterface;
-use TrilBDev\WikiPress\Includes\Plugins\FontAwesome\Assets\Assets;
-use TrilBDev\WikiPress\Includes\Plugins\FontAwesome\Includes\IconPicker;
-use TrilBDev\WikiPress\Includes\Plugins\FontAwesome\API\FontAwesomeAPI;
-use TrilBDev\WikiPress\Includes\Plugins\FontAwesome\Includes\I18n;
-use TrilBDev\WikiPress\Includes\Plugins\FontAwesome\Includes\Includes;
+use WikiPress\Includes\Plugins\AssetsProviderInterface;
+use WikiPress\Includes\Plugins\I18nProviderInterface;
+use WikiPress\Includes\Plugins\PluginInterface;
+use WikiPress\Includes\Plugins\SettingsProviderInterface;
+use WikiPress\Includes\Plugins\SettingsPageProviderInterface;
+use WikiPress\Includes\Plugins\FontAwesome\Assets\Assets;
+use WikiPress\Includes\Plugins\FontAwesome\Includes\IconPicker;
+use WikiPress\Includes\Plugins\FontAwesome\API\FontAwesomeAPI;
+use WikiPress\Includes\Plugins\FontAwesome\Includes\I18n;
+use WikiPress\Includes\Plugins\FontAwesome\Includes\Includes;
 
 final class FontAwesome implements PluginInterface, SettingsProviderInterface, SettingsPageProviderInterface, AssetsProviderInterface, I18nProviderInterface {
     /**

@@ -1,8 +1,8 @@
 <?php
 
-namespace TrilBDev\WikiPress\Includes\Plugins\FontAwesome\API;
+namespace WikiPress\Includes\Plugins\FontAwesome\API;
 
-use TrilBDev\WikiPress\Includes\Plugins\FontAwesome\Includes\Settings\Settings;
+use WikiPress\Includes\Plugins\FontAwesome\Includes\Settings\Settings;
 
 final class FontAwesomeAPI {
     public static function configure(): void {

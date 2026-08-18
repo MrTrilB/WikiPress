@@ -2,14 +2,14 @@
 /**
  * TagsManager class for WikiPress plugin.
  *
- * @package TrilBDev\WikiPress
+ * @package WikiPress
  * @subpackage Admin\Manager\Wiki
  * @since 1.0.0
  */
-namespace TrilBDev\WikiPress\Admin\Manager\Wiki;
+namespace WikiPress\Admin\Manager\Wiki;
 
-use TrilBDev\WikiPress\Admin\Manager\Wiki\WikiManager;
-use TrilBDev\WikiPress\Assets\Assets;
+use WikiPress\Admin\Manager\Wiki\WikiManager;
+use WikiPress\Assets\Assets;
 
 class TagsManager extends WikiManager {
     public function register_assets( Assets $assets ): void {

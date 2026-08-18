@@ -6,16 +6,16 @@
  * @since 1.0.0
  */
 
-namespace TrilBDev\WikiPress\Includes\Plugins\TinyMCE;
+namespace WikiPress\Includes\Plugins\TinyMCE;
 
-use TrilBDev\WikiPress\Includes\Plugins\AssetsProviderInterface;
-use TrilBDev\WikiPress\Includes\Plugins\I18nProviderInterface;
-use TrilBDev\WikiPress\Includes\Plugins\PluginInterface;
-use TrilBDev\WikiPress\Includes\Plugins\SettingsProviderInterface;
-use TrilBDev\WikiPress\Includes\Plugins\SettingsPageProviderInterface;
-use TrilBDev\WikiPress\Includes\Plugins\TinyMCE\Assets\Assets;
-use TrilBDev\WikiPress\Includes\Plugins\TinyMCE\Includes\Includes;
-use TrilBDev\WikiPress\Includes\Plugins\TinyMCE\Includes\I18n;
+use WikiPress\Includes\Plugins\AssetsProviderInterface;
+use WikiPress\Includes\Plugins\I18nProviderInterface;
+use WikiPress\Includes\Plugins\PluginInterface;
+use WikiPress\Includes\Plugins\SettingsProviderInterface;
+use WikiPress\Includes\Plugins\SettingsPageProviderInterface;
+use WikiPress\Includes\Plugins\TinyMCE\Assets\Assets;
+use WikiPress\Includes\Plugins\TinyMCE\Includes\Includes;
+use WikiPress\Includes\Plugins\TinyMCE\Includes\I18n;
 
 final class TinyMCE implements PluginInterface, SettingsProviderInterface, SettingsPageProviderInterface, AssetsProviderInterface, I18nProviderInterface {
     /**

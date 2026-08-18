@@ -5,7 +5,7 @@
  * @package WikiPress
  * @subpackage Includes\Plugins
  */
-namespace TrilBDev\WikiPress\Includes\Plugins;
+namespace WikiPress\Includes\Plugins;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

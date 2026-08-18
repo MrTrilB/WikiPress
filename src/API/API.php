@@ -2,20 +2,20 @@
 /**
  * REST API helper for WikiPress.
  *
- * @package TrilBDev\WikiPress
+ * @package WikiPress
  * @subpackage API
  * @since 1.0.0
  */
-namespace TrilBDev\WikiPress\API;
+namespace WikiPress\API;
 
-use TrilBDev\WikiPress\Includes\Core\PostType;
-use TrilBDev\WikiPress\Includes\Core\Taxonomy;
-use TrilBDev\WikiPress\Includes\Functions\Functions;
-use TrilBDev\WikiPress\Includes\Functions\Helpers\PostHelper;
-use TrilBDev\WikiPress\Includes\Functions\Helpers\QueryHelper;
-use TrilBDev\WikiPress\Includes\Functions\Helpers\SanitizationHelper;
-use TrilBDev\WikiPress\Includes\Functions\Helpers\TaxonomyHelper;
-use TrilBDev\WikiPress\Includes\Functions\Helpers\PermalinkHelper;
+use WikiPress\Includes\Core\PostType;
+use WikiPress\Includes\Core\Taxonomy;
+use WikiPress\Includes\Functions\Functions;
+use WikiPress\Includes\Functions\Helpers\PostHelper;
+use WikiPress\Includes\Functions\Helpers\QueryHelper;
+use WikiPress\Includes\Functions\Helpers\SanitizationHelper;
+use WikiPress\Includes\Functions\Helpers\TaxonomyHelper;
+use WikiPress\Includes\Functions\Helpers\PermalinkHelper;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

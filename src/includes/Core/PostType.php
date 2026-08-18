@@ -1,9 +1,9 @@
 <?php
 
-namespace TrilBDev\WikiPress\Includes\Core;
+namespace WikiPress\Includes\Core;
 
-use TrilBDev\WikiPress\Includes\Settings\Settings;
-use TrilBDev\WikiPress\Includes\Functions\Helpers\PermalinkHelper;
+use WikiPress\Includes\Settings\Settings;
+use WikiPress\Includes\Functions\Helpers\PermalinkHelper;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

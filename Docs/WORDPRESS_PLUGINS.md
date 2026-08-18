@@ -12,8 +12,8 @@ The WordPress plugin should load its extension class and register it when WikiPr
  * Plugin Name: My WikiPress Extension
  */
 
-use TrilBDev\WikiPress\Includes\Plugins\Plugins;
-use TrilBDev\WikiPress\Includes\Plugins\PluginInterface;
+use WikiPress\Includes\Plugins\Plugins;
+use WikiPress\Includes\Plugins\PluginInterface;
 
 add_action('wikipress_register_plugin', static function (Plugins $plugins): void {
     $plugins->register_plugin_instance(new MyWikiPressExtension());
@@ -70,13 +70,13 @@ final class MyWikiPressExtension implements PluginInterface, RestRouteProviderIn
 }
 ```
 
-Import `Response` from `TrilBDev\\WikiPress\\API` when returning WikiPress-style response envelopes.
+Import `Response` from `WikiPress\\API` when returning WikiPress-style response envelopes.
 
 Example shortcode provider:
 
 ```php
-use TrilBDev\WikiPress\Includes\Functions\Helpers\ShortcodeHelper;
-use TrilBDev\WikiPress\Includes\Plugins\ShortcodeProviderInterface;
+use WikiPress\Includes\Functions\Helpers\ShortcodeHelper;
+use WikiPress\Includes\Plugins\ShortcodeProviderInterface;
 
 final class MyWikiPressExtension implements PluginInterface, ShortcodeProviderInterface {
     public function get_shortcodes(): array {
@@ -101,7 +101,7 @@ Do not assume WikiPress is available before the registration action. If the acti
 
 ## Settings Integration
 
-Implement `SettingsProviderInterface` to register defaults and `SettingsPageProviderInterface` to expose a generated tab. Read values through `TrilBDev\\WikiPress\\Includes\\Settings\\Settings` and sanitize all submitted values before storing them. See [SETTINGS.md](SETTINGS.md).
+Implement `SettingsProviderInterface` to register defaults and `SettingsPageProviderInterface` to expose a generated tab. Read values through `WikiPress\\Includes\\Settings\\Settings` and sanitize all submitted values before storing them. See [SETTINGS.md](SETTINGS.md).
 
 External extensions own their translation catalogs and language files. Implement `I18nProviderInterface::load_textdomain()` and load the extension's text domain from its own language directory. The WikiPress root `i18n:pot` and `i18n:mo` scripts cover WikiPress core and internal plugins; external plugins should run their own equivalent workflow.
 

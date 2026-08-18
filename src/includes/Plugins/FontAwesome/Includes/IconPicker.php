@@ -9,15 +9,15 @@
  * @since 1.0.0
  */
 
-namespace TrilBDev\WikiPress\Includes\Plugins\FontAwesome\Includes;
+namespace WikiPress\Includes\Plugins\FontAwesome\Includes;
 
 use Exception;
 use Throwable;
-use TrilBDev\WikiPress\Includes\Functions\Helpers\AjaxHelper;
-use TrilBDev\WikiPress\Includes\Functions\Helpers\LoggerHelper;
-use TrilBDev\WikiPress\Includes\Functions\Helpers\LoaderHelper;
-use TrilBDev\WikiPress\Includes\Functions\Helpers\RequestHelper;
-use TrilBDev\WikiPress\Includes\Functions\Helpers\FormFieldHelper;
+use WikiPress\Includes\Functions\Helpers\AjaxHelper;
+use WikiPress\Includes\Functions\Helpers\LoggerHelper;
+use WikiPress\Includes\Functions\Helpers\LoaderHelper;
+use WikiPress\Includes\Functions\Helpers\RequestHelper;
+use WikiPress\Includes\Functions\Helpers\FormFieldHelper;
 
 // Import FontAwesome functions
 use function FortAwesome\fa;

@@ -1,9 +1,9 @@
 <?php
 
-namespace TrilBDev\WikiPress\Includes\Pages;
+namespace WikiPress\Includes\Pages;
 
-use TrilBDev\WikiPress\Includes\Core\Taxonomy;
-use TrilBDev\WikiPress\Includes\Functions\Helpers\TaxonomyHelper;
+use WikiPress\Includes\Core\Taxonomy;
+use WikiPress\Includes\Functions\Helpers\TaxonomyHelper;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

@@ -2,12 +2,12 @@
 /**
  * Higher-level helpers for the WikiPress WordPress hook loader.
  *
- * @package TrilBDev\WikiPress\Includes\Functions\Helpers
+ * @package WikiPress\Includes\Functions\Helpers
  * @since 1.0.0
  */
-namespace TrilBDev\WikiPress\Includes\Functions\Helpers;
+namespace WikiPress\Includes\Functions\Helpers;
 
-use TrilBDev\WikiPress\Includes\Core\WP\WPLoader;
+use WikiPress\Includes\Core\WP\WPLoader;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

@@ -7,8 +7,8 @@
  * @since 1.0.0
  */
 
-namespace TrilBDev\WikiPress\Includes\Plugins\Demo\Includes;
-use TrilBDev\WikiPress\Includes\Plugins\Demo\Includes\Settings\Settings;
+namespace WikiPress\Includes\Plugins\Demo\Includes;
+use WikiPress\Includes\Plugins\Demo\Includes\Settings\Settings;
 
 final class Includes {
     private static ?self $instance = null;

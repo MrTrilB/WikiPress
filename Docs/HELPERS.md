@@ -1,6 +1,6 @@
 # WikiPress Helpers
 
-Reusable helpers live in `src/includes/Functions/Helpers` and use the namespace `TrilBDev\\WikiPress\\Includes\\Functions\\Helpers`.
+Reusable helpers live in `src/includes/Functions/Helpers` and use the namespace `WikiPress\\Includes\\Functions\\Helpers`.
 
 ## SanitizationHelper
 
@@ -145,7 +145,7 @@ echo FormFieldHelper::text_input(
 Define and register extension shortcodes through the shared registry:
 
 ```php
-use TrilBDev\WikiPress\Includes\Functions\Helpers\ShortcodeHelper;
+use WikiPress\Includes\Functions\Helpers\ShortcodeHelper;
 
 $definition = ShortcodeHelper::define(
     'my_status',

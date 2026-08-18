@@ -9,10 +9,10 @@
  * @since 1.0.0
  */
 
-namespace TrilBDev\WikiPress\Includes\Functions;
+namespace WikiPress\Includes\Functions;
 
-use TrilBDev\WikiPress\Includes\Functions\Helpers\PostHelper;
-use TrilBDev\WikiPress\Includes\Functions\Helpers\SanitizationHelper;
+use WikiPress\Includes\Functions\Helpers\PostHelper;
+use WikiPress\Includes\Functions\Helpers\SanitizationHelper;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

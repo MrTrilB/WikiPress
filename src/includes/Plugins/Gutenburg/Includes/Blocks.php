@@ -4,15 +4,15 @@
  *
  * @package WikiPress
  */
-namespace TrilBDev\WikiPress\Includes\Plugins\Gutenburg\Includes;
+namespace WikiPress\Includes\Plugins\Gutenburg\Includes;
 
-use TrilBDev\WikiPress\Includes\Plugins\Gutenburg\Includes\Blocks\WikiBreadcrumbs;
-use TrilBDev\WikiPress\Includes\Plugins\Gutenburg\Includes\Blocks\WikiList;
-use TrilBDev\WikiPress\Includes\Plugins\Gutenburg\Includes\Blocks\WikiReadingTime;
-use TrilBDev\WikiPress\Includes\Plugins\Gutenburg\Includes\Blocks\WikiRelated;
-use TrilBDev\WikiPress\Includes\Plugins\Gutenburg\Includes\Blocks\WikiSearchModal;
-use TrilBDev\WikiPress\Includes\Plugins\Gutenburg\Includes\Blocks\WikiTOC;
-use TrilBDev\WikiPress\Includes\Plugins\Gutenburg\Includes\Settings\Settings;
+use WikiPress\Includes\Plugins\Gutenburg\Includes\Blocks\WikiBreadcrumbs;
+use WikiPress\Includes\Plugins\Gutenburg\Includes\Blocks\WikiList;
+use WikiPress\Includes\Plugins\Gutenburg\Includes\Blocks\WikiReadingTime;
+use WikiPress\Includes\Plugins\Gutenburg\Includes\Blocks\WikiRelated;
+use WikiPress\Includes\Plugins\Gutenburg\Includes\Blocks\WikiSearchModal;
+use WikiPress\Includes\Plugins\Gutenburg\Includes\Blocks\WikiTOC;
+use WikiPress\Includes\Plugins\Gutenburg\Includes\Settings\Settings;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

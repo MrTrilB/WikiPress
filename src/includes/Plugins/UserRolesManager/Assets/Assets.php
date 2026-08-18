@@ -7,10 +7,10 @@
  * @since 1.0.0
  */
 
-namespace TrilBDev\WikiPress\Includes\Plugins\UserRolesManager\Assets;
+namespace WikiPress\Includes\Plugins\UserRolesManager\Assets;
 
-use TrilBDev\WikiPress\Includes\Functions\Helpers\LoaderHelper;
-use TrilBDev\WikiPress\Includes\Functions\Helpers\RequestHelper;
+use WikiPress\Includes\Functions\Helpers\LoaderHelper;
+use WikiPress\Includes\Functions\Helpers\RequestHelper;
 
 final class Assets {
     /**

@@ -6,7 +6,7 @@
  * 
  */
 
-namespace TrilBDev\WikiPress\Includes\Functions\Helpers;
+namespace WikiPress\Includes\Functions\Helpers;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

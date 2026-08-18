@@ -7,7 +7,7 @@ WikiPress settings are stored in the WikiPress settings database table through `
 Use the `Settings` facade rather than querying the database directly:
 
 ```php
-use TrilBDev\WikiPress\Includes\Settings\Settings;
+use WikiPress\Includes\Settings\Settings;
 
 $name = Settings::get_string('root_name', 'WikiPress');
 $slug = Settings::get_slug('root_slug', 'wiki');
@@ -35,7 +35,7 @@ Use `Settings::register_group()` or `Settings::register_key()` for extension set
 ## Registering an Extension Group
 
 ```php
-use TrilBDev\WikiPress\Includes\Settings\Settings;
+use WikiPress\Includes\Settings\Settings;
 
 final class SettingsProvider {
     public function register(): void {

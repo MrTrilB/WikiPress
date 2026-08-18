@@ -1,8 +1,8 @@
 <?php
 
-namespace TrilBDev\WikiPress\Includes\Plugins\Elementor\Assets;
+namespace WikiPress\Includes\Plugins\Elementor\Assets;
 
-use TrilBDev\WikiPress\Includes\Functions\Helpers\LoaderHelper;
+use WikiPress\Includes\Functions\Helpers\LoaderHelper;
 
 final class Assets {
     private LoaderHelper $loader;

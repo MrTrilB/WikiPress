@@ -8,11 +8,11 @@
             "src/includes/Plugins/PluginsInterface.php"
         ],
         "psr-4": {
-            "TrilBDev\\WikiPress\\Admin\\": "src/Admin/",
-            "TrilBDev\\WikiPress\\API\\": "src/API/",
-            "TrilBDev\\WikiPress\\Assets\\": "src/Assets/",
-            "TrilBDev\\WikiPress\\Includes\\": "src/includes/",
-            "TrilBDev\\WikiPress\\PublicArea\\": "src/Public/"
+            "WikiPress\\Admin\\": "src/Admin/",
+            "WikiPress\\API\\": "src/API/",
+            "WikiPress\\Assets\\": "src/Assets/",
+            "WikiPress\\Includes\\": "src/includes/",
+            "WikiPress\\PublicArea\\": "src/Public/"
         },
         "classmap": [
             "src/WikiPress.php"

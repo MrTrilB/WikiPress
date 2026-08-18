@@ -5,11 +5,11 @@
  * @package WikiPress
  */
 
-namespace TrilBDev\WikiPress\Includes\Functions\Helpers;
+namespace WikiPress\Includes\Functions\Helpers;
 
-use TrilBDev\WikiPress\Includes\Core\PostType;
-use TrilBDev\WikiPress\Includes\Core\Taxonomy;
-use TrilBDev\WikiPress\Includes\Settings\Settings;
+use WikiPress\Includes\Core\PostType;
+use WikiPress\Includes\Core\Taxonomy;
+use WikiPress\Includes\Settings\Settings;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

@@ -5,19 +5,19 @@
  * @package WikiPress
  * @since 1.0.0
  */
-namespace TrilBDev\WikiPress\Includes\Plugins\Elementor;
+namespace WikiPress\Includes\Plugins\Elementor;
 
-use TrilBDev\WikiPress\Includes\Plugins\AssetsProviderInterface;
-use TrilBDev\WikiPress\Includes\Plugins\I18nProviderInterface;
-use TrilBDev\WikiPress\Includes\Plugins\PluginInterface;
-use TrilBDev\WikiPress\Includes\Plugins\SettingsProviderInterface;
-use TrilBDev\WikiPress\Includes\Plugins\SettingsPageProviderInterface;
-use TrilBDev\WikiPress\Includes\Plugins\Elementor\Assets\Assets;
-use TrilBDev\WikiPress\Includes\Plugins\Elementor\Includes\I18n;
-use TrilBDev\WikiPress\Includes\Plugins\Elementor\Includes\Includes;
-use TrilBDev\WikiPress\Includes\Plugins\Elementor\Includes\Settings\Settings;
-use TrilBDev\WikiPress\Includes\Plugins\Elementor\Includes\Widgets\Widgets;
-use TrilBDev\WikiPress\Includes\Functions\Helpers\LoaderHelper;
+use WikiPress\Includes\Plugins\AssetsProviderInterface;
+use WikiPress\Includes\Plugins\I18nProviderInterface;
+use WikiPress\Includes\Plugins\PluginInterface;
+use WikiPress\Includes\Plugins\SettingsProviderInterface;
+use WikiPress\Includes\Plugins\SettingsPageProviderInterface;
+use WikiPress\Includes\Plugins\Elementor\Assets\Assets;
+use WikiPress\Includes\Plugins\Elementor\Includes\I18n;
+use WikiPress\Includes\Plugins\Elementor\Includes\Includes;
+use WikiPress\Includes\Plugins\Elementor\Includes\Settings\Settings;
+use WikiPress\Includes\Plugins\Elementor\Includes\Widgets\Widgets;
+use WikiPress\Includes\Functions\Helpers\LoaderHelper;
 
 final class Elementor implements PluginInterface, SettingsProviderInterface, SettingsPageProviderInterface, AssetsProviderInterface, I18nProviderInterface {
     /**

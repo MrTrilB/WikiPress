@@ -2,12 +2,12 @@
 /**
  * Validation helpers for WikiPress import and tool payloads.
  *
- * @package TrilBDev\WikiPress
+ * @package WikiPress
  * @subpackage Includes\Tools
  * @since 1.0.0
  */
 
-namespace TrilBDev\WikiPress\Includes\Tools;
+namespace WikiPress\Includes\Tools;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

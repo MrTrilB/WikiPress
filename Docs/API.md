@@ -1,6 +1,6 @@
 # WikiPress REST API
 
-The REST API is registered by `TrilBDev\\WikiPress\\API\\Routes` on `rest_api_init`.
+The REST API is registered by `WikiPress\\API\\Routes` on `rest_api_init`.
 
 Base namespace:
 
@@ -91,10 +91,10 @@ Create operations return HTTP 201. Read and update operations normally return HT
 
 ## Programmatic API
 
-Use `TrilBDev\\WikiPress\\API\\API` when code needs the same operations without making an HTTP request:
+Use `WikiPress\\API\\API` when code needs the same operations without making an HTTP request:
 
 ```php
-use TrilBDev\WikiPress\API\API;
+use WikiPress\API\API;
 
 $wikis = API::list_wikis([
     'posts_per_page' => 10,

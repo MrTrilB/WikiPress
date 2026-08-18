@@ -6,10 +6,10 @@
  * @subpackage Includes\Plugins\Elementor\Includes\Settings
  * @since 1.0.0
  */
-namespace TrilBDev\WikiPress\Includes\Plugins\Elementor\Includes\Settings;
+namespace WikiPress\Includes\Plugins\Elementor\Includes\Settings;
 
-use TrilBDev\WikiPress\Includes\Settings\Settings as BaseSettings;
-use TrilBDev\WikiPress\Includes\Functions\Helpers\SanitizationHelper;
+use WikiPress\Includes\Settings\Settings as BaseSettings;
+use WikiPress\Includes\Functions\Helpers\SanitizationHelper;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;

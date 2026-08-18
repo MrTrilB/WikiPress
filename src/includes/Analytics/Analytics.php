@@ -1,9 +1,9 @@
 <?php
 
-namespace TrilBDev\WikiPress\Includes\Analytics;
+namespace WikiPress\Includes\Analytics;
 
-use TrilBDev\WikiPress\Includes\Core\PostType;
-use TrilBDev\WikiPress\Includes\Core\WP\Database;
+use WikiPress\Includes\Core\PostType;
+use WikiPress\Includes\Core\WP\Database;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

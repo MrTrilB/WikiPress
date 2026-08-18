@@ -5,9 +5,9 @@
  * @subpackage Admin\Wiki\Plugins\TinyMCE\Includes
  * @since 1.0.0
  */
-namespace TrilBDev\WikiPress\Includes\Plugins\TinyMCE\Includes\Settings;
-use TrilBDev\WikiPress\Includes\Settings\Settings as BaseSettings;
-use TrilBDev\WikiPress\Includes\Functions\Helpers\SanitizationHelper;
+namespace WikiPress\Includes\Plugins\TinyMCE\Includes\Settings;
+use WikiPress\Includes\Settings\Settings as BaseSettings;
+use WikiPress\Includes\Functions\Helpers\SanitizationHelper;
 
 final class Settings {
     /**

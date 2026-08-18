@@ -3,9 +3,9 @@
  * 
  * @since 1.0.0
  */
-namespace TrilBDev\WikiPress\Includes\Plugins\FontAwesome\Includes;
+namespace WikiPress\Includes\Plugins\FontAwesome\Includes;
 
-use TrilBDev\WikiPress\Includes\Plugins\FontAwesome\Includes\Settings\Settings;
+use WikiPress\Includes\Plugins\FontAwesome\Includes\Settings\Settings;
 /**
  * The core plugin class.
  *

@@ -5,11 +5,11 @@
  * @subpackage Admin\Manager\Tools
  * @since 1.0.0
  */
-namespace TrilBDev\WikiPress\Admin\Manager\Tools;
+namespace WikiPress\Admin\Manager\Tools;
 
-use TrilBDev\WikiPress\Admin\Manager\Manager;
-use TrilBDev\WikiPress\Includes\Functions\Helpers\FormFieldHelper;
-use TrilBDev\WikiPress\Includes\Functions\Helpers\UrlHelper;
+use WikiPress\Admin\Manager\Manager;
+use WikiPress\Includes\Functions\Helpers\FormFieldHelper;
+use WikiPress\Includes\Functions\Helpers\UrlHelper;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

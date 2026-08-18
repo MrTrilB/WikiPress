@@ -7,10 +7,10 @@
  * @since 1.0.0
  */
 
-namespace TrilBDev\WikiPress\Includes\Plugins\TinyMCE\Assets;
+namespace WikiPress\Includes\Plugins\TinyMCE\Assets;
 
-use TrilBDev\WikiPress\Includes\Functions\Helpers\LoaderHelper;
-use TrilBDev\WikiPress\Includes\Plugins\TinyMCE\Includes\Settings\Settings;
+use WikiPress\Includes\Functions\Helpers\LoaderHelper;
+use WikiPress\Includes\Plugins\TinyMCE\Includes\Settings\Settings;
 
 final class Assets {
     private LoaderHelper $loader;

@@ -8,7 +8,7 @@
  * @subpackage Includes\Functions\Admin
  * @since 1.0.0
  */
-namespace TrilBDev\WikiPress\Includes\Functions\Admin;
+namespace WikiPress\Includes\Functions\Admin;
 
 class FunctionsDebug {
     public static function debug_info(): array {

@@ -6,11 +6,11 @@
  * @subpackage Admin\Manager\Tools
  * @since 1.0.0
  */
-namespace TrilBDev\WikiPress\Admin\Manager\Tools;
+namespace WikiPress\Admin\Manager\Tools;
 
-use TrilBDev\WikiPress\Admin\Manager\Manager;
-use TrilBDev\WikiPress\Assets\Assets;
-use TrilBDev\WikiPress\Includes\Analytics\Analytics;
+use WikiPress\Admin\Manager\Manager;
+use WikiPress\Assets\Assets;
+use WikiPress\Includes\Analytics\Analytics;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

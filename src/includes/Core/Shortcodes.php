@@ -1,6 +1,6 @@
 <?php
 
-namespace TrilBDev\WikiPress\Includes\Core;
+namespace WikiPress\Includes\Core;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;

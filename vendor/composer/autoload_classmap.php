@@ -7,5 +7,5 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
-    'TrilBDev\\WikiPress\\WikiPress' => $baseDir . '/src/WikiPress.php',
+    'WikiPress\\WikiPress' => $baseDir . '/src/WikiPress.php',
 );

@@ -6,13 +6,13 @@
  * @subpackage Includes\Functions\Admin
  * @since 1.0.0
  */
-namespace TrilBDev\WikiPress\Includes\Functions\Admin;
+namespace WikiPress\Includes\Functions\Admin;
 
-use TrilBDev\WikiPress\Includes\Functions\Helpers\AjaxHelper;
-use TrilBDev\WikiPress\Includes\Functions\Helpers\AlertHelper;
-use TrilBDev\WikiPress\Includes\Plugins\PluginInterface;
-use TrilBDev\WikiPress\Includes\Plugins\Plugins;
-use TrilBDev\WikiPress\Includes\Plugins\SettingsPageProviderInterface;
+use WikiPress\Includes\Functions\Helpers\AjaxHelper;
+use WikiPress\Includes\Functions\Helpers\AlertHelper;
+use WikiPress\Includes\Plugins\PluginInterface;
+use WikiPress\Includes\Plugins\Plugins;
+use WikiPress\Includes\Plugins\SettingsPageProviderInterface;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

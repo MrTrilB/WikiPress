@@ -1,9 +1,9 @@
 <?php
 
-namespace TrilBDev\WikiPress\Includes\Pages;
+namespace WikiPress\Includes\Pages;
 
-use TrilBDev\WikiPress\Includes\Core\Shortcodes as ShortcodeCore;
-use TrilBDev\WikiPress\Includes\Functions\Helpers\ShortcodeHelper;
+use WikiPress\Includes\Core\Shortcodes as ShortcodeCore;
+use WikiPress\Includes\Functions\Helpers\ShortcodeHelper;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

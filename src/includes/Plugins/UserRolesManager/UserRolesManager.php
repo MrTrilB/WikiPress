@@ -6,18 +6,18 @@
  * @since 1.0.0
  */
 
-namespace TrilBDev\WikiPress\Includes\Plugins\UserRolesManager;
+namespace WikiPress\Includes\Plugins\UserRolesManager;
 
-use TrilBDev\WikiPress\Includes\Plugins\AssetsProviderInterface;
-use TrilBDev\WikiPress\Includes\Plugins\AdminPageProviderInterface;
-use TrilBDev\WikiPress\Includes\Plugins\I18nProviderInterface;
-use TrilBDev\WikiPress\Includes\Plugins\PluginInterface;
-use TrilBDev\WikiPress\Includes\Plugins\SettingsProviderInterface;
-use TrilBDev\WikiPress\Includes\Plugins\SettingsPageProviderInterface;
-use TrilBDev\WikiPress\Includes\Plugins\UserRolesManager\Assets\Assets;
-use TrilBDev\WikiPress\Includes\Plugins\UserRolesManager\Includes\Includes;
-use TrilBDev\WikiPress\Includes\Plugins\UserRolesManager\Includes\I18n;
-use TrilBDev\WikiPress\Includes\Plugins\UserRolesManager\Includes\Admin\RoleManager;
+use WikiPress\Includes\Plugins\AssetsProviderInterface;
+use WikiPress\Includes\Plugins\AdminPageProviderInterface;
+use WikiPress\Includes\Plugins\I18nProviderInterface;
+use WikiPress\Includes\Plugins\PluginInterface;
+use WikiPress\Includes\Plugins\SettingsProviderInterface;
+use WikiPress\Includes\Plugins\SettingsPageProviderInterface;
+use WikiPress\Includes\Plugins\UserRolesManager\Assets\Assets;
+use WikiPress\Includes\Plugins\UserRolesManager\Includes\Includes;
+use WikiPress\Includes\Plugins\UserRolesManager\Includes\I18n;
+use WikiPress\Includes\Plugins\UserRolesManager\Includes\Admin\RoleManager;
 
 class UserRolesManager implements PluginInterface, SettingsProviderInterface, SettingsPageProviderInterface, AssetsProviderInterface, AdminPageProviderInterface, I18nProviderInterface {
     /**

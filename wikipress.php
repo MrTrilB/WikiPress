@@ -5,11 +5,6 @@
  *
  * This is the main plugin file for the WikiPress WordPress plugin. It contains the plugin metadata and initializes the plugin by including necessary files and setting up activation and deactivation hooks.
  *
- * @link              https://trilb.dev
- * @since             1.0.0
- * @package           Wikipress
- *
- * @wordpress-plugin
  * Plugin Name:       WikiPress
  * Plugin URI:        https://trilb.dev/collection/web-extension/wordpress/wikipress
  * Description:       WikiPress is a WordPress plugin that provides a comprehensive wiki management system, allowing users to create, manage, and display wiki content within their WordPress site.
@@ -66,7 +61,7 @@ if ( is_readable( $wikipress_fontawesome ) ) {
 
 add_action(
 	'init',
-	[ '\\TrilBDev\\WikiPress\\Includes\\Plugins\\FontAwesome\\API\\FontAwesomeAPI', 'configure' ],
+	[ '\\WikiPress\\Includes\\Plugins\\FontAwesome\\API\\FontAwesomeAPI', 'configure' ],
 	-2
 );
 
@@ -75,7 +70,7 @@ add_action(
  * This action is documented in includes/class-wikipress-activator.php
  */
 function activate_wikipress() {
-	\TrilBDev\WikiPress\Includes\Core\WP\Activator::activate();
+	\WikiPress\Includes\Core\WP\Activator::activate();
 	if ( class_exists( '\FortAwesome\FontAwesome_Loader' ) ) {
 		\FortAwesome\FontAwesome_Loader::initialize();
 	}
@@ -86,7 +81,7 @@ function activate_wikipress() {
  * This action is documented in includes/class-wikipress-deactivator.php
  */
 function deactivate_wikipress() {
-	\TrilBDev\WikiPress\Includes\Core\WP\Deactivator::deactivate();
+	\WikiPress\Includes\Core\WP\Deactivator::deactivate();
 }
 
 register_activation_hook( __FILE__, 'activate_wikipress' );
@@ -109,7 +104,7 @@ require_once WIKIPRESS_DIR . 'src/WikiPress.php';
  */
 function run_wikipress() {
 
-	$plugin = new \TrilBDev\WikiPress\WikiPress( WIKIPRESS_FILE, WIKIPRESS_NAME, WIKIPRESS_VERSION );
+	$plugin = new \WikiPress\WikiPress( WIKIPRESS_FILE, WIKIPRESS_NAME, WIKIPRESS_VERSION );
 	$plugin->run();
 
 }

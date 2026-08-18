@@ -2,18 +2,18 @@
 /**
  * SettingsManager class for WikiPress plugin.
  *
- * @package TrilBDev\WikiPress
+ * @package WikiPress
  * @subpackage Admin\Manager\Settings
  * @since 1.0.0
  */
-namespace TrilBDev\WikiPress\Admin\Manager\Settings;
+namespace WikiPress\Admin\Manager\Settings;
 
-use TrilBDev\WikiPress\Admin\Manager\Manager;
-use TrilBDev\WikiPress\Assets\Assets;
-use TrilBDev\WikiPress\Includes\Settings\Settings;
-use TrilBDev\WikiPress\Admin\Manager\Settings\SettingsPlugins;
-use TrilBDev\WikiPress\Includes\Functions\Helpers\SanitizationHelper;
-use TrilBDev\WikiPress\Includes\Functions\Helpers\FormFieldHelper;
+use WikiPress\Admin\Manager\Manager;
+use WikiPress\Assets\Assets;
+use WikiPress\Includes\Settings\Settings;
+use WikiPress\Admin\Manager\Settings\SettingsPlugins;
+use WikiPress\Includes\Functions\Helpers\SanitizationHelper;
+use WikiPress\Includes\Functions\Helpers\FormFieldHelper;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

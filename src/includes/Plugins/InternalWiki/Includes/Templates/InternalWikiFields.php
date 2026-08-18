@@ -5,9 +5,9 @@
  * @package WikiPress
  * @subpackage Includes\Plugins\InternalWiki\Includes\Templates
  */
-namespace TrilBDev\WikiPress\Includes\Plugins\InternalWiki\Includes\Templates;
+namespace WikiPress\Includes\Plugins\InternalWiki\Includes\Templates;
 
-use TrilBDev\WikiPress\Includes\Functions\Helpers\FormFieldHelper;
+use WikiPress\Includes\Functions\Helpers\FormFieldHelper;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

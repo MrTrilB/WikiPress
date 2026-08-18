@@ -1,9 +1,9 @@
 <?php
 
-namespace TrilBDev\WikiPress\Includes\Core;
+namespace WikiPress\Includes\Core;
 
-use TrilBDev\WikiPress\Includes\Functions\Helpers\SanitizationHelper;
-use TrilBDev\WikiPress\Includes\Functions\Helpers\FormFieldHelper;
+use WikiPress\Includes\Functions\Helpers\SanitizationHelper;
+use WikiPress\Includes\Functions\Helpers\FormFieldHelper;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

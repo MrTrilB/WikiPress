@@ -2,11 +2,11 @@
 /**
  * Sidebar UI component for WikiPress admin pages.
  *
- * @package TrilBDev\WikiPress
+ * @package WikiPress
  * @subpackage Admin\Manager\UI
  * @since 1.0.0
  */
-namespace TrilBDev\WikiPress\Admin\Manager\UI;
+namespace WikiPress\Admin\Manager\UI;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;

@@ -2,12 +2,12 @@
 /**
  * SettingsManager class.
  *
- * @package TrilBDev\WikiPress\Includes\Settings
+ * @package WikiPress\Includes\Settings
  */
 
-namespace TrilBDev\WikiPress\Includes\Settings;
+namespace WikiPress\Includes\Settings;
 
-use TrilBDev\WikiPress\Includes\Core\WP\Database;
+use WikiPress\Includes\Core\WP\Database;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

@@ -4,9 +4,9 @@
  *
  * @package WikiPress
  */
-namespace TrilBDev\WikiPress\Includes\Plugins\Gutenburg\Includes\Blocks;
+namespace WikiPress\Includes\Plugins\Gutenburg\Includes\Blocks;
 
-use TrilBDev\WikiPress\Includes\Functions\Helpers\QueryHelper;
+use WikiPress\Includes\Functions\Helpers\QueryHelper;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

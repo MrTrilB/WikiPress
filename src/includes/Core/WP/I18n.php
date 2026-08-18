@@ -12,7 +12,7 @@
  * @package    Wikipress
  * @subpackage Wikipress/includes
  */
-namespace TrilBDev\WikiPress\Includes\Core\WP;
+namespace WikiPress\Includes\Core\WP;
 
 /**
  * Define the internationalization functionality.

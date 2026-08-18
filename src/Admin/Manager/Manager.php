@@ -1,11 +1,11 @@
 <?php
 
-namespace TrilBDev\WikiPress\Admin\Manager;
+namespace WikiPress\Admin\Manager;
 
-use TrilBDev\WikiPress\Assets\Assets;
-use TrilBDev\WikiPress\Admin\Manager\UI\Footer;
-use TrilBDev\WikiPress\Admin\Manager\UI\Header;
-use TrilBDev\WikiPress\Admin\Manager\UI\Sidebar;
+use WikiPress\Assets\Assets;
+use WikiPress\Admin\Manager\UI\Footer;
+use WikiPress\Admin\Manager\UI\Header;
+use WikiPress\Admin\Manager\UI\Sidebar;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

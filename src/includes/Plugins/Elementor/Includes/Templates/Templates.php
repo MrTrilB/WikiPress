@@ -9,7 +9,7 @@
  * @subpackage Wikipress/includes/Elementor/
  * @since 1.0.0
  */
-namespace TrilBDev\WikiPress\Includes\Plugins\Elementor\Includes\Templates;
+namespace WikiPress\Includes\Plugins\Elementor\Includes\Templates;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

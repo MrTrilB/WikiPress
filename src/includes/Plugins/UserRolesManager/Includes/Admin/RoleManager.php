@@ -6,16 +6,16 @@
  * @subpackage Admin\Wiki\Plugins\UserRolesManager\Includes\Admin
  * @since 1.0.0
  */
-namespace TrilBDev\WikiPress\Includes\Plugins\UserRolesManager\Includes\Admin;
+namespace WikiPress\Includes\Plugins\UserRolesManager\Includes\Admin;
 
-use TrilBDev\WikiPress\Admin\Manager\Manager;
-use TrilBDev\WikiPress\Includes\Functions\Helpers\FormFieldHelper;
-use TrilBDev\WikiPress\Includes\Functions\Helpers\AjaxHelper;
-use TrilBDev\WikiPress\Includes\Functions\Helpers\PermissionHelper;
-use TrilBDev\WikiPress\Includes\Functions\Helpers\RequestHelper;
-use TrilBDev\WikiPress\Includes\Functions\Helpers\SanitizationHelper;
-use TrilBDev\WikiPress\Includes\Functions\Helpers\UrlHelper;
-use TrilBDev\WikiPress\Includes\Settings\Settings;
+use WikiPress\Admin\Manager\Manager;
+use WikiPress\Includes\Functions\Helpers\FormFieldHelper;
+use WikiPress\Includes\Functions\Helpers\AjaxHelper;
+use WikiPress\Includes\Functions\Helpers\PermissionHelper;
+use WikiPress\Includes\Functions\Helpers\RequestHelper;
+use WikiPress\Includes\Functions\Helpers\SanitizationHelper;
+use WikiPress\Includes\Functions\Helpers\UrlHelper;
+use WikiPress\Includes\Settings\Settings;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;

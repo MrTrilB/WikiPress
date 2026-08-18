@@ -6,9 +6,9 @@
  * @since 1.0.0
  */
 
-namespace TrilBDev\WikiPress\Includes\Functions\Helpers;
+namespace WikiPress\Includes\Functions\Helpers;
 
-use TrilBDev\WikiPress\Includes\Plugins\TinyMCE\Includes\Functions\Helpers\TinyMCEHelper;
+use WikiPress\Includes\Plugins\TinyMCE\Includes\Functions\Helpers\TinyMCEHelper;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

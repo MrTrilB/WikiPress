@@ -1,16 +1,16 @@
 <?php
 
-namespace TrilBDev\WikiPress\Admin\Manager\Wiki;
+namespace WikiPress\Admin\Manager\Wiki;
 
-use TrilBDev\WikiPress\Admin\Manager\Manager;
-use TrilBDev\WikiPress\Assets\Assets;
-use TrilBDev\WikiPress\Includes\Core\PostType;
-use TrilBDev\WikiPress\Includes\Core\Taxonomy;
-use TrilBDev\WikiPress\Includes\Core\Editor;
-use TrilBDev\WikiPress\Includes\Functions\Helpers\PostHelper;
-use TrilBDev\WikiPress\Includes\Functions\Helpers\QueryHelper;
-use TrilBDev\WikiPress\Includes\Functions\Helpers\TaxonomyHelper;
-use TrilBDev\WikiPress\Includes\Functions\Admin\FunctionsWiki;
+use WikiPress\Admin\Manager\Manager;
+use WikiPress\Assets\Assets;
+use WikiPress\Includes\Core\PostType;
+use WikiPress\Includes\Core\Taxonomy;
+use WikiPress\Includes\Core\Editor;
+use WikiPress\Includes\Functions\Helpers\PostHelper;
+use WikiPress\Includes\Functions\Helpers\QueryHelper;
+use WikiPress\Includes\Functions\Helpers\TaxonomyHelper;
+use WikiPress\Includes\Functions\Admin\FunctionsWiki;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;

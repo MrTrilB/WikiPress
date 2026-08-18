@@ -7,8 +7,8 @@
  * @since 1.0.0
  */
 
-namespace TrilBDev\WikiPress\Includes\Plugins\UserRolesManager\Includes;
-use TrilBDev\WikiPress\Includes\Plugins\UserRolesManager\Includes\Settings\Settings;
+namespace WikiPress\Includes\Plugins\UserRolesManager\Includes;
+use WikiPress\Includes\Plugins\UserRolesManager\Includes\Settings\Settings;
 
 final class Includes {
     private static ?self $instance = null;

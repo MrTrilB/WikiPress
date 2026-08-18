@@ -2,13 +2,13 @@
 /**
  * Backward-compatible query helper name.
  *
- * @package TrilBDev\WikiPress\Includes\Core\WP
+ * @package WikiPress\Includes\Core\WP
  * @since 1.0.0
  */
-namespace TrilBDev\WikiPress\Includes\Core\WP;
+namespace WikiPress\Includes\Core\WP;
 
-use TrilBDev\WikiPress\Includes\Functions\Helpers\QueryHelper;
-use TrilBDev\WikiPress\Includes\Functions\Helpers\RequestHelper;
+use WikiPress\Includes\Functions\Helpers\QueryHelper;
+use WikiPress\Includes\Functions\Helpers\RequestHelper;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

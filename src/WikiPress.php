@@ -12,20 +12,20 @@
  * @package    Wikipress
  * @subpackage Wikipress/includes
  */
-namespace TrilBDev\WikiPress;
-use TrilBDev\WikiPress\Admin\Admin;
-use TrilBDev\WikiPress\Assets\Assets;
-use TrilBDev\WikiPress\Includes\Includes;
-use TrilBDev\WikiPress\Includes\Core\WP\I18n;
-use TrilBDev\WikiPress\Includes\Functions\Helpers\LoaderHelper;
-use TrilBDev\WikiPress\Includes\Functions\Admin\FunctionsExport;
-use TrilBDev\WikiPress\Includes\Functions\Admin\FunctionsImport;
-use TrilBDev\WikiPress\Includes\Functions\Admin\FunctionsPlugins;
-use TrilBDev\WikiPress\Includes\Functions\Admin\FunctionsSettings;
-use TrilBDev\WikiPress\API\Routes;
-use TrilBDev\WikiPress\Includes\Analytics\Analytics;
-use TrilBDev\WikiPress\Includes\Plugins\Plugins;
-use TrilBDev\WikiPress\PublicArea\Frontend;
+namespace WikiPress;
+use WikiPress\Admin\Admin;
+use WikiPress\Assets\Assets;
+use WikiPress\Includes\Includes;
+use WikiPress\Includes\Core\WP\I18n;
+use WikiPress\Includes\Functions\Helpers\LoaderHelper;
+use WikiPress\Includes\Functions\Admin\FunctionsExport;
+use WikiPress\Includes\Functions\Admin\FunctionsImport;
+use WikiPress\Includes\Functions\Admin\FunctionsPlugins;
+use WikiPress\Includes\Functions\Admin\FunctionsSettings;
+use WikiPress\API\Routes;
+use WikiPress\Includes\Analytics\Analytics;
+use WikiPress\Includes\Plugins\Plugins;
+use WikiPress\PublicArea\Frontend;
 /**
  * The core plugin class.
  *
@@ -104,11 +104,29 @@ class WikiPress {
 	 * @access protected
 	 */
 	protected Plugins $plugins;
-
+	/**
+	 * The instance of the FunctionsExport class that handles the plugin's export functionality.
+	 *
+	 * @var FunctionsExport
+	 * @since 1.0.0
+	 * @access protected
+	 */
 	protected FunctionsExport $export_functions;
-
+	/**
+	 * The instance of the FunctionsImport class that handles the plugin's import functionality.
+	 *
+	 * @var FunctionsImport
+	 * @since 1.0.0
+	 * @access protected
+	 */
 	protected FunctionsImport $import_functions;
-
+	/**
+	 * The instance of the FunctionsSettings class that handles the plugin's settings functionality.
+	 *
+	 * @var FunctionsSettings
+	 * @since 1.0.0
+	 * @access protected
+	 */
 	protected FunctionsSettings $settings_functions;
 
 	/**
@@ -238,31 +256,66 @@ class WikiPress {
 	public function get_plugin_name() {
 		return $this->plugin_name;
 	}
-
+	/**
+	 * Retrieve the version number of the plugin.
+	 *
+	 * @since     1.0.0
+	 * @return    string    The version number of the plugin.
+	 */
 	public function get_plugin_file(): string {
 		return $this->plugin_file;
 	}
-
+	/**
+	 * Retrieve the version number of the plugin.
+	 *
+	 * @since     1.0.0
+	 * @return    string    The version number of the plugin.
+	 */
 	public function get_includes(): Includes {
 		return $this->includes;
 	}
-
+	/**
+	 * Retrieve the version number of the plugin.
+	 *
+	 * @since     1.0.0
+	 * @return    string    The version number of the plugin.
+	 */
 	public function get_assets(): Assets {
 		return $this->assets;
 	}
-
+	/**
+	 * Retrieve the version number of the plugin.
+	 *
+	 * @since     1.0.0
+	 * @return    string    The version number of the plugin.
+	 */
 	public function get_admin(): Admin {
 		return $this->admin;
 	}
-
+	/**
+	 * Retrieve the version number of the plugin.
+	 *
+	 * @since     1.0.0
+	 * @return    string    The version number of the plugin.
+	 */
 	public function get_frontend(): Frontend {
 		return $this->frontend;
 	}
-
+	/**
+	 * Retrieve the version number of the plugin.
+	 *
+	 * @since     1.0.0
+	 * @return    string    The version number of the plugin.
+	 */
 	public function get_plugins(): Plugins {
 		return $this->plugins;
 	}
-
+	/**
+	 * Retrieve the version number of the plugin.
+	 *
+	 * @since     1.0.0
+	 * @return    string    The version number of the plugin.
+	 */
 	public function register_extension( callable $extension ): self {
 		$this->includes->register_extension( $extension );
 

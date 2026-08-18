@@ -6,15 +6,15 @@
  * @subpackage Admin\Manager\Tools
  * @since 1.0.0
  */
-namespace TrilBDev\WikiPress\Admin\Manager\Tools;
+namespace WikiPress\Admin\Manager\Tools;
 
-use TrilBDev\WikiPress\Admin\Manager\Manager;
-use TrilBDev\WikiPress\Admin\Manager\Tools\DebugManager;
-use TrilBDev\WikiPress\Admin\Manager\Tools\ExportManager;
-use TrilBDev\WikiPress\Admin\Manager\Tools\ImportManager;
-use TrilBDev\WikiPress\Admin\Manager\Tools\AnalyticsManager;
-use TrilBDev\WikiPress\Assets\Assets;
-use TrilBDev\WikiPress\Includes\Functions\Helpers\SanitizationHelper;
+use WikiPress\Admin\Manager\Manager;
+use WikiPress\Admin\Manager\Tools\DebugManager;
+use WikiPress\Admin\Manager\Tools\ExportManager;
+use WikiPress\Admin\Manager\Tools\ImportManager;
+use WikiPress\Admin\Manager\Tools\AnalyticsManager;
+use WikiPress\Assets\Assets;
+use WikiPress\Includes\Functions\Helpers\SanitizationHelper;
 
 
 final class ToolsManager extends Manager {

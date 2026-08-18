@@ -8,7 +8,7 @@
  * @since 1.0.0
  */
 
-namespace TrilBDev\WikiPress\Includes\Plugins\FontAwesome\Includes;
+namespace WikiPress\Includes\Plugins\FontAwesome\Includes;
 
 final class I18n {
     public static function load_textdomain(): void {

@@ -5,10 +5,10 @@
  * @package TrilBDev
  * @subpackage Admin\Manager\Settings
  */
-namespace TrilBDev\WikiPress\Admin\Manager\Settings;
+namespace WikiPress\Admin\Manager\Settings;
 
-use TrilBDev\WikiPress\Includes\Functions\Helpers\FormFieldHelper;
-use TrilBDev\WikiPress\Includes\Functions\Helpers\SanitizationHelper;
+use WikiPress\Includes\Functions\Helpers\FormFieldHelper;
+use WikiPress\Includes\Functions\Helpers\SanitizationHelper;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;

@@ -6,7 +6,7 @@
  * @subpackage Assets
  * @since 1.0.0
  */
-namespace TrilBDev\WikiPress\Assets;
+namespace WikiPress\Assets;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

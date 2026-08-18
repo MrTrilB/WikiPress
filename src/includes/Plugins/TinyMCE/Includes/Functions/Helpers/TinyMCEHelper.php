@@ -6,9 +6,9 @@
  * @subpackage Plugins\TinyMCE\Includes\Functions\Helpers
  * @since 1.0.0
  */
-namespace TrilBDev\WikiPress\Includes\Plugins\TinyMCE\Includes\Functions\Helpers;
+namespace WikiPress\Includes\Plugins\TinyMCE\Includes\Functions\Helpers;
 
-use TrilBDev\WikiPress\Includes\Plugins\TinyMCE\Includes\Settings\Settings;
+use WikiPress\Includes\Plugins\TinyMCE\Includes\Settings\Settings;
 
 final class TinyMCEHelper {
     /**

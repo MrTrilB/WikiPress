@@ -2,11 +2,11 @@
 /**
  * AJAX request and response helpers for WikiPress and extensions.
  *
- * @package TrilBDev\WikiPress
+ * @package WikiPress
  * @subpackage Includes\Functions\Helpers
  * @since 1.0.0
  */
-namespace TrilBDev\WikiPress\Includes\Functions\Helpers;
+namespace WikiPress\Includes\Functions\Helpers;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

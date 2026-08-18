@@ -1,12 +1,12 @@
 <?php
 
-namespace TrilBDev\WikiPress\Admin\Manager\Wiki;
+namespace WikiPress\Admin\Manager\Wiki;
 
-use TrilBDev\WikiPress\Includes\Core\PostType;
-use TrilBDev\WikiPress\Includes\Core\Taxonomy;
-use TrilBDev\WikiPress\Includes\Functions\Helpers\QueryHelper;
-use TrilBDev\WikiPress\Includes\Functions\Helpers\FormFieldHelper;
-use TrilBDev\WikiPress\Includes\Functions\Helpers\TaxonomyHelper;
+use WikiPress\Includes\Core\PostType;
+use WikiPress\Includes\Core\Taxonomy;
+use WikiPress\Includes\Functions\Helpers\QueryHelper;
+use WikiPress\Includes\Functions\Helpers\FormFieldHelper;
+use WikiPress\Includes\Functions\Helpers\TaxonomyHelper;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

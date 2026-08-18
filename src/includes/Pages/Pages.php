@@ -1,9 +1,9 @@
 <?php
 
-namespace TrilBDev\WikiPress\Includes\Pages;
+namespace WikiPress\Includes\Pages;
 
-use TrilBDev\WikiPress\API\API;
-use TrilBDev\WikiPress\Includes\Functions\Functions;
+use WikiPress\API\API;
+use WikiPress\Includes\Functions\Functions;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

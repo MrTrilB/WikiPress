@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 use Elementor\Widget_Base;
-use TrilBDev\WikiPress\Includes\Functions\Helpers\FormFieldHelper;
+use WikiPress\Includes\Functions\Helpers\FormFieldHelper;
 
 if ( ! isset( $widget ) || ! $widget instanceof Widget_Base ) {
     return;

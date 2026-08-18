@@ -6,7 +6,7 @@
  * @since 1.0.0
  * 
  */
-namespace TrilBDev\WikiPress\Includes\Plugins\UserRolesManager\Includes;
+namespace WikiPress\Includes\Plugins\UserRolesManager\Includes;
 
 class I18n {
     /**

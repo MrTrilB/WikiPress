@@ -9,9 +9,9 @@
  * @since      1.0.0
  * @author     MrTrilB <
  */
-namespace TrilBDev\WikiPress\Includes\Functions\Helpers;
+namespace WikiPress\Includes\Functions\Helpers;
 
-use TrilBDev\WikiPress\Includes\Settings\Settings;
+use WikiPress\Includes\Settings\Settings;
 
 class LoggerHelper {
 

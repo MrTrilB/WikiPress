@@ -68,8 +68,8 @@ Implement ShortcodeProviderInterface and return a list created with ShortcodeHel
 
 Example:
 
-	use TrilBDev\\WikiPress\\Includes\\Functions\\Helpers\\ShortcodeHelper;
-	use TrilBDev\\WikiPress\\Includes\\Plugins\\ShortcodeProviderInterface;
+	use WikiPress\\Includes\\Functions\\Helpers\\ShortcodeHelper;
+	use WikiPress\\Includes\\Plugins\\ShortcodeProviderInterface;
 
 	public function get_shortcodes(): array {
 		return [

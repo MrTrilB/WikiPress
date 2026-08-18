@@ -7,9 +7,9 @@
  * @since 1.0.0
  */
 
-namespace TrilBDev\WikiPress\Includes\Plugins\TinyMCE\Includes;
+namespace WikiPress\Includes\Plugins\TinyMCE\Includes;
 
-use TrilBDev\WikiPress\Includes\Plugins\TinyMCE\Includes\Settings\Settings;
+use WikiPress\Includes\Plugins\TinyMCE\Includes\Settings\Settings;
 
 final class Includes {
     /**

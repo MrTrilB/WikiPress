@@ -6,17 +6,17 @@
  * @since 1.0.0
  */
 
-namespace TrilBDev\WikiPress\Includes\Plugins\Demo;
+namespace WikiPress\Includes\Plugins\Demo;
 
-use TrilBDev\WikiPress\Includes\Plugins\AssetsProviderInterface;
-use TrilBDev\WikiPress\Includes\Plugins\I18nProviderInterface;
-use TrilBDev\WikiPress\Includes\Plugins\PluginInterface;
-use TrilBDev\WikiPress\Includes\Plugins\SettingsProviderInterface;
-use TrilBDev\WikiPress\Includes\Plugins\SettingsPageProviderInterface;
-use TrilBDev\WikiPress\Includes\Plugins\ShortcodeProviderInterface;
-use TrilBDev\WikiPress\Includes\Plugins\Demo\Assets\Assets;
-use TrilBDev\WikiPress\Includes\Plugins\Demo\Includes\Includes;
-use TrilBDev\WikiPress\Includes\Plugins\Demo\Includes\I18n;
+use WikiPress\Includes\Plugins\AssetsProviderInterface;
+use WikiPress\Includes\Plugins\I18nProviderInterface;
+use WikiPress\Includes\Plugins\PluginInterface;
+use WikiPress\Includes\Plugins\SettingsProviderInterface;
+use WikiPress\Includes\Plugins\SettingsPageProviderInterface;
+use WikiPress\Includes\Plugins\ShortcodeProviderInterface;
+use WikiPress\Includes\Plugins\Demo\Assets\Assets;
+use WikiPress\Includes\Plugins\Demo\Includes\Includes;
+use WikiPress\Includes\Plugins\Demo\Includes\I18n;
 
 class Demo implements PluginInterface, SettingsProviderInterface, SettingsPageProviderInterface, AssetsProviderInterface, I18nProviderInterface, ShortcodeProviderInterface {
     /**

@@ -7,9 +7,9 @@
  * @since 1.0.0
  */
 
-namespace TrilBDev\WikiPress\Includes\Plugins\Demo\Assets;
+namespace WikiPress\Includes\Plugins\Demo\Assets;
 
-use TrilBDev\WikiPress\Includes\Functions\Helpers\LoaderHelper;
+use WikiPress\Includes\Functions\Helpers\LoaderHelper;
 
 final class Assets {
     private LoaderHelper $loader;

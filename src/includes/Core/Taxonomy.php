@@ -1,8 +1,8 @@
 <?php
 
-namespace TrilBDev\WikiPress\Includes\Core;
+namespace WikiPress\Includes\Core;
 
-use TrilBDev\WikiPress\Includes\Settings\Settings;
+use WikiPress\Includes\Settings\Settings;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

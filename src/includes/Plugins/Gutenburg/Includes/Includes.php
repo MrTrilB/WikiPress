@@ -7,9 +7,9 @@
  * @since 1.0.0
  */
 
-namespace TrilBDev\WikiPress\Includes\Plugins\Gutenburg\Includes;
-use TrilBDev\WikiPress\Includes\Plugins\Gutenburg\Includes\Settings\Settings;
-use TrilBDev\WikiPress\Includes\Plugins\Gutenburg\Includes\Blocks;
+namespace WikiPress\Includes\Plugins\Gutenburg\Includes;
+use WikiPress\Includes\Plugins\Gutenburg\Includes\Settings\Settings;
+use WikiPress\Includes\Plugins\Gutenburg\Includes\Blocks;
 
 final class Includes {
     private static ?self $instance = null;

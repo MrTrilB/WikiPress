@@ -2,11 +2,11 @@
 /**
  * REST API response helper for WikiPress.
  *
- * @package TrilBDev\WikiPress
+ * @package WikiPress
  * @subpackage API
  * @since 1.0.0
  */
-namespace TrilBDev\WikiPress\API;
+namespace WikiPress\API;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

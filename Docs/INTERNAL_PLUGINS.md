@@ -27,9 +27,9 @@ The main file must be named after the directory, declare a namespace, define a c
 ## Required Contract
 
 ```php
-namespace TrilBDev\WikiPress\Includes\Plugins\MyPlugin;
+namespace WikiPress\Includes\Plugins\MyPlugin;
 
-use TrilBDev\WikiPress\Includes\Plugins\PluginInterface;
+use WikiPress\Includes\Plugins\PluginInterface;
 
 final class MyPlugin implements PluginInterface {
     

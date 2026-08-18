@@ -2,13 +2,13 @@
 /**
  * Routes class for registering REST API routes.
  *
- * @package TrilBDev\WikiPress\API
+ * @package WikiPress\API
  */
-namespace TrilBDev\WikiPress\API;
+namespace WikiPress\API;
 
-use TrilBDev\WikiPress\Includes\Core\PostType;
-use TrilBDev\WikiPress\Includes\Functions\Helpers\PermissionHelper;
-use TrilBDev\WikiPress\Includes\Functions\Helpers\RequestHelper;
+use WikiPress\Includes\Core\PostType;
+use WikiPress\Includes\Functions\Helpers\PermissionHelper;
+use WikiPress\Includes\Functions\Helpers\RequestHelper;
 use WP_REST_Request;
 
 if ( ! defined( 'ABSPATH' ) ) {

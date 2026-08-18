@@ -5,12 +5,12 @@
  * @subpackage Admin\Wiki\Plugins\InternalWiki\Includes
  * @since 1.0.0
  */
-namespace TrilBDev\WikiPress\Includes\Plugins\InternalWiki\Includes\Settings;
-use TrilBDev\WikiPress\Includes\Settings\Settings as BaseSettings;
-use TrilBDev\WikiPress\Includes\Functions\Helpers\LoaderHelper;
-use TrilBDev\WikiPress\Includes\Functions\Helpers\SanitizationHelper;
-use TrilBDev\WikiPress\Includes\Functions\Helpers\PermissionHelper;
-use TrilBDev\WikiPress\Includes\Plugins\InternalWiki\Includes\Templates\InternalWikiFields;
+namespace WikiPress\Includes\Plugins\InternalWiki\Includes\Settings;
+use WikiPress\Includes\Settings\Settings as BaseSettings;
+use WikiPress\Includes\Functions\Helpers\LoaderHelper;
+use WikiPress\Includes\Functions\Helpers\SanitizationHelper;
+use WikiPress\Includes\Functions\Helpers\PermissionHelper;
+use WikiPress\Includes\Plugins\InternalWiki\Includes\Templates\InternalWikiFields;
 
 final class Settings {
     /**
@@ -266,7 +266,7 @@ final class Settings {
     }
 
     public function enforce_access(): void {
-        if ( ! is_singular( \TrilBDev\WikiPress\Includes\Core\PostType::PAGE ) ) {
+        if ( ! is_singular( \WikiPress\Includes\Core\PostType::PAGE ) ) {
             return;
         }
 

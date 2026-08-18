@@ -3,9 +3,9 @@
  * 
  * @since 1.0.0
  */
-namespace TrilBDev\WikiPress\Includes\Plugins\Elementor\Includes;
+namespace WikiPress\Includes\Plugins\Elementor\Includes;
 
-use TrilBDev\WikiPress\Includes\Plugins\Elementor\Includes\Settings\Settings;
+use WikiPress\Includes\Plugins\Elementor\Includes\Settings\Settings;
 /**
  * The core plugin class.
  *

@@ -6,14 +6,14 @@
  * @subpackage Admin\Manager\Settings
  * @since 1.0.0
  */
-namespace TrilBDev\WikiPress\Admin\Manager\Settings;
+namespace WikiPress\Admin\Manager\Settings;
 
-use TrilBDev\WikiPress\Includes\Functions\Helpers\FormFieldHelper;
-use TrilBDev\WikiPress\Includes\Functions\Helpers\SanitizationHelper;
-use TrilBDev\WikiPress\Includes\Settings\Settings;
-use TrilBDev\WikiPress\Includes\Plugins\Plugins;
-use TrilBDev\WikiPress\Includes\Plugins\PluginInterface;
-use TrilBDev\WikiPress\Includes\Plugins\SettingsPageProviderInterface;
+use WikiPress\Includes\Functions\Helpers\FormFieldHelper;
+use WikiPress\Includes\Functions\Helpers\SanitizationHelper;
+use WikiPress\Includes\Settings\Settings;
+use WikiPress\Includes\Plugins\Plugins;
+use WikiPress\Includes\Plugins\PluginInterface;
+use WikiPress\Includes\Plugins\SettingsPageProviderInterface;
 
 final class SettingsPlugins {
     /**
