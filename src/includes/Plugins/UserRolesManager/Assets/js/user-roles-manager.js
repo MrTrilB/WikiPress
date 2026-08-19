@@ -1,6 +1,9 @@
-const root = window.wikipressShadowRoot || document;
+const initializeRoleForms = () => {
+  const root = window.wikipressShadowRoot || document;
 
-root.querySelectorAll('.wikipress-role-form').forEach((form) => {
+  root.querySelectorAll('.wikipress-role-form').forEach((form) => {
+    if (form.dataset.roleValidationInitialized) return;
+    form.dataset.roleValidationInitialized = 'true';
   const steps = Array.from(form.querySelectorAll('[data-role-step]'));
   const next = form.querySelector('[data-role-next]');
   const back = form.querySelector('[data-role-back]');
@@ -82,5 +85,17 @@ root.querySelectorAll('.wikipress-role-form').forEach((form) => {
   form.querySelectorAll('input[required]').forEach((input) => {
     input.addEventListener('input', updateStep);
   });
+  form.addEventListener('submit', (event) => {
+    if (isCreateForm && !validateCreateFields()) {
+      event.preventDefault();
+    }
+  });
   updateStep();
-});
+  });
+};
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initializeRoleForms);
+} else {
+  initializeRoleForms();
+}
