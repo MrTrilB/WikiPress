@@ -55,7 +55,6 @@ final class Sidebar {
 									</div>
 								</div>
 							</div>
-							</div>
 						<?php endforeach; ?>
 					</div>
 				</nav>
