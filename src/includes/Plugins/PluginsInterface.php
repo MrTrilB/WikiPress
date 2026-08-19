@@ -160,6 +160,40 @@ interface AdminPageProviderInterface {
     public function register_admin_pages(): void;
 }
 /**
+ * Provides WikiPress admin menu definitions for a plugin.
+ *
+ * Definitions may use `type => menu` for a new top-level menu or provide a
+ * `parent` slug for a submenu under an existing WikiPress menu.
+ * @since 1.0.0
+ */
+interface AdminMenuProviderInterface extends PluginInterface {
+    /**
+     * Return admin menu definitions.
+     *
+     * Each definition supports `page_title`, `menu_title`, `capability`,
+     * `menu_slug`, `callback`, optional `icon`, `position`, `parent`, and
+     * `children` for top-level menu definitions.
+     *
+     * @return array<int, array<string, mixed>>
+     */
+    public function get_admin_menu(): array;
+}
+/**
+ * Provides entries for the WikiPress in-page admin sidebar.
+ * @since 1.0.0
+ */
+interface AdminSidebarProviderInterface extends PluginInterface {
+    /**
+     * Return sidebar item and group definitions.
+     *
+     * An item uses `type => item` and a `parent` of `manage-wiki`, `settings`,
+     * or `tools`. A group uses `type => group` and an `items` array.
+     *
+     * @return array<int, array<string, mixed>>
+     */
+    public function get_admin_sidebar(): array;
+}
+/**
  * Rest Rout provider interface for plugins.
  * @since 1.0.0
  */

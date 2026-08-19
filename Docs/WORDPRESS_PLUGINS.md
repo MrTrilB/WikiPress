@@ -48,6 +48,8 @@ The same optional interfaces are available to a WordPress-installed extension:
 - shortcode registration through `ShortcodeProviderInterface`
 - asset registration
 - admin page registration
+- admin menu registration
+- WikiPress admin sidebar registration
 - REST route registration
 - frontend registration
 - translation loading
@@ -92,6 +94,115 @@ final class MyWikiPressExtension implements PluginInterface, ShortcodeProviderIn
 ```
 
 Shortcode callbacks must return their rendered output. Use `ShortcodeHelper::register()` or `register_many()` when registration needs to happen outside the provider lifecycle.
+
+## Admin Menu Provider
+
+Implement `AdminMenuProviderInterface` when an extension needs menu entries. Return submenu definitions with one of WikiPress's existing parent slugs:
+
+- `wikipress-manage` for Manage Wiki
+- `wikipress-settings` for Settings
+- `wikipress-tools` for Tools
+
+Each definition uses `page_title`, `menu_title`, `capability`, `menu_slug`, and a plugin-owned callable `callback`. The optional `icon` accepts a Dashicons class and `position` controls ordering:
+
+```php
+use WikiPress\Includes\Plugins\AdminMenuProviderInterface;
+
+final class MyWikiPressExtension implements PluginInterface, AdminMenuProviderInterface {
+    public function get_admin_menu(): array {
+        return [
+            [
+                'parent' => 'wikipress-tools',
+                'page_title' => 'My Tool',
+                'menu_title' => 'My Tool',
+                'capability' => 'manage_options',
+                'menu_slug' => 'my-extension-tool',
+                'callback' => [ $this, 'render_tool' ],
+                'icon' => 'dashicons-admin-tools',
+            ],
+        ];
+    }
+
+    public function render_tool(): void {}
+}
+```
+
+Use `type => menu` to create a plugin-owned top-level menu. Its `children` array uses the same fields and is automatically registered beneath the top-level `menu_slug`:
+
+```php
+[
+    'type' => 'menu',
+    'page_title' => 'My Extension',
+    'menu_title' => 'My Extension',
+    'capability' => 'manage_options',
+    'menu_slug' => 'my-extension',
+    'callback' => [ $this, 'render_home' ],
+    'icon' => 'dashicons-admin-generic',
+    'children' => [
+        [
+            'page_title' => 'Reports',
+            'menu_title' => 'Reports',
+            'capability' => 'manage_options',
+            'menu_slug' => 'my-extension-reports',
+            'callback' => [ $this, 'render_reports' ],
+            'icon' => 'dashicons-chart-bar',
+        ],
+    ],
+]
+```
+
+Menu definitions are registered only for active WikiPress plugins. The extension owns every callback and page renderer; WikiPress only registers the WordPress menu entries.
+
+## WikiPress Admin Sidebar Provider
+
+The WikiPress admin pages contain their own in-page sidebar, separate from the global WordPress admin menu. Implement `AdminSidebarProviderInterface` to add entries to that sidebar.
+
+Use `type => item` with one of these `parent` values to add an item to an existing WikiPress section:
+
+- `manage-wiki`
+- `settings`
+- `tools`
+
+Items use a WikiPress admin page slug, a label, and a Font Awesome icon. Optional query parameters are supplied through `query`:
+
+```php
+use WikiPress\Includes\Plugins\AdminSidebarProviderInterface;
+
+final class MyWikiPressExtension implements PluginInterface, AdminSidebarProviderInterface {
+    public function get_admin_sidebar(): array {
+        return [
+            [
+                'type' => 'item',
+                'parent' => 'tools',
+                'page' => 'my-extension-tool',
+                'label' => 'My Tool',
+                'icon' => 'fa-solid fa-wand-magic-sparkles',
+                'query' => [ 'view' => 'summary' ],
+            ],
+        ];
+    }
+}
+```
+
+Use `type => group` to create a new collapsible WikiPress sidebar group with child items:
+
+```php
+[
+    'type' => 'group',
+    'slug' => 'my-extension',
+    'label' => 'My Extension',
+    'icon' => 'fa-solid fa-puzzle-piece',
+    'items' => [
+        [
+            'page' => 'my-extension-reports',
+            'label' => 'Reports',
+            'icon' => 'fa-solid fa-chart-line',
+        ],
+    ],
+]
+```
+
+The sidebar provider controls navigation only. The target page must still be registered through the WordPress admin menu provider or another page-registration mechanism, and its renderer remains owned by the extension. WikiPress builds the URL as `admin.php?page={page}` and determines the active item from the current page and query parameters.
 
 ## Lifecycle Considerations
 

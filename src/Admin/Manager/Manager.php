@@ -1,5 +1,11 @@
 <?php
-
+/**
+ * Manager class for WikiPress plugin.
+ *
+ * @package WikiPress
+ * @subpackage Admin\Manager
+ * @since 1.0.0
+ */
 namespace WikiPress\Admin\Manager;
 
 use WikiPress\Assets\Assets;

@@ -62,4 +62,9 @@ final class Schema {
             'search' => [ 'type' => 'string', 'default' => '' ],
         ];
     }
+
+    public static function taxonomy_collection_parameters(): array { return self::collection_parameters(); }
+    public static function search_parameters(): array {
+        return array_merge( self::collection_parameters(), [ 'type' => [ 'type' => 'string', 'enum' => [ 'wiki', 'page', '' ], 'default' => '' ], 'wiki_id' => [ 'type' => 'integer', 'minimum' => 1 ], 'category' => [ 'type' => 'string' ], 'tag' => [ 'type' => 'string' ] ] );
+    }
 }

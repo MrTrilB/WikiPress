@@ -10,6 +10,8 @@ namespace WikiPress\Includes\Plugins\UserRolesManager;
 
 use WikiPress\Includes\Plugins\AssetsProviderInterface;
 use WikiPress\Includes\Plugins\AdminPageProviderInterface;
+use WikiPress\Includes\Plugins\AdminMenuProviderInterface;
+use WikiPress\Includes\Plugins\AdminSidebarProviderInterface;
 use WikiPress\Includes\Plugins\I18nProviderInterface;
 use WikiPress\Includes\Plugins\PluginInterface;
 use WikiPress\Includes\Plugins\SettingsProviderInterface;
@@ -18,8 +20,10 @@ use WikiPress\Includes\Plugins\UserRolesManager\Assets\Assets;
 use WikiPress\Includes\Plugins\UserRolesManager\Includes\Includes;
 use WikiPress\Includes\Plugins\UserRolesManager\Includes\I18n;
 use WikiPress\Includes\Plugins\UserRolesManager\Includes\Admin\RoleManager;
+use WikiPress\Includes\Settings\Settings;
 
-class UserRolesManager implements PluginInterface, SettingsProviderInterface, SettingsPageProviderInterface, AssetsProviderInterface, AdminPageProviderInterface, I18nProviderInterface {
+class UserRolesManager implements PluginInterface, SettingsProviderInterface, SettingsPageProviderInterface, AssetsProviderInterface, AdminPageProviderInterface, AdminMenuProviderInterface, AdminSidebarProviderInterface, I18nProviderInterface {
+    private ?RoleManager $role_manager = null;
     /**
      * Returns the slug of the plugin.
      * @since 1.0.0
@@ -138,7 +142,48 @@ class UserRolesManager implements PluginInterface, SettingsProviderInterface, Se
      * @return void
      */
     public function register_admin_pages(): void {
-        ( new RoleManager() )->register();
+        $this->role_manager()->register();
+    }
+    /**
+     * Returns the WordPress admin menu definition for the Roles Manager.
+     *
+     * @return array<int, array<string, mixed>>
+     */
+    public function get_admin_menu(): array {
+        return [
+            [
+                'page_title' => __( 'Roles Manager', 'wikipress' ),
+                'menu_title' => __( 'Roles Manager', 'wikipress' ),
+                'capability' => Settings::get_key( 'role_manager_capability', 'manage_options' ),
+                'menu_slug' => 'wikipress-roles-manager',
+                'parent' => 'users.php',
+                'callback' => [ $this->role_manager(), 'render' ],
+            ],
+        ];
+    }
+    /**
+     * Returns the WikiPress sidebar definition for the Roles Manager.
+     *
+     * @return array<int, array<string, mixed>>
+     */
+    public function get_admin_sidebar(): array {
+        return [
+            [
+                'type' => 'item',
+                'parent' => 'tools',
+                'label' => __( 'Roles Manager', 'wikipress' ),
+                'page' => 'wikipress-roles-manager',
+                'icon' => 'fa-solid fa-user-shield',
+            ],
+        ];
+    }
+
+    private function role_manager(): RoleManager {
+        if ( null === $this->role_manager ) {
+            $this->role_manager = new RoleManager();
+        }
+
+        return $this->role_manager;
     }
     /**
      * Loads the text domain for the plugin.

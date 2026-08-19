@@ -14,6 +14,7 @@ use WikiPress\Includes\Functions\Admin\FunctionsPlugins;
 use WikiPress\Includes\Functions\Admin\FunctionsWiki;
 use WikiPress\Includes\Functions\Helpers\AjaxHelper;
 use WikiPress\Includes\Functions\Helpers\LoaderHelper;
+use WikiPress\Includes\Functions\Admin\FunctionsSidebar;
 use WikiPress\Assets\Assets;
 use WikiPress\Admin\Manager\Tools\ToolsManager;
 use WikiPress\Admin\Manager\Dashboard\DashboardManager;
@@ -26,10 +27,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 final class Admin {
     /**
-     * Singleton instance of the Admin class.
-     *
-     * @var self|null
-     */
+     * The DashboardManager instance for managing the dashboard page. 
+     * 
+     * @var DashboardManager
+     * */
     private DashboardManager $dashboard_manager;
     /**
      * WikiManager instance for managing content-related admin pages.
@@ -61,6 +62,11 @@ final class Admin {
      * @var FunctionsPlugins
      */
     private FunctionsPlugins $plugin_functions;
+    /** 
+     * Wiki functions instance for managing wiki-related admin functions.
+     * 
+     * @var FunctionsWiki
+     *  */
     private FunctionsWiki $wiki_functions;
 
     public function __construct( Assets $assets ) {
@@ -95,13 +101,9 @@ final class Admin {
      * @since 1.0.0
      */
     public function register_admin_menu(): void {
-        $manager_capability = $this->capability( 'manager_wiki', 'manage_options' );
-        add_menu_page( __( 'WikiPress', 'wikipress' ), __( 'WikiPress', 'wikipress' ), $manager_capability, 'wikipress', [ $this, 'render_dashboard' ], 'dashicons-book-alt', 30 );
-        add_submenu_page( 'wikipress', __( 'Dashboard', 'wikipress' ), __( 'Dashboard', 'wikipress' ), 'manage_options', 'wikipress', [ $this, 'render_dashboard' ] );
-        add_submenu_page( 'wikipress', __( 'Manage Wiki', 'wikipress' ), __( 'Manage Wiki', 'wikipress' ), $this->capability( 'manager_wiki', 'manage_options' ), 'wikipress-manage', [ $this, 'render_wikis' ] );
-        add_submenu_page( 'wikipress', __( 'Settings', 'wikipress' ), __( 'Settings', 'wikipress' ), 'manage_options', 'wikipress-settings', [ $this, 'render_settings' ] );
-        add_submenu_page( 'wikipress', __( 'Tools', 'wikipress' ), __( 'Tools', 'wikipress' ), $this->capability( 'view_tools', 'manage_options' ), 'wikipress-tools', [ $this, 'render_tools' ] );
+        FunctionsSidebar::register_admin_menu( $this );
     }
+
     /**
      * Render the dashboard page.
      *
@@ -163,7 +165,7 @@ final class Admin {
      * @param string $fallback The fallback capability if the key is not set or invalid.
      * @return string The capability associated with the key, or the fallback if not valid.
      */
-    private function capability( string $key, string $fallback ): string {
+    public function capability( string $key, string $fallback ): string {
         $value = Settings::get( $key, $fallback );
         $values = is_array( $value ) ? $value : [ $value ];
         $allowed = [ 'manage_options', 'edit_posts', 'publish_posts', 'manage_categories', 'delete_posts' ];

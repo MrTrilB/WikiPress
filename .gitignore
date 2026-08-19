@@ -2,6 +2,7 @@
 *node_modules*
 package-lock.json
 #vendor/
+composer.lock
 
 # Explicitly include widget entry bundles even if a global ignore excludes `Public`
 !src/Public

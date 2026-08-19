@@ -61,11 +61,17 @@ Implement these interfaces only when the extension needs the capability:
 - `ShortcodeProviderInterface::get_shortcodes()`
 - `AssetsProviderInterface::register_assets()`
 - `AdminPageProviderInterface::register_admin_pages()`
+- `AdminMenuProviderInterface::get_admin_menu()`
+- `AdminSidebarProviderInterface::get_admin_sidebar()`
 - `RestRouteProviderInterface::register_rest_routes()`
 - `FrontendProviderInterface::register_frontend()`
 - `I18nProviderInterface::load_textdomain()`
 
 The loader invokes provider methods in this order for an active plugin: settings, database tables, shortcodes, assets, admin pages, REST routes, frontend behavior, translations, then `init()`.
+
+Admin menu definitions are registered by WikiPress during `admin_menu`, after plugin initialization. Use `wikipress-manage`, `wikipress-settings`, or `wikipress-tools` as `parent` for submenu entries, or use `type => menu` with a `children` array for a plugin-owned top-level menu. See [WORDPRESS_PLUGINS.md](WORDPRESS_PLUGINS.md) for the definition schema.
+
+Sidebar definitions are read when WikiPress renders an admin page. Use `type => item` with `parent` set to `manage-wiki`, `settings`, or `tools`, or use `type => group` to add a new collapsible WikiPress sidebar group.
 
 Shortcode providers should return definitions created with `ShortcodeHelper::define()` from `get_shortcodes()`. The loader registers them with the shared shortcode registry.
 

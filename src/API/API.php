@@ -22,6 +22,33 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 final class API {
+    public static function list_terms( string $taxonomy, array $args = [] ): array {
+        $query_args = wp_parse_args( $args, [ 'number' => 20, 'offset' => 0, 'search' => '' ] );
+        $terms = get_terms( [ 'taxonomy' => SanitizationHelper::key( $taxonomy ), 'hide_empty' => false, 'number' => max( 1, absint( $query_args['number'] ) ), 'offset' => max( 0, absint( $query_args['offset'] ) ), 'search' => SanitizationHelper::text( $query_args['search'] ) ] );
+        $total = wp_count_terms( [ 'taxonomy' => SanitizationHelper::key( $taxonomy ), 'hide_empty' => false, 'search' => SanitizationHelper::text( $query_args['search'] ) ] );
+        return [ 'items' => is_wp_error( $terms ) || ! is_array( $terms ) ? [] : array_map( [ self::class, 'format_term' ], $terms ), 'total' => is_wp_error( $total ) ? 0 : (int) $total, 'page' => (int) ( $args['page'] ?? 1 ) ];
+    }
+
+    public static function search( array $args = [] ): array {
+        $query_args = wp_parse_args( $args, [ 'post_type' => [ PostType::WIKI, PostType::PAGE ], 'posts_per_page' => 20, 'paged' => 1, 'post_status' => 'publish', 's' => '' ] );
+        $type = SanitizationHelper::key( $query_args['type'] ?? '' );
+        if ( 'wiki' === $type ) { $query_args['post_type'] = PostType::WIKI; } elseif ( 'page' === $type ) { $query_args['post_type'] = PostType::PAGE; }
+        if ( ! empty( $query_args['wiki_id'] ) ) { $query_args['meta_query'] = [ [ 'key' => '_wikipress_wiki_id', 'value' => absint( $query_args['wiki_id'] ) ] ]; }
+        $tax_query = [];
+        foreach ( [ Taxonomy::CATEGORY => 'category', Taxonomy::TAG => 'tag' ] as $taxonomy => $key ) {
+            if ( ! empty( $query_args[ $key ] ) ) { $tax_query[] = [ 'taxonomy' => $taxonomy, 'field' => is_numeric( $query_args[ $key ] ) ? 'term_id' : 'slug', 'terms' => $query_args[ $key ] ]; }
+        }
+        if ( $tax_query ) { $query_args['tax_query'] = $tax_query; }
+        $query = QueryHelper::posts( $query_args );
+        $items = [];
+        foreach ( $query->posts as $post ) {
+            $wiki_id = absint( get_post_meta( $post->ID, '_wikipress_wiki_id', true ) );
+            if ( PostType::WIKI === $post->post_type && ! apply_filters( 'wikipress_wiki_access_allowed', true, (int) $post->ID ) ) { continue; }
+            if ( PostType::PAGE === $post->post_type && $wiki_id > 0 && ! apply_filters( 'wikipress_wiki_access_allowed', true, $wiki_id ) ) { continue; }
+            $items[] = [ 'type' => PostType::WIKI === $post->post_type ? 'wiki' : 'page', 'item' => PostType::WIKI === $post->post_type ? self::format_wiki( $post ) : self::format_post( $post ) ];
+        }
+        return [ 'items' => $items, 'total' => (int) $query->found_posts, 'page' => (int) ( $query_args['paged'] ?? 1 ) ];
+    }
     /**
      * Lists all wikis with optional query parameters.
      *
@@ -243,6 +270,10 @@ final class API {
             'date' => $post->post_date_gmt,
             'link' => get_permalink( $post ),
         ];
+    }
+
+    public static function format_term( \WP_Term $term ): array {
+        return [ 'id' => (int) $term->term_id, 'name' => $term->name, 'slug' => $term->slug, 'count' => (int) $term->count, 'description' => $term->description ];
     }
     /**
      * Sanitizes the status value for a wiki or page.

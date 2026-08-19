@@ -8,46 +8,24 @@
  */
 namespace WikiPress\Admin\Manager\UI;
 
+use WikiPress\Includes\Functions\Admin\FunctionsSidebar;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * Renders the sidebar from the centralized FunctionsSidebar menu model.
+ */
 final class Sidebar {
+	/**
+	 * Render the admin sidebar.
+	 *
+	 * @return void
+	 */
 	public static function render(): void {
 		$current = sanitize_key( $_GET['page'] ?? 'wikipress' );
-		$groups = [
-			'manage-wiki' => [
-				'label' => __( 'Manage Wiki', 'wikipress' ),
-				'icon' => 'fa-solid fa-file-lines',
-				'items' => [
-					'wikipress-manage' => [ 'label' => __( 'Manage Wiki', 'wikipress' ), 'icon' => 'fa-solid fa-book-open-lines' ],
-					'wikipress-manage&wiki=categories' => [ 'label' => __( 'Categories', 'wikipress' ), 'icon' => 'fa-book-open-lines-category' ],
-					'wikipress-manage&wiki=tags' => [ 'label' => __( 'Tags', 'wikipress' ), 'icon' => 'fa-kit fa-solid-book-open-lines-tag' ],
-					'wikipress-manage&wiki=new' => [ 'label' => __( 'New Wiki', 'wikipress' ), 'icon' => 'fa-kit fa-solid-book-open-lines-circle-plus' ],
-				],
-			],
-			'settings' => [
-				'label' => __( 'Settings', 'wikipress' ),
-				'icon' => 'fa-solid fa-gear',
-				'items' => [
-					'wikipress-settings&tab=general' => [ 'label' => __( 'General', 'wikipress' ), 'icon' => 'fa-solid fa-sliders' ],
-					'wikipress-settings&tab=layout' => [ 'label' => __( 'Layout', 'wikipress' ), 'icon' => 'fa-solid fa-table-columns' ],
-					'wikipress-settings&tab=plugins' => [ 'label' => __( 'Plugins', 'wikipress' ), 'icon' => 'fa-solid fa-puzzle-piece' ],
-					'wikipress-settings&tab=third-party' => [ 'label' => __( '3rd Party', 'wikipress' ), 'icon' => 'fa-solid fa-plug' ],
-					'wikipress-settings&tab=access' => [ 'label' => __( 'Access', 'wikipress' ), 'icon' => 'fa-solid fa-user-shield' ],
-				],
-			],
-			'tools' => [
-				'label' => __( 'Tools', 'wikipress' ),
-				'icon' => 'fa-solid fa-toolbox',
-				'items' => [
-					'wikipress-tools&tool=debug' => [ 'label' => __( 'Debug', 'wikipress' ), 'icon' => 'fa-solid fa-bug-slash' ],
-					'wikipress-tools&tool=import' => [ 'label' => __( 'Import', 'wikipress' ), 'icon' => 'fa-solid fa-file-import' ],
-					'wikipress-tools&tool=export' => [ 'label' => __( 'Export', 'wikipress' ), 'icon' => 'fa-solid fa-file-export' ],
-					'wikipress-tools&tool=analytics' => [ 'label' => __( 'Analytics', 'wikipress' ), 'icon' => 'fa-solid fa-chart-line' ],
-				],
-			],
-		];
+		$groups  = FunctionsSidebar::get_sidebar_groups();
 		?>
 		<aside class="col-12 col-lg-auto wikipress-sidebar-column">
 			<div class="wikipress-sidebar position-sticky" style="top: 32px;">
@@ -60,8 +38,8 @@ final class Sidebar {
 						<span class="wikipress-sidebar-icon" aria-hidden="true"><i class="fa-solid fa-house"></i></span><?php esc_html_e( 'Dashboard', 'wikipress' ); ?>
 					</a>
 					<div id="wikipress-sidebar-groups">
-						<?php $active_tool = sanitize_key( $_GET['tool'] ?? 'debug' ); ?>
-						<?php foreach ( $groups as $key => $group ) : $expanded = 'settings' === $key ? 'wikipress-settings' === $current : ( 'tools' === $key ? 'wikipress-tools' === $current : in_array( $current, array_keys( $group['items'] ), true ) ); ?>
+						<?php foreach ( $groups as $key => $group ) : ?>
+							<?php $expanded = self::group_is_expanded( $key, $group, $current ); ?>
 							<div class="wikipress-sidebar-group">
 								<h3 class="wikipress-sidebar-group-heading">
 									<button class="wikipress-sidebar-link wikipress-sidebar-group-link border-0 bg-transparent w-100 text-start <?php echo $expanded ? '' : 'collapsed'; ?>" type="button" data-bs-toggle="collapse" data-bs-target="#wikipress-group-<?php echo esc_attr( $key ); ?>" aria-expanded="<?php echo $expanded ? 'true' : 'false'; ?>" aria-controls="wikipress-group-<?php echo esc_attr( $key ); ?>">
@@ -70,11 +48,13 @@ final class Sidebar {
 								</h3>
 								<div id="wikipress-group-<?php echo esc_attr( $key ); ?>" class="collapse <?php echo $expanded ? 'show' : ''; ?>">
 									<div class="nav flex-column wikipress-sidebar-group-items">
-										<?php foreach ( $group['items'] as $slug => $item ) : $active_tab = sanitize_key( $_GET['tab'] ?? 'general' ); $item_tool = str_starts_with( $slug, 'wikipress-tools&tool=' ) ? substr( $slug, strlen( 'wikipress-tools&tool=' ) ) : ''; $is_active = str_starts_with( $slug, 'wikipress-settings&tab=' ) ? ( 'wikipress-settings' === $current && str_ends_with( $slug, $active_tab ) ) : ( '' !== $item_tool ? ( 'wikipress-tools' === $current && $item_tool === $active_tool ) : $current === $slug ); ?>
-											<a class="nav-link <?php echo $is_active ? 'active' : ''; ?>" <?php echo $is_active ? 'aria-current="page"' : ''; ?> href="<?php echo esc_url( admin_url( 'admin.php?page=' . $slug ) ); ?>"><i class="<?php echo esc_attr( $item['icon'] ); ?> me-2" aria-hidden="true"></i><?php echo esc_html( $item['label'] ); ?></a>
+										<?php foreach ( $group['items'] as $slug => $item ) : ?>
+											<?php $page = self::item_page( $slug ); $query = self::item_query( $slug ); $active = self::item_is_active( $page, $query, $current ); ?>
+											<a class="nav-link <?php echo $active ? 'active' : ''; ?>" <?php echo $active ? 'aria-current="page"' : ''; ?> href="<?php echo esc_url( self::item_url( $page, $query ) ); ?>"><i class="<?php echo esc_attr( $item['icon'] ); ?> me-2" aria-hidden="true"></i><?php echo esc_html( $item['label'] ); ?></a>
 										<?php endforeach; ?>
 									</div>
 								</div>
+							</div>
 							</div>
 						<?php endforeach; ?>
 					</div>
@@ -82,5 +62,54 @@ final class Sidebar {
 			</div>
 		</aside>
 		<?php
+	}
+
+	/** @param array<string, mixed> $group */
+	private static function group_is_expanded( string $key, array $group, string $current ): bool {
+		if ( 'settings' === $key ) {
+			return 'wikipress-settings' === $current;
+		}
+		if ( 'tools' === $key ) {
+			return 'wikipress-tools' === $current;
+		}
+
+		foreach ( $group['items'] as $slug => $item ) {
+			if ( self::item_is_active( self::item_page( $slug ), self::item_query( $slug ), $current ) ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	private static function item_page( string $slug ): string {
+		return strtok( $slug, '&' );
+	}
+
+	/** @return array<string, string> */
+	private static function item_query( string $slug ): array {
+		$query = [];
+		parse_str( (string) strstr( $slug, '&' ), $query );
+		return $query;
+	}
+
+	/** @param array<string, string> $query */
+	private static function item_url( string $page, array $query ): string {
+		return admin_url( 'admin.php?page=' . $page . ( empty( $query ) ? '' : '&' . http_build_query( $query, '', '&', PHP_QUERY_RFC3986 ) ) );
+	}
+
+	/** @param array<string, string> $query */
+	private static function item_is_active( string $page, array $query, string $current ): bool {
+		if ( $page !== $current ) {
+			return false;
+		}
+
+		foreach ( $query as $key => $value ) {
+			if ( (string) ( $_GET[ $key ] ?? '' ) !== (string) $value ) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 }

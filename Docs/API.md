@@ -28,12 +28,19 @@ The API also applies the `wikipress_wiki_access_allowed` filter when reading wik
 | GET | `/pages/{id}` | Retrieve one page |
 | POST, PUT, PATCH | `/pages/{id}` | Update one page |
 | DELETE | `/pages/{id}` | Delete one page |
+| GET | `/categories` | List Wiki categories |
+| GET | `/tags` | List Wiki tags |
+| GET | `/search` | Search Wikis and pages |
 
 Collection endpoints accept:
 
 - `per_page`: integer from 1 to 100, default 20
 - `page`: integer from 1, default 1
 - `search`: text search value
+
+Taxonomy endpoints return term objects with `id`, `name`, `slug`, `count`, and `description`.
+
+The `/search` endpoint accepts the collection parameters plus `type` (`wiki` or `page`), `wiki_id`, `category`, and `tag`. Category and tag filters accept a term ID or slug. Search results include a `type` and an `item` containing the normal Wiki or page response shape.
 
 Wiki status values are `draft`, `publish`, and `private`. The delete endpoints accept `force=true` to bypass the trash.
 
@@ -105,7 +112,7 @@ $wikis = API::list_wikis([
 $wiki = API::get_wiki(42);
 ```
 
-Available methods include `list_wikis()`, `get_wiki()`, `create_wiki()`, `update_wiki()`, `delete_wiki()`, and the corresponding page methods.
+Available methods include `list_wikis()`, `get_wiki()`, `create_wiki()`, `update_wiki()`, `delete_wiki()`, `list_terms()`, `search()`, and the corresponding page methods.
 
 `format_wiki()` and `format_post()` are public formatting methods used when an extension needs the same response shape as the REST API.
 

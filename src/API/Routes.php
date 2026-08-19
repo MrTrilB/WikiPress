@@ -7,6 +7,7 @@
 namespace WikiPress\API;
 
 use WikiPress\Includes\Core\PostType;
+use WikiPress\Includes\Core\Taxonomy;
 use WikiPress\Includes\Functions\Helpers\PermissionHelper;
 use WikiPress\Includes\Functions\Helpers\RequestHelper;
 use WP_REST_Request;
@@ -20,6 +21,9 @@ final class Routes {
      * Registers all REST API routes for WikiPress.
      */
     public static function register_routes(): void {
+        register_rest_route( 'wikipress/v1', '/categories', [ 'methods' => 'GET', 'callback' => [ self::class, 'list_categories' ], 'permission_callback' => [ self::class, 'read_permission' ], 'args' => Schema::taxonomy_collection_parameters() ] );
+        register_rest_route( 'wikipress/v1', '/tags', [ 'methods' => 'GET', 'callback' => [ self::class, 'list_tags' ], 'permission_callback' => [ self::class, 'read_permission' ], 'args' => Schema::taxonomy_collection_parameters() ] );
+        register_rest_route( 'wikipress/v1', '/search', [ 'methods' => 'GET', 'callback' => [ self::class, 'search' ], 'permission_callback' => [ self::class, 'read_permission' ], 'args' => Schema::search_parameters() ] );
         register_rest_route( 'wikipress/v1', '/wikis', [
             [ 'methods' => 'GET', 'callback' => [ self::class, 'list_wikis' ], 'permission_callback' => [ self::class, 'read_permission' ], 'args' => Schema::collection_parameters() ],
             [ 'methods' => 'POST', 'callback' => [ self::class, 'create_wiki' ], 'permission_callback' => [ self::class, 'write_permission' ], 'args' => Schema::wiki()['properties'] ],
@@ -59,6 +63,16 @@ final class Routes {
      */
     public static function list_pages( WP_REST_Request $request ): \WP_REST_Response {
         return Response::success( API::list_pages( [ 'post_type' => PostType::PAGE, 'posts_per_page' => RequestHelper::integer_range( $request->get_param( 'per_page' ), 1, 100, 20 ), 'paged' => max( 1, absint( $request->get_param( 'page' ) ?: 1 ) ), 's' => RequestHelper::text( [ 'search' => $request->get_param( 'search' ) ], 'search' ), 'post_status' => 'publish' ] ) );
+    }
+    public static function list_categories( WP_REST_Request $request ): \WP_REST_Response { return Response::success( self::list_terms( Taxonomy::CATEGORY, $request ) ); }
+    public static function list_tags( WP_REST_Request $request ): \WP_REST_Response { return Response::success( self::list_terms( Taxonomy::TAG, $request ) ); }
+    public static function search( WP_REST_Request $request ): \WP_REST_Response {
+        return Response::success( API::search( [ 'posts_per_page' => RequestHelper::integer_range( $request->get_param( 'per_page' ), 1, 100, 20 ), 'paged' => max( 1, absint( $request->get_param( 'page' ) ?: 1 ) ), 's' => RequestHelper::text( [ 'search' => $request->get_param( 'search' ) ], 'search' ), 'type' => $request->get_param( 'type' ), 'wiki_id' => $request->get_param( 'wiki_id' ), 'category' => $request->get_param( 'category' ), 'tag' => $request->get_param( 'tag' ), 'post_status' => 'publish' ] ) );
+    }
+    private static function list_terms( string $taxonomy, WP_REST_Request $request ): array {
+        $page = max( 1, absint( $request->get_param( 'page' ) ?: 1 ) );
+        $per_page = RequestHelper::integer_range( $request->get_param( 'per_page' ), 1, 100, 20 );
+        return API::list_terms( $taxonomy, [ 'number' => $per_page, 'offset' => ( $page - 1 ) * $per_page, 'page' => $page, 'search' => $request->get_param( 'search' ) ] );
     }
     /**
      * Lists wikis with optional filtering and pagination.
