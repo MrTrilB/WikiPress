@@ -75,9 +75,9 @@ final class RoleManager extends Manager {
 	public function create_role(): void {
 
 		$this->authorize_action( 'wikipress_create_role' );
-		$display_name = RequestHelper::text( $_POST, 'role_display_name' );
+		$display_name = $this->valid_role_name( RequestHelper::text( $_POST, 'role_display_name' ) );
 		$slug = $this->valid_slug( RequestHelper::key( $_POST, 'role_slug' ) );
-		if ( '' === $display_name || '' === $slug || wp_roles()->is_role( $slug ) ) {
+		if ( '' === $display_name || '' === $slug || wp_roles()->is_role( $slug ) || $this->role_name_exists( $display_name ) ) {
 			$this->redirect( 'invalid' );
 		}
 		add_role( $slug, $display_name, $this->submitted_capabilities() );
@@ -90,10 +90,10 @@ final class RoleManager extends Manager {
 
 		$this->authorize_action( 'wikipress_update_role' );
 		$old_slug = RequestHelper::key( $_POST, 'old_role_slug' );
-		$display_name = RequestHelper::text( $_POST, 'role_display_name' );
+		$display_name = $this->valid_role_name( RequestHelper::text( $_POST, 'role_display_name' ) );
 		$new_slug = $this->valid_slug( RequestHelper::key( $_POST, 'role_slug' ) );
 		$roles = wp_roles();
-		if ( '' === $old_slug || ! $roles->is_role( $old_slug ) || '' === $display_name || '' === $new_slug || ( $old_slug !== $new_slug && $roles->is_role( $new_slug ) ) || ( $old_slug !== $new_slug && $this->role_has_users( $old_slug ) ) || ( 'administrator' === $old_slug && 'administrator' !== $new_slug ) ) {
+		if ( '' === $old_slug || ! $roles->is_role( $old_slug ) || '' === $display_name || '' === $new_slug || ( $old_slug !== $new_slug && $roles->is_role( $new_slug ) ) || $this->role_name_exists( $display_name, $old_slug ) || ( $old_slug !== $new_slug && $this->role_has_users( $old_slug ) ) || ( 'administrator' === $old_slug && 'administrator' !== $new_slug ) ) {
 			$this->redirect( 'invalid' );
 		}
 		$capabilities = $this->submitted_capabilities();
@@ -168,7 +168,7 @@ final class RoleManager extends Manager {
 	private function render_modal_start( string $id, string $title, string $action ): void {
 		?>
 		<div class="modal fade" id="<?php echo esc_attr( $id ); ?>" tabindex="-1" aria-labelledby="<?php echo esc_attr( $id ); ?>-title" aria-hidden="true">
-			<div class="modal-dialog modal-xl modal-dialog-scrollable modal-dialog-centered"><div class="modal-content"><form method="post" action="<?php echo esc_url( UrlHelper::admin_action( $action ) ); ?>" class="wikipress-role-form">
+			<div class="modal-dialog modal-xl modal-dialog-scrollable modal-dialog-centered"><div class="modal-content"><form method="post" action="<?php echo esc_url( UrlHelper::admin_action( $action ) ); ?>" class="wikipress-role-form"<?php echo 'wikipress_create_role' === $action ? ' data-role-create' : ''; ?>>
 				<div class="modal-header"><h2 class="modal-title h5" id="<?php echo esc_attr( $id ); ?>-title"><?php echo esc_html( $title ); ?></h2><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<?php esc_attr_e( 'Close', 'wikipress' ); ?>"></button></div>
 				<div class="modal-body"><?php echo FormFieldHelper::input( 'action', $action, [ 'type' => 'hidden' ] ); ?><?php wp_nonce_field( $action ); ?>
 		<?php
@@ -177,9 +177,13 @@ final class RoleManager extends Manager {
      * Renders the identity step of the modal dialog.
      */
 	private function render_identity_step(): void {
+		$roles = wp_roles()->roles;
+		$role_names = array_values( array_map( static fn( array $role ): string => strtolower( trim( (string) ( $role['name'] ?? '' ) ) ), $roles ) );
+		$role_slugs = array_values( array_map( 'strtolower', array_keys( $roles ) ) );
 		?>
 		<div class="wikipress-role-step" data-role-step="identity">
-			<div class="row g-3"><div class="col-md-6"><?php echo FormFieldHelper::label( 'wikipress-add-role-name', __( 'Role Display Name', 'wikipress' ) ); ?><?php echo FormFieldHelper::input( 'role_display_name', '', [ 'id' => 'wikipress-add-role-name', 'required' => true ] ); ?></div><div class="col-md-6"><?php echo FormFieldHelper::label( 'wikipress-add-role-slug', __( 'Role Slug', 'wikipress' ) ); ?><?php echo FormFieldHelper::input( 'role_slug', '', [ 'id' => 'wikipress-add-role-slug', 'pattern' => '[a-z_]+', 'title' => __( 'Use lowercase letters and underscores only.', 'wikipress' ), 'required' => true ] ); ?></div></div>
+			<div class="row g-3"><div class="col-md-6"><?php echo FormFieldHelper::label( 'wikipress-add-role-name', __( 'Role Display Name', 'wikipress' ) ); ?><?php echo FormFieldHelper::input( 'role_display_name', '', [ 'id' => 'wikipress-add-role-name', 'required' => true, 'pattern' => '[A-Za-z0-9 _-]+' ] ); ?><div class="invalid-feedback" data-role-name-feedback></div></div><div class="col-md-6"><?php echo FormFieldHelper::label( 'wikipress-add-role-slug', __( 'Role Slug', 'wikipress' ) ); ?><?php echo FormFieldHelper::input( 'role_slug', '', [ 'id' => 'wikipress-add-role-slug', 'required' => true, 'pattern' => '[a-z0-9_-]+' ] ); ?><div class="invalid-feedback" data-role-slug-feedback></div></div></div>
+			<div class="d-none" data-role-existing-names="<?php echo esc_attr( wp_json_encode( $role_names ) ); ?>" data-role-existing-slugs="<?php echo esc_attr( wp_json_encode( $role_slugs ) ); ?>"></div>
 		</div>
 		<?php
 	}
@@ -281,7 +285,29 @@ final class RoleManager extends Manager {
 
 		$slug = strtolower( SanitizationHelper::text( $value ) );
 
-		return preg_match( '/^[a-z_]+$/', $slug ) ? $slug : '';
+		return preg_match( '/^[a-z0-9_-]+$/', $slug ) ? $slug : '';
+
+	}
+
+	private function valid_role_name( string $value ): string {
+
+		$name = trim( SanitizationHelper::text( $value ) );
+
+		return preg_match( '/^[A-Za-z0-9 _-]+$/', $name ) ? $name : '';
+
+	}
+
+	private function role_name_exists( string $name, string $exclude_slug = '' ): bool {
+
+	$name = strtolower( trim( $name ) );
+
+		foreach ( wp_roles()->roles as $slug => $role ) {
+			if ( $slug !== $exclude_slug && $name === strtolower( trim( (string) ( $role['name'] ?? '' ) ) ) ) {
+				return true;
+			}
+		}
+
+		return false;
 
 	}
     /**
