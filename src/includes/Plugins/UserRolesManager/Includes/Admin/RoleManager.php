@@ -217,6 +217,7 @@ final class RoleManager extends Manager {
 										</div>
 									<?php endforeach; ?>
 								</div>
+							</div>
 						</div>
 					</div>
 				<?php endforeach; ?>
