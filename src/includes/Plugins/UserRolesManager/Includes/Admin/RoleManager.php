@@ -199,15 +199,24 @@ final class RoleManager extends Manager {
 		<div class="wikipress-role-step" data-role-step="capabilities">
 			<h3 class="h6 mb-3"><?php esc_html_e( 'Capabilities', 'wikipress' ); ?></h3>
 			<div class="accordion" id="<?php echo esc_attr( $accordion_id ); ?>">
-				<?php $index = 0; foreach ( $groups as $label => $capabilities ) : $index++; $heading_id = wp_unique_id( 'wikipress-capability-heading-' ); $collapse_id = wp_unique_id( 'wikipress-capability-group-' ); $is_open = 1 === $index; ?>
+				<?php $index = 0; foreach ( $groups as $label => $capabilities ) : $index++; $collapse_id = wp_unique_id( 'wikipress-capability-collapse-' ); $is_open = 1 === $index; ?>
 					<div class="accordion-item">
-						<h4 class="accordion-header" id="<?php echo esc_attr( $heading_id ); ?>">
-							<button class="accordion-button<?php echo $is_open ? '' : ' collapsed'; ?>" type="button" data-bs-toggle="collapse" data-bs-target="#<?php echo esc_attr( $collapse_id ); ?>" aria-expanded="<?php echo $is_open ? 'true' : 'false'; ?>" aria-controls="<?php echo esc_attr( $collapse_id ); ?>"><?php echo esc_html( $label ); ?></button>
-						</h4>
-						<div id="<?php echo esc_attr( $collapse_id ); ?>" class="accordion-collapse collapse<?php echo $is_open ? ' show' : ''; ?>" aria-labelledby="<?php echo esc_attr( $heading_id ); ?>" data-bs-parent="#<?php echo esc_attr( $accordion_id ); ?>">
-							<div class="accordion-body"><div class="row g-2">
-				<?php foreach ( $capabilities as $capability => $description ) : ?><div class="col-12 col-sm-6 col-lg-4 col-xl-2"><div class="card h-100 p-2 wikipress-capability-card"><?php echo FormFieldHelper::checkbox( 'capabilities[]', $capability, $description ?: $capability, [ 'class' => 'mt-1', 'checked' => ! empty( $selected[ $capability ] ), 'wrapper_class' => 'd-flex align-items-start gap-2 mb-0' ] ); ?></div></div><?php endforeach; ?>
-							</div></div>
+						<h2 class="accordion-header">
+							<button class="accordion-button<?php echo $is_open ? '' : ' collapsed'; ?>" type="button" data-bs-toggle="collapse" data-bs-target="#<?php echo esc_attr( $collapse_id ); ?>" aria-expanded="<?php echo $is_open ? 'true' : 'false'; ?>" aria-controls="<?php echo esc_attr( $collapse_id ); ?>">
+								<?php echo esc_html( $label ); ?>
+							</button>
+						</h2>
+						<div id="<?php echo esc_attr( $collapse_id ); ?>" class="accordion-collapse collapse<?php echo $is_open ? ' show' : ''; ?>" data-bs-parent="#<?php echo esc_attr( $accordion_id ); ?>">
+							<div class="accordion-body">
+								<div class="row g-2">
+									<?php foreach ( $capabilities as $capability => $description ) : ?>
+										<div class="col-12 col-sm-6 col-lg-4 col-xl-2">
+											<div class="card h-100 p-2 wikipress-capability-card">
+												<?php echo FormFieldHelper::checkbox( 'capabilities[]', $capability, $description ?: $capability, [ 'class' => 'mt-1', 'checked' => ! empty( $selected[ $capability ] ), 'wrapper_class' => 'd-flex align-items-start gap-2 mb-0' ] ); ?>
+											</div>
+										</div>
+									<?php endforeach; ?>
+								</div>
 						</div>
 					</div>
 				<?php endforeach; ?>
