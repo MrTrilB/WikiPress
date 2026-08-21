@@ -85,6 +85,15 @@ const initializeRoleForms = () => {
   form.querySelectorAll('input[required]').forEach((input) => {
     input.addEventListener('input', updateStep);
   });
+  form.querySelectorAll('[data-capability-toggle]').forEach((toggle) => {
+    const input = form.querySelector(`#${CSS.escape(toggle.htmlFor)}`);
+    if (!input) return;
+    input.addEventListener('change', () => {
+      toggle.textContent = input.checked ? 'On' : 'Off';
+      toggle.classList.toggle('btn-primary', input.checked);
+      toggle.classList.toggle('btn-outline-primary', !input.checked);
+    });
+  });
   form.addEventListener('submit', (event) => {
     if (isCreateForm && !validateCreateFields()) {
       event.preventDefault();

@@ -3,14 +3,39 @@
 }
 
 .wikipress-capability-buttons {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: 1fr;
   gap: 0.5rem;
 }
 
-.wikipress-capability-button {
-  flex: 1 1 14rem;
-  min-height: 2.75rem;
+.wikipress-capability-card {
+  border-color: #dcdcde;
+}
+
+.wikipress-capability-card .card-body {
+  min-height: 4.5rem;
+}
+
+.wikipress-capability-toggle {
+  min-width: 3.5rem;
+}
+
+@media (min-width: 576px) {
+  .wikipress-capability-buttons {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 768px) {
+  .wikipress-capability-buttons {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 992px) {
+  .wikipress-capability-buttons {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
 }
 
 .wikipress-role-step[data-role-step="capabilities"] {
