@@ -208,15 +208,25 @@ final class RoleManager extends Manager {
 						</h2>
 						<div id="<?php echo esc_attr( $collapse_id ); ?>" class="accordion-collapse collapse<?php echo $is_open ? ' show' : ''; ?>" data-bs-parent="#<?php echo esc_attr( $accordion_id ); ?>">
 							<div class="accordion-body">
-								<div class="row g-2">
-									<?php foreach ( $capabilities as $capability => $description ) : ?>
-										<div class="col-12 col-sm-6 col-lg-4 col-xl-2">
-											<div class="card h-100 p-2 wikipress-capability-card">
-												<?php echo FormFieldHelper::checkbox( 'capabilities[]', $capability, $description ?: $capability, [ 'class' => 'mt-1', 'checked' => ! empty( $selected[ $capability ] ), 'wrapper_class' => 'd-flex align-items-start gap-2 mb-0' ] ); ?>
-											</div>
-										</div>
-									<?php endforeach; ?>
-								</div>
+								<?php
+								$buttons = [];
+								foreach ( $capabilities as $capability => $description ) {
+									$buttons[ $capability ] = [
+										'label' => $description ?: $capability,
+									];
+								}
+								echo FormFieldHelper::button_group(
+									'capabilities[]',
+									$buttons,
+									array_keys( $selected ),
+									[
+										'type' => 'checkbox',
+										'class' => 'wikipress-capability-buttons',
+										'button_class' => 'wikipress-capability-button text-start',
+										'aria_label' => $label,
+									]
+								);
+								?>
 							</div>
 						</div>
 					</div>

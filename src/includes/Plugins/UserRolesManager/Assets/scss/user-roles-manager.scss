@@ -2,14 +2,15 @@
   border-color: #dcdcde;
 }
 
-.wikipress-capability-card {
-  border-color: #dcdcde;
-  cursor: pointer;
+.wikipress-capability-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 }
 
-.wikipress-capability-card:hover,
-.wikipress-capability-card:has(input:focus-visible) {
-  border-color: #2271b1;
+.wikipress-capability-button {
+  flex: 1 1 14rem;
+  min-height: 2.75rem;
 }
 
 .wikipress-role-step[data-role-step="capabilities"] {
