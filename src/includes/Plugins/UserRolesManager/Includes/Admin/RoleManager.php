@@ -215,7 +215,7 @@ final class RoleManager extends Manager {
 									$is_selected = isset( $selected[ $capability ] );
 									?>
 									<div class="card wikipress-capability-card h-100">
-										<div class="card-body d-flex flex-column align-items-start gap-3">
+										<div class="card-body d-flex flex-column align-items-center gap-3">
 											<h6 class="card-title mb-0"><?php echo esc_html( $description ?: $capability ); ?></h6>
 											<input class="btn-check" type="checkbox" name="capabilities[]" value="<?php echo esc_attr( $capability ); ?>" id="<?php echo esc_attr( $input_id ); ?>" autocomplete="off"<?php checked( $is_selected ); ?> />
 											<label class="btn btn-<?php echo $is_selected ? 'primary' : 'outline-primary'; ?> wikipress-capability-toggle" for="<?php echo esc_attr( $input_id ); ?>" data-capability-toggle><?php echo $is_selected ? esc_html__( 'On', 'wikipress' ) : esc_html__( 'Off', 'wikipress' ); ?></label>
