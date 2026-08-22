@@ -8,6 +8,7 @@
  */
 
 namespace WikiPress\Includes\Plugins\UserRolesManager\Includes;
+use WikiPress\Includes\Plugins\UserRolesManager\Includes\Core\Capabilities;
 use WikiPress\Includes\Plugins\UserRolesManager\Includes\Settings\Settings;
 
 final class Includes {
@@ -23,6 +24,7 @@ final class Includes {
     }
 
     public function init(): void {
+        Capabilities::register();
         $this->settings->register();
     }
 

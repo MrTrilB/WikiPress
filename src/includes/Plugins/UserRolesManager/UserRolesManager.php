@@ -154,7 +154,7 @@ class UserRolesManager implements PluginInterface, SettingsProviderInterface, Se
             [
                 'page_title' => __( 'Roles Manager', 'wikipress' ),
                 'menu_title' => __( 'Roles Manager', 'wikipress' ),
-                'capability' => Settings::get_key( 'role_manager_capability', 'manage_options' ),
+                'capability' => 'wikipress_roles_view',
                 'menu_slug' => 'wikipress-roles-manager',
                 'parent' => 'users.php',
                 'callback' => [ $this->role_manager(), 'render' ],
@@ -173,6 +173,7 @@ class UserRolesManager implements PluginInterface, SettingsProviderInterface, Se
                 'parent' => 'tools',
                 'label' => __( 'Roles Manager', 'wikipress' ),
                 'page' => 'wikipress-roles-manager',
+                'capability' => 'wikipress_roles_view',
                 'icon' => 'fa-solid fa-user-shield',
             ],
         ];

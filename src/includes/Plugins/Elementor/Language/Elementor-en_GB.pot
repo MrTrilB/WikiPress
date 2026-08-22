@@ -7,7 +7,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Domain: wikipress\n"
-#: src/includes/Plugins/Elementor/Includes/Widgets/WikiPress/WikiReadingTime.php:112
+#: src/includes/Plugins/Elementor/Includes/Widgets/WikiPress/WikiReadingTime.php:113
 msgid "~%d min read"
 msgstr ""
 
@@ -186,7 +186,7 @@ msgstr ""
 msgid "Use this widget to display wiki entries in an Elementor layout."
 msgstr ""
 
-#: src/includes/Plugins/Elementor/Includes/Templates/WikiPress/wiki-related.php:35
+#: src/includes/Plugins/Elementor/Includes/Templates/WikiPress/wiki-related.php:33
 msgid "View count"
 msgstr ""
 

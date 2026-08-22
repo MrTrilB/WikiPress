@@ -19,7 +19,7 @@ final class FunctionsWiki {
 		if ( 'POST' !== strtoupper( $_SERVER['REQUEST_METHOD'] ?? '' ) || 'create_wiki' !== ( $_POST['wikipress_action'] ?? '' ) ) {
 			return '';
 		}
-		if ( ! current_user_can( 'publish_posts' ) || ! check_admin_referer( 'wikipress_create_wiki', 'wikipress_create_wiki_nonce' ) ) {
+		if ( ! current_user_can( 'wikipress_create' ) || ! current_user_can( 'wikipress_publish' ) || ! check_admin_referer( 'wikipress_create_wiki', 'wikipress_create_wiki_nonce' ) ) {
 			return '<div class="notice notice-error"><p>' . esc_html__( 'You are not authorized to create a Wiki.', 'wikipress' ) . '</p></div>';
 		}
 
@@ -83,7 +83,7 @@ final class FunctionsWiki {
 
 	public function save_wiki_settings(): void {
 		$wiki_id = SanitizationHelper::integer( $_POST['wiki_id'] ?? 0 );
-		if ( ! AjaxHelper::authorized( 'wikipress_manage_wiki', 'edit_post', $wiki_id ) || ! PostHelper::is_wiki( $wiki_id ) ) {
+		if ( ! PostHelper::is_wiki( $wiki_id ) || ! $this->can_edit_wiki( $wiki_id ) ) {
 			AjaxHelper::unauthorized( __( 'You are not authorized to update this Wiki.', 'wikipress' ) );
 		}
 		$settings = wp_unslash( $_POST['settings'] ?? [] );
@@ -104,7 +104,7 @@ final class FunctionsWiki {
 
 	public function delete_wiki(): void {
 		$wiki_id = SanitizationHelper::integer( $_POST['wiki_id'] ?? 0 );
-		if ( ! AjaxHelper::authorized( 'wikipress_manage_wiki', 'delete_post', $wiki_id ) || ! PostHelper::is_wiki( $wiki_id ) ) {
+		if ( ! PostHelper::is_wiki( $wiki_id ) || ! $this->can_delete_wiki( $wiki_id ) ) {
 			AjaxHelper::unauthorized( __( 'You are not authorized to delete this Wiki.', 'wikipress' ) );
 		}
 		$pages = QueryHelper::posts( [ 'post_type' => PostType::PAGE, 'post_status' => 'any', 'posts_per_page' => -1, 'fields' => 'ids', 'meta_key' => '_wikipress_wiki_id', 'meta_value' => $wiki_id ] )->posts;
@@ -117,7 +117,7 @@ final class FunctionsWiki {
 
 	public function delete_wiki_page(): void {
 		$page_id = SanitizationHelper::integer( $_POST['page_id'] ?? 0 );
-		if ( ! AjaxHelper::authorized( 'wikipress_manage_wiki', 'delete_post', $page_id ) || ! PostHelper::is_wiki_page( $page_id ) ) {
+		if ( ! PostHelper::is_wiki_page( $page_id ) || ! $this->can_delete_page( $page_id ) ) {
 			AjaxHelper::unauthorized( __( 'You are not authorized to delete this Wiki Page.', 'wikipress' ) );
 		}
 		wp_delete_post( $page_id, true );
@@ -128,7 +128,7 @@ final class FunctionsWiki {
 		$wiki_id = SanitizationHelper::integer( $_POST['wiki_id'] ?? 0 );
 		$term_id = SanitizationHelper::integer( $_POST['term_id'] ?? 0 );
 		$taxonomy = SanitizationHelper::key( $_POST['taxonomy'] ?? '' );
-		if ( ! AjaxHelper::authorized( 'wikipress_manage_wiki', 'edit_post', $wiki_id ) || ! PostHelper::is_wiki( $wiki_id ) || ! in_array( $taxonomy, [ Taxonomy::CATEGORY, Taxonomy::TAG ], true ) ) {
+		if ( ! PostHelper::is_wiki( $wiki_id ) || ! $this->can_edit_wiki( $wiki_id ) || ! in_array( $taxonomy, [ Taxonomy::CATEGORY, Taxonomy::TAG ], true ) ) {
 			AjaxHelper::unauthorized( __( 'You are not authorized to manage Wiki terms.', 'wikipress' ) );
 		}
 		$args = [ 'slug' => SanitizationHelper::slug( $_POST['slug'] ?? '' ), 'description' => SanitizationHelper::textarea( $_POST['description'] ?? '' ) ];
@@ -150,11 +150,32 @@ final class FunctionsWiki {
 		$wiki_id = SanitizationHelper::integer( $_POST['wiki_id'] ?? 0 );
 		$term_id = SanitizationHelper::integer( $_POST['term_id'] ?? 0 );
 		$taxonomy = SanitizationHelper::key( $_POST['taxonomy'] ?? '' );
-		if ( ! AjaxHelper::authorized( 'wikipress_manage_wiki', 'edit_post', $wiki_id ) || ! PostHelper::is_wiki( $wiki_id ) || ! in_array( $taxonomy, [ Taxonomy::CATEGORY, Taxonomy::TAG ], true ) ) {
+		if ( ! PostHelper::is_wiki( $wiki_id ) || ! $this->can_edit_wiki( $wiki_id ) || ! in_array( $taxonomy, [ Taxonomy::CATEGORY, Taxonomy::TAG ], true ) ) {
 			AjaxHelper::unauthorized( __( 'You are not authorized to manage Wiki terms.', 'wikipress' ) );
 		}
 		$term_ids = array_diff( TaxonomyHelper::ids( TaxonomyHelper::terms( $taxonomy, $wiki_id ) ), [ $term_id ] );
 		wp_set_post_terms( $wiki_id, $term_ids, $taxonomy, false );
 		AjaxHelper::success( [ 'message' => __( 'Term removed from this Wiki.', 'wikipress' ) ] );
+	}
+
+	private function can_edit_wiki( int $wiki_id ): bool {
+		$post = get_post( $wiki_id );
+		return current_user_can( 'wikipress_edit' )
+			&& ( (int) $post->post_author === get_current_user_id() || current_user_can( 'wikipress_edit_others' ) )
+			&& ( 'publish' !== $post->post_status || current_user_can( 'wikipress_edit_published' ) );
+	}
+
+	private function can_delete_wiki( int $wiki_id ): bool {
+		$post = get_post( $wiki_id );
+		return current_user_can( 'wikipress_delete' )
+			&& ( (int) $post->post_author === get_current_user_id() || current_user_can( 'wikipress_delete_others' ) )
+			&& ( 'publish' !== $post->post_status || current_user_can( 'wikipress_delete_published' ) );
+	}
+
+	private function can_delete_page( int $page_id ): bool {
+		$post = get_post( $page_id );
+		return current_user_can( 'wikipress_page_delete' )
+			&& ( (int) $post->post_author === get_current_user_id() || current_user_can( 'wikipress_page_delete_others' ) )
+			&& ( 'publish' !== $post->post_status || current_user_can( 'wikipress_page_delete_published' ) );
 	}
 }

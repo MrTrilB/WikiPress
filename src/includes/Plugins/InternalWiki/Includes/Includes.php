@@ -8,6 +8,7 @@
  */
 
 namespace WikiPress\Includes\Plugins\InternalWiki\Includes;
+use WikiPress\Includes\Plugins\InternalWiki\Includes\Core\Capabilities;
 use WikiPress\Includes\Plugins\InternalWiki\Includes\Settings\Settings;
 
 final class Includes {
@@ -39,6 +40,7 @@ final class Includes {
      * Initializes the plugin's settings.
      */
     public function init(): void {
+        Capabilities::register();
         $this->settings->register();
     }
     /**

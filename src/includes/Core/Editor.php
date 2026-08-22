@@ -14,11 +14,22 @@ final class Editor {
         if ( 'POST' !== strtoupper( $_SERVER['REQUEST_METHOD'] ?? '' ) || 'save_wiki_page' !== ( $_POST['wikipress_action'] ?? '' ) || ! check_admin_referer( 'wikipress_save_wiki_page', 'wikipress_save_wiki_page_nonce' ) ) {
             return false;
         }
+        $page = $page_id ? get_post( $page_id ) : null;
+        if ( ! $page_id && ! current_user_can( 'wikipress_page_create' ) ) {
+            return false;
+        }
+        if ( $page_id && ( ! $page || PostType::PAGE !== $page->post_type || ! current_user_can( 'wikipress_page_edit' ) || ( (int) $page->post_author !== get_current_user_id() && ! current_user_can( 'wikipress_page_edit_others' ) ) || ( 'publish' === $page->post_status && ! current_user_can( 'wikipress_page_edit_published' ) ) ) ) {
+            return false;
+        }
 
         $input = wp_unslash( $_POST['wikipress_page'] ?? [] );
         $input = is_array( $input ) ? $input : [];
         $title = SanitizationHelper::text( $input['title'] ?? '' );
         if ( '' === $title ) {
+            return false;
+        }
+
+        if ( ! current_user_can( 'wikipress_page_publish' ) ) {
             return false;
         }
 

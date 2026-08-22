@@ -94,6 +94,9 @@ const initializeRoleForms = () => {
       toggle.classList.toggle('btn-outline-primary', !input.checked);
     });
   });
+  form.querySelectorAll('[data-bs-toggle="tooltip"]').forEach((tooltip) => {
+    if (window.bootstrap?.Tooltip) new window.bootstrap.Tooltip(tooltip);
+  });
   form.addEventListener('submit', (event) => {
     if (isCreateForm && !validateCreateFields()) {
       event.preventDefault();

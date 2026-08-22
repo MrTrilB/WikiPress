@@ -48,6 +48,9 @@ final class FunctionsSettings {
     }
 
     public function sanitize_general( $input ): array {
+        if ( ! current_user_can( 'wikipress_settings_general_edit' ) ) {
+            return (array) Settings::get_group( Settings::GENERAL, [] );
+        }
         $input = is_array( $input ) ? $input : [];
         $rewrite_changed = false;
         foreach ( [ 'root_name', 'root_description', 'archive_title', 'archive_description', 'root_slug', 'category_slug', 'tag_slug', 'permalink', 'enable_schema' ] as $key ) {
@@ -63,6 +66,9 @@ final class FunctionsSettings {
     }
 
     public function sanitize_layout( $input ): array {
+        if ( ! current_user_can( 'wikipress_settings_layout_edit' ) ) {
+            return (array) Settings::get_group( Settings::LAYOUT, [] );
+        }
         $input = is_array( $input ) ? $input : [];
         $section = sanitize_key( $input['layout_section'] ?? 'general' );
         unset( $input['layout_section'] );
@@ -111,6 +117,9 @@ final class FunctionsSettings {
     }
 
     public function sanitize_access( $input ): array {
+        if ( ! current_user_can( 'wikipress_settings_access_edit' ) ) {
+            return (array) Settings::get_group( Settings::ACCESS, [] );
+        }
         $input = is_array( $input ) ? $input : [];
         $allowed = [ 'manage_options', 'edit_posts', 'publish_posts' ];
         foreach ( [ 'create_wikis', 'write_pages', 'view_analytics', 'manage_plugins' ] as $key ) {

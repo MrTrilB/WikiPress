@@ -7,31 +7,31 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Domain: wikipress\n"
-#: src/Public/Frontend.php:37
+#: src/Public/Frontend.php:38
 msgid "%d min read"
 msgstr ""
 
-#: src/Includes/Plugins/Gutenburg/Includes/Blocks/wiki-reading-time/WikiReadingTime.php:24
+#: src/Includes/Plugins/Gutenburg/Includes/Blocks/wiki-reading-time/WikiReadingTime.php:25
 msgid "%d minute read"
 msgid_plural "%d minute read"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:67
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:60
 msgid "%d permission"
 msgid_plural "%d permissions"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/Admin/Manager/Wiki/WikiForms.php:151
+#: src/Admin/Manager/Wiki/WikiForms.php:152
 msgid "%s Settings"
 msgstr ""
 
-#: src/Includes/Plugins/Elementor/Includes/Widgets/WikiPress/WikiReadingTime.php:112
+#: src/Includes/Plugins/Elementor/Includes/Widgets/WikiPress/WikiReadingTime.php:113
 msgid "~%d min read"
 msgstr ""
 
-#: src/Admin/Manager/UI/Sidebar.php:36
+#: src/Includes/Functions/Admin/FunctionsSidebar.php:153
 msgid "3rd Party"
 msgstr ""
 
@@ -39,12 +39,12 @@ msgstr ""
 msgid "A demonstration WikiPress extension plugin."
 msgstr ""
 
-#: src/Includes/Tools/DataTransfer.php:86
+#: src/Includes/Tools/DataTransfer.php:87
 msgid "A page entry was skipped because it was invalid."
 msgstr ""
 
-#: src/API/API.php:151
-#: src/API/API.php:180
+#: src/API/API.php:178
+#: src/API/API.php:207
 #: src/API/Validators.php:58
 msgid "A page title is required."
 msgstr ""
@@ -73,12 +73,12 @@ msgstr ""
 msgid "A small minimum prevents noisy searches from very short terms."
 msgstr ""
 
-#: src/Includes/Tools/DataTransfer.php:73
+#: src/Includes/Tools/DataTransfer.php:74
 msgid "A Wiki entry was skipped because it was invalid."
 msgstr ""
 
-#: src/API/API.php:57
-#: src/API/API.php:87
+#: src/API/API.php:114
+#: src/API/API.php:84
 #: src/API/Validators.php:31
 msgid "A Wiki name is required."
 msgstr ""
@@ -87,7 +87,7 @@ msgstr ""
 msgid "Above Page Content"
 msgstr ""
 
-#: src/Admin/Manager/UI/Sidebar.php:37
+#: src/Includes/Functions/Admin/FunctionsSidebar.php:154
 msgid "Access"
 msgstr ""
 
@@ -95,9 +95,13 @@ msgstr ""
 msgid "Account"
 msgstr ""
 
-#: src/Admin/Manager/Wiki/WikiForms.php:201
-#: src/Admin/Manager/Wiki/WikiForms.php:211
+#: src/Admin/Manager/Wiki/WikiForms.php:202
+#: src/Admin/Manager/Wiki/WikiForms.php:212
 msgid "Actions"
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:322
+msgid "Activate Plugins"
 msgstr ""
 
 #: src/Includes/Plugins/Elementor/Includes/Settings/Settings.php:54
@@ -105,7 +109,7 @@ msgstr ""
 msgid "Add a modal search interface for wiki content."
 msgstr ""
 
-#: src/Admin/Manager/Wiki/WikiForms.php:186
+#: src/Admin/Manager/Wiki/WikiForms.php:187
 msgid "Add Custom Link"
 msgstr ""
 
@@ -113,16 +117,16 @@ msgstr ""
 msgid "Add navigation links between related Wiki pages."
 msgstr ""
 
-#: src/Admin/Manager/Wiki/WikiForms.php:211
-#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:58
+#: src/Admin/Manager/Wiki/WikiForms.php:212
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:51
 msgid "Add New"
 msgstr ""
 
-#: src/Admin/Manager/Wiki/WikiForms.php:201
+#: src/Admin/Manager/Wiki/WikiForms.php:202
 msgid "Add New Page"
 msgstr ""
 
-#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:145
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:138
 msgid "Add New Role"
 msgstr ""
 
@@ -134,19 +138,23 @@ msgstr ""
 msgid "Add New Wiki Page"
 msgstr ""
 
-#: src/Admin/Manager/Wiki/WikiForms.php:186
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:317
+msgid "Add Users"
+msgstr ""
+
+#: src/Admin/Manager/Wiki/WikiForms.php:187
 msgid "Add Wiki Categories"
 msgstr ""
 
-#: src/Admin/Manager/Wiki/WikiForms.php:186
+#: src/Admin/Manager/Wiki/WikiForms.php:187
 msgid "Add Wiki Pages"
 msgstr ""
 
-#: src/Admin/Manager/Wiki/WikiForms.php:186
+#: src/Admin/Manager/Wiki/WikiForms.php:187
 msgid "Add Wiki Pages, Categories, Tags, and custom links to build the navigation menu."
 msgstr ""
 
-#: src/Admin/Manager/Wiki/WikiForms.php:186
+#: src/Admin/Manager/Wiki/WikiForms.php:187
 msgid "Add Wiki Tags"
 msgstr ""
 
@@ -170,12 +178,440 @@ msgstr ""
 msgid "Allow WikiPress themes and integrations to expose documentation metadata."
 msgstr ""
 
-#: src/Includes/Plugins/UserRolesManager/UserRolesManager.php:69
+#: src/Includes/Plugins/InternalWiki/Includes/Core/Capabilities.php:25
+msgid "Allows access to Internal Wiki administration."
+msgstr ""
+
+#: src/Includes/Core/Capabilities.php:34
+msgid "Allows access to the WikiPress Wiki Pages administration area."
+msgstr ""
+
+#: src/Includes/Core/Capabilities.php:25
+msgid "Allows access to the WikiPress Wikis administration area."
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:406
+msgid "Allows activating, deactivating, and managing plugins."
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:404
+msgid "Allows adding existing users to a site."
+msgstr ""
+
+#: src/Includes/Plugins/InternalWiki/Includes/Core/Capabilities.php:26
+msgid "Allows creating internal WikiPress content."
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:428
+msgid "Allows creating sites in a multisite network."
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Core/Capabilities.php:25
+msgid "Allows creating user roles."
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:420
+msgid "Allows creating users."
+msgstr ""
+
+#: src/Includes/Core/Capabilities.php:35
+msgid "Allows creating Wiki Pages."
+msgstr ""
+
+#: src/Includes/Core/Capabilities.php:26
+msgid "Allows creating Wikis."
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:416
+msgid "Allows customizing the site."
+msgstr ""
+
+#: src/Includes/Plugins/InternalWiki/Includes/Core/Capabilities.php:31
+msgid "Allows deleting internal WikiPress content created by other users."
+msgstr ""
+
+#: src/Includes/Plugins/InternalWiki/Includes/Core/Capabilities.php:28
+msgid "Allows deleting internal WikiPress content."
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:380
+msgid "Allows deleting pages created by other users."
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:397
+msgid "Allows deleting pages."
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:409
+msgid "Allows deleting plugins."
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:381
+msgid "Allows deleting posts created by other users."
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:396
+msgid "Allows deleting posts."
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:384
+msgid "Allows deleting private pages."
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:385
+msgid "Allows deleting private posts."
+msgstr ""
+
+#: src/Includes/Plugins/InternalWiki/Includes/Core/Capabilities.php:33
+msgid "Allows deleting published internal WikiPress content."
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:386
+msgid "Allows deleting published pages."
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:387
+msgid "Allows deleting published posts."
+msgstr ""
+
+#: src/Includes/Core/Capabilities.php:42
+msgid "Allows deleting published Wiki Pages."
+msgstr ""
+
+#: src/Includes/Core/Capabilities.php:31
+msgid "Allows deleting published Wikis."
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:429
+msgid "Allows deleting sites in a multisite network."
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:432
+msgid "Allows deleting the current site."
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:413
+msgid "Allows deleting themes."
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Core/Capabilities.php:27
+msgid "Allows deleting user roles."
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:421
+msgid "Allows deleting users."
+msgstr ""
+
+#: src/Includes/Core/Capabilities.php:39
+msgid "Allows deleting Wiki Pages created by other users."
+msgstr ""
+
+#: src/Includes/Core/Capabilities.php:37
+msgid "Allows deleting Wiki Pages."
+msgstr ""
+
+#: src/Includes/Core/Capabilities.php:33
+msgid "Allows deleting Wikis created by other users."
+msgstr ""
+
+#: src/Includes/Core/Capabilities.php:28
+msgid "Allows deleting Wikis."
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:374
+msgid "Allows editing dashboard widgets."
+msgstr ""
+
+#: src/Includes/Core/Capabilities.php:44
+msgid "Allows editing general WikiPress settings."
+msgstr ""
+
+#: src/Includes/Plugins/InternalWiki/Includes/Core/Capabilities.php:30
+msgid "Allows editing internal WikiPress content created by other users."
+msgstr ""
+
+#: src/Includes/Plugins/InternalWiki/Includes/Core/Capabilities.php:27
+msgid "Allows editing internal WikiPress content."
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:388
+msgid "Allows editing pages created by other users."
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:383
+msgid "Allows editing pages."
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:410
+msgid "Allows editing plugin files."
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:389
+msgid "Allows editing posts created by other users."
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:382
+msgid "Allows editing posts."
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:390
+msgid "Allows editing private pages."
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:391
+msgid "Allows editing private posts."
+msgstr ""
+
+#: src/Includes/Plugins/InternalWiki/Includes/Core/Capabilities.php:32
+msgid "Allows editing published internal WikiPress content."
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:392
+msgid "Allows editing published pages."
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:393
+msgid "Allows editing published posts."
+msgstr ""
+
+#: src/Includes/Core/Capabilities.php:41
+msgid "Allows editing published Wiki Pages."
+msgstr ""
+
+#: src/Includes/Core/Capabilities.php:30
+msgid "Allows editing published Wikis."
+msgstr ""
+
+#: src/Includes/Core/Capabilities.php:51
+msgid "Allows editing settings for external WikiPress plugins."
+msgstr ""
+
+#: src/Includes/Core/Capabilities.php:49
+msgid "Allows editing settings for internal WikiPress plugins."
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:411
+msgid "Allows editing theme files."
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Core/Capabilities.php:26
+msgid "Allows editing user roles."
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:418
+msgid "Allows editing users."
+msgstr ""
+
+#: src/Includes/Core/Capabilities.php:38
+msgid "Allows editing Wiki Pages created by other users."
+msgstr ""
+
+#: src/Includes/Core/Capabilities.php:36
+msgid "Allows editing Wiki Pages."
+msgstr ""
+
+#: src/Includes/Core/Capabilities.php:53
+msgid "Allows editing WikiPress access settings."
+msgstr ""
+
+#: src/Includes/Core/Capabilities.php:46
+msgid "Allows editing WikiPress layout settings."
+msgstr ""
+
+#: src/Includes/Core/Capabilities.php:32
+msgid "Allows editing Wikis created by other users."
+msgstr ""
+
+#: src/Includes/Core/Capabilities.php:27
+msgid "Allows editing Wikis."
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:375
+msgid "Allows exporting content."
+msgstr ""
+
+#: src/Includes/Core/Capabilities.php:55
+msgid "Allows exporting WikiPress data."
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:376
+msgid "Allows importing content."
+msgstr ""
+
+#: src/Includes/Core/Capabilities.php:54
+msgid "Allows importing WikiPress data."
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:408
+msgid "Allows installing plugins."
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:412
+msgid "Allows installing themes."
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:419
+msgid "Allows listing users."
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:401
+msgid "Allows managing categories."
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:377
+msgid "Allows managing links."
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:423
+msgid "Allows managing network administration."
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:427
+msgid "Allows managing network options."
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:425
+msgid "Allows managing network plugins."
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:426
+msgid "Allows managing network themes."
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:424
+msgid "Allows managing network users."
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:405
+msgid "Allows managing site options."
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:417
+msgid "Allows managing theme options."
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:378
+msgid "Allows moderating comments."
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:402
+msgid "Allows posting unfiltered HTML."
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:403
+msgid "Allows promoting users."
+msgstr ""
+
+#: src/Includes/Plugins/InternalWiki/Includes/Core/Capabilities.php:29
+msgid "Allows publishing internal WikiPress content."
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:395
+msgid "Allows publishing pages."
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:394
+msgid "Allows publishing posts."
+msgstr ""
+
+#: src/Includes/Core/Capabilities.php:40
+msgid "Allows publishing Wiki Pages."
+msgstr ""
+
+#: src/Includes/Core/Capabilities.php:29
+msgid "Allows publishing Wikis."
+msgstr ""
+
+#: src/Includes/Plugins/InternalWiki/Includes/Core/Capabilities.php:24
+msgid "Allows reading internal WikiPress content."
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:398
+msgid "Allows reading private pages."
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:399
+msgid "Allows reading private posts."
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:422
+msgid "Allows removing users from a site."
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:431
+msgid "Allows setting up the network."
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:415
+msgid "Allows switching the active theme."
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:407
+msgid "Allows updating plugins."
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:414
+msgid "Allows updating themes."
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:379
+msgid "Allows updating WordPress."
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:430
+msgid "Allows upgrading the network."
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:400
+msgid "Allows uploading files."
+msgstr ""
+
+#: src/Includes/Core/Capabilities.php:56
+msgid "Allows using WikiPress debug tools."
+msgstr ""
+
+#: src/Includes/Core/Capabilities.php:43
+msgid "Allows viewing general WikiPress settings."
+msgstr ""
+
+#: src/Includes/Core/Capabilities.php:50
+msgid "Allows viewing settings for external WikiPress plugins."
+msgstr ""
+
+#: src/Includes/Core/Capabilities.php:48
+msgid "Allows viewing settings for internal WikiPress plugins."
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:373
+msgid "Allows viewing the administration area and content."
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Core/Capabilities.php:24
+msgid "Allows viewing the WikiPress User Roles Manager."
+msgstr ""
+
+#: src/Includes/Core/Capabilities.php:52
+msgid "Allows viewing WikiPress access settings."
+msgstr ""
+
+#: src/Includes/Core/Capabilities.php:57
+msgid "Allows viewing WikiPress analytics."
+msgstr ""
+
+#: src/Includes/Core/Capabilities.php:45
+msgid "Allows viewing WikiPress layout settings."
+msgstr ""
+
+#: src/Includes/Core/Capabilities.php:47
+msgid "Allows viewing WikiPress plugin settings."
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/UserRolesManager.php:73
 msgid "Allows you to manage user roles and capabilities in your WordPress site."
 msgstr ""
 
-#: src/Admin/Manager/Tools/ToolsManager.php:133
-#: src/Admin/Manager/UI/Sidebar.php:47
+#: src/Admin/Manager/Tools/ToolsManager.php:142
+#: src/Includes/Functions/Admin/FunctionsSidebar.php:164
 msgid "Analytics"
 msgstr ""
 
@@ -183,17 +619,21 @@ msgstr ""
 msgid "Analytics data is shown only to users who meet this capability."
 msgstr ""
 
+#: src/Admin/Manager/Dashboard/DashboardManager.php:135
+msgid "Ask for Help"
+msgstr ""
+
 #: src/Admin/Manager/Settings/SettingsLayout.php:125
 msgid "Ask visitors whether the Wiki page was helpful."
 msgstr ""
 
-#: src/Admin/Manager/Settings/SettingsPlugins.php:190
+#: src/Admin/Manager/Settings/SettingsPlugins.php:194
 msgid "Author"
 msgstr ""
 
-#: src/Admin/Manager/Settings/SettingsPlugins.php:154
-#: src/Admin/Manager/Settings/SettingsPlugins.php:300
-#: src/Admin/Manager/Wiki/WikiManager.php:141
+#: src/Admin/Manager/Settings/SettingsPlugins.php:158
+#: src/Admin/Manager/Settings/SettingsPlugins.php:334
+#: src/Admin/Manager/Wiki/WikiManager.php:142
 msgid "Author:"
 msgstr ""
 
@@ -209,7 +649,7 @@ msgstr ""
 msgid "Avoid including every heading level on very detailed pages."
 msgstr ""
 
-#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:221
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:252
 msgid "Back"
 msgstr ""
 
@@ -232,7 +672,7 @@ msgstr ""
 #: src/Includes/Plugins/Elementor/Includes/Templates/WikiPress/wiki-breadcrumbs.php:25
 #: src/Includes/Plugins/Elementor/Includes/Widgets/WikiPress/WikiBreadcrumbs.php:98
 #: src/Includes/Plugins/Gutenburg/Includes/Blocks/wiki-breadcrumbs/WikiBreadcrumbs.php:23
-#: src/Public/Frontend.php:78
+#: src/Public/Frontend.php:79
 msgid "Breadcrumbs"
 msgstr ""
 
@@ -252,17 +692,17 @@ msgstr ""
 msgid "Build, organise, and share a clear home for your knowledge. Start by creating a Wiki or adding your first page."
 msgstr ""
 
-#: src/Public/Frontend.php:87
-msgid "By %s"
+#: src/Public/Frontend.php:90
+msgid "by %s"
 msgstr ""
 
-#: src/Admin/Manager/Settings/SettingsPlugins.php:204
-#: src/Admin/Manager/Wiki/WikiForms.php:173
-#: src/Admin/Manager/Wiki/WikiForms.php:214
+#: src/Admin/Manager/Settings/SettingsPlugins.php:210
+#: src/Admin/Manager/Wiki/WikiForms.php:174
+#: src/Admin/Manager/Wiki/WikiForms.php:215
 #: src/Admin/Manager/Wiki/WikiForms.php:87
-#: src/Includes/Core/Editor.php:47
+#: src/Includes/Core/Editor.php:58
 #: src/Includes/Plugins/FontAwesome/Includes/IconPicker.php:578
-#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:221
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:252
 msgid "Cancel"
 msgstr ""
 
@@ -270,8 +710,12 @@ msgstr ""
 msgid "Capabilities"
 msgstr ""
 
-#: src/Admin/Manager/UI/Sidebar.php:24
-#: src/Admin/Manager/Wiki/WikiForms.php:181
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:225
+msgid "Capability information"
+msgstr ""
+
+#: src/Admin/Manager/Wiki/WikiForms.php:182
+#: src/Includes/Functions/Admin/FunctionsSidebar.php:141
 msgid "Categories"
 msgstr ""
 
@@ -279,7 +723,7 @@ msgstr ""
 msgid "Categories (slugs, comma-separated)"
 msgstr ""
 
-#: src/Admin/Manager/Wiki/WikiForms.php:184
+#: src/Admin/Manager/Wiki/WikiForms.php:185
 msgid "Category"
 msgstr ""
 
@@ -297,7 +741,7 @@ msgid "Choose an Icon"
 msgstr ""
 
 #: src/Admin/Manager/Settings/SettingsManager.php:116
-#: src/Admin/Manager/Settings/SettingsManager.php:140
+#: src/Admin/Manager/Settings/SettingsManager.php:163
 msgid "Choose carefully so editors and administrators retain the access they need."
 msgstr ""
 
@@ -317,7 +761,7 @@ msgstr ""
 msgid "Choose the capability required to manage roles."
 msgstr ""
 
-#: src/Includes/Plugins/InternalWiki/Includes/Settings/Settings.php:79
+#: src/Includes/Plugins/InternalWiki/Includes/Settings/Settings.php:133
 msgid "Choose the default access rule for new Wiki pages."
 msgstr ""
 
@@ -337,11 +781,11 @@ msgstr ""
 msgid "Choose the minimum capability required to view WikiPress analytics."
 msgstr ""
 
-#: src/Includes/Plugins/TinyMCE/Includes/Settings/Settings.php:96
+#: src/Includes/Plugins/TinyMCE/Includes/Settings/Settings.php:87
 msgid "Choose the stylesheet used inside the editor content area."
 msgstr ""
 
-#: src/Includes/Plugins/TinyMCE/Includes/Settings/Settings.php:105
+#: src/Includes/Plugins/TinyMCE/Includes/Settings/Settings.php:96
 msgid "Choose the TinyMCE toolbar and dialog skin."
 msgstr ""
 
@@ -349,17 +793,25 @@ msgstr ""
 msgid "Choose where the page table of contents appears."
 msgstr ""
 
-#: src/Includes/Plugins/TinyMCE/Includes/Settings/Settings.php:87
+#: src/Includes/Plugins/TinyMCE/Includes/Settings/Settings.php:105
 msgid "Choose which bundled TinyMCE plugins are available to the editor."
 msgstr ""
 
 #: src/Admin/Manager/Settings/SettingsManager.php:115
-#: src/Admin/Manager/Settings/SettingsManager.php:139
+#: src/Admin/Manager/Settings/SettingsManager.php:162
 msgid "Choose which navigation and page layout features WikiPress displays."
 msgstr ""
 
 #: src/Admin/Manager/Settings/SettingsLayout.php:98
 msgid "Choose which parts of Wiki pages are searched."
+msgstr ""
+
+#: src/Includes/Plugins/InternalWiki/Includes/Settings/Settings.php:158
+msgid "Choose which permissions can access new Wiki pages when specific permissions are selected."
+msgstr ""
+
+#: src/Includes/Plugins/InternalWiki/Includes/Settings/Settings.php:146
+msgid "Choose which roles can access new Wiki pages when specific roles are selected."
 msgstr ""
 
 #: src/Admin/Manager/Settings/SettingsLayout.php:106
@@ -378,11 +830,11 @@ msgstr ""
 msgid "Click a token to add it to the pattern. Tokens are inserted with a trailing slash and reappear when removed."
 msgstr ""
 
-#: src/Admin/Manager/Settings/SettingsPlugins.php:183
-#: src/Admin/Manager/Wiki/WikiForms.php:151
-#: src/Admin/Manager/Wiki/WikiForms.php:179
+#: src/Admin/Manager/Settings/SettingsPlugins.php:187
+#: src/Admin/Manager/Wiki/WikiForms.php:152
+#: src/Admin/Manager/Wiki/WikiForms.php:180
 #: src/Includes/Plugins/FontAwesome/Assets/Assets.php:93
-#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:181
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:174
 msgid "Close"
 msgstr ""
 
@@ -394,6 +846,7 @@ msgstr ""
 msgid "Close search modal"
 msgstr ""
 
+#: src/Admin/Manager/Dashboard/DashboardManager.php:134
 #: src/Admin/Manager/UI/Header.php:28
 msgid "Community"
 msgstr ""
@@ -403,8 +856,12 @@ msgid "Configure diagnostic logging from the Tools settings tab."
 msgstr ""
 
 #: src/Admin/Manager/Settings/SettingsManager.php:114
-#: src/Admin/Manager/Settings/SettingsManager.php:138
+#: src/Admin/Manager/Settings/SettingsManager.php:161
 msgid "Configure WikiPress names, URL slugs, and permalink settings."
+msgstr ""
+
+#: src/Admin/Manager/Dashboard/DashboardManager.php:134
+msgid "Connect with other people building their knowledge base."
 msgstr ""
 
 #: src/Admin/Manager/Tools/DebugManager.php:55
@@ -424,7 +881,7 @@ msgstr ""
 msgid "Content Only"
 msgstr ""
 
-#: src/Includes/Plugins/TinyMCE/Includes/Settings/Settings.php:97
+#: src/Includes/Plugins/TinyMCE/Includes/Settings/Settings.php:88
 msgid "Content skins control typography and content formatting inside the editing area."
 msgstr ""
 
@@ -432,35 +889,53 @@ msgstr ""
 msgid "Counts help visitors understand the size of each section."
 msgstr ""
 
-#: src/Includes/Functions/Helpers/FormFieldHelper.php:541
+#: src/Includes/Functions/Helpers/FormFieldHelper.php:543
 msgid "Create \"{0}\""
 msgstr ""
 
-#: src/Admin/Manager/Wiki/WikiManager.php:79
+#: src/Admin/Manager/Wiki/WikiManager.php:80
 msgid "Create a New Wiki"
 msgstr ""
 
-#: src/Includes/Core/Editor.php:47
+#: src/Includes/Plugins/InternalWiki/Includes/Core/Capabilities.php:26
+msgid "Create Internal Wiki Content"
+msgstr ""
+
+#: src/Includes/Core/Editor.php:58
 msgid "Create Page"
 msgstr ""
 
-#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:234
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:265
+msgid "Create Sites"
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Core/Capabilities.php:25
+msgid "Create User Roles"
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:318
 msgid "Create Users"
 msgstr ""
 
+#: src/Admin/Manager/Wiki/WikiForms.php:140
 #: src/Admin/Manager/Wiki/WikiForms.php:87
 msgid "Create Wiki"
 msgstr ""
 
-#: src/Admin/Manager/Wiki/WikiManager.php:101
+#: src/Admin/Manager/Wiki/WikiManager.php:102
 msgid "Create Wiki Page"
 msgstr ""
 
-#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:236
+#: src/Includes/Core/Capabilities.php:35
+msgid "Create Wiki Pages"
+msgstr ""
+
+#: src/Includes/Core/Capabilities.php:26
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:338
 msgid "Create Wikis"
 msgstr ""
 
-#: src/Admin/Manager/Wiki/WikiManager.php:66
+#: src/Admin/Manager/Wiki/WikiManager.php:67
 msgid "Create your first Wiki to start organising your knowledge."
 msgstr ""
 
@@ -468,7 +943,7 @@ msgstr ""
 msgid "Created"
 msgstr ""
 
-#: src/Admin/Manager/Wiki/WikiManager.php:143
+#: src/Admin/Manager/Wiki/WikiManager.php:144
 msgid "Created:"
 msgstr ""
 
@@ -480,9 +955,13 @@ msgstr ""
 msgid "Custom Tags Slug"
 msgstr ""
 
-#: src/Admin/Admin.php:100
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:330
+msgid "Customize"
+msgstr ""
+
 #: src/Admin/Manager/Dashboard/DashboardManager.php:47
-#: src/Admin/Manager/UI/Sidebar.php:60
+#: src/Admin/Manager/UI/Sidebar.php:38
+#: src/Includes/Functions/Admin/FunctionsSidebar.php:103
 msgid "Dashboard"
 msgstr ""
 
@@ -495,8 +974,8 @@ msgstr ""
 msgid "Date"
 msgstr ""
 
-#: src/Admin/Manager/Tools/ToolsManager.php:134
-#: src/Admin/Manager/UI/Sidebar.php:44
+#: src/Admin/Manager/Tools/ToolsManager.php:143
+#: src/Includes/Functions/Admin/FunctionsSidebar.php:161
 msgid "Debug"
 msgstr ""
 
@@ -505,38 +984,130 @@ msgstr ""
 msgid "Debug logging"
 msgstr ""
 
-#: src/Includes/Plugins/InternalWiki/Includes/Settings/Settings.php:78
+#: src/Includes/Plugins/InternalWiki/Includes/Settings/Settings.php:132
 msgid "Default access type"
 msgstr ""
 
-#: src/Includes/Plugins/TinyMCE/Includes/Settings/Settings.php:95
+#: src/Includes/Plugins/TinyMCE/Includes/Settings/Settings.php:86
 msgid "Default content skin"
 msgstr ""
 
-#: src/Includes/Plugins/TinyMCE/Includes/Settings/Settings.php:104
+#: src/Includes/Plugins/InternalWiki/Includes/Settings/Settings.php:157
+msgid "Default permissions"
+msgstr ""
+
+#: src/Includes/Plugins/InternalWiki/Includes/Settings/Settings.php:145
+msgid "Default roles"
+msgstr ""
+
+#: src/Includes/Plugins/TinyMCE/Includes/Settings/Settings.php:95
 msgid "Default user-interface skin"
 msgstr ""
 
-#: src/Admin/Manager/Wiki/WikiForms.php:203
-#: src/Admin/Manager/Wiki/WikiForms.php:212
-#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:221
+#: src/Admin/Manager/Wiki/WikiForms.php:204
+#: src/Admin/Manager/Wiki/WikiForms.php:213
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:252
 msgid "Delete"
 msgstr ""
 
-#: src/Admin/Manager/Wiki/WikiManager.php:152
+#: src/Admin/Manager/Wiki/WikiManager.php:155
 msgid "Delete %s"
 msgstr ""
 
-#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:235
+#: src/Includes/Plugins/InternalWiki/Includes/Core/Capabilities.php:28
+msgid "Delete Internal Wiki Content"
+msgstr ""
+
+#: src/Includes/Plugins/InternalWiki/Includes/Core/Capabilities.php:31
+msgid "Delete Others Internal Wiki Content"
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:288
+msgid "Delete Others Pages"
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:289
+msgid "Delete Others Posts"
+msgstr ""
+
+#: src/Includes/Core/Capabilities.php:39
+msgid "Delete Others Wiki Pages"
+msgstr ""
+
+#: src/Includes/Core/Capabilities.php:33
+msgid "Delete Others Wikis"
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:290
+msgid "Delete Pages"
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:325
+msgid "Delete Plugins"
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:291
 msgid "Delete Posts"
 msgstr ""
 
-#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:221
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:292
+msgid "Delete Private Pages"
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:293
+msgid "Delete Private Posts"
+msgstr ""
+
+#: src/Includes/Plugins/InternalWiki/Includes/Core/Capabilities.php:33
+msgid "Delete Published Internal Wiki Content"
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:294
+msgid "Delete Published Pages"
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:295
+msgid "Delete Published Posts"
+msgstr ""
+
+#: src/Includes/Core/Capabilities.php:42
+msgid "Delete Published Wiki Pages"
+msgstr ""
+
+#: src/Includes/Core/Capabilities.php:31
+msgid "Delete Published Wikis"
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:275
+msgid "Delete Site"
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:266
+msgid "Delete Sites"
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:333
+msgid "Delete Themes"
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:252
 msgid "Delete this role?"
 msgstr ""
 
-#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:234
+#: src/Includes/Plugins/UserRolesManager/Includes/Core/Capabilities.php:27
+msgid "Delete User Roles"
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:319
 msgid "Delete Users"
+msgstr ""
+
+#: src/Includes/Core/Capabilities.php:37
+msgid "Delete Wiki Pages"
+msgstr ""
+
+#: src/Includes/Core/Capabilities.php:28
+msgid "Delete Wikis"
 msgstr ""
 
 #: src/Includes/Plugins/Elementor/Includes/Widgets/WikiPress/WikiBreadcrumbs.php:43
@@ -555,7 +1126,7 @@ msgstr ""
 msgid "Demo text setting"
 msgstr ""
 
-#: src/Admin/Manager/Wiki/WikiForms.php:214
+#: src/Admin/Manager/Wiki/WikiForms.php:215
 msgid "Description"
 msgstr ""
 
@@ -659,11 +1230,12 @@ msgstr ""
 msgid "Displays the estimated reading time for the current Wiki."
 msgstr ""
 
-#: src/Admin/Manager/Settings/SettingsPlugins.php:156
-#: src/Admin/Manager/Settings/SettingsPlugins.php:302
+#: src/Admin/Manager/Settings/SettingsPlugins.php:160
+#: src/Admin/Manager/Settings/SettingsPlugins.php:336
 msgid "Docs:"
 msgstr ""
 
+#: src/Admin/Manager/Dashboard/DashboardManager.php:133
 #: src/Admin/Manager/UI/Header.php:24
 msgid "Documentation"
 msgstr ""
@@ -676,29 +1248,121 @@ msgstr ""
 msgid "Duotone"
 msgstr ""
 
-#: src/Admin/Manager/Wiki/WikiForms.php:203
-#: src/Admin/Manager/Wiki/WikiForms.php:212
-#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:68
+#: src/Admin/Manager/Wiki/WikiForms.php:204
+#: src/Admin/Manager/Wiki/WikiForms.php:213
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:61
 msgid "Edit"
 msgstr ""
 
-#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:235
+#: src/Includes/Core/Capabilities.php:53
+msgid "Edit Access Settings"
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:279
+msgid "Edit Dashboard"
+msgstr ""
+
+#: src/Includes/Core/Capabilities.php:51
+msgid "Edit External Plugin Settings"
+msgstr ""
+
+#: src/Includes/Core/Capabilities.php:44
+msgid "Edit General Settings"
+msgstr ""
+
+#: src/Includes/Core/Capabilities.php:49
+msgid "Edit Internal Plugin Settings"
+msgstr ""
+
+#: src/Includes/Plugins/InternalWiki/Includes/Core/Capabilities.php:27
+msgid "Edit Internal Wiki Content"
+msgstr ""
+
+#: src/Includes/Core/Capabilities.php:46
+msgid "Edit Layout Settings"
+msgstr ""
+
+#: src/Includes/Plugins/InternalWiki/Includes/Core/Capabilities.php:30
+msgid "Edit Others Internal Wiki Content"
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:296
+msgid "Edit Others Pages"
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:297
+msgid "Edit Others Posts"
+msgstr ""
+
+#: src/Includes/Core/Capabilities.php:38
+msgid "Edit Others Wiki Pages"
+msgstr ""
+
+#: src/Includes/Core/Capabilities.php:32
+msgid "Edit Others Wikis"
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:298
 msgid "Edit Pages"
 msgstr ""
 
-#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:235
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:326
+msgid "Edit Plugins"
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:299
 msgid "Edit Posts"
 msgstr ""
 
-#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:159
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:300
+msgid "Edit Private Pages"
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:301
+msgid "Edit Private Posts"
+msgstr ""
+
+#: src/Includes/Plugins/InternalWiki/Includes/Core/Capabilities.php:32
+msgid "Edit Published Internal Wiki Content"
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:302
+msgid "Edit Published Pages"
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:303
+msgid "Edit Published Posts"
+msgstr ""
+
+#: src/Includes/Core/Capabilities.php:41
+msgid "Edit Published Wiki Pages"
+msgstr ""
+
+#: src/Includes/Core/Capabilities.php:30
+msgid "Edit Published Wikis"
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:152
 msgid "Edit Role"
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:329
+msgid "Edit Theme Options"
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:334
+msgid "Edit Themes"
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Core/Capabilities.php:26
+msgid "Edit User Roles"
 msgstr ""
 
 #: src/Includes/Plugins/UserRolesManager/Includes/Settings/Settings.php:35
 msgid "Edit users"
 msgstr ""
 
-#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:234
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:316
 msgid "Edit Users"
 msgstr ""
 
@@ -706,9 +1370,17 @@ msgstr ""
 msgid "Edit Wiki"
 msgstr ""
 
-#: src/Admin/Manager/Wiki/WikiManager.php:101
+#: src/Admin/Manager/Wiki/WikiManager.php:102
 #: src/Includes/Core/PostType.php:68
 msgid "Edit Wiki Page"
+msgstr ""
+
+#: src/Includes/Core/Capabilities.php:36
+msgid "Edit Wiki Pages"
+msgstr ""
+
+#: src/Includes/Core/Capabilities.php:27
+msgid "Edit Wikis"
 msgstr ""
 
 #: src/Admin/Manager/Settings/SettingsAccess.php:37
@@ -723,8 +1395,8 @@ msgstr ""
 msgid "Elementor integration"
 msgstr ""
 
-#: src/Admin/Manager/Settings/SettingsPlugins.php:148
-#: src/Admin/Manager/Settings/SettingsPlugins.php:294
+#: src/Admin/Manager/Settings/SettingsPlugins.php:152
+#: src/Admin/Manager/Settings/SettingsPlugins.php:328
 msgid "Enable %s"
 msgstr ""
 
@@ -769,7 +1441,7 @@ msgstr ""
 msgid "Enable WikiPress Gutenberg blocks"
 msgstr ""
 
-#: src/Includes/Plugins/TinyMCE/Includes/Settings/Settings.php:86
+#: src/Includes/Plugins/TinyMCE/Includes/Settings/Settings.php:104
 msgid "Enabled TinyMCE plugins"
 msgstr ""
 
@@ -781,8 +1453,9 @@ msgstr ""
 msgid "Expand Categories"
 msgstr ""
 
-#: src/Admin/Manager/Tools/ToolsManager.php:136
-#: src/Admin/Manager/UI/Sidebar.php:46
+#: src/Admin/Manager/Tools/ToolsManager.php:145
+#: src/Includes/Functions/Admin/FunctionsSidebar.php:163
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:280
 msgid "Export"
 msgstr ""
 
@@ -792,6 +1465,10 @@ msgstr ""
 
 #: src/Admin/Manager/Tools/ExportManager.php:33
 msgid "Export WikiPress data"
+msgstr ""
+
+#: src/Includes/Core/Capabilities.php:55
+msgid "Export WikiPress Data"
 msgstr ""
 
 #: src/Admin/Manager/Tools/ExportManager.php:34
@@ -828,19 +1505,23 @@ msgid "From TrilB.Dev"
 msgstr ""
 
 #: src/Admin/Manager/Settings/SettingsLayout.php:27
-#: src/Admin/Manager/UI/Sidebar.php:33
+#: src/Includes/Functions/Admin/FunctionsSidebar.php:150
 msgid "General"
 msgstr ""
 
-#: src/Admin/Manager/Wiki/WikiManager.php:67
+#: src/Admin/Manager/Wiki/WikiManager.php:68
 msgid "Get Started"
+msgstr ""
+
+#: src/Admin/Manager/Dashboard/DashboardManager.php:135
+msgid "Get support when you need a hand with your setup."
 msgstr ""
 
 #: src/Admin/Manager/Settings/SettingsLayout.php:99
 msgid "Give visitors a useful next step instead of leaving the result area empty."
 msgstr ""
 
-#: src/Admin/Manager/Wiki/WikiForms.php:164
+#: src/Admin/Manager/Wiki/WikiForms.php:165
 msgid "Global WikiPress Settings"
 msgstr ""
 
@@ -864,7 +1545,7 @@ msgstr ""
 msgid "Home"
 msgstr ""
 
-#: src/Admin/Manager/Wiki/WikiForms.php:76
+#: src/Admin/Manager/Wiki/WikiForms.php:75
 msgid "Horizontal - Along the top"
 msgstr ""
 
@@ -872,8 +1553,9 @@ msgstr ""
 msgid "Icon source"
 msgstr ""
 
-#: src/Admin/Manager/Tools/ToolsManager.php:135
-#: src/Admin/Manager/UI/Sidebar.php:45
+#: src/Admin/Manager/Tools/ToolsManager.php:144
+#: src/Includes/Functions/Admin/FunctionsSidebar.php:162
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:281
 msgid "Import"
 msgstr ""
 
@@ -883,6 +1565,10 @@ msgstr ""
 
 #: src/Admin/Manager/Tools/ImportManager.php:37
 msgid "Import JSON"
+msgstr ""
+
+#: src/Includes/Core/Capabilities.php:54
+msgid "Import WikiPress Data"
 msgstr ""
 
 #: src/Admin/Manager/Tools/ImportManager.php:37
@@ -902,11 +1588,19 @@ msgstr ""
 msgid "Insert media"
 msgstr ""
 
-#: src/Includes/Plugins/InternalWiki/Includes/Settings/Settings.php:72
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:324
+msgid "Install Plugins"
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:332
+msgid "Install Themes"
+msgstr ""
+
+#: src/Includes/Plugins/InternalWiki/Includes/Settings/Settings.php:126
 msgid "Internal Wiki"
 msgstr ""
 
-#: src/Includes/Plugins/InternalWiki/Includes/Settings/Settings.php:73
+#: src/Includes/Plugins/InternalWiki/Includes/Settings/Settings.php:127
 msgid "Internal Wiki settings"
 msgstr ""
 
@@ -942,12 +1636,12 @@ msgstr ""
 msgid "Latest News"
 msgstr ""
 
-#: src/Admin/Manager/UI/Sidebar.php:34
+#: src/Includes/Functions/Admin/FunctionsSidebar.php:151
 msgid "Layout"
 msgstr ""
 
 #: src/Admin/Manager/Settings/SettingsManager.php:115
-#: src/Admin/Manager/Settings/SettingsManager.php:139
+#: src/Admin/Manager/Settings/SettingsManager.php:162
 msgid "Layout settings control the visitor-facing WikiPress interface."
 msgstr ""
 
@@ -959,7 +1653,7 @@ msgstr ""
 msgid "Left"
 msgstr ""
 
-#: src/Admin/Manager/Settings/SettingsPlugins.php:194
+#: src/Admin/Manager/Settings/SettingsPlugins.php:198
 msgid "License"
 msgstr ""
 
@@ -971,11 +1665,7 @@ msgstr ""
 msgid "Limit"
 msgstr ""
 
-#: src/Includes/Plugins/InternalWiki/Includes/Templates/InternalWikiFields.php:37
-msgid "Limit access by"
-msgstr ""
-
-#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:234
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:315
 msgid "List Users"
 msgstr ""
 
@@ -995,24 +1685,20 @@ msgstr ""
 msgid "Loading..."
 msgstr ""
 
-#: src/Includes/Plugins/InternalWiki/Includes/Settings/Settings.php:110
+#: src/Includes/Plugins/InternalWiki/Includes/Settings/Settings.php:203
 msgid "Logged in user"
 msgstr ""
 
-#: src/Includes/Plugins/InternalWiki/Includes/Settings/Settings.php:82
+#: src/Includes/Plugins/InternalWiki/Includes/Settings/Settings.php:136
 msgid "Logged-in users"
 msgstr ""
 
-#: src/Includes/Plugins/InternalWiki/Includes/Templates/InternalWikiFields.php:34
-msgid "Make this Wiki Internal"
-msgstr ""
-
-#: src/Admin/Manager/Wiki/WikiForms.php:179
-#: src/Admin/Manager/Wiki/WikiManager.php:151
+#: src/Admin/Manager/Wiki/WikiForms.php:180
+#: src/Admin/Manager/Wiki/WikiManager.php:153
 msgid "Manage %s"
 msgstr ""
 
-#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:234
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:308
 msgid "Manage Categories"
 msgstr ""
 
@@ -1020,19 +1706,27 @@ msgstr ""
 msgid "Manage content"
 msgstr ""
 
-#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:233
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:283
+msgid "Manage Links"
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:267
 msgid "Manage Network"
 msgstr ""
 
-#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:233
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:272
+msgid "Manage Network Options"
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:270
 msgid "Manage Network Plugins"
 msgstr ""
 
-#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:233
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:271
 msgid "Manage Network Themes"
 msgstr ""
 
-#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:233
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:269
 msgid "Manage Network Users"
 msgstr ""
 
@@ -1040,22 +1734,22 @@ msgstr ""
 msgid "Manage options"
 msgstr ""
 
-#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:234
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:282
 msgid "Manage Options"
 msgstr ""
 
-#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:233
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:268
 msgid "Manage Sites"
 msgstr ""
 
-#: src/Admin/Admin.php:101
-#: src/Admin/Manager/UI/Sidebar.php:20
-#: src/Admin/Manager/UI/Sidebar.php:23
-#: src/Admin/Manager/Wiki/WikiManager.php:46
+#: src/Admin/Manager/Wiki/WikiManager.php:47
+#: src/Includes/Functions/Admin/FunctionsSidebar.php:110
+#: src/Includes/Functions/Admin/FunctionsSidebar.php:137
+#: src/Includes/Functions/Admin/FunctionsSidebar.php:140
 msgid "Manage Wiki"
 msgstr ""
 
-#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:236
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:341
 msgid "Manage WikiPress Plugins"
 msgstr ""
 
@@ -1091,40 +1785,44 @@ msgstr ""
 msgid "Minimum Search Characters"
 msgstr ""
 
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:284
+msgid "Moderate Comments"
+msgstr ""
+
 #: src/Admin/Manager/Tools/AnalyticsManager.php:53
 msgid "Most Viewed Wiki Pages"
 msgstr ""
 
-#: src/Admin/Manager/Wiki/WikiForms.php:211
-#: src/Admin/Manager/Wiki/WikiForms.php:214
+#: src/Admin/Manager/Wiki/WikiForms.php:212
+#: src/Admin/Manager/Wiki/WikiForms.php:215
 msgid "Name"
 msgstr ""
 
-#: src/Admin/Manager/UI/Sidebar.php:55
+#: src/Admin/Manager/UI/Sidebar.php:33
 msgid "Navigate"
 msgstr ""
 
-#: src/Admin/Manager/Wiki/WikiForms.php:181
+#: src/Admin/Manager/Wiki/WikiForms.php:182
 msgid "Navigation"
 msgstr ""
 
-#: src/Admin/Manager/Wiki/WikiForms.php:159
+#: src/Admin/Manager/Wiki/WikiForms.php:160
 msgid "Navigation Style"
 msgstr ""
 
-#: src/Admin/Manager/UI/Sidebar.php:26
+#: src/Includes/Functions/Admin/FunctionsSidebar.php:143
 msgid "New Wiki"
 msgstr ""
 
-#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:221
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:252
 msgid "Next"
 msgstr ""
 
-#: src/Admin/Manager/Wiki/WikiManager.php:138
+#: src/Admin/Manager/Wiki/WikiManager.php:139
 msgid "No description provided yet."
 msgstr ""
 
-#: src/Admin/Manager/Settings/SettingsPlugins.php:299
+#: src/Admin/Manager/Settings/SettingsPlugins.php:333
 msgid "No description provided."
 msgstr ""
 
@@ -1144,7 +1842,7 @@ msgstr ""
 msgid "No Results Message"
 msgstr ""
 
-#: src/Admin/Manager/Wiki/WikiForms.php:213
+#: src/Admin/Manager/Wiki/WikiForms.php:214
 msgid "No terms are assigned to this Wiki yet."
 msgstr ""
 
@@ -1152,7 +1850,7 @@ msgstr ""
 msgid "No Wiki pages found."
 msgstr ""
 
-#: src/Admin/Manager/Wiki/WikiForms.php:205
+#: src/Admin/Manager/Wiki/WikiForms.php:206
 msgid "No Wiki Pages have been created yet."
 msgstr ""
 
@@ -1161,11 +1859,11 @@ msgstr ""
 msgid "No wiki posts found."
 msgstr ""
 
-#: src/Admin/Manager/Wiki/WikiManager.php:65
+#: src/Admin/Manager/Wiki/WikiManager.php:66
 msgid "No Wikis created yet"
 msgstr ""
 
-#: src/Admin/Manager/Settings/SettingsPlugins.php:302
+#: src/Admin/Manager/Settings/SettingsPlugins.php:336
 msgid "Not available"
 msgstr ""
 
@@ -1173,7 +1871,15 @@ msgstr ""
 msgid "Number of related pages to display."
 msgstr ""
 
-#: src/Includes/Plugins/TinyMCE/Includes/Settings/Settings.php:88
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:228
+msgid "Off"
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:228
+msgid "On"
+msgstr ""
+
+#: src/Includes/Plugins/TinyMCE/Includes/Settings/Settings.php:106
 msgid "Only selected local plugin files are requested when an editor starts."
 msgstr ""
 
@@ -1198,7 +1904,7 @@ msgstr ""
 msgid "Page"
 msgstr ""
 
-#: src/Includes/Core/Editor.php:46
+#: src/Includes/Core/Editor.php:57
 msgid "Page Content"
 msgstr ""
 
@@ -1206,15 +1912,15 @@ msgstr ""
 msgid "Page counts provide a quick overview of navigation depth."
 msgstr ""
 
-#: src/Includes/Core/Editor.php:46
+#: src/Includes/Core/Editor.php:57
 msgid "Page Title"
 msgstr ""
 
-#: src/Admin/Manager/Wiki/WikiForms.php:181
+#: src/Admin/Manager/Wiki/WikiForms.php:182
 msgid "Pages"
 msgstr ""
 
-#: src/Admin/Manager/Wiki/WikiManager.php:145
+#: src/Admin/Manager/Wiki/WikiManager.php:146
 msgid "Pages:"
 msgstr ""
 
@@ -1222,12 +1928,11 @@ msgstr ""
 msgid "Per Page"
 msgstr ""
 
-#: src/Admin/Manager/Wiki/WikiForms.php:166
+#: src/Admin/Manager/Wiki/WikiForms.php:167
 msgid "Permalink"
 msgstr ""
 
-#: src/Includes/Plugins/InternalWiki/Includes/Settings/Settings.php:112
-#: src/Includes/Plugins/InternalWiki/Includes/Templates/InternalWikiFields.php:45
+#: src/Includes/Plugins/InternalWiki/Includes/Settings/Settings.php:205
 msgid "Permissions"
 msgstr ""
 
@@ -1239,16 +1944,21 @@ msgstr ""
 msgid "Please upload a valid WikiPress JSON export."
 msgstr ""
 
-#: src/Admin/Manager/Settings/SettingsPlugins.php:187
+#: src/Admin/Manager/Settings/SettingsPlugins.php:191
 msgid "Plugin information"
 msgstr ""
 
+#: src/Includes/Functions/Admin/FunctionsPlugins.php:75
+#: src/Includes/Functions/Admin/FunctionsPlugins.php:76
+msgid "Plugin settings saved successfully."
+msgstr ""
+
 #: src/Admin/Manager/Settings/SettingsManager.php:117
-#: src/Admin/Manager/Settings/SettingsManager.php:141
+#: src/Admin/Manager/Settings/SettingsManager.php:164
 msgid "Plugin-specific configuration is available from each plugin settings page when provided."
 msgstr ""
 
-#: src/Admin/Manager/UI/Sidebar.php:35
+#: src/Includes/Functions/Admin/FunctionsSidebar.php:152
 msgid "Plugins"
 msgstr ""
 
@@ -1260,7 +1970,7 @@ msgstr ""
 msgid "Powered by"
 msgstr ""
 
-#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:234
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:313
 msgid "Promote Users"
 msgstr ""
 
@@ -1272,20 +1982,48 @@ msgstr ""
 msgid "Provides Font Awesome loading, icon picking, and styling APIs for WikiPress."
 msgstr ""
 
-#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:235
+#: src/Includes/Plugins/InternalWiki/Includes/Core/Capabilities.php:29
+msgid "Publish Internal Wiki Content"
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:304
 msgid "Publish Pages"
 msgstr ""
 
-#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:235
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:305
 msgid "Publish Posts"
+msgstr ""
+
+#: src/Includes/Core/Capabilities.php:40
+msgid "Publish Wiki Pages"
+msgstr ""
+
+#: src/Includes/Core/Capabilities.php:29
+msgid "Publish Wikis"
 msgstr ""
 
 #: src/Admin/Manager/Dashboard/DashboardManager.php:65
 msgid "Published"
 msgstr ""
 
-#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:235
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:278
 msgid "Read"
+msgstr ""
+
+#: src/Includes/Plugins/InternalWiki/Includes/Core/Capabilities.php:24
+msgid "Read Internal Wiki"
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:306
+msgid "Read Private Pages"
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:307
+msgid "Read Private Posts"
+msgstr ""
+
+#: src/Admin/Manager/Dashboard/DashboardManager.php:133
+msgid "Read the WikiPress guides and product notes."
 msgstr ""
 
 #: src/Admin/Manager/Settings/SettingsLayout.php:124
@@ -1330,8 +2068,12 @@ msgstr ""
 msgid "Related Wiki Posts"
 msgstr ""
 
-#: src/Includes/Functions/Helpers/FormFieldHelper.php:544
+#: src/Includes/Functions/Helpers/FormFieldHelper.php:546
 msgid "Remove"
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:314
+msgid "Remove Users"
 msgstr ""
 
 #: src/Includes/Plugins/Demo/Includes/Shortcodes.php:27
@@ -1350,38 +2092,39 @@ msgstr ""
 msgid "Roadmap"
 msgstr ""
 
-#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:163
-#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:191
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:156
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:187
 msgid "Role Display Name"
 msgstr ""
 
-#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:164
-#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:191
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:157
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:187
 msgid "Role Slug"
 msgstr ""
 
-#: src/Includes/Plugins/InternalWiki/Includes/Settings/Settings.php:111
-#: src/Includes/Plugins/InternalWiki/Includes/Templates/InternalWikiFields.php:41
+#: src/Includes/Plugins/InternalWiki/Includes/Settings/Settings.php:204
 msgid "Roles"
 msgstr ""
 
-#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:44
-#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:55
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:48
+#: src/Includes/Plugins/UserRolesManager/UserRolesManager.php:155
+#: src/Includes/Plugins/UserRolesManager/UserRolesManager.php:156
+#: src/Includes/Plugins/UserRolesManager/UserRolesManager.php:174
 msgid "Roles Manager"
 msgstr ""
 
-#: src/Admin/Manager/Settings/SettingsPlugins.php:205
-#: src/Admin/Manager/Wiki/WikiForms.php:173
-#: src/Admin/Manager/Wiki/WikiForms.php:214
-#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:221
+#: src/Admin/Manager/Settings/SettingsPlugins.php:212
+#: src/Admin/Manager/Wiki/WikiForms.php:174
+#: src/Admin/Manager/Wiki/WikiForms.php:215
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:252
 msgid "Save"
 msgstr ""
 
-#: src/Admin/Manager/Settings/SettingsManager.php:170
+#: src/Admin/Manager/Settings/SettingsManager.php:198
 msgid "Save Changes"
 msgstr ""
 
-#: src/Includes/Core/Editor.php:47
+#: src/Includes/Core/Editor.php:58
 msgid "Save Page"
 msgstr ""
 
@@ -1390,7 +2133,7 @@ msgstr ""
 #: src/Includes/Plugins/Gutenburg/Includes/Blocks/wiki-search-modal/WikiSearchModal.php:18
 #: src/Includes/Plugins/Gutenburg/Includes/Blocks/wiki-search-modal/WikiSearchModal.php:19
 #: src/Includes/Settings/SettingsManager.php:113
-#: src/Public/Frontend.php:64
+#: src/Public/Frontend.php:65
 msgid "Search"
 msgstr ""
 
@@ -1423,7 +2166,7 @@ msgstr ""
 msgid "Search is one of the fastest ways to find content in a large Wiki."
 msgstr ""
 
-#: src/Includes/Functions/Helpers/FormFieldHelper.php:540
+#: src/Includes/Functions/Helpers/FormFieldHelper.php:542
 msgid "Search or create"
 msgstr ""
 
@@ -1452,7 +2195,7 @@ msgid "Search Scope"
 msgstr ""
 
 #: src/Includes/Settings/SettingsManager.php:112
-#: src/Public/Frontend.php:63
+#: src/Public/Frontend.php:64
 msgid "Search the Wiki"
 msgstr ""
 
@@ -1465,7 +2208,7 @@ msgstr ""
 msgid "Search wiki..."
 msgstr ""
 
-#: src/Public/Frontend.php:62
+#: src/Public/Frontend.php:63
 msgid "Search WikiPress"
 msgstr ""
 
@@ -1473,7 +2216,7 @@ msgstr ""
 msgid "Searching titles and content gives visitors the broadest results."
 msgstr ""
 
-#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:310
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:518
 msgid "Security check failed."
 msgstr ""
 
@@ -1481,7 +2224,7 @@ msgstr ""
 msgid "Select a JSON export generated by WikiPress."
 msgstr ""
 
-#: src/Admin/Manager/Wiki/WikiForms.php:66
+#: src/Admin/Manager/Wiki/WikiForms.php:65
 msgid "Select an optional logo for this Wiki."
 msgstr ""
 
@@ -1490,7 +2233,7 @@ msgstr ""
 msgid "Select Icon"
 msgstr ""
 
-#: src/Includes/Functions/Helpers/FormFieldHelper.php:545
+#: src/Includes/Functions/Helpers/FormFieldHelper.php:547
 msgid "Select options"
 msgstr ""
 
@@ -1498,7 +2241,7 @@ msgstr ""
 msgid "Select or create categories"
 msgstr ""
 
-#: src/Admin/Manager/Wiki/WikiForms.php:63
+#: src/Admin/Manager/Wiki/WikiForms.php:62
 msgid "Select the featured image displayed for this Wiki."
 msgstr ""
 
@@ -1507,7 +2250,7 @@ msgid "Set the identity, content, and navigation style for this Wiki."
 msgstr ""
 
 #: src/Admin/Manager/Settings/SettingsManager.php:116
-#: src/Admin/Manager/Settings/SettingsManager.php:140
+#: src/Admin/Manager/Settings/SettingsManager.php:163
 msgid "Set the minimum WordPress capabilities required for WikiPress tasks."
 msgstr ""
 
@@ -1519,17 +2262,25 @@ msgstr ""
 msgid "Set the version of the bundled Font Awesome package to load."
 msgstr ""
 
-#: src/Admin/Admin.php:102
 #: src/Admin/Manager/Settings/SettingsManager.php:120
-#: src/Admin/Manager/Settings/SettingsPlugins.php:158
-#: src/Admin/Manager/Settings/SettingsPlugins.php:303
-#: src/Admin/Manager/UI/Sidebar.php:30
-#: src/Admin/Manager/Wiki/WikiManager.php:150
+#: src/Admin/Manager/Settings/SettingsPlugins.php:162
+#: src/Admin/Manager/Settings/SettingsPlugins.php:337
+#: src/Admin/Manager/Wiki/WikiManager.php:151
+#: src/Includes/Functions/Admin/FunctionsSidebar.php:117
+#: src/Includes/Functions/Admin/FunctionsSidebar.php:147
 msgid "Settings"
 msgstr ""
 
-#: src/Admin/Manager/Settings/SettingsManager.php:145
+#: src/Admin/Manager/Settings/SettingsManager.php:168
 msgid "Settings information"
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:274
+msgid "Setup Network"
+msgstr ""
+
+#: src/Admin/Manager/Dashboard/DashboardManager.php:136
+msgid "Share ideas that can make WikiPress better."
 msgstr ""
 
 #: src/Includes/Plugins/FontAwesome/Includes/IconPicker.php:566
@@ -1635,8 +2386,8 @@ msgstr ""
 msgid "Sidebar Width"
 msgstr ""
 
-#: src/Admin/Manager/Wiki/WikiForms.php:211
-#: src/Admin/Manager/Wiki/WikiForms.php:214
+#: src/Admin/Manager/Wiki/WikiForms.php:212
+#: src/Admin/Manager/Wiki/WikiForms.php:215
 msgid "Slug"
 msgstr ""
 
@@ -1644,15 +2395,15 @@ msgstr ""
 msgid "Solid"
 msgstr ""
 
-#: src/Includes/Plugins/InternalWiki/Includes/Settings/Settings.php:84
+#: src/Includes/Plugins/InternalWiki/Includes/Settings/Settings.php:138
 msgid "Specific permissions"
 msgstr ""
 
-#: src/Includes/Plugins/InternalWiki/Includes/Settings/Settings.php:83
+#: src/Includes/Plugins/InternalWiki/Includes/Settings/Settings.php:137
 msgid "Specific roles"
 msgstr ""
 
-#: src/Admin/Manager/Wiki/WikiForms.php:201
+#: src/Admin/Manager/Wiki/WikiForms.php:202
 msgid "Status"
 msgstr ""
 
@@ -1672,6 +2423,10 @@ msgstr ""
 msgid "Supporting text shown on Wiki archive and index views."
 msgstr ""
 
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:331
+msgid "Switch Themes"
+msgstr ""
+
 #: src/Includes/Plugins/Gutenburg/Includes/Blocks/wiki-toc/WikiTOC.php:34
 msgid "Table of contents"
 msgstr ""
@@ -1685,17 +2440,21 @@ msgstr ""
 msgid "Table of Contents Position"
 msgstr ""
 
-#: src/Admin/Manager/Wiki/WikiForms.php:185
+#: src/Admin/Manager/Wiki/WikiForms.php:186
 msgid "Tag"
 msgstr ""
 
-#: src/Admin/Manager/UI/Sidebar.php:25
-#: src/Admin/Manager/Wiki/WikiForms.php:181
+#: src/Admin/Manager/Wiki/WikiForms.php:182
+#: src/Includes/Functions/Admin/FunctionsSidebar.php:142
 msgid "Tags"
 msgstr ""
 
 #: src/Includes/Plugins/Elementor/Includes/Widgets/WikiPress/WikiList.php:55
 msgid "Tags (slugs, comma-separated)"
+msgstr ""
+
+#: src/Admin/Manager/Dashboard/DashboardManager.php:136
+msgid "Tell us what you think"
 msgstr ""
 
 #: src/Includes/Functions/Admin/FunctionsWiki.php:158
@@ -1714,7 +2473,7 @@ msgstr ""
 msgid "Text shown on the search submit button."
 msgstr ""
 
-#: src/Includes/Tools/DataTransfer.php:57
+#: src/Includes/Tools/DataTransfer.php:58
 msgid "The %s export section must be an array."
 msgstr ""
 
@@ -1727,7 +2486,7 @@ msgstr ""
 msgid "The estimate is based on the page content."
 msgstr ""
 
-#: src/Admin/Manager/Wiki/WikiForms.php:160
+#: src/Admin/Manager/Wiki/WikiForms.php:161
 msgid "The full Wiki editor is available from the Manage Wiki tabs. Save this panel to persist Wiki-level settings."
 msgstr ""
 
@@ -1768,7 +2527,7 @@ msgstr ""
 msgid "The requested WikiPress plugin settings were not found."
 msgstr ""
 
-#: src/Includes/Functions/Admin/FunctionsPlugins.php:36
+#: src/Includes/Functions/Admin/FunctionsPlugins.php:37
 msgid "The requested WikiPress plugin was not found."
 msgstr ""
 
@@ -1849,12 +2608,12 @@ msgstr ""
 msgid "The Wiki status is invalid."
 msgstr ""
 
-#: src/Includes/Functions/Admin/FunctionsPlugins.php:40
+#: src/Includes/Functions/Admin/FunctionsPlugins.php:44
 msgid "The WikiPress plugin state could not be saved."
 msgstr ""
 
 #: src/Admin/Manager/Settings/SettingsManager.php:114
-#: src/Admin/Manager/Settings/SettingsManager.php:138
+#: src/Admin/Manager/Settings/SettingsManager.php:161
 msgid "These settings affect how WikiPress content is identified and linked throughout the site."
 msgstr ""
 
@@ -1863,7 +2622,7 @@ msgid "Thin"
 msgstr ""
 
 #: src/Admin/Manager/Settings/SettingsManager.php:118
-#: src/Admin/Manager/Settings/SettingsManager.php:142
+#: src/Admin/Manager/Settings/SettingsManager.php:165
 msgid "Third-party plugin settings are managed through WordPress or the plugin author’s own settings page."
 msgstr ""
 
@@ -1916,7 +2675,7 @@ msgid "TinyMCE integration"
 msgstr ""
 
 #: src/Admin/Manager/Wiki/WikiForms.php:127
-#: src/Admin/Manager/Wiki/WikiForms.php:201
+#: src/Admin/Manager/Wiki/WikiForms.php:202
 #: src/Includes/Plugins/Elementor/Includes/Widgets/WikiPress/WikiList.php:81
 #: src/Includes/Plugins/Gutenburg/Assets/js/blocks.js:14
 msgid "Title"
@@ -1950,8 +2709,8 @@ msgstr ""
 msgid "Toggle the second Demo setting on or off."
 msgstr ""
 
-#: src/Admin/Admin.php:103
-#: src/Admin/Manager/UI/Sidebar.php:41
+#: src/Includes/Functions/Admin/FunctionsSidebar.php:124
+#: src/Includes/Functions/Admin/FunctionsSidebar.php:158
 msgid "Tools"
 msgstr ""
 
@@ -1959,25 +2718,49 @@ msgstr ""
 msgid "Total Wiki Page Views"
 msgstr ""
 
-#: src/Includes/Plugins/TinyMCE/Includes/Settings/Settings.php:106
+#: src/Includes/Plugins/TinyMCE/Includes/Settings/Settings.php:97
 msgid "UI skins control the toolbar, menus, dialogs, and editor chrome."
 msgstr ""
 
-#: src/Admin/Manager/Settings/SettingsPlugins.php:300
-#: src/Admin/Manager/Settings/SettingsPlugins.php:301
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:310
+msgid "Unfiltered HTML"
+msgstr ""
+
+#: src/Admin/Manager/Settings/SettingsPlugins.php:334
+#: src/Admin/Manager/Settings/SettingsPlugins.php:335
 msgid "Unknown"
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:285
+msgid "Update Core"
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:323
+msgid "Update Plugins"
 msgstr ""
 
 #: src/Admin/Manager/Settings/SettingsLayout.php:102
 msgid "Update suggestions while visitors type."
 msgstr ""
 
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:335
+msgid "Update Themes"
+msgstr ""
+
+#: src/Admin/Manager/Wiki/WikiForms.php:140
+msgid "Update Wiki"
+msgstr ""
+
 #: src/Admin/Manager/Dashboard/DashboardManager.php:119
-#: src/Public/Frontend.php:84
+#: src/Public/Frontend.php:86
 msgid "Updated %s"
 msgstr ""
 
-#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:235
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:273
+msgid "Upgrade Network"
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:309
 msgid "Upload Files"
 msgstr ""
 
@@ -2005,12 +2788,8 @@ msgstr ""
 msgid "Use a version supported by the installed Font Awesome assets."
 msgstr ""
 
-#: src/Admin/Manager/Wiki/WikiForms.php:167
+#: src/Admin/Manager/Wiki/WikiForms.php:168
 msgid "Use Global"
-msgstr ""
-
-#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:191
-msgid "Use lowercase letters and underscores only."
 msgstr ""
 
 #: src/Admin/Manager/Settings/SettingsGeneral.php:31
@@ -2021,7 +2800,7 @@ msgstr ""
 msgid "Use the base package for the bundled icons or a Kit when you need a custom Font Awesome configuration."
 msgstr ""
 
-#: src/Admin/Manager/Wiki/WikiForms.php:167
+#: src/Admin/Manager/Wiki/WikiForms.php:168
 msgid "Use the global WikiPress value unless this Wiki needs an override."
 msgstr ""
 
@@ -2057,40 +2836,88 @@ msgstr ""
 msgid "Users without this capability cannot create new wikis."
 msgstr ""
 
-#: src/Admin/Manager/Settings/SettingsPlugins.php:192
+#: src/Admin/Manager/Settings/SettingsPlugins.php:196
 msgid "Version"
 msgstr ""
 
-#: src/Admin/Manager/Settings/SettingsPlugins.php:155
-#: src/Admin/Manager/Settings/SettingsPlugins.php:301
+#: src/Admin/Manager/Settings/SettingsPlugins.php:159
+#: src/Admin/Manager/Settings/SettingsPlugins.php:335
 msgid "Version:"
 msgstr ""
 
-#: src/Admin/Manager/Wiki/WikiForms.php:80
+#: src/Admin/Manager/Wiki/WikiForms.php:79
 msgid "Vertical - Sidebar"
 msgstr ""
 
-#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:236
+#: src/Includes/Core/Capabilities.php:52
+msgid "View Access Settings"
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:340
 msgid "View Analytics"
 msgstr ""
 
-#: src/Includes/Plugins/Elementor/Includes/Templates/WikiPress/wiki-related.php:35
+#: src/Includes/Core/Capabilities.php:57
+msgid "View Analytics Tools"
+msgstr ""
+
+#: src/Includes/Plugins/Elementor/Includes/Templates/WikiPress/wiki-related.php:33
 msgid "View count"
 msgstr ""
 
-#: src/Admin/Manager/Settings/SettingsPlugins.php:156
-#: src/Admin/Manager/Settings/SettingsPlugins.php:302
+#: src/Includes/Core/Capabilities.php:56
+msgid "View Debug Tools"
+msgstr ""
+
+#: src/Admin/Manager/Settings/SettingsPlugins.php:160
+#: src/Admin/Manager/Settings/SettingsPlugins.php:336
 msgid "View documentation"
 msgstr ""
 
+#: src/Includes/Core/Capabilities.php:50
+msgid "View External Plugin Settings"
+msgstr ""
+
+#: src/Includes/Core/Capabilities.php:43
+msgid "View General Settings"
+msgstr ""
+
+#: src/Includes/Core/Capabilities.php:48
+msgid "View Internal Plugin Settings"
+msgstr ""
+
+#: src/Includes/Plugins/InternalWiki/Includes/Core/Capabilities.php:25
+msgid "View Internal Wiki Administration"
+msgstr ""
+
+#: src/Includes/Core/Capabilities.php:45
+msgid "View Layout Settings"
+msgstr ""
+
+#: src/Includes/Core/Capabilities.php:47
+msgid "View Plugin Settings"
+msgstr ""
+
 #: src/Admin/Manager/Settings/SettingsManager.php:117
-#: src/Admin/Manager/Settings/SettingsManager.php:141
+#: src/Admin/Manager/Settings/SettingsManager.php:164
 msgid "View the WikiPress plugins installed on this site."
 msgstr ""
 
 #: src/Admin/Manager/Settings/SettingsManager.php:118
-#: src/Admin/Manager/Settings/SettingsManager.php:142
+#: src/Admin/Manager/Settings/SettingsManager.php:165
 msgid "View third-party plugins installed on this site."
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Core/Capabilities.php:24
+msgid "View User Roles Manager"
+msgstr ""
+
+#: src/Includes/Core/Capabilities.php:34
+msgid "View Wiki Pages Administration"
+msgstr ""
+
+#: src/Includes/Core/Capabilities.php:25
+msgid "View Wikis Administration"
 msgstr ""
 
 #: src/Admin/Manager/Tools/AnalyticsManager.php:53
@@ -2109,7 +2936,7 @@ msgstr ""
 msgid "Visitors can search Wiki pages without browsing the sidebar."
 msgstr ""
 
-#: src/Admin/Manager/Wiki/WikiManager.php:146
+#: src/Admin/Manager/Wiki/WikiManager.php:147
 msgid "Visitors:"
 msgstr ""
 
@@ -2153,7 +2980,7 @@ msgstr ""
 msgid "Wiki Breadcrumbs"
 msgstr ""
 
-#: src/Admin/Manager/Wiki/WikiForms.php:186
+#: src/Admin/Manager/Wiki/WikiForms.php:187
 #: src/Admin/Manager/Wiki/WikiForms.php:36
 #: src/Includes/Core/Taxonomy.php:27
 msgid "Wiki Categories"
@@ -2163,7 +2990,7 @@ msgstr ""
 msgid "Wiki Category"
 msgstr ""
 
-#: src/Admin/Manager/Wiki/WikiForms.php:186
+#: src/Admin/Manager/Wiki/WikiForms.php:187
 msgid "Wiki Custom"
 msgstr ""
 
@@ -2171,16 +2998,16 @@ msgstr ""
 msgid "Wiki deleted."
 msgstr ""
 
-#: src/Admin/Manager/Wiki/WikiForms.php:60
+#: src/Admin/Manager/Wiki/WikiForms.php:59
 msgid "Wiki Description"
 msgstr ""
 
-#: src/Admin/Manager/Wiki/WikiForms.php:155
+#: src/Admin/Manager/Wiki/WikiForms.php:156
 #: src/Admin/Manager/Wiki/WikiForms.php:25
 msgid "Wiki Details"
 msgstr ""
 
-#: src/Admin/Manager/Wiki/WikiForms.php:57
+#: src/Admin/Manager/Wiki/WikiForms.php:56
 msgid "Wiki Excerpt"
 msgstr ""
 
@@ -2188,7 +3015,7 @@ msgstr ""
 msgid "Wiki Form"
 msgstr ""
 
-#: src/Admin/Manager/Wiki/WikiForms.php:63
+#: src/Admin/Manager/Wiki/WikiForms.php:62
 msgid "Wiki Header Image"
 msgstr ""
 
@@ -2199,11 +3026,11 @@ msgstr ""
 msgid "Wiki List"
 msgstr ""
 
-#: src/Admin/Manager/Wiki/WikiForms.php:66
+#: src/Admin/Manager/Wiki/WikiForms.php:65
 msgid "Wiki Logo"
 msgstr ""
 
-#: src/Admin/Manager/Wiki/WikiForms.php:157
+#: src/Admin/Manager/Wiki/WikiForms.php:158
 #: src/Admin/Manager/Wiki/WikiForms.php:31
 msgid "Wiki Name"
 msgstr ""
@@ -2214,22 +3041,22 @@ msgstr ""
 msgid "Wiki Name is required."
 msgstr ""
 
-#: src/Admin/Manager/Wiki/WikiForms.php:186
+#: src/Admin/Manager/Wiki/WikiForms.php:187
 msgid "Wiki Navigation"
 msgstr ""
 
-#: src/Admin/Manager/Wiki/WikiForms.php:71
+#: src/Admin/Manager/Wiki/WikiForms.php:70
 msgid "Wiki Navigation Style"
 msgstr ""
 
-#: src/API/API.php:112
-#: src/API/API.php:82
-#: src/API/Routes.php:80
+#: src/API/API.php:109
+#: src/API/API.php:139
+#: src/API/Routes.php:94
 msgid "Wiki not found."
 msgstr ""
 
 #: src/Admin/Manager/Settings/SettingsLayout.php:30
-#: src/Admin/Manager/Wiki/WikiForms.php:166
+#: src/Admin/Manager/Wiki/WikiForms.php:167
 #: src/Includes/Core/PostType.php:66
 msgid "Wiki Page"
 msgstr ""
@@ -2242,20 +3069,20 @@ msgstr ""
 msgid "Wiki page mutation failed."
 msgstr ""
 
-#: src/API/API.php:176
-#: src/API/API.php:205
-#: src/API/Routes.php:120
+#: src/API/API.php:203
+#: src/API/API.php:232
+#: src/API/Routes.php:134
 #: src/Includes/Pages/Pages.php:21
 msgid "Wiki page not found."
 msgstr ""
 
-#: src/Admin/Manager/Wiki/WikiForms.php:186
-#: src/Admin/Manager/Wiki/WikiForms.php:201
+#: src/Admin/Manager/Wiki/WikiForms.php:187
+#: src/Admin/Manager/Wiki/WikiForms.php:202
 #: src/Includes/Core/PostType.php:65
 msgid "Wiki Pages"
 msgstr ""
 
-#: src/Admin/Manager/Wiki/WikiForms.php:85
+#: src/Admin/Manager/Wiki/WikiForms.php:84
 msgid "Wiki Plugin Fields"
 msgstr ""
 
@@ -2274,7 +3101,7 @@ msgid "Wiki Related"
 msgstr ""
 
 #: src/Admin/Manager/Settings/SettingsLayout.php:28
-#: src/Admin/Manager/Wiki/WikiForms.php:166
+#: src/Admin/Manager/Wiki/WikiForms.php:167
 msgid "Wiki Search"
 msgstr ""
 
@@ -2294,7 +3121,7 @@ msgstr ""
 msgid "Wiki Sidebar"
 msgstr ""
 
-#: src/Admin/Manager/Wiki/WikiForms.php:158
+#: src/Admin/Manager/Wiki/WikiForms.php:159
 #: src/Admin/Manager/Wiki/WikiForms.php:32
 msgid "Wiki Slug"
 msgstr ""
@@ -2309,7 +3136,7 @@ msgstr ""
 msgid "Wiki Tag"
 msgstr ""
 
-#: src/Admin/Manager/Wiki/WikiForms.php:186
+#: src/Admin/Manager/Wiki/WikiForms.php:187
 #: src/Admin/Manager/Wiki/WikiForms.php:47
 #: src/Includes/Core/Taxonomy.php:43
 msgid "Wiki Tags"
@@ -2319,13 +3146,13 @@ msgstr ""
 msgid "Wiki TOC"
 msgstr ""
 
-#: src/Admin/Admin.php:99
+#: src/Includes/Functions/Admin/FunctionsSidebar.php:94
 #: src/Includes/Plugins/Elementor/Elementor.php:196
-#: src/Public/Frontend.php:71
+#: src/Public/Frontend.php:72
 msgid "WikiPress"
 msgstr ""
 
-#: src/Admin/Manager/UI/Sidebar.php:58
+#: src/Admin/Manager/UI/Sidebar.php:36
 msgid "WikiPress admin navigation"
 msgstr ""
 
@@ -2382,8 +3209,20 @@ msgstr ""
 msgid "Write diagnostic information to the WordPress debug log."
 msgstr ""
 
-#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:236
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:339
 msgid "Write Wiki Pages"
+msgstr ""
+
+#: src/Includes/Plugins/InternalWiki/Includes/Settings/Settings.php:373
+msgid "You are not allowed to delete content created by another user."
+msgstr ""
+
+#: src/Includes/Plugins/InternalWiki/Includes/Settings/Settings.php:369
+msgid "You are not allowed to delete Internal Wiki content."
+msgstr ""
+
+#: src/Includes/Plugins/InternalWiki/Includes/Settings/Settings.php:377
+msgid "You are not allowed to delete published Internal Wiki content."
 msgstr ""
 
 #: src/Includes/Functions/Admin/FunctionsExport.php:26
@@ -2394,8 +3233,32 @@ msgstr ""
 msgid "You are not allowed to import WikiPress data."
 msgstr ""
 
-#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:305
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:513
 msgid "You are not allowed to manage roles."
+msgstr ""
+
+#: src/Includes/Plugins/InternalWiki/Includes/Settings/Settings.php:347
+msgid "You are not allowed to modify content created by another user."
+msgstr ""
+
+#: src/Includes/Plugins/InternalWiki/Includes/Settings/Settings.php:343
+msgid "You are not allowed to modify Internal Wiki content."
+msgstr ""
+
+#: src/Includes/Plugins/InternalWiki/Includes/Settings/Settings.php:351
+msgid "You are not allowed to modify published Internal Wiki content."
+msgstr ""
+
+#: src/Includes/Plugins/InternalWiki/Includes/Settings/Settings.php:356
+msgid "You are not allowed to publish Internal Wiki content."
+msgstr ""
+
+#: src/Includes/Plugins/UserRolesManager/Includes/Admin/RoleManager.php:505
+msgid "You are not allowed to view roles."
+msgstr ""
+
+#: src/Admin/Manager/Tools/ToolsManager.php:109
+msgid "You are not authorized to access this WikiPress tool."
 msgstr ""
 
 #: src/Includes/Functions/Admin/FunctionsWiki.php:23
@@ -2410,8 +3273,12 @@ msgstr ""
 msgid "You are not authorized to delete this Wiki."
 msgstr ""
 
-#: src/Admin/Admin.php:148
+#: src/Admin/Admin.php:159
 msgid "You are not authorized to load WikiPress settings."
+msgstr ""
+
+#: src/Includes/Functions/Admin/FunctionsPlugins.php:40
+msgid "You are not authorized to manage external WikiPress plugins."
 msgstr ""
 
 #: src/Includes/Functions/Admin/FunctionsWiki.php:132
@@ -2419,11 +3286,11 @@ msgstr ""
 msgid "You are not authorized to manage Wiki terms."
 msgstr ""
 
-#: src/Includes/Functions/Admin/FunctionsPlugins.php:28
+#: src/Includes/Functions/Admin/FunctionsPlugins.php:29
 msgid "You are not authorized to manage WikiPress plugins."
 msgstr ""
 
-#: src/Includes/Functions/Admin/FunctionsPlugins.php:53
+#: src/Includes/Functions/Admin/FunctionsPlugins.php:64
 msgid "You are not authorized to save WikiPress plugin settings."
 msgstr ""
 
@@ -2431,7 +3298,11 @@ msgstr ""
 msgid "You are not authorized to update this Wiki."
 msgstr ""
 
-#: src/Includes/Plugins/InternalWiki/Includes/Settings/Settings.php:160
+#: src/Admin/Manager/Settings/SettingsManager.php:149
+msgid "You are not authorized to view these WikiPress settings."
+msgstr ""
+
+#: src/Includes/Plugins/InternalWiki/Includes/Settings/Settings.php:298
 msgid "You do not have permission to access this Wiki."
 msgstr ""
 

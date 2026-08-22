@@ -7,7 +7,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Domain: wikipress\n"
-#: src/includes/Plugins/Gutenburg/Includes/Blocks/wiki-reading-time/WikiReadingTime.php:24
+#: src/includes/Plugins/Gutenburg/Includes/Blocks/wiki-reading-time/WikiReadingTime.php:25
 msgid "%d minute read"
 msgid_plural "%d minute read"
 msgstr[0] ""

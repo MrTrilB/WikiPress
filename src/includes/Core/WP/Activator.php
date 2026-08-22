@@ -2,6 +2,8 @@
 
 namespace WikiPress\Includes\Core\WP;
 
+use WikiPress\Includes\Core\Capabilities;
+use WikiPress\Includes\Plugins\Plugins;
 use WikiPress\Includes\Settings\SettingsManager;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -29,6 +31,8 @@ final class Activator {
      * @return void
      */
     public static function activate( ?array $callbacks = null ): void {
+        Plugins::get_instance()->init();
+        Capabilities::install();
         Database::install();
         SettingsManager::install();
         ( new \WikiPress\Includes\Core\PostType() )->register();

@@ -22,7 +22,7 @@ final class FunctionsImport {
      * @return void
      */
     public function import_data(): void {
-        if ( ! current_user_can( 'manage_options' ) ) {
+        if ( ! current_user_can( 'wikipress_tools_import' ) ) {
             wp_die( esc_html__( 'You are not allowed to import WikiPress data.', 'wikipress' ), 403 );
         }
         check_admin_referer( 'wikipress_import' );

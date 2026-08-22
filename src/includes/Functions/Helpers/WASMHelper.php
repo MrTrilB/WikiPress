@@ -24,12 +24,13 @@ final class WASMHelper {
      * @param string $parent Existing group slug, or empty for a new group.
      * @return array<string, mixed>
      */
-    public static function define( string $name, string $slug, string $icon, string $parent = '' ): array {
+    public static function define( string $name, string $slug, string $icon, string $parent = '', string $capability = '' ): array {
         return [
             'parent' => sanitize_key( $parent ),
             'name'   => $name,
             'slug'   => self::sanitize_slug( $slug ),
             'icon'   => sanitize_text_field( $icon ),
+            'capability' => sanitize_key( $capability ),
         ];
     }
 

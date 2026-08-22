@@ -99,6 +99,15 @@ final class ToolsManager extends Manager {
     public function render(): void {
         $tool = SanitizationHelper::key( $_GET['tool'] ?? 'debug', 'debug' );
         $tool = in_array( $tool, [ 'analytics', 'debug', 'import', 'export' ], true ) ? $tool : 'debug';
+        $capabilities = [
+            'analytics' => 'wikipress_tools_analytics',
+            'debug' => 'wikipress_tools_debug',
+            'import' => 'wikipress_tools_import',
+            'export' => 'wikipress_tools_export',
+        ];
+        if ( ! current_user_can( $capabilities[ $tool ] ) ) {
+            wp_die( esc_html__( 'You are not authorized to access this WikiPress tool.', 'wikipress' ) );
+        }
         $this->header( $this->title( $tool ) );
         if ( 'analytics' === $tool ) {
             $this->analytics_manager->render_content();

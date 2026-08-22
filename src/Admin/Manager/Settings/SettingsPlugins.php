@@ -109,7 +109,9 @@ final class SettingsPlugins {
         ?>
         <div class="row g-4">
             <?php foreach ( Plugins::get_instance()->get_registered_plugins() as $plugin ) : ?>
-                <?php $this->render_wikipress_plugin_card( $plugin ); ?>
+                <?php if ( $plugin instanceof PluginInterface && $this->can_view_plugin( $plugin ) ) : ?>
+                    <?php $this->render_wikipress_plugin_card( $plugin ); ?>
+                <?php endif; ?>
             <?php endforeach; ?>
         </div>
         <?php
@@ -141,12 +143,13 @@ final class SettingsPlugins {
         $enabled = Plugins::get_instance()->is_plugin_enabled( $plugin->get_slug() );
         $settings_page = $plugin instanceof SettingsPageProviderInterface ? $plugin->get_settings_page() : [];
         $modal_id = SanitizationHelper::key( $plugin->get_slug() );
+        $can_edit = $this->can_edit_plugin( $plugin );
         ?>
         <div class="col-12 col-md-6 col-xl-4 d-flex">
             <article class="card wikipress-plugin-card shadow-sm h-100 w-100">
                 <div class="card-header d-flex align-items-center gap-2">
                     <?php /* translators: %s is the plugin name. */ ?>
-                    <?php echo FormFieldHelper::switch( 'wikipress-plugin-status', '1', '', [ 'id' => 'wikipress-plugin-status-' . SanitizationHelper::key( $plugin->get_slug() ), 'checked' => $enabled, 'data-wikipress-plugin-toggle' => 'true', 'data-plugin-slug' => $plugin->get_slug(), 'aria-label' => sprintf( __( 'Enable %s', 'wikipress' ), $plugin->get_name() ) ] ); ?>
+                    <?php echo FormFieldHelper::switch( 'wikipress-plugin-status', '1', '', [ 'id' => 'wikipress-plugin-status-' . SanitizationHelper::key( $plugin->get_slug() ), 'checked' => $enabled, 'disabled' => ! $can_edit, 'data-wikipress-plugin-toggle' => 'true', 'data-plugin-slug' => $plugin->get_slug(), 'aria-label' => sprintf( __( 'Enable %s', 'wikipress' ), $plugin->get_name() ) ] ); ?>
                     <span class="fw-semibold"><?php echo esc_html( $plugin->get_name() ); ?></span>
                 </div>
                 <div class="card-body d-flex flex-column">
@@ -164,7 +167,7 @@ final class SettingsPlugins {
         <?php
 
         if ( ! empty( $settings_page['fields'] ) ) {
-            $this->render_plugin_settings_modal( $plugin, $settings_page, $modal_id );
+            $this->render_plugin_settings_modal( $plugin, $settings_page, $modal_id, $can_edit );
         }
     }
     /**
@@ -173,7 +176,7 @@ final class SettingsPlugins {
      * @param string $file The plugin file path.
      * @param array $plugin The plugin data.
      */
-    private function render_plugin_settings_modal( PluginInterface $plugin, array $settings_page, string $modal_id ): void {
+    private function render_plugin_settings_modal( PluginInterface $plugin, array $settings_page, string $modal_id, bool $can_edit ): void {
         $values = Settings::get_group( SanitizationHelper::key( $settings_page['slug'] ), [] ) ?? [];
         ?>
         <div class="modal fade wikipress-plugin-settings-modal" id="<?php echo esc_attr( $modal_id ); ?>" tabindex="-1" aria-labelledby="<?php echo esc_attr( $modal_id . '-label' ); ?>" aria-hidden="true">
@@ -198,17 +201,35 @@ final class SettingsPlugins {
                         </section>
                         <form class="wikipress-plugin-settings-form" data-plugin-settings-form data-plugin-slug="<?php echo esc_attr( $plugin->get_slug() ); ?>" data-internal-wiki-fields>
                             <h3 class="h6 mb-3"><?php echo esc_html( $settings_page['title'] ?? $settings_page['label'] ); ?></h3>
-                            <?php $this->render_plugin_settings_fields( $settings_page, $values, $modal_id ); ?>
+                            <fieldset <?php disabled( ! $can_edit ); ?>>
+                                <?php $this->render_plugin_settings_fields( $settings_page, $values, $modal_id ); ?>
+                            </fieldset>
                         </form>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><?php esc_html_e( 'Cancel', 'wikipress' ); ?></button>
-                        <button type="button" class="btn btn-primary" data-plugin-settings-save><?php esc_html_e( 'Save', 'wikipress' ); ?></button>
+                        <?php if ( $can_edit ) : ?>
+                            <button type="button" class="btn btn-primary" data-plugin-settings-save><?php esc_html_e( 'Save', 'wikipress' ); ?></button>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
         </div>
         <?php
+    }
+
+    private function can_view_plugin( PluginInterface $plugin ): bool {
+        $capability = $this->is_internal_plugin( $plugin ) ? 'wikipress_settings_plugins_int_view' : 'wikipress_settings_plugins_ext_view';
+        return current_user_can( $capability );
+    }
+
+    private function can_edit_plugin( PluginInterface $plugin ): bool {
+        $capability = $this->is_internal_plugin( $plugin ) ? 'wikipress_settings_plugins_int_edit' : 'wikipress_settings_plugins_ext_edit';
+        return current_user_can( $capability );
+    }
+
+    private function is_internal_plugin( PluginInterface $plugin ): bool {
+        return 0 === strpos( get_class( $plugin ), 'WikiPress\\Includes\\Plugins\\' );
     }
     /**
      * Render the settings fields for a plugin's settings page.

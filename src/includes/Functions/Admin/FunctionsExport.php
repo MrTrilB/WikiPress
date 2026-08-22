@@ -22,7 +22,7 @@ final class FunctionsExport {
      * @return void
      */
     public function export_data(): void {
-        if ( ! current_user_can( 'manage_options' ) ) {
+        if ( ! current_user_can( 'wikipress_tools_export' ) ) {
             wp_die( esc_html__( 'You are not allowed to export WikiPress data.', 'wikipress' ), 403 );
         }
         check_admin_referer( 'wikipress_export' );

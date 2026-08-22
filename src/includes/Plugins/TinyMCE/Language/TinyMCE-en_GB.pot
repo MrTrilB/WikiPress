@@ -7,31 +7,31 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Domain: wikipress\n"
-#: src/includes/Plugins/TinyMCE/Includes/Settings/Settings.php:96
+#: src/includes/Plugins/TinyMCE/Includes/Settings/Settings.php:87
 msgid "Choose the stylesheet used inside the editor content area."
 msgstr ""
 
-#: src/includes/Plugins/TinyMCE/Includes/Settings/Settings.php:105
+#: src/includes/Plugins/TinyMCE/Includes/Settings/Settings.php:96
 msgid "Choose the TinyMCE toolbar and dialog skin."
 msgstr ""
 
-#: src/includes/Plugins/TinyMCE/Includes/Settings/Settings.php:87
+#: src/includes/Plugins/TinyMCE/Includes/Settings/Settings.php:105
 msgid "Choose which bundled TinyMCE plugins are available to the editor."
 msgstr ""
 
-#: src/includes/Plugins/TinyMCE/Includes/Settings/Settings.php:97
+#: src/includes/Plugins/TinyMCE/Includes/Settings/Settings.php:88
 msgid "Content skins control typography and content formatting inside the editing area."
 msgstr ""
 
-#: src/includes/Plugins/TinyMCE/Includes/Settings/Settings.php:95
+#: src/includes/Plugins/TinyMCE/Includes/Settings/Settings.php:86
 msgid "Default content skin"
 msgstr ""
 
-#: src/includes/Plugins/TinyMCE/Includes/Settings/Settings.php:104
+#: src/includes/Plugins/TinyMCE/Includes/Settings/Settings.php:95
 msgid "Default user-interface skin"
 msgstr ""
 
-#: src/includes/Plugins/TinyMCE/Includes/Settings/Settings.php:86
+#: src/includes/Plugins/TinyMCE/Includes/Settings/Settings.php:104
 msgid "Enabled TinyMCE plugins"
 msgstr ""
 
@@ -48,7 +48,7 @@ msgstr ""
 msgid "Introduces a local TinyMCE 8.8 editor for WikiPress."
 msgstr ""
 
-#: src/includes/Plugins/TinyMCE/Includes/Settings/Settings.php:88
+#: src/includes/Plugins/TinyMCE/Includes/Settings/Settings.php:106
 msgid "Only selected local plugin files are requested when an editor starts."
 msgstr ""
 
@@ -60,6 +60,6 @@ msgstr ""
 msgid "TinyMCE integration"
 msgstr ""
 
-#: src/includes/Plugins/TinyMCE/Includes/Settings/Settings.php:106
+#: src/includes/Plugins/TinyMCE/Includes/Settings/Settings.php:97
 msgid "UI skins control the toolbar, menus, dialogs, and editor chrome."
 msgstr ""

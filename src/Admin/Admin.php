@@ -13,6 +13,7 @@ use WikiPress\Includes\Settings\Settings;
 use WikiPress\Includes\Functions\Admin\FunctionsPlugins;
 use WikiPress\Includes\Functions\Admin\FunctionsWiki;
 use WikiPress\Includes\Functions\Helpers\AjaxHelper;
+use WikiPress\Includes\Core\Capabilities;
 use WikiPress\Includes\Functions\Helpers\LoaderHelper;
 use WikiPress\Includes\Functions\Admin\FunctionsSidebar;
 use WikiPress\Assets\Assets;
@@ -146,11 +147,18 @@ final class Admin {
      * It delegates the rendering to the AnalyticsManager instance.
      */
     public function load_settings_tab(): void {
-        if ( ! AjaxHelper::authorized( 'wikipress_settings_tabs', 'manage_options' ) ) {
+        $tab = sanitize_key( $_POST['tab'] ?? 'general' );
+        $view_capability = [
+            'general' => 'wikipress_settings_general_view',
+            'layout' => 'wikipress_settings_layout_view',
+            'access' => 'wikipress_settings_access_view',
+            'plugins' => 'wikipress_settings_plugins_view',
+            'third-party' => 'wikipress_settings_plugins_ext_view',
+        ][ $tab ] ?? 'wikipress_settings_general_view';
+        if ( ! AjaxHelper::authorized( 'wikipress_settings_tabs', $view_capability ) ) {
             AjaxHelper::unauthorized( __( 'You are not authorized to load WikiPress settings.', 'wikipress' ) );
         }
 
-        $tab = sanitize_key( $_POST['tab'] ?? 'general' );
         $layout_section = sanitize_key( $_POST['layout_section'] ?? 'general' );
         ob_start();
         $this->settings_manager->render_tab_content( $tab, $layout_section );
@@ -168,7 +176,7 @@ final class Admin {
     public function capability( string $key, string $fallback ): string {
         $value = Settings::get( $key, $fallback );
         $values = is_array( $value ) ? $value : [ $value ];
-        $allowed = [ 'manage_options', 'edit_posts', 'publish_posts', 'manage_categories', 'delete_posts' ];
+        $allowed = array_merge( [ 'manage_options', 'edit_posts', 'publish_posts', 'manage_categories', 'delete_posts' ], array_keys( Capabilities::definitions() ) );
         foreach ( $values as $value ) {
             $capability = sanitize_key( (string) $value );
             if ( in_array( $capability, $allowed, true ) ) {

@@ -6,6 +6,7 @@
  * @since 1.0.0
  */
 namespace WikiPress\Includes\Plugins\InternalWiki\Includes\Settings;
+use WikiPress\Includes\Core\PostType;
 use WikiPress\Includes\Settings\Settings as BaseSettings;
 use WikiPress\Includes\Functions\Helpers\LoaderHelper;
 use WikiPress\Includes\Functions\Helpers\SanitizationHelper;
@@ -86,6 +87,12 @@ final class Settings {
                 'hook' => 'wikipress_wiki_saved', 
                 'callback' => 'save_access', 
                 'accepted_args' => 2 
+            ],
+            [
+                'type' => 'action',
+                'hook' => 'before_delete_post',
+                'callback' => 'authorize_delete',
+                'accepted_args' => 2
             ],
             [ 
                 'type' => 'action', 
@@ -184,6 +191,10 @@ final class Settings {
     }
 
     public function render_fields( string $fields, ?\WP_Post $post = null ): string {
+        if ( ! PermissionHelper::can( 'wikipress_admin_int_view' ) ) {
+            return $fields;
+        }
+
         $enabled = $post ? (bool) get_post_meta( $post->ID, self::META_ENABLED, true ) : false;
         $access_type = $post ? (string) get_post_meta( $post->ID, self::META_ACCESS_TYPE, true ) : BaseSettings::get_key( 'default_access_type', 'logged_in_user' );
         $roles = $post ? (array) get_post_meta( $post->ID, self::META_ROLES, true ) : (array) BaseSettings::get( 'default_roles', [] );
@@ -212,6 +223,18 @@ final class Settings {
     }
 
     public function sanitize_payload( array $payload, ?\WP_Post $post = null ): array {
+        $is_internal = $post && get_post_meta( $post->ID, self::META_ENABLED, true );
+        if ( $is_internal && ! PermissionHelper::can( 'wikipress_admin_int_view' ) ) {
+            $payload['internal_wiki_enabled'] = true;
+            $payload['internal_wiki_access_type'] = get_post_meta( $post->ID, self::META_ACCESS_TYPE, true );
+            $payload['internal_wiki_roles'] = get_post_meta( $post->ID, self::META_ROLES, true );
+            $payload['internal_wiki_permissions'] = get_post_meta( $post->ID, self::META_PERMISSIONS, true );
+        }
+        $will_be_internal = $is_internal || ! empty( $payload['internal_wiki_enabled'] );
+        if ( $will_be_internal ) {
+            $this->authorize_mutation( $post, ! $is_internal, $payload );
+        }
+
         $payload['internal_wiki_enabled'] = ! empty( $payload['internal_wiki_enabled'] );
         $access_type = SanitizationHelper::key( $payload['internal_wiki_access_type'] ?? '' );
         $payload['internal_wiki_access_type'] = in_array( $access_type, [ 'logged_in_user', 'roles', 'permissions' ], true ) ? $access_type : 'logged_in_user';
@@ -281,6 +304,10 @@ final class Settings {
             return true;
         }
 
+        if ( ! PermissionHelper::can( 'wikipress_int_read' ) ) {
+            return false;
+        }
+
         $access_type = get_post_meta( $wiki_id, self::META_ACCESS_TYPE, true );
         if ( ! is_user_logged_in() ) {
             return false;
@@ -308,6 +335,47 @@ final class Settings {
 
     public function filter_access( bool $allowed, int $wiki_id ): bool {
         return $allowed && $this->can_access( $wiki_id );
+    }
+
+    private function authorize_mutation( ?\WP_Post $post, bool $creating, array $payload ): void {
+        $capability = $creating ? 'wikipress_int_create' : 'wikipress_int_edit';
+        if ( ! PermissionHelper::can( $capability ) ) {
+            wp_die( esc_html__( 'You are not allowed to modify Internal Wiki content.', 'wikipress' ), 403 );
+        }
+
+        if ( ! $creating && $post && (int) $post->post_author !== get_current_user_id() && ! PermissionHelper::can( 'wikipress_int_edit_others' ) ) {
+            wp_die( esc_html__( 'You are not allowed to modify content created by another user.', 'wikipress' ), 403 );
+        }
+
+        if ( ! $creating && $post && 'publish' === $post->post_status && ! PermissionHelper::can( 'wikipress_int_edit_published' ) ) {
+            wp_die( esc_html__( 'You are not allowed to modify published Internal Wiki content.', 'wikipress' ), 403 );
+        }
+
+        $status = SanitizationHelper::key( $payload['status'] ?? ( $post->post_status ?? '' ) );
+        if ( 'publish' === $status && ( $creating || ! $post || 'publish' !== $post->post_status ) && ! PermissionHelper::can( 'wikipress_int_publish' ) ) {
+            wp_die( esc_html__( 'You are not allowed to publish Internal Wiki content.', 'wikipress' ), 403 );
+        }
+    }
+
+    public function authorize_delete( int $post_id, \WP_Post $post ): void {
+        $wiki_id = PostType::WIKI === $post->post_type
+            ? $post_id
+            : ( PostType::PAGE === $post->post_type ? absint( get_post_meta( $post_id, '_wikipress_wiki_id', true ) ) : 0 );
+        if ( $wiki_id < 1 || ! get_post_meta( $wiki_id, self::META_ENABLED, true ) ) {
+            return;
+        }
+
+        if ( ! PermissionHelper::can( 'wikipress_int_delete' ) ) {
+            wp_die( esc_html__( 'You are not allowed to delete Internal Wiki content.', 'wikipress' ), 403 );
+        }
+
+        if ( (int) $post->post_author !== get_current_user_id() && ! PermissionHelper::can( 'wikipress_int_delete_others' ) ) {
+            wp_die( esc_html__( 'You are not allowed to delete content created by another user.', 'wikipress' ), 403 );
+        }
+
+        if ( 'publish' === $post->post_status && ! PermissionHelper::can( 'wikipress_int_delete_published' ) ) {
+            wp_die( esc_html__( 'You are not allowed to delete published Internal Wiki content.', 'wikipress' ), 403 );
+        }
     }
 
     private function permissions(): array {

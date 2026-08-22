@@ -12,6 +12,8 @@ PluginName/
 |  |- scss/
 |  `- Assets.php
 |- Includes/
+|  |- Core/
+|  |  `- Capabilities.php
 |  |- Settings/
 |  |  `- Settings.php
 |  |- I18n.php
@@ -47,6 +49,12 @@ Optional capabilities are defined in `PluginsInterface.php`:
 - `RestRouteProviderInterface::register_rest_routes()`
 - `FrontendProviderInterface::register_frontend()`
 - `I18nProviderInterface::load_textdomain()`
+
+Plugins that define their own permissions should place them in
+`Includes/Core/Capabilities.php`, extend `WikiPress\Includes\Core\Capabilities`,
+and register them from their `Includes` initializer. The core registry merges
+these definitions with core capabilities and installs missing capabilities on
+the administrator role.
 
 Plugins that provide translations should implement `I18nProviderInterface`, keep
 their text-domain loader in `Includes/I18n.php`, and store translation templates

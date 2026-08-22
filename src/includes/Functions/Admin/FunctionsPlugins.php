@@ -25,7 +25,7 @@ final class FunctionsPlugins {
      * @return void
      */
     public function toggle_plugin(): void {
-        if ( ! AjaxHelper::authorized( 'wikipress_plugin_toggle', 'manage_options' ) ) {
+        if ( ! AjaxHelper::authorized( 'wikipress_plugin_toggle', 'wikipress_settings_plugins_int_edit' ) ) {
             AjaxHelper::unauthorized( __( 'You are not authorized to manage WikiPress plugins.', 'wikipress' ) );
         }
 
@@ -36,6 +36,9 @@ final class FunctionsPlugins {
         if ( ! $plugin instanceof PluginInterface ) {
             AjaxHelper::error( [ 'message' => __( 'The requested WikiPress plugin was not found.', 'wikipress' ) ], 404 );
         }
+		if ( ! $this->is_internal_plugin( $plugin ) ) {
+			AjaxHelper::unauthorized( __( 'You are not authorized to manage external WikiPress plugins.', 'wikipress' ) );
+		}
 
         if ( ! Plugins::get_instance()->set_plugin_enabled( $slug, $enabled ) ) {
             AjaxHelper::error( [ 'message' => __( 'The WikiPress plugin state could not be saved.', 'wikipress' ) ], 500 );
@@ -50,16 +53,16 @@ final class FunctionsPlugins {
      * @return void
      */
     public function save_plugin_settings(): void {
-        if ( ! AjaxHelper::authorized( 'wikipress_plugin_settings', 'manage_options' ) ) {
-            $message = __( 'You are not authorized to save WikiPress plugin settings.', 'wikipress' );
-            AjaxHelper::error( [ 'message' => $message, 'alert' => AlertHelper::get_admin_notice( $message, 'error' ) ], 403 );
-        }
-
         $slug = sanitize_key( wp_unslash( $_POST['slug'] ?? '' ) );
         $plugin = Plugins::get_instance()->get_registered_plugins()[ $slug ] ?? null;
         if ( ! $plugin instanceof PluginInterface || ! $plugin instanceof SettingsPageProviderInterface ) {
             $message = __( 'The requested WikiPress plugin settings were not found.', 'wikipress' );
             AjaxHelper::error( [ 'message' => $message, 'alert' => AlertHelper::get_admin_notice( $message, 'error' ) ], 404 );
+        }
+        $capability = $this->is_internal_plugin( $plugin ) ? 'wikipress_settings_plugins_int_edit' : 'wikipress_settings_plugins_ext_edit';
+        if ( ! AjaxHelper::authorized( 'wikipress_plugin_settings', $capability ) ) {
+            $message = __( 'You are not authorized to save WikiPress plugin settings.', 'wikipress' );
+            AjaxHelper::error( [ 'message' => $message, 'alert' => AlertHelper::get_admin_notice( $message, 'error' ) ], 403 );
         }
 
         $input = isset( $_POST['settings'] ) && is_array( $_POST['settings'] ) ? wp_unslash( $_POST['settings'] ) : [];
@@ -73,6 +76,10 @@ final class FunctionsPlugins {
                 'alert' => AlertHelper::get_admin_notice( __( 'Plugin settings saved successfully.', 'wikipress' ), 'success' ),
             ]
         );
+    }
+
+    private function is_internal_plugin( PluginInterface $plugin ): bool {
+        return 0 === strpos( get_class( $plugin ), 'WikiPress\\Includes\\Plugins\\' );
     }
 
     /**

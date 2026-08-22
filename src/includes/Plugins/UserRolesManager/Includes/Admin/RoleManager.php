@@ -15,6 +15,7 @@ use WikiPress\Includes\Functions\Helpers\PermissionHelper;
 use WikiPress\Includes\Functions\Helpers\RequestHelper;
 use WikiPress\Includes\Functions\Helpers\SanitizationHelper;
 use WikiPress\Includes\Functions\Helpers\UrlHelper;
+use WikiPress\Includes\Core\Capabilities;
 use WikiPress\Includes\Settings\Settings;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -39,15 +40,16 @@ final class RoleManager extends Manager {
      * Renders the Roles Manager admin page.
      */
 	public function render(): void {
+		$this->authorize_view();
 
 		$roles = wp_roles()->roles;
 		$capability_groups = $this->capability_groups();
 
 		$this->header( __( 'Roles Manager', 'wikipress' ) );
 		?>
-		<div class="d-flex justify-content-end mb-4">
+		<?php if ( PermissionHelper::can( 'wikipress_roles_create' ) ) : ?><div class="d-flex justify-content-end mb-4">
 			<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#wikipress-add-role-modal"><?php esc_html_e( 'Add New', 'wikipress' ); ?></button>
-		</div>
+		</div><?php endif; ?>
 		<div class="row g-4">
 			<?php foreach ( $roles as $slug => $role ) : ?>
 				<div class="col-12 col-md-6 col-xl-4 d-flex">
@@ -56,14 +58,14 @@ final class RoleManager extends Manager {
 							<h2 class="h5 mb-2"><?php echo esc_html( translate_user_role( $role['name'] ) ); ?></h2>
 							<p class="text-secondary mb-1"><code><?php echo esc_html( $slug ); ?></code></p>
 							<p class="text-secondary mb-4"><?php /* translators: %d is the number of capabilities assigned to the role. */ echo esc_html( sprintf( _n( '%d permission', '%d permissions', count( $role['capabilities'] ), 'wikipress' ), count( $role['capabilities'] ) ) ); ?></p>
-							<button type="button" class="btn btn-outline-primary mt-auto" data-bs-toggle="modal" data-bs-target="#wikipress-edit-role-<?php echo esc_attr( $slug ); ?>"><?php esc_html_e( 'Edit', 'wikipress' ); ?></button>
+							<?php if ( PermissionHelper::can( 'wikipress_roles_edit' ) ) : ?><button type="button" class="btn btn-outline-primary mt-auto" data-bs-toggle="modal" data-bs-target="#wikipress-edit-role-<?php echo esc_attr( $slug ); ?>"><?php esc_html_e( 'Edit', 'wikipress' ); ?></button><?php endif; ?>
 						</div>
 					</article>
 				</div>
 			<?php endforeach; ?>
 		</div>
-		<?php $this->render_add_modal( $capability_groups ); ?>
-		<?php foreach ( $roles as $slug => $role ) : $this->render_edit_modal( $slug, $role, $capability_groups ); endforeach; ?>
+		<?php if ( PermissionHelper::can( 'wikipress_roles_create' ) ) : $this->render_add_modal( $capability_groups ); endif; ?>
+		<?php if ( PermissionHelper::can( 'wikipress_roles_edit' ) ) : foreach ( $roles as $slug => $role ) : $this->render_edit_modal( $slug, $role, $capability_groups ); endforeach; endif; ?>
 		<?php
 		$this->footer();
 	}
@@ -74,7 +76,7 @@ final class RoleManager extends Manager {
      */
 	public function create_role(): void {
 
-		$this->authorize_action( 'wikipress_create_role' );
+		$this->authorize_action( 'wikipress_create_role', 'wikipress_roles_create' );
 		$display_name = $this->valid_role_name( RequestHelper::text( $_POST, 'role_display_name' ) );
 		$slug = $this->valid_slug( RequestHelper::key( $_POST, 'role_slug' ) );
 		if ( '' === $display_name || '' === $slug || wp_roles()->is_role( $slug ) || $this->role_name_exists( $display_name ) ) {
@@ -88,7 +90,7 @@ final class RoleManager extends Manager {
      */
 	public function update_role(): void {
 
-		$this->authorize_action( 'wikipress_update_role' );
+		$this->authorize_action( 'wikipress_update_role', 'wikipress_roles_edit' );
 		$old_slug = RequestHelper::key( $_POST, 'old_role_slug' );
 		$display_name = $this->valid_role_name( RequestHelper::text( $_POST, 'role_display_name' ) );
 		$new_slug = $this->valid_slug( RequestHelper::key( $_POST, 'role_slug' ) );
@@ -118,7 +120,7 @@ final class RoleManager extends Manager {
      * Deletes an existing role if it has no users assigned to it.
      */
 	public function delete_role(): void {
-		$this->authorize_action( 'wikipress_delete_role' );
+		$this->authorize_action( 'wikipress_delete_role', 'wikipress_roles_delete' );
 		$slug = RequestHelper::key( $_POST, 'role_slug' );
 		if ( 'administrator' === $slug || ! wp_roles()->is_role( $slug ) || $this->role_has_users( $slug ) ) {
 			$this->redirect( 'invalid' );
@@ -195,6 +197,7 @@ final class RoleManager extends Manager {
      */
 	private function render_capability_step( array $groups, array $selected ): void {
 		$accordion_id = wp_unique_id( 'wikipress-capability-groups-' );
+		$wordpress_descriptions = $this->wordpress_capability_descriptions();
 		?>
 		<div class="wikipress-role-step" data-role-step="capabilities">
 			<h3 class="h6 mb-3"><?php esc_html_e( 'Capabilities', 'wikipress' ); ?></h3>
@@ -213,10 +216,14 @@ final class RoleManager extends Manager {
 								foreach ( $capabilities as $capability => $description ) {
 									$input_id = wp_unique_id( 'wikipress-capability-' );
 									$is_selected = isset( $selected[ $capability ] );
+									$wordpress_description = $wordpress_descriptions[ $capability ] ?? '';
 									?>
 									<div class="card wikipress-capability-card h-100">
 										<div class="card-body d-flex flex-column align-items-center gap-3">
-											<h6 class="card-title mb-0 text-center"><?php echo esc_html( $description ?: $capability ); ?></h6>
+											<div class="wikipress-capability-title d-flex align-items-center justify-content-center gap-1">
+												<h6 class="card-title mb-0 text-center"><?php echo esc_html( $description ?: $capability ); ?></h6>
+												<?php if ( $wordpress_description ) : ?><button type="button" class="btn btn-link wikipress-capability-info p-0" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="<?php echo esc_attr( $wordpress_description ); ?>" aria-label="<?php esc_attr_e( 'Capability information', 'wikipress' ); ?>">&#9432;</button><?php endif; ?>
+											</div>
 											<input class="btn-check" type="checkbox" name="capabilities[]" value="<?php echo esc_attr( $capability ); ?>" id="<?php echo esc_attr( $input_id ); ?>" autocomplete="off"<?php checked( $is_selected ); ?> />
 											<label class="btn btn-<?php echo $is_selected ? 'primary' : 'outline-primary'; ?> wikipress-capability-toggle" for="<?php echo esc_attr( $input_id ); ?>" data-capability-toggle><?php echo $is_selected ? esc_html__( 'On', 'wikipress' ) : esc_html__( 'Off', 'wikipress' ); ?></label>
 										</div>
@@ -254,11 +261,90 @@ final class RoleManager extends Manager {
      */
 	private function capability_groups(): array {
 		$groups = [
-			'Multisite' => is_multisite() ? [ 'manage_network' => __( 'Manage Network', 'wikipress' ), 'manage_sites' => __( 'Manage Sites', 'wikipress' ), 'manage_network_users' => __( 'Manage Network Users', 'wikipress' ), 'manage_network_plugins' => __( 'Manage Network Plugins', 'wikipress' ), 'manage_network_themes' => __( 'Manage Network Themes', 'wikipress' ) ] : [],
-			'Manage' => [ 'manage_options' => __( 'Manage Options', 'wikipress' ), 'manage_categories' => __( 'Manage Categories', 'wikipress' ), 'edit_users' => __( 'Edit Users', 'wikipress' ), 'list_users' => __( 'List Users', 'wikipress' ), 'promote_users' => __( 'Promote Users', 'wikipress' ), 'create_users' => __( 'Create Users', 'wikipress' ), 'delete_users' => __( 'Delete Users', 'wikipress' ) ],
-			'Content' => [ 'read' => __( 'Read', 'wikipress' ), 'edit_posts' => __( 'Edit Posts', 'wikipress' ), 'edit_pages' => __( 'Edit Pages', 'wikipress' ), 'publish_posts' => __( 'Publish Posts', 'wikipress' ), 'publish_pages' => __( 'Publish Pages', 'wikipress' ), 'delete_posts' => __( 'Delete Posts', 'wikipress' ), 'upload_files' => __( 'Upload Files', 'wikipress' ) ],
-			'WikiPress' => [ 'create_wikis' => __( 'Create Wikis', 'wikipress' ), 'write_pages' => __( 'Write Wiki Pages', 'wikipress' ), 'view_analytics' => __( 'View Analytics', 'wikipress' ), 'manage_plugins' => __( 'Manage WikiPress Plugins', 'wikipress' ) ],
+			'Multi Sites' => is_multisite() ? [
+				'create_sites' => __( 'Create Sites', 'wikipress' ),
+				'delete_sites' => __( 'Delete Sites', 'wikipress' ),
+				'manage_network' => __( 'Manage Network', 'wikipress' ),
+				'manage_sites' => __( 'Manage Sites', 'wikipress' ),
+				'manage_network_users' => __( 'Manage Network Users', 'wikipress' ),
+				'manage_network_plugins' => __( 'Manage Network Plugins', 'wikipress' ),
+				'manage_network_themes' => __( 'Manage Network Themes', 'wikipress' ),
+				'manage_network_options' => __( 'Manage Network Options', 'wikipress' ),
+				'upgrade_network' => __( 'Upgrade Network', 'wikipress' ),
+				'setup_network' => __( 'Setup Network', 'wikipress' ),
+				'delete_site' => __( 'Delete Site', 'wikipress' )
+			] : [],
+			'Manage' => [
+				'read' => __( 'Read', 'wikipress' ),
+				'edit_dashboard' => __( 'Edit Dashboard', 'wikipress' ),
+				'export' => __( 'Export', 'wikipress' ),
+				'import' => __( 'Import', 'wikipress' ),
+				'manage_options' => __( 'Manage Options', 'wikipress' ),
+				'manage_links' => __( 'Manage Links', 'wikipress' ),
+				'moderate_comments' => __( 'Moderate Comments', 'wikipress' ),
+				'update_core' => __( 'Update Core', 'wikipress' )
+			],
+			'Content' => [
+				'delete_others_pages' => __( 'Delete Others Pages', 'wikipress' ),
+				'delete_others_posts' => __( 'Delete Others Posts', 'wikipress' ),
+				'delete_pages' => __( 'Delete Pages', 'wikipress' ),
+				'delete_posts' => __( 'Delete Posts', 'wikipress' ),
+				'delete_private_pages' => __( 'Delete Private Pages', 'wikipress' ),
+				'delete_private_posts' => __( 'Delete Private Posts', 'wikipress' ),
+				'delete_published_pages' => __( 'Delete Published Pages', 'wikipress' ),
+				'delete_published_posts' => __( 'Delete Published Posts', 'wikipress' ),
+				'edit_others_pages' => __( 'Edit Others Pages', 'wikipress' ),
+				'edit_others_posts' => __( 'Edit Others Posts', 'wikipress' ),
+				'edit_pages' => __( 'Edit Pages', 'wikipress' ),
+				'edit_posts' => __( 'Edit Posts', 'wikipress' ),
+				'edit_private_pages' => __( 'Edit Private Pages', 'wikipress' ),
+				'edit_private_posts' => __( 'Edit Private Posts', 'wikipress' ),
+				'edit_published_pages' => __( 'Edit Published Pages', 'wikipress' ),
+				'edit_published_posts' => __( 'Edit Published Posts', 'wikipress' ),
+				'publish_pages' => __( 'Publish Pages', 'wikipress' ),
+				'publish_posts' => __( 'Publish Posts', 'wikipress' ),
+				'read_private_pages' => __( 'Read Private Pages', 'wikipress' ),
+				'read_private_posts' => __( 'Read Private Posts', 'wikipress' ),
+				'manage_categories' => __( 'Manage Categories', 'wikipress' ),
+				'upload_files' => __( 'Upload Files', 'wikipress' ),
+				'unfiltered_html' => __( 'Unfiltered HTML', 'wikipress' ),
+			],
+			'Users' => [
+				'promote_users' => __( 'Promote Users', 'wikipress' ),
+				'remove_users' => __( 'Remove Users', 'wikipress' ),
+				'list_users' => __( 'List Users', 'wikipress' ),
+				'edit_users' => __( 'Edit Users', 'wikipress' ),
+				'add_users' => __( 'Add Users', 'wikipress' ),
+				'create_users' => __( 'Create Users', 'wikipress' ),
+				'delete_users' => __( 'Delete Users', 'wikipress' ),
+			],
+			'Plugins' => [
+				'activate_plugins' => __( 'Activate Plugins', 'wikipress' ),
+				'update_plugins' => __( 'Update Plugins', 'wikipress' ),
+				'install_plugins' => __( 'Install Plugins', 'wikipress' ),
+				'delete_plugins' => __( 'Delete Plugins', 'wikipress' ),
+				'edit_plugins' => __( 'Edit Plugins', 'wikipress' ),
+			],
+			'Themes' => [
+				'edit_theme_options' => __( 'Edit Theme Options', 'wikipress' ),
+				'customize' => __( 'Customize', 'wikipress' ),
+				'switch_themes' => __( 'Switch Themes', 'wikipress' ),
+				'install_themes' => __( 'Install Themes', 'wikipress' ),
+				'delete_themes' => __( 'Delete Themes', 'wikipress' ),
+				'edit_themes' => __( 'Edit Themes', 'wikipress' ),
+				'update_themes' => __( 'Update Themes', 'wikipress' ),
+			],
+			'WikiPress' => [
+				'create_wikis' => __( 'Create Wikis', 'wikipress' ),
+				'write_pages' => __( 'Write Wiki Pages', 'wikipress' ),
+				'view_analytics' => __( 'View Analytics', 'wikipress' ),
+				'manage_plugins' => __( 'Manage WikiPress Plugins', 'wikipress' ),
+			],
 		];
+		$groups['WikiPress'] = [];
+		foreach ( Capabilities::definitions() as $capability => $definition ) {
+			$groups['WikiPress'][ $capability ] = $definition['label'];
+		}
 		$known = [];
 		foreach ( $groups as $capabilities ) {
 			$known = array_merge( $known, array_keys( $capabilities ) );
@@ -275,11 +361,81 @@ final class RoleManager extends Manager {
         
 		if ( $plugin_capabilities ) {
 
-			$groups['Plugins'] = $plugin_capabilities;
+			$groups['WordPress Plugins'] = $plugin_capabilities;
 
 		}
 
 		return array_filter( $groups );
+	}
+
+	private function wordpress_capability_descriptions(): array {
+		$descriptions = [
+			'read' => __( 'Allows viewing the administration area and content.', 'wikipress' ),
+			'edit_dashboard' => __( 'Allows editing dashboard widgets.', 'wikipress' ),
+			'export' => __( 'Allows exporting content.', 'wikipress' ),
+			'import' => __( 'Allows importing content.', 'wikipress' ),
+			'manage_links' => __( 'Allows managing links.', 'wikipress' ),
+			'moderate_comments' => __( 'Allows moderating comments.', 'wikipress' ),
+			'update_core' => __( 'Allows updating WordPress.', 'wikipress' ),
+			'delete_others_pages' => __( 'Allows deleting pages created by other users.', 'wikipress' ),
+			'delete_others_posts' => __( 'Allows deleting posts created by other users.', 'wikipress' ),
+			'edit_posts' => __( 'Allows editing posts.', 'wikipress' ),
+			'edit_pages' => __( 'Allows editing pages.', 'wikipress' ),
+			'delete_private_pages' => __( 'Allows deleting private pages.', 'wikipress' ),
+			'delete_private_posts' => __( 'Allows deleting private posts.', 'wikipress' ),
+			'delete_published_pages' => __( 'Allows deleting published pages.', 'wikipress' ),
+			'delete_published_posts' => __( 'Allows deleting published posts.', 'wikipress' ),
+			'edit_others_pages' => __( 'Allows editing pages created by other users.', 'wikipress' ),
+			'edit_others_posts' => __( 'Allows editing posts created by other users.', 'wikipress' ),
+			'edit_private_pages' => __( 'Allows editing private pages.', 'wikipress' ),
+			'edit_private_posts' => __( 'Allows editing private posts.', 'wikipress' ),
+			'edit_published_pages' => __( 'Allows editing published pages.', 'wikipress' ),
+			'edit_published_posts' => __( 'Allows editing published posts.', 'wikipress' ),
+			'publish_posts' => __( 'Allows publishing posts.', 'wikipress' ),
+			'publish_pages' => __( 'Allows publishing pages.', 'wikipress' ),
+			'delete_posts' => __( 'Allows deleting posts.', 'wikipress' ),
+			'delete_pages' => __( 'Allows deleting pages.', 'wikipress' ),
+			'read_private_pages' => __( 'Allows reading private pages.', 'wikipress' ),
+			'read_private_posts' => __( 'Allows reading private posts.', 'wikipress' ),
+			'upload_files' => __( 'Allows uploading files.', 'wikipress' ),
+			'manage_categories' => __( 'Allows managing categories.', 'wikipress' ),
+			'unfiltered_html' => __( 'Allows posting unfiltered HTML.', 'wikipress' ),
+			'promote_users' => __( 'Allows promoting users.', 'wikipress' ),
+			'add_users' => __( 'Allows adding existing users to a site.', 'wikipress' ),
+			'manage_options' => __( 'Allows managing site options.', 'wikipress' ),
+			'activate_plugins' => __( 'Allows activating, deactivating, and managing plugins.', 'wikipress' ),
+			'update_plugins' => __( 'Allows updating plugins.', 'wikipress' ),
+			'install_plugins' => __( 'Allows installing plugins.', 'wikipress' ),
+			'delete_plugins' => __( 'Allows deleting plugins.', 'wikipress' ),
+			'edit_plugins' => __( 'Allows editing plugin files.', 'wikipress' ),
+			'edit_themes' => __( 'Allows editing theme files.', 'wikipress' ),
+			'install_themes' => __( 'Allows installing themes.', 'wikipress' ),
+			'delete_themes' => __( 'Allows deleting themes.', 'wikipress' ),
+			'update_themes' => __( 'Allows updating themes.', 'wikipress' ),
+			'switch_themes' => __( 'Allows switching the active theme.', 'wikipress' ),
+			'customize' => __( 'Allows customizing the site.', 'wikipress' ),
+			'edit_theme_options' => __( 'Allows managing theme options.', 'wikipress' ),
+			'edit_users' => __( 'Allows editing users.', 'wikipress' ),
+			'list_users' => __( 'Allows listing users.', 'wikipress' ),
+			'create_users' => __( 'Allows creating users.', 'wikipress' ),
+			'delete_users' => __( 'Allows deleting users.', 'wikipress' ),
+			'remove_users' => __( 'Allows removing users from a site.', 'wikipress' ),
+			'manage_network' => __( 'Allows managing network administration.', 'wikipress' ),
+			'manage_network_users' => __( 'Allows managing network users.', 'wikipress' ),
+			'manage_network_plugins' => __( 'Allows managing network plugins.', 'wikipress' ),
+			'manage_network_themes' => __( 'Allows managing network themes.', 'wikipress' ),
+			'manage_network_options' => __( 'Allows managing network options.', 'wikipress' ),
+			'create_sites' => __( 'Allows creating sites in a multisite network.', 'wikipress' ),
+			'delete_sites' => __( 'Allows deleting sites in a multisite network.', 'wikipress' ),
+			'upgrade_network' => __( 'Allows upgrading the network.', 'wikipress' ),
+			'setup_network' => __( 'Allows setting up the network.', 'wikipress' ),
+			'delete_site' => __( 'Allows deleting the current site.', 'wikipress' ),
+		];
+		foreach ( Capabilities::definitions() as $capability => $definition ) {
+			$descriptions[ $capability ] = $definition['description'];
+		}
+
+		return $descriptions;
 	}
     /**
      * Collects the capabilities submitted from the form.
@@ -344,9 +500,15 @@ final class RoleManager extends Manager {
      *
      * @param string $action The action to authorize.
      */
-	private function authorize_action( string $action ): void {
+	private function authorize_view(): void {
+		if ( ! PermissionHelper::can( 'wikipress_roles_view' ) ) {
+			wp_die( esc_html__( 'You are not allowed to view roles.', 'wikipress' ), 403 );
+		}
+	}
 
-		if ( ! PermissionHelper::can( Settings::get_key( 'role_manager_capability', 'manage_options' ) ) ) {
+	private function authorize_action( string $action, string $capability ): void {
+
+		if ( ! PermissionHelper::can( $capability ) ) {
 
 			wp_die( esc_html__( 'You are not allowed to manage roles.', 'wikipress' ), 403 );
 

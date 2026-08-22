@@ -66,7 +66,15 @@ final class FunctionsSidebar {
 			}
 		}
 
-		return $groups;
+		foreach ( $groups as &$group ) {
+			$group['items'] = array_filter(
+				$group['items'],
+				static fn ( array $item ): bool => '' === ( $capability = sanitize_key( (string) ( $item['capability'] ?? '' ) ) ) || current_user_can( $capability )
+			);
+		}
+		unset( $group );
+
+		return array_filter( $groups, static fn ( array $group ): bool => ! empty( $group['items'] ) );
 	}
 
 	/**
@@ -88,7 +96,7 @@ final class FunctionsSidebar {
 				'icon'       => 'dashicons-book-alt',
 				'parent'     => '',
 				'callback'   => [ $admin, 'render_dashboard' ],
-				'capability' => $admin->capability( 'manager_wiki', 'manage_options' ),
+				'capability' => 'wikipress_admin_view',
 				'position'   => 30,
 			],
 			[
@@ -96,28 +104,28 @@ final class FunctionsSidebar {
 				'slug'       => 'wikipress',
 				'parent'     => 'wikipress',
 				'callback'   => [ $admin, 'render_dashboard' ],
-				'capability' => 'manage_options',
+				'capability' => 'wikipress_admin_view',
 			],
 			[
 				'name'       => __( 'Manage Wiki', 'wikipress' ),
 				'slug'       => 'wikipress-manage',
 				'parent'     => 'wikipress',
 				'callback'   => [ $admin, 'render_wikis' ],
-				'capability' => $admin->capability( 'manager_wiki', 'manage_options' ),
+				'capability' => 'wikipress_admin_view',
 			],
 			[
 				'name'       => __( 'Settings', 'wikipress' ),
 				'slug'       => 'wikipress-settings',
 				'parent'     => 'wikipress',
 				'callback'   => [ $admin, 'render_settings' ],
-				'capability' => 'manage_options',
+				'capability' => 'wikipress_settings_general_view',
 			],
 			[
 				'name'       => __( 'Tools', 'wikipress' ),
 				'slug'       => 'wikipress-tools',
 				'parent'     => 'wikipress',
 				'callback'   => [ $admin, 'render_tools' ],
-				'capability' => $admin->capability( 'view_tools', 'manage_options' ),
+				'capability' => 'wikipress_tools_debug',
 			],
 		];
 	}
@@ -129,31 +137,31 @@ final class FunctionsSidebar {
 				'label' => __( 'Manage Wiki', 'wikipress' ),
 				'icon'  => 'fa-solid fa-file-lines',
 				'items' => [
-					'wikipress-manage'                  => [ 'label' => __( 'Manage Wiki', 'wikipress' ), 'icon' => 'fa-solid fa-book-open-lines' ],
-					'wikipress-manage&wiki=categories' => [ 'label' => __( 'Categories', 'wikipress' ), 'icon' => 'fa-book-open-lines-category' ],
-					'wikipress-manage&wiki=tags'       => [ 'label' => __( 'Tags', 'wikipress' ), 'icon' => 'fa-kit fa-solid-book-open-lines-tag' ],
-					'wikipress-manage&wiki=new'        => [ 'label' => __( 'New Wiki', 'wikipress' ), 'icon' => 'fa-kit fa-solid-book-open-lines-circle-plus' ],
+					'wikipress-manage'                  => [ 'label' => __( 'Manage Wiki', 'wikipress' ), 'icon' => 'fa-solid fa-book-open-lines', 'capability' => 'wikipress_admin_view' ],
+					'wikipress-manage&wiki=categories' => [ 'label' => __( 'Categories', 'wikipress' ), 'icon' => 'fa-book-open-lines-category', 'capability' => 'wikipress_edit' ],
+					'wikipress-manage&wiki=tags'       => [ 'label' => __( 'Tags', 'wikipress' ), 'icon' => 'fa-kit fa-solid-book-open-lines-tag', 'capability' => 'wikipress_edit' ],
+					'wikipress-manage&wiki=new'        => [ 'label' => __( 'New Wiki', 'wikipress' ), 'icon' => 'fa-kit fa-solid-book-open-lines-circle-plus', 'capability' => 'wikipress_create' ],
 				],
 			],
 			'settings' => [
 				'label' => __( 'Settings', 'wikipress' ),
 				'icon'  => 'fa-solid fa-gear',
 				'items' => [
-					'wikipress-settings&tab=general'     => [ 'label' => __( 'General', 'wikipress' ), 'icon' => 'fa-solid fa-sliders' ],
-					'wikipress-settings&tab=layout'      => [ 'label' => __( 'Layout', 'wikipress' ), 'icon' => 'fa-solid fa-table-columns' ],
-					'wikipress-settings&tab=plugins'     => [ 'label' => __( 'Plugins', 'wikipress' ), 'icon' => 'fa-solid fa-puzzle-piece' ],
-					'wikipress-settings&tab=third-party' => [ 'label' => __( '3rd Party', 'wikipress' ), 'icon' => 'fa-solid fa-plug' ],
-					'wikipress-settings&tab=access'      => [ 'label' => __( 'Access', 'wikipress' ), 'icon' => 'fa-solid fa-user-shield' ],
+					'wikipress-settings&tab=general'     => [ 'label' => __( 'General', 'wikipress' ), 'icon' => 'fa-solid fa-sliders', 'capability' => 'wikipress_settings_general_view' ],
+					'wikipress-settings&tab=layout'      => [ 'label' => __( 'Layout', 'wikipress' ), 'icon' => 'fa-solid fa-table-columns', 'capability' => 'wikipress_settings_layout_view' ],
+					'wikipress-settings&tab=plugins'     => [ 'label' => __( 'Plugins', 'wikipress' ), 'icon' => 'fa-solid fa-puzzle-piece', 'capability' => 'wikipress_settings_plugins_view' ],
+					'wikipress-settings&tab=third-party' => [ 'label' => __( '3rd Party', 'wikipress' ), 'icon' => 'fa-solid fa-plug', 'capability' => 'wikipress_settings_plugins_ext_view' ],
+					'wikipress-settings&tab=access'      => [ 'label' => __( 'Access', 'wikipress' ), 'icon' => 'fa-solid fa-user-shield', 'capability' => 'wikipress_settings_access_view' ],
 				],
 			],
 			'tools' => [
 				'label' => __( 'Tools', 'wikipress' ),
 				'icon'  => 'fa-solid fa-toolbox',
 				'items' => [
-					'wikipress-tools&tool=debug'     => [ 'label' => __( 'Debug', 'wikipress' ), 'icon' => 'fa-solid fa-bug-slash' ],
-					'wikipress-tools&tool=import'    => [ 'label' => __( 'Import', 'wikipress' ), 'icon' => 'fa-solid fa-file-import' ],
-					'wikipress-tools&tool=export'    => [ 'label' => __( 'Export', 'wikipress' ), 'icon' => 'fa-solid fa-file-export' ],
-					'wikipress-tools&tool=analytics' => [ 'label' => __( 'Analytics', 'wikipress' ), 'icon' => 'fa-solid fa-chart-line' ],
+					'wikipress-tools&tool=debug'     => [ 'label' => __( 'Debug', 'wikipress' ), 'icon' => 'fa-solid fa-bug-slash', 'capability' => 'wikipress_tools_debug' ],
+					'wikipress-tools&tool=import'    => [ 'label' => __( 'Import', 'wikipress' ), 'icon' => 'fa-solid fa-file-import', 'capability' => 'wikipress_tools_import' ],
+					'wikipress-tools&tool=export'    => [ 'label' => __( 'Export', 'wikipress' ), 'icon' => 'fa-solid fa-file-export', 'capability' => 'wikipress_tools_export' ],
+					'wikipress-tools&tool=analytics' => [ 'label' => __( 'Analytics', 'wikipress' ), 'icon' => 'fa-solid fa-chart-line', 'capability' => 'wikipress_tools_analytics' ],
 				],
 			],
 		];
@@ -243,16 +251,16 @@ final class FunctionsSidebar {
 					}
 
 					if ( 'group' === ( $definition['type'] ?? '' ) ) {
-						$menus[] = WASMHelper::define( $definition['label'] ?? '', $definition['slug'] ?? '', $definition['icon'] ?? '' );
+						$menus[] = WASMHelper::define( $definition['label'] ?? '', $definition['slug'] ?? '', $definition['icon'] ?? '', '', $definition['capability'] ?? '' );
 						foreach ( $definition['items'] ?? [] as $child ) {
 							if ( is_array( $child ) ) {
-								$menus[] = WASMHelper::define( $child['label'] ?? '', self::sidebar_slug( $child ), $child['icon'] ?? '', $definition['slug'] ?? '' );
+								$menus[] = WASMHelper::define( $child['label'] ?? '', self::sidebar_slug( $child ), $child['icon'] ?? '', $definition['slug'] ?? '', $child['capability'] ?? '' );
 							}
 						}
 						continue;
 					}
 
-					$menus[] = WASMHelper::define( $definition['label'] ?? '', self::sidebar_slug( $definition ), $definition['icon'] ?? '', $definition['parent'] ?? '' );
+					$menus[] = WASMHelper::define( $definition['label'] ?? '', self::sidebar_slug( $definition ), $definition['icon'] ?? '', $definition['parent'] ?? '', $definition['capability'] ?? '' );
 				}
 			} catch ( \Throwable $e ) {
 				LoggerHelper::write_log( sprintf( 'WikiPress plugin %s failed to provide sidebar menus: %s', $plugin->get_slug(), $e->getMessage() ) );
@@ -291,8 +299,9 @@ final class FunctionsSidebar {
 		$label = (string) ( $menu['name'] ?? '' );
 		$icon  = (string) ( $menu['icon'] ?? '' );
 
-		if ( isset( $groups[ $parent ] ) && '' !== $slug && '' !== $label && '' !== $icon ) {
-			$groups[ $parent ]['items'][ $slug ] = [ 'label' => $label, 'icon' => $icon ];
+		$capability = sanitize_key( (string) ( $menu['capability'] ?? '' ) );
+		if ( isset( $groups[ $parent ] ) && '' !== $slug && '' !== $label && '' !== $icon && ( '' === $capability || current_user_can( $capability ) ) ) {
+			$groups[ $parent ]['items'][ $slug ] = [ 'label' => $label, 'icon' => $icon, 'capability' => $capability ];
 		}
 	}
 

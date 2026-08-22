@@ -59,6 +59,7 @@ final class Core {
             return;
         }
 
+        Capabilities::install();
         $this->post_types->register();
         $this->taxonomies->register();
         PageShortcodes::register( $this->shortcodes );

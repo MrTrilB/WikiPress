@@ -131,6 +131,29 @@ final class SettingsManager extends Manager {
      */
     public function render_tab_content( string $tab, string $layout_section = 'general' ): void {
         $tab = $this->normalize_tab( $tab );
+        $view_capabilities = [
+            'general' => [ 'wikipress_settings_general_view' ],
+            'layout' => [ 'wikipress_settings_layout_view' ],
+            'access' => [ 'wikipress_settings_access_view' ],
+            'plugins' => [ 'wikipress_settings_plugins_view' ],
+            'third-party' => [ 'wikipress_settings_plugins_view', 'wikipress_settings_plugins_ext_view' ],
+        ];
+        $can_view = true;
+        foreach ( $view_capabilities[ $tab ] ?? [] as $capability ) {
+            if ( ! current_user_can( $capability ) ) {
+                $can_view = false;
+                break;
+            }
+        }
+        if ( ! $can_view ) {
+            wp_die( esc_html__( 'You are not authorized to view these WikiPress settings.', 'wikipress' ) );
+        }
+        $edit_capabilities = [
+            'general' => 'wikipress_settings_general_edit',
+            'layout' => 'wikipress_settings_layout_edit',
+            'access' => 'wikipress_settings_access_edit',
+        ];
+        $can_edit = isset( $edit_capabilities[ $tab ] ) && current_user_can( $edit_capabilities[ $tab ] );
         $groups = Settings::get_all();
         $values = $groups[ $tab ] ?? [];
         echo '<div class="wikipress-settings-tab-content" role="tabpanel">';
@@ -149,7 +172,11 @@ final class SettingsManager extends Manager {
             echo '</div>';
             return;
         }
-        echo '<form method="post" action="options.php" class="wikipress-settings-form card shadow-sm">';
+        if ( $can_edit ) {
+            echo '<form method="post" action="options.php" class="wikipress-settings-form card shadow-sm">';
+        } else {
+            echo '<div class="wikipress-settings-form card shadow-sm">';
+        }
         settings_fields( 'wikipress_settings' );
         echo '<div class="card-body">';
         if ( 'layout' === $tab ) {
@@ -167,12 +194,14 @@ final class SettingsManager extends Manager {
         if ( 'layout' !== $tab ) {
             echo '</tbody></table>';
         }
-        echo FormFieldHelper::button( __( 'Save Changes', 'wikipress' ), [
-            'type' => 'submit',
-            'name' => 'submit',
-            'class' => 'btn-primary',
-        ] );
-        echo '</div></form>';
+        if ( $can_edit ) {
+            echo FormFieldHelper::button( __( 'Save Changes', 'wikipress' ), [
+                'type' => 'submit',
+                'name' => 'submit',
+                'class' => 'btn-primary',
+            ] );
+        }
+        echo '</div>' . ( $can_edit ? '</form>' : '' );
         echo '</div>';
     }
     /**
