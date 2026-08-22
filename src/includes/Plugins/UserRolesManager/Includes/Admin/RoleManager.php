@@ -168,7 +168,7 @@ final class RoleManager extends Manager {
 	private function render_modal_start( string $id, string $title, string $action ): void {
 		?>
 		<div class="modal fade" id="<?php echo esc_attr( $id ); ?>" tabindex="-1" aria-labelledby="<?php echo esc_attr( $id ); ?>-title" aria-hidden="true">
-			<div class="modal-dialog modal-xl modal-dialog-scrollable modal-dialog-centered"><div class="modal-content"><form method="post" action="<?php echo esc_url( UrlHelper::admin_action( $action ) ); ?>" class="wikipress-role-form"<?php echo 'wikipress_create_role' === $action ? ' data-role-create' : ''; ?>>
+			<div class="modal-dialog modal-xl modal-dialog-scrollable modal-dialog-centered"><form method="post" action="<?php echo esc_url( UrlHelper::admin_action( $action ) ); ?>" class="modal-content wikipress-role-form"<?php echo 'wikipress_create_role' === $action ? ' data-role-create' : ''; ?>>
 				<div class="modal-header"><h2 class="modal-title h5" id="<?php echo esc_attr( $id ); ?>-title"><?php echo esc_html( $title ); ?></h2><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<?php esc_attr_e( 'Close', 'wikipress' ); ?>"></button></div>
 				<div class="modal-body"><?php echo FormFieldHelper::input( 'action', $action, [ 'type' => 'hidden' ] ); ?><?php wp_nonce_field( $action ); ?>
 		<?php
@@ -216,7 +216,7 @@ final class RoleManager extends Manager {
 									?>
 									<div class="card wikipress-capability-card h-100">
 										<div class="card-body d-flex flex-column align-items-center gap-3">
-											<h6 class="card-title mb-0"><?php echo esc_html( $description ?: $capability ); ?></h6>
+											<h6 class="card-title mb-0 text-center"><?php echo esc_html( $description ?: $capability ); ?></h6>
 											<input class="btn-check" type="checkbox" name="capabilities[]" value="<?php echo esc_attr( $capability ); ?>" id="<?php echo esc_attr( $input_id ); ?>" autocomplete="off"<?php checked( $is_selected ); ?> />
 											<label class="btn btn-<?php echo $is_selected ? 'primary' : 'outline-primary'; ?> wikipress-capability-toggle" for="<?php echo esc_attr( $input_id ); ?>" data-capability-toggle><?php echo $is_selected ? esc_html__( 'On', 'wikipress' ) : esc_html__( 'Off', 'wikipress' ); ?></label>
 										</div>
@@ -243,7 +243,7 @@ final class RoleManager extends Manager {
 	private function render_modal_end( bool $multi_step, bool $allow_delete = false, string $slug = '' ): void {
 		?>
 				</div><div class="modal-footer justify-content-between"><div><?php if ( $allow_delete ) : ?><button type="submit" class="btn btn-outline-danger" formaction="<?php echo esc_url( UrlHelper::admin_action( 'wikipress_delete_role' ) ); ?>" formmethod="post" name="action" value="wikipress_delete_role" data-role-slug="<?php echo esc_attr( $slug ); ?>" onclick="this.form.querySelector('[name=role_slug]').value = this.dataset.roleSlug; this.form.querySelector('[name=_wpnonce]').value = '<?php echo esc_js( wp_create_nonce( 'wikipress_delete_role' ) ); ?>'; return confirm('<?php echo esc_js( __( 'Delete this role?', 'wikipress' ) ); ?>');"><?php esc_html_e( 'Delete', 'wikipress' ); ?></button><?php endif; ?></div><div class="d-flex gap-2"><button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"><?php esc_html_e( 'Cancel', 'wikipress' ); ?></button><button type="button" class="btn btn-outline-primary <?php echo $multi_step ? '' : 'd-none'; ?>" data-role-back><?php esc_html_e( 'Back', 'wikipress' ); ?></button><button type="button" class="btn btn-primary <?php echo $multi_step ? '' : 'd-none'; ?>" data-role-next disabled><?php esc_html_e( 'Next', 'wikipress' ); ?></button><button type="submit" class="btn btn-primary" data-role-save><?php esc_html_e( 'Save', 'wikipress' ); ?></button></div></div>
-			</form></div></div>
+			</form></div>
 		</div>
 		<?php
 	}
